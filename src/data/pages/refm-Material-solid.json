@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Material", "name": "solid", "title": "material.solid", "kind": "field", "lead": "Whether the jar's Material counts as solid.", "signature": "material.solid: boolean", "params": [], "returns": [], "usedIn": []}

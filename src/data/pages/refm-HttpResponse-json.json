@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "HttpResponse", "name": "json", "title": "httpResponse:json", "kind": "method", "lead": "The body as a table; an error when it is not JSON.", "signature": "httpResponse:json() \u2192 any", "params": [], "returns": ["any"], "usedIn": []}

@@ -1,0 +1,1 @@
+{"type": "ref", "name": "Face", "kind": "type", "assocType": "", "topic": "", "lead": "One of a block's six faces: up, down, north, south, west or east, as `hit.face` and `world.raycast` report it.", "typedef": "\"up\" | \"down\" | \"north\" | \"south\" | \"west\" | \"east\"", "docsLink": null, "functions": [], "fields": []}

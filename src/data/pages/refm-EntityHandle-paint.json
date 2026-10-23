@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntityHandle", "name": "paint", "title": "entityHandle.paint", "kind": "field", "lead": "Every occupant by seat number, including NPCs; nil means empty. Material name to colour; write-only.", "signature": "entityHandle.paint: { [string]: Ink }", "params": [], "returns": [], "usedIn": []}

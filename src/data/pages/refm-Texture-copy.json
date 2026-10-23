@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Texture", "name": "copy", "title": "texture:copy", "kind": "method", "lead": "Returns a copy to draw on.", "signature": "texture:copy() \u2192 Texture", "params": [], "returns": ["Texture"], "usedIn": []}

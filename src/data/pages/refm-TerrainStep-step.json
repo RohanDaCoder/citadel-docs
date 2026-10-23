@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "TerrainStep", "name": "step", "title": "terrainStep.step", "kind": "field", "lead": "Which populate step: \"dungeons\", \"clay\", \"ore\", \"trees\", \"patch\", \"reeds\", \"cactus\", \"springs\" or \"snow\".", "signature": "terrainStep.step: string", "params": [], "returns": [], "usedIn": []}

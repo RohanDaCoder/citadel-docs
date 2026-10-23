@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntityHandle", "name": "settle", "title": "entityHandle:settle", "kind": "method", "lead": "It stops being an entity and is a block again where it stands. No argument: the entity remembers what it was.", "signature": "entityHandle:settle() \u2192 boolean", "params": [], "returns": ["boolean"], "usedIn": []}

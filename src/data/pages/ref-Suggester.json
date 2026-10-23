@@ -1,0 +1,1 @@
+{"type": "ref", "name": "Suggester", "kind": "type", "assocType": "", "topic": "", "lead": "Called as the player types; must answer at once (no task.wait). `args` holds the arguments typed before this one, by name.", "typedef": "(player: Player, typed: string, args: { [string]: any }) -> { Suggestion }", "docsLink": null, "functions": [], "fields": []}

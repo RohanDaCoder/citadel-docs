@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "AskCount", "name": "missed", "title": "askCount.missed", "kind": "field", "lead": "Deadlines that passed with no answer.", "signature": "askCount.missed: number", "params": [], "returns": [], "usedIn": []}

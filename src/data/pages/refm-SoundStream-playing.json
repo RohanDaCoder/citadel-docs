@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "SoundStream", "name": "playing", "title": "soundStream.playing", "kind": "field", "lead": "False once stopped, or once a file that does not loop has played.", "signature": "soundStream.playing: boolean", "params": [], "returns": [], "usedIn": []}

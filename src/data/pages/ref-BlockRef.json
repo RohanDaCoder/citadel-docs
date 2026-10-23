@@ -1,0 +1,1 @@
+{"type": "ref", "name": "BlockRef", "kind": "type", "assocType": "", "topic": "", "lead": "A block, as anything that takes one will take it.", "typedef": "string | BlockDef", "docsLink": null, "functions": [], "fields": []}

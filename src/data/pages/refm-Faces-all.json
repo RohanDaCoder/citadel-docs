@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Faces", "name": "all", "title": "faces.all", "kind": "field", "lead": "`all` is one picture for all six faces, `side` for the four sides (`all` if left out), `top` and `bottom` the ends.", "signature": "faces.all: TextureRef ?, side: TextureRef ?, top: TextureRef ?, bottom: TextureRef ?", "params": [], "returns": [], "usedIn": []}

@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "TextRuns", "name": "effect", "title": "textRuns.effect", "kind": "field", "lead": "Called for every letter, every frame the text is on screen: hands back how that letter looks, or nil to leave it.", "signature": "textRuns.effect: Effect ?", "params": [], "returns": [], "usedIn": []}

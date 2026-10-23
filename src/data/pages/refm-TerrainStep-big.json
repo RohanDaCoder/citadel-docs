@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "TerrainStep", "name": "big", "title": "terrainStep.big", "kind": "field", "lead": "Trees: one chunk in this many grows big trees instead of small ones.", "signature": "terrainStep.big: number ?", "params": [], "returns": [], "usedIn": []}

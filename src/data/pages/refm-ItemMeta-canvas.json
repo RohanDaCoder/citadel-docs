@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "ItemMeta", "name": "canvas", "title": "itemMeta.canvas", "kind": "field", "lead": "A filled map of that canvas: what the item *is*, so `item` may be left out. Everywhere an item is taken \u2014 a hand, a hotbar slot, a display.", "signature": "itemMeta.canvas: Canvas ?", "params": [], "returns": [], "usedIn": []}

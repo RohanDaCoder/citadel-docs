@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntitySpec", "name": "looks", "title": "entitySpec.looks", "kind": "field", "lead": "A shape the client draws, or a model from models.new.", "signature": "entitySpec.looks: Looks | Model", "params": [], "returns": [], "usedIn": []}

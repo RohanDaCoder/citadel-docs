@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntityHandle", "name": "id", "title": "entityHandle.id", "kind": "field", "lead": "Its entity id, the one players.on_click reports in `hit.entity_id`.", "signature": "entityHandle.id: number", "params": [], "returns": [], "usedIn": []}

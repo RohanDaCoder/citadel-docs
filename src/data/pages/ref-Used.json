@@ -1,0 +1,1 @@
+{"type": "ref", "name": "Used", "kind": "type", "assocType": "", "topic": "", "lead": "What `on_use` answers. Never true or false.", "typedef": "\"used\" | \"pass\"", "docsLink": null, "functions": [], "fields": []}

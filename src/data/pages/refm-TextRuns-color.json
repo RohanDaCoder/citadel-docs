@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "TextRuns", "name": "color", "title": "textRuns.color", "kind": "field", "lead": "The colour of every run that does not pick its own: a colour value, a name or hex.", "signature": "textRuns.color: Ink ?", "params": [], "returns": [], "usedIn": []}

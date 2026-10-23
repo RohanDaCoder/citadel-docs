@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "HudPart", "name": "visible", "title": "hudPart.visible", "kind": "field", "lead": "Whether it shows; nil shows it again.", "signature": "hudPart.visible: boolean ?", "params": [], "returns": [], "usedIn": []}

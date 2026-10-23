@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntitySpec", "name": "scale", "title": "entitySpec.scale", "kind": "field", "lead": "A model's size; 1 by default.", "signature": "entitySpec.scale: number ?", "params": [], "returns": [], "usedIn": []}

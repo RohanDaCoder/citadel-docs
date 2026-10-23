@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Player", "name": "xp", "title": "player.xp", "kind": "field", "lead": "How full the experience bar is, 0..1.", "signature": "player.xp: number", "params": [], "returns": [], "usedIn": [{"quote": "player.xp = 0.5            -- how full the bar is, 0..1", "source": "Body and movement", "href": "/docs/citadel/body-and-movement"}]}

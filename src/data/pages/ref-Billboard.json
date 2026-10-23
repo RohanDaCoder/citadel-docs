@@ -1,0 +1,1 @@
+{"type": "ref", "name": "Billboard", "kind": "type", "assocType": "", "topic": "", "lead": "How a display turns toward the viewer: \"fixed\" never turns, \"vertical\" turns about the up axis, \"horizontal\" tips up and down, \"center\" does both.", "typedef": "\"fixed\" | \"vertical\" | \"horizontal\" | \"center\"", "docsLink": null, "functions": [], "fields": []}

@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "AskCount", "name": "asks", "title": "askCount.asks", "kind": "field", "lead": "Questions the engine put to this pack.", "signature": "askCount.asks: number", "params": [], "returns": [], "usedIn": []}

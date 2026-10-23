@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "SoundStream", "name": "remove", "title": "soundStream:remove", "kind": "method", "lead": "", "signature": "soundStream:remove(speaker: number)", "params": [{"name": "speaker", "type": "number", "required": true}], "returns": [], "usedIn": []}

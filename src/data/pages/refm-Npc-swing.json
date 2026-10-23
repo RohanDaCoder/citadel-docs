@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Npc", "name": "swing", "title": "npc:swing", "kind": "method", "lead": "Plays the arm swing animation.", "signature": "npc:swing()", "params": [], "returns": [], "usedIn": []}

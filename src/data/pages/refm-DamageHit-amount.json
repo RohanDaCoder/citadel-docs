@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "DamageHit", "name": "amount", "title": "damageHit.amount", "kind": "field", "lead": "Half hearts, before armour.", "signature": "damageHit.amount: number", "params": [], "returns": [], "usedIn": []}

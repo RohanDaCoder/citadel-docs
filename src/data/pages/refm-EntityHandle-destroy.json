@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntityHandle", "name": "destroy", "title": "entityHandle:destroy", "kind": "method", "lead": "", "signature": "entityHandle:destroy() \u2192 boolean", "params": [], "returns": ["boolean"], "usedIn": []}

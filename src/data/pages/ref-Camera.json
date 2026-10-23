@@ -1,0 +1,1 @@
+{"type": "ref", "name": "Camera", "kind": "type", "assocType": "", "topic": "Players", "lead": "", "typedef": "FixedCamera | EntityCamera | FreeCamera | OrbitCamera | ChaseCamera", "docsLink": null, "functions": [], "fields": []}

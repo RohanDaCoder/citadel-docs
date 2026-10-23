@@ -1,0 +1,1 @@
+{"type": "ref", "name": "LetterStyle", "kind": "type", "assocType": "", "topic": "", "lead": "What an effect hands back for one letter; `text` shows something else in its place (\"\" hides it).", "typedef": "{ color: Ink ?, bold: boolean ?, italic: boolean ?, underline: boolean ?, strike: boolean ?, text: string ? }", "docsLink": null, "functions": [], "fields": []}

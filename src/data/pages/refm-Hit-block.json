@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Hit", "name": "block", "title": "hit.block", "kind": "field", "lead": "The block, when the click hit one.", "signature": "hit.block: Vec3 ?", "params": [], "returns": [], "usedIn": [{"quote": "--   hit.block  = vec3?                 the block, when the click hit one", "source": "Input", "href": "/docs/citadel/input"}]}

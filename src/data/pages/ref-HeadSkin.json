@@ -1,0 +1,1 @@
+{"type": "ref", "name": "HeadSkin", "kind": "type", "assocType": "", "topic": "", "lead": "Whose face a player head shows: a Minecraft account's name, or the `textures` profile property of a skin no account wears.", "typedef": "string | { value: string, signature: string ? }", "docsLink": null, "functions": [], "fields": []}

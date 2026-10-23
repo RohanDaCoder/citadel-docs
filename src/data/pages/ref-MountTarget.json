@@ -1,0 +1,1 @@
+{"type": "ref", "name": "MountTarget", "kind": "type", "assocType": "", "topic": "", "lead": "Handles accepted by mounting and cameras; a Model is an asset, not a target.", "typedef": "EntityHandle | Npc | Display | ModelDisplay | Hitbox | Puppet", "docsLink": null, "functions": [], "fields": []}

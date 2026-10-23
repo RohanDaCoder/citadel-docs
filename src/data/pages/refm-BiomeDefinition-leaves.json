@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "BiomeDefinition", "name": "leaves", "title": "biomeDefinition.leaves", "kind": "field", "lead": "", "signature": "biomeDefinition.leaves: (Color | string)?", "params": [], "returns": [], "usedIn": []}

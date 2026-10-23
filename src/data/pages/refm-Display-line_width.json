@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Display", "name": "line_width", "title": "display.line_width", "kind": "field", "lead": "Text kind: the width its lines wrap at; 200 by default.", "signature": "display.line_width: number ?", "params": [], "returns": [], "usedIn": []}

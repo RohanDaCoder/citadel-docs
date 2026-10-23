@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntityHandle", "name": "forward", "title": "entityHandle.forward", "kind": "field", "lead": "The intent fields: what a body *wants* to do, which is what steering is. Writing one outside `on_steer` lasts until the next decision.", "signature": "entityHandle.forward: number", "params": [], "returns": [], "usedIn": []}

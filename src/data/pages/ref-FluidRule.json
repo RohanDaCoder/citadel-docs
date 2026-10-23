@@ -1,0 +1,1 @@
+{"type": "ref", "name": "FluidRule", "kind": "type", "assocType": "", "topic": "", "lead": "The carved air under `below` becomes `block` (a lake, lava): the first rule that holds at each block. Never the open sky over the land.", "typedef": "{ block: string, below: number, biome: string ?, when: (Field | number)? }", "docsLink": null, "functions": [], "fields": []}

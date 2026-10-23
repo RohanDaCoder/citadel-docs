@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntityHandle", "name": "nearby", "title": "entityHandle:nearby", "kind": "method", "lead": "What else is around it, by horizontal distance.", "signature": "entityHandle:nearby(radius: number) \u2192 { EntityHandle }", "params": [{"name": "radius", "type": "number", "required": true}], "returns": ["{ EntityHandle }"], "usedIn": []}

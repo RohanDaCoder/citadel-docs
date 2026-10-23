@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Faces", "name": "down", "title": "faces.down", "kind": "field", "lead": "One face by its name; a face left out is `side`.", "signature": "faces.down: TextureRef ?, up: TextureRef ?, north: TextureRef ?, south: TextureRef ?, west: TextureRef ?, east: TextureRef ?", "params": [], "returns": [], "usedIn": []}

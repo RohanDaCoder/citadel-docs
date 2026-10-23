@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Field", "name": "max", "title": "field:max", "kind": "method", "lead": "", "signature": "field:max(other: Field | number) \u2192 Field", "params": [{"name": "other", "type": "Field | number", "required": true}], "returns": ["Field"], "usedIn": []}

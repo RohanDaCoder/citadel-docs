@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Display", "name": "lead", "title": "display.lead", "kind": "field", "lead": "Advanced: true enables linear prediction. Default false; nil restores it. Normally submit current positions and leave this alone.", "signature": "display.lead: boolean ?", "params": [], "returns": [], "usedIn": []}

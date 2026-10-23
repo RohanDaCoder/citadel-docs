@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntityKind", "name": "drop", "title": "entityKind.drop", "kind": "field", "lead": "The item its death leaves behind, such as \"leather\"; nil for none.", "signature": "entityKind.drop: string ?", "params": [], "returns": [], "usedIn": []}

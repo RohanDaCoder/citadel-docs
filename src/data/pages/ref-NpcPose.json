@@ -1,0 +1,1 @@
+{"type": "ref", "name": "NpcPose", "kind": "type", "assocType": "", "topic": "", "lead": "How an NPC holds its body: standing, crouching, sleeping or swimming.", "typedef": "\"standing\" | \"crouching\" | \"sleeping\" | \"swimming\"", "docsLink": null, "functions": [], "fields": []}

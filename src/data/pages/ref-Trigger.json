@@ -1,0 +1,1 @@
+{"type": "ref", "name": "Trigger", "kind": "type", "assocType": "", "topic": "", "lead": "Something that happened *to* a block.", "typedef": "\"ignite\" | \"explosion\" | \"fire\"", "docsLink": null, "functions": [], "fields": []}

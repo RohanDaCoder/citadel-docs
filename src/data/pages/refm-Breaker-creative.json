@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Breaker", "name": "creative", "title": "breaker.creative", "kind": "field", "lead": "Whether a creative player broke it; creative takes the block and leaves nothing. False for the four causes with no player.", "signature": "breaker.creative: boolean", "params": [], "returns": [], "usedIn": []}

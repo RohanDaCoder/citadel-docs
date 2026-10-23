@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Material", "name": "covers", "title": "material.covers", "kind": "field", "lead": "Grass under it dies.", "signature": "material.covers: boolean", "params": [], "returns": [], "usedIn": []}

@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "PlantRule", "name": "blocks", "title": "plantRule.blocks", "kind": "field", "lead": "The blocks from the foot up, in place of `block`: a two-block flower.", "signature": "plantRule.blocks: { BlockPick }?", "params": [], "returns": [], "usedIn": []}

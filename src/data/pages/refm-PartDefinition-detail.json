@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "PartDefinition", "name": "detail", "title": "partDefinition.detail", "kind": "field", "lead": "1 (whole blocks, the default) or 2 (half blocks), as world.build.", "signature": "partDefinition.detail: number ?", "params": [], "returns": [], "usedIn": []}

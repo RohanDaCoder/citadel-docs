@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Npc", "name": "destroy", "title": "npc:destroy", "kind": "method", "lead": "", "signature": "npc:destroy()", "params": [], "returns": [], "usedIn": []}

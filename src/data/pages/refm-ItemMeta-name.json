@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "ItemMeta", "name": "name", "title": "itemMeta.name", "kind": "field", "lead": "Never italic unless it says so.", "signature": "itemMeta.name: Text ?", "params": [], "returns": [], "usedIn": []}

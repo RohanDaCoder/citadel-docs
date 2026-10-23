@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Display", "name": "background", "title": "display.background", "kind": "field", "lead": "Text kind: the colour behind the words; nil or false for none.", "signature": "display.background: (Color | false)?", "params": [], "returns": [], "usedIn": []}

@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "GeneratorRules", "name": "sea", "title": "generatorRules.sea", "kind": "field", "lead": "Water fills the open air up to this y.", "signature": "generatorRules.sea: number ?", "params": [], "returns": [], "usedIn": []}

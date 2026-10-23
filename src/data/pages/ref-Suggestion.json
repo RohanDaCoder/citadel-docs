@@ -1,0 +1,1 @@
+{"type": "ref", "name": "Suggestion", "kind": "type", "assocType": "", "topic": "", "lead": "One word offered as a player types a command argument: a string, or a text with a tooltip.", "typedef": "string | { text: string, tooltip: string ? }", "docsLink": null, "functions": [], "fields": []}

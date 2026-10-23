@@ -1,0 +1,1 @@
+{"type": "ref", "name": "TextureRef", "kind": "type", "assocType": "", "topic": "", "lead": "A block or item picture: a `Texture` drawn in code with `game.texture`, or the name of a PNG file in the pack.", "typedef": "Texture | string", "docsLink": null, "functions": [], "fields": []}

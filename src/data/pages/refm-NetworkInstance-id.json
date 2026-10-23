@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "NetworkInstance", "name": "id", "title": "networkInstance.id", "kind": "field", "lead": "The instance's name. `player:connect` takes it.", "signature": "networkInstance.id: string", "params": [], "returns": [], "usedIn": []}

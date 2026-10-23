@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Overlay", "name": "open", "title": "overlay.open", "kind": "field", "lead": "True until `destroy` or the player leaves.", "signature": "overlay.open: boolean", "params": [], "returns": [], "usedIn": []}

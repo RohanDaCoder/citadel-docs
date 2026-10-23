@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "BlockAt", "name": "drop", "title": "blockAt:drop", "kind": "method", "lead": "A name, or an item table: a pack item keeps its id.", "signature": "blockAt:drop(item: ItemSpec, count: number ?)", "params": [{"name": "item", "type": "ItemSpec", "required": true}, {"name": "count", "type": "number", "required": false}], "returns": [], "usedIn": []}

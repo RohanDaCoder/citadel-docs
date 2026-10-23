@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "BlockAt", "name": "room", "title": "blockAt.room", "kind": "field", "lead": "Which room the block is in.", "signature": "blockAt.room: number", "params": [], "returns": [], "usedIn": []}

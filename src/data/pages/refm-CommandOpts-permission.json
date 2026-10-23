@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "CommandOpts", "name": "permission", "title": "commandOpts.permission", "kind": "field", "lead": "A permission node; without it the command is not shown and not run.", "signature": "commandOpts.permission: string ?", "params": [], "returns": [], "usedIn": []}

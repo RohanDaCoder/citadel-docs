@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "BlockSpec", "name": "resistance", "title": "blockSpec.resistance", "kind": "field", "lead": "What an explosion has to chew through.", "signature": "blockSpec.resistance: number ?", "params": [], "returns": [], "usedIn": []}

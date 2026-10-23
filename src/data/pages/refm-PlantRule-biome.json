@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "PlantRule", "name": "biome", "title": "plantRule.biome", "kind": "field", "lead": "", "signature": "plantRule.biome: string ?", "params": [], "returns": [], "usedIn": []}

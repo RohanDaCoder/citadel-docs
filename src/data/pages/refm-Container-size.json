@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Container", "name": "size", "title": "container.size", "kind": "field", "lead": "How many slots the chest has, e.g. 27; 0 once it has gone.", "signature": "container.size: number", "params": [], "returns": [], "usedIn": []}

@@ -1,0 +1,1 @@
+{"type": "ref", "name": "task", "kind": "global", "assocType": "", "topic": "Game logic", "lead": "Tasks return threads; cancel with task.cancel(thread).", "typedef": "", "docsLink": {"title": "Game logic", "href": "/docs/citadel/rooms"}, "functions": [], "fields": []}

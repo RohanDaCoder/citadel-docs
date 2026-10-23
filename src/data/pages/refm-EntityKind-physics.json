@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntityKind", "name": "physics", "title": "entityKind.physics", "kind": "field", "lead": "For a kind that is not a mob, which order of operations moves it: \"item\", \"falling\", \"vehicle\" or \"none\". Nil for a mob kind.", "signature": "entityKind.physics: string ?", "params": [], "returns": [], "usedIn": []}

@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "HudPart", "name": "fill", "title": "hudPart.fill", "kind": "field", "lead": "How much of a box or picture shows, from its left edge: 0 to 1.", "signature": "hudPart.fill: number", "params": [], "returns": [], "usedIn": []}

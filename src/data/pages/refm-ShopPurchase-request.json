@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "ShopPurchase", "name": "request", "title": "shopPurchase.request", "kind": "field", "lead": "", "signature": "shopPurchase.request: string", "params": [], "returns": [], "usedIn": []}

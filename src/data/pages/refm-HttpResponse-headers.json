@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "HttpResponse", "name": "headers", "title": "httpResponse.headers", "kind": "field", "lead": "The answer's headers, names in lower case.", "signature": "httpResponse.headers: {[string]: string }", "params": [], "returns": [], "usedIn": []}

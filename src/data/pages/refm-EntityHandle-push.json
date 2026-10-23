@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntityHandle", "name": "push", "title": "entityHandle:push", "kind": "method", "lead": "A shove, in blocks a tick, added to what it is already doing.", "signature": "entityHandle:push(v: Vec3) \u2192 boolean", "params": [{"name": "v", "type": "Vec3", "required": true}], "returns": ["boolean"], "usedIn": []}

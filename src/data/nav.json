@@ -1,0 +1,713 @@
+{
+ "guides": [
+  {
+   "slug": "your-first-pack",
+   "title": "Your first pack",
+   "description": "Build a small lobby while learning how a Citadel pack works: the two files, solid ground, a welcome, and a /spawn command."
+  },
+  {
+   "slug": "coin-rush",
+   "title": "Coin rush",
+   "description": "Turn a pack into a game: gold coins on a round arena, 60 seconds, a score sidebar, and each player's best score saved."
+  },
+  {
+   "slug": "parkour-a-room-each",
+   "title": "Parkour, a room each",
+   "description": "Give every player a world of their own: /play builds a parkour course in a room that belongs to one player."
+  },
+  {
+   "slug": "build-a-cottage",
+   "title": "Build a cottage",
+   "description": "Build something that looks made by hand: a cottage with a steep roof, thick walls, a chimney, and a garden."
+  },
+  {
+   "slug": "a-dungeon-dimension",
+   "title": "A dungeon dimension",
+   "description": "Add a world of your own beside the main one: a dungeon under a castle with its own type, terrain, and folder."
+  }
+ ],
+ "docs": [
+  {
+   "topic": "Examples",
+   "description": "Whole packs that run: read one to see how the calls fit together.",
+   "pages": [
+    {
+     "slug": "your-first-pack",
+     "title": "Your first pack"
+    },
+    {
+     "slug": "scoreboard-with-a-button",
+     "title": "Scoreboard with a button"
+    },
+    {
+     "slug": "a-world-per-player",
+     "title": "A world per player"
+    }
+   ]
+  },
+  {
+   "topic": "Basics",
+   "description": "What a pack is, how a server runs it, and the rules every call follows.",
+   "pages": [
+    {
+     "slug": "packs",
+     "title": "Packs"
+    },
+    {
+     "slug": "server-settings",
+     "title": "Server settings"
+    },
+    {
+     "slug": "api-basics",
+     "title": "API basics"
+    },
+    {
+     "slug": "vectors-and-colours",
+     "title": "Vectors and colours"
+    },
+    {
+     "slug": "version-info",
+     "title": "Version info"
+    }
+   ]
+  },
+  {
+   "topic": "World",
+   "description": "The ground players stand on: terrain, blocks, builds, time, and the game version's own data.",
+   "pages": [
+    {
+     "slug": "blocks-and-terrain",
+     "title": "Blocks and terrain"
+    },
+    {
+     "slug": "named-parts",
+     "title": "Named parts"
+    },
+    {
+     "slug": "custom-blocks",
+     "title": "Custom blocks"
+    },
+    {
+     "slug": "time-and-tweens",
+     "title": "Time and tweens"
+    },
+    {
+     "slug": "game-data",
+     "title": "Game data"
+    },
+    {
+     "slug": "building-well",
+     "title": "Building well"
+    }
+   ]
+  },
+  {
+   "topic": "Players",
+   "description": "Who is here, how they move and see, what they type and click, and what they may do.",
+   "pages": [
+    {
+     "slug": "players",
+     "title": "Players"
+    },
+    {
+     "slug": "body-and-movement",
+     "title": "Body and movement"
+    },
+    {
+     "slug": "cameras",
+     "title": "Cameras"
+    },
+    {
+     "slug": "input",
+     "title": "Input"
+    },
+    {
+     "slug": "commands",
+     "title": "Commands"
+    },
+    {
+     "slug": "permissions",
+     "title": "Permissions"
+    },
+    {
+     "slug": "client-versions",
+     "title": "Client versions"
+    }
+   ]
+  },
+  {
+   "topic": "Interface",
+   "description": "What a player reads: titles, bars, the HUD, menus, and pictures on walls.",
+   "pages": [
+    {
+     "slug": "titles-and-bars",
+     "title": "Titles and bars"
+    },
+    {
+     "slug": "hud",
+     "title": "HUD"
+    },
+    {
+     "slug": "layouts",
+     "title": "Layouts"
+    },
+    {
+     "slug": "menus",
+     "title": "Menus"
+    },
+    {
+     "slug": "dialogs",
+     "title": "Dialogs"
+    },
+    {
+     "slug": "hotbar-menus",
+     "title": "Hotbar menus"
+    },
+    {
+     "slug": "text-formatting",
+     "title": "Text formatting"
+    },
+    {
+     "slug": "screens",
+     "title": "Screens"
+    },
+    {
+     "slug": "canvases",
+     "title": "Canvases"
+    },
+    {
+     "slug": "map-pictures",
+     "title": "Map pictures"
+    }
+   ]
+  },
+  {
+   "topic": "Sound and effects",
+   "description": "What a player hears and sees in the air: sounds, particles, lasers and light.",
+   "pages": [
+    {
+     "slug": "sound",
+     "title": "Sound"
+    },
+    {
+     "slug": "particles-and-lasers",
+     "title": "Particles and lasers"
+    },
+    {
+     "slug": "lighting",
+     "title": "Lighting"
+    }
+   ]
+  },
+  {
+   "topic": "Entities",
+   "description": "Things in the world: displays, models, NPCs, entities, items, and the zones that notice them.",
+   "pages": [
+    {
+     "slug": "displays",
+     "title": "Displays"
+    },
+    {
+     "slug": "3d-models",
+     "title": "3D models"
+    },
+    {
+     "slug": "npcs",
+     "title": "NPCs"
+    },
+    {
+     "slug": "mobs-and-drops",
+     "title": "Mobs and drops"
+    },
+    {
+     "slug": "custom-entities",
+     "title": "Custom entities"
+    },
+    {
+     "slug": "items",
+     "title": "Items"
+    },
+    {
+     "slug": "armour",
+     "title": "Armour"
+    },
+    {
+     "slug": "zones-and-raycasts",
+     "title": "Zones and raycasts"
+    }
+   ]
+  },
+  {
+   "topic": "Game logic",
+   "description": "How a game runs: rooms, the rules a room simulates, events, and code split into modules.",
+   "pages": [
+    {
+     "slug": "rooms",
+     "title": "Rooms"
+    },
+    {
+     "slug": "dimensions",
+     "title": "Dimensions"
+    },
+    {
+     "slug": "room-rules",
+     "title": "Room rules"
+    },
+    {
+     "slug": "game-events",
+     "title": "Game events"
+    },
+    {
+     "slug": "cancelling-events",
+     "title": "Cancelling events"
+    },
+    {
+     "slug": "modules-and-tasks",
+     "title": "Modules and tasks"
+    }
+   ]
+  },
+  {
+   "topic": "Data",
+   "description": "What survives a restart, what the whole experience shares, and the limits a pack runs in.",
+   "pages": [
+    {
+     "slug": "storage",
+     "title": "Storage"
+    },
+    {
+     "slug": "shared-stores",
+     "title": "Shared stores"
+    },
+    {
+     "slug": "shop",
+     "title": "Shop"
+    },
+    {
+     "slug": "network",
+     "title": "Network"
+    },
+    {
+     "slug": "hub",
+     "title": "Hub"
+    },
+    {
+     "slug": "http",
+     "title": "HTTP"
+    },
+    {
+     "slug": "limits-and-reload",
+     "title": "Limits and reload"
+    }
+   ]
+  }
+ ],
+ "reference": {
+  "globalsByTopic": [
+   {
+    "topic": "Basics",
+    "globals": [
+     {
+      "name": "color",
+      "count": 3
+     },
+     {
+      "name": "citadel",
+      "count": 6
+     }
+    ]
+   },
+   {
+    "topic": "World",
+    "globals": [
+     {
+      "name": "time",
+      "count": 3
+     },
+     {
+      "name": "data",
+      "count": 3
+     },
+     {
+      "name": "tween",
+      "count": null
+     },
+     {
+      "name": "fields",
+      "count": 13
+     },
+     {
+      "name": "noise",
+      "count": 1
+     },
+     {
+      "name": "parts",
+      "count": 1
+     },
+     {
+      "name": "world",
+      "count": 40
+     },
+     {
+      "name": "game",
+      "count": 12
+     }
+    ]
+   },
+   {
+    "topic": "Players",
+    "globals": [
+     {
+      "name": "camera",
+      "count": null
+     },
+     {
+      "name": "players",
+      "count": 18
+     },
+     {
+      "name": "commands",
+      "count": 1
+     }
+    ]
+   },
+   {
+    "topic": "Interface",
+    "globals": [
+     {
+      "name": "colors",
+      "count": 23
+     },
+     {
+      "name": "ui",
+      "count": 13
+     }
+    ]
+   },
+   {
+    "topic": "Sound and effects",
+    "globals": [
+     {
+      "name": "sound",
+      "count": 3
+     },
+     {
+      "name": "fx",
+      "count": 1
+     }
+    ]
+   },
+   {
+    "topic": "Entities",
+    "globals": [
+     {
+      "name": "vec3",
+      "count": 2
+     },
+     {
+      "name": "models",
+      "count": 1
+     }
+    ]
+   },
+   {
+    "topic": "Game logic",
+    "globals": [
+     {
+      "name": "task",
+      "count": null
+     },
+     {
+      "name": "rooms",
+      "count": 2
+     },
+     {
+      "name": "routes",
+      "count": 1
+     }
+    ]
+   },
+   {
+    "topic": "Data",
+    "globals": [
+     {
+      "name": "storage",
+      "count": 5
+     },
+     {
+      "name": "message",
+      "count": null
+     },
+     {
+      "name": "http",
+      "count": 2
+     },
+     {
+      "name": "stores",
+      "count": 6
+     },
+     {
+      "name": "shop",
+      "count": 4
+     },
+     {
+      "name": "network",
+      "count": 8
+     },
+     {
+      "name": "hub",
+      "count": 5
+     }
+    ]
+   }
+  ],
+  "types": [
+   {
+    "letter": "A",
+    "names": [
+     "AskCount",
+     "Asks"
+    ]
+   },
+   {
+    "letter": "B",
+    "names": [
+     "Bar",
+     "BarColor",
+     "Billboard",
+     "BiomeDefinition",
+     "Biomes",
+     "Block",
+     "BlockAmendSpec",
+     "BlockAt",
+     "BlockDef",
+     "BlockPick",
+     "BlockRef",
+     "BlockSpec",
+     "Blocks",
+     "Body",
+     "BodyRotation",
+     "Breaker",
+     "Budget",
+     "Builder"
+    ]
+   },
+   {
+    "letter": "C",
+    "names": [
+     "Camera",
+     "Canvas",
+     "ChaseCamera",
+     "Chunk",
+     "Color",
+     "ColorName",
+     "Command",
+     "CommandOpts",
+     "Connection",
+     "Container",
+     "Context"
+    ]
+   },
+   {
+    "letter": "D",
+    "names": [
+     "DamageHit",
+     "DataView",
+     "Dialog",
+     "DialogNode",
+     "Display",
+     "Drops",
+     "DurableStore"
+    ]
+   },
+   {
+    "letter": "E",
+    "names": [
+     "Easing",
+     "Effect",
+     "Entities",
+     "EntityAmendOptions",
+     "EntityAmendSpec",
+     "EntityCamera",
+     "EntityDef",
+     "EntityHandle",
+     "EntityKind",
+     "EntitySpec"
+    ]
+   },
+   {
+    "letter": "F",
+    "names": [
+     "Face",
+     "Faces",
+     "Facing",
+     "Feature",
+     "Field",
+     "FixedCamera",
+     "FluidRule",
+     "FreeCamera"
+    ]
+   },
+   {
+    "letter": "G",
+    "names": [
+     "Generated",
+     "GeneratorRules",
+     "GroundItem",
+     "GroundRule"
+    ]
+   },
+   {
+    "letter": "H",
+    "names": [
+     "HeadSkin",
+     "Hit",
+     "Hitbox",
+     "HttpResponse",
+     "Hud",
+     "HudPart"
+    ]
+   },
+   {
+    "letter": "I",
+    "names": [
+     "Ink",
+     "InventorySlot",
+     "Item",
+     "ItemMatch",
+     "ItemMeta",
+     "ItemSpec",
+     "ItemTable",
+     "Items"
+    ]
+   },
+   {
+    "letter": "L",
+    "names": [
+     "Layout",
+     "LayoutAlign",
+     "LayoutNode",
+     "LetterStyle",
+     "LightSource",
+     "Looks"
+    ]
+   },
+   {
+    "letter": "M",
+    "names": [
+     "Material",
+     "Menu",
+     "Model",
+     "ModelBuild",
+     "ModelDisplay",
+     "ModelMaterial",
+     "ModelPart",
+     "ModelSkin",
+     "ModelTexture",
+     "MountTarget"
+    ]
+   },
+   {
+    "letter": "N",
+    "names": [
+     "NetworkInstance",
+     "NetworkStarted",
+     "Noise",
+     "Npc",
+     "NpcPose"
+    ]
+   },
+   {
+    "letter": "O",
+    "names": [
+     "Occupant",
+     "OrbitCamera",
+     "Orientation",
+     "Overlay"
+    ]
+   },
+   {
+    "letter": "P",
+    "names": [
+     "PartDefinition",
+     "Persist",
+     "Physics",
+     "Picture",
+     "PlantRule",
+     "Player",
+     "PlayerUi",
+     "Puppet"
+    ]
+   },
+   {
+    "letter": "R",
+    "names": [
+     "RayHit",
+     "Recipes",
+     "Room",
+     "Rotation",
+     "Rules"
+    ]
+   },
+   {
+    "letter": "S",
+    "names": [
+     "Schematic",
+     "Screen",
+     "ScreenFacing",
+     "ShopPurchase",
+     "Slow",
+     "Socket",
+     "SocketMessage",
+     "SoundSpeaker",
+     "SoundStream",
+     "Suggester",
+     "Suggestion"
+    ]
+   },
+   {
+    "letter": "T",
+    "names": [
+     "TerrainStep",
+     "Text",
+     "TextRuns",
+     "Texture",
+     "TextureRef",
+     "ThingGrid",
+     "ThingRule",
+     "Think",
+     "TimeName",
+     "Trigger",
+     "Tween"
+    ]
+   },
+   {
+    "letter": "U",
+    "names": [
+     "Used"
+    ]
+   },
+   {
+    "letter": "V",
+    "names": [
+     "Vec3",
+     "Video",
+     "View"
+    ]
+   },
+   {
+    "letter": "W",
+    "names": [
+     "WorldTarget",
+     "Worn"
+    ]
+   },
+   {
+    "letter": "Z",
+    "names": [
+     "Zone"
+    ]
+   }
+  ]
+ }
+}

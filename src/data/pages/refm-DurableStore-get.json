@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "DurableStore", "name": "get", "title": "durableStore:get", "kind": "method", "lead": "Returns a fact's value and its version; version 0 means absent.", "signature": "durableStore:get(key: string) \u2192 (any, number)", "params": [{"name": "key", "type": "string", "required": true}], "returns": ["( any , number )"], "usedIn": []}

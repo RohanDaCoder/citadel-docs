@@ -1,0 +1,1 @@
+{"type": "ref", "name": "message", "kind": "global", "assocType": "", "topic": "Data", "lead": "Sends a chat line to everyone in the main room; `color` is for the words that did not pick one.", "typedef": "(text: Text, color: Ink ?) -> ()", "docsLink": {"title": "Data", "href": "/docs/citadel/storage"}, "functions": [], "fields": []}

@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "BlockSpec", "name": "tick_every", "title": "blockSpec.tick_every", "kind": "field", "lead": "Seconds between `block:schedule()` and `on_tick`; 0.5 unless you say.", "signature": "blockSpec.tick_every: number ?", "params": [], "returns": [], "usedIn": []}

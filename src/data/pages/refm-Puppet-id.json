@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Puppet", "name": "id", "title": "puppet.id", "kind": "field", "lead": "The raw entity id.", "signature": "puppet.id: number", "params": [], "returns": [], "usedIn": []}

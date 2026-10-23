@@ -1,0 +1,1 @@
+{"type": "ref", "name": "Color", "kind": "type", "assocType": "", "topic": "Basics", "lead": "", "typedef": "typeof(setmetatable({} :: ColorFields, {} ::", "docsLink": null, "functions": [], "fields": []}

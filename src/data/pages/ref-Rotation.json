@@ -1,0 +1,1 @@
+{"type": "ref", "name": "Rotation", "kind": "type", "assocType": "", "topic": "", "lead": "", "typedef": "BodyRotation & { read roll: number ? }", "docsLink": null, "functions": [], "fields": []}
