@@ -44,7 +44,7 @@ The rules:
 What [`world.build`](/ref/World/build) hands the function it is given.
 Coordinates are whole blocks of the build's own and may be negative; later
 writes win. `{ detail = 2 }` makes every coordinate a half block, fitted to
-slabs and stairs — see [Block reference](/wiki/block-reference#half-blocks-detail-2).
+slabs and stairs — see [Block reference](/wiki/block-reference#half-blocks-detail--2).
 
 | Call | Returns | Purpose |
 | --- | --- | --- |

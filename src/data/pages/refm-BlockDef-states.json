@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "BlockDef", "name": "states", "title": "blockDef.states", "kind": "field", "lead": "How many states it has; `block.state` counts 1 to this.", "signature": "blockDef.states: number", "params": [], "returns": [], "usedIn": []}

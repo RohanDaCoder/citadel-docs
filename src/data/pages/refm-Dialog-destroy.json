@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Dialog", "name": "destroy", "title": "dialog:destroy", "kind": "method", "lead": "Closes it.", "signature": "dialog:destroy()", "params": [], "returns": [], "usedIn": []}

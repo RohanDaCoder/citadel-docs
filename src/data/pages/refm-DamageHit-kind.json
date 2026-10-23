@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "DamageHit", "name": "kind", "title": "damageHit.kind", "kind": "field", "lead": "The kind's name (\"Skeleton\") when a mob did it.", "signature": "damageHit.kind: string ?", "params": [], "returns": [], "usedIn": []}

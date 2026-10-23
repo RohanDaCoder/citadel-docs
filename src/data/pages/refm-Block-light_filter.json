@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Block", "name": "light_filter", "title": "block.light_filter", "kind": "field", "lead": "What a step through it takes off the light, 0 to 15.", "signature": "block.light_filter: number", "params": [], "returns": [], "usedIn": []}

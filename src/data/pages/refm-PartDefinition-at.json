@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "PartDefinition", "name": "at", "title": "partDefinition.at", "kind": "field", "lead": "Where the build's block (0, 0, 0) lands.", "signature": "partDefinition.at: Vec3", "params": [], "returns": [], "usedIn": []}

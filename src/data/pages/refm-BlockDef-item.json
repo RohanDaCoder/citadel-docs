@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "BlockDef", "name": "item", "title": "blockDef.item", "kind": "field", "lead": "The block as an item, when the definition gave it one: `player:give(def.item)`.", "signature": "blockDef.item: ItemTable ?", "params": [], "returns": [], "usedIn": []}

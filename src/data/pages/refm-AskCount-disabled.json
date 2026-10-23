@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "AskCount", "name": "disabled", "title": "askCount.disabled", "kind": "field", "lead": "True once the engine has stopped asking this pack this kind at all.", "signature": "askCount.disabled: boolean", "params": [], "returns": [], "usedIn": []}

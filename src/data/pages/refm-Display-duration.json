@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Display", "name": "duration", "title": "display.duration", "kind": "field", "lead": "Seconds later changes take to play out on the client (1.19.4 and later); 0 by default.", "signature": "display.duration: number", "params": [], "returns": [], "usedIn": []}

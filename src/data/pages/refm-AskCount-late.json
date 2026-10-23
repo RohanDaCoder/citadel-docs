@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "AskCount", "name": "late", "title": "askCount.late", "kind": "field", "lead": "Answers that arrived after the engine had acted, and were dropped.", "signature": "askCount.late: number", "params": [], "returns": [], "usedIn": []}

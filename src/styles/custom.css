@@ -1,0 +1,15 @@
+/* Citadel Developer Wiki — theme overrides */
+
+/* Amber/gold accent, matching the wiki's original palette */
+:root {
+	--sl-hue-accent: 41;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+/* Slightly tighter code blocks in reference tables */
+main table :where(code) {
+	font-size: 0.85em;
+}

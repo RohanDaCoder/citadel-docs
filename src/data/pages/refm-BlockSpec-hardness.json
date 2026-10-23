@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "BlockSpec", "name": "hardness", "title": "blockSpec.hardness", "kind": "field", "lead": "Seconds-scale, as vanilla's hardness is; below zero is unbreakable.", "signature": "blockSpec.hardness: number ?", "params": [], "returns": [], "usedIn": []}

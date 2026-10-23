@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Block", "name": "opaque", "title": "block.opaque", "kind": "field", "lead": "Whether it is an opaque full cube, which is not the material's question.", "signature": "block.opaque: boolean", "params": [], "returns": [], "usedIn": []}

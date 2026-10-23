@@ -1,1 +1,0 @@
-{"type": "ref", "name": "LightSource", "kind": "type", "assocType": "", "lead": "One spot of light no block makes, for `world.light`: a position and a level from 1 to 15.", "typedef": "{ at: Vec3, level: number ? }", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "LightSource type"}

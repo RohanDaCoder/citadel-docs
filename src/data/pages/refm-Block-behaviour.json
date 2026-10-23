@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Block", "name": "behaviour", "title": "block.behaviour", "kind": "field", "lead": "The rule Citadel runs for it, such as \"grass\", \"flowing\", \"torch\" or \"falling\"; nil for a block that does nothing on its own.", "signature": "block.behaviour: string ?", "params": [], "returns": [], "usedIn": []}

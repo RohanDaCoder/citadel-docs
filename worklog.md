@@ -172,3 +172,29 @@ Stage Summary:
 - Deliverable: Citadel Wiki at / (Next.js, port 3000) — 60 structured wiki articles across 10 sections (not a port: new concept layer, cookbook, FAQ, generated appendices), 5 restructured guides, API reference with 29 globals in 5 domains + 141 types + 674 members, all cross-linked (673 links verified) and searchable (904 entries).
 - Content source of truth: scripts/wiki_src/ (markdown + frontmatter); regenerate site data with scripts/build_wiki.py.
 - Key artifacts: scripts/wiki_src/** (authored wiki), scripts/build_wiki.py (pipeline), scripts/verify/{check_links.py,sweep.js,shots.js} (QA), src/data/* (generated site data).
+
+---
+Task ID: 3
+Agent: main (Z.ai)
+Task: Convert the project to Astro Starlight; delete the unused Next.js/scaffold/crawl artifacts
+
+Work Log:
+- Kept content sources: scripts/wiki_src/ (58 authored wiki pages + index.md landing + _sources + STYLE/SLUGS/OUTLINE) and scripts/dataset.json (structured 916-page crawl extraction).
+- Wrote scripts/gen_starlight.py — the new single pipeline:
+  - wiki_src pages -> src/content/docs/<section>/<slug>.md: frontmatter -> Starlight title/description, leading H1 stripped, `> **Type:**` callouts -> `:::note[In short]`/`:::note`/`:::tip`/`:::caution[Gotcha]` admonitions, all /wiki//ref//appendix links rewritten to final routes (case-twin canonicalization world->World etc.).
+  - Generated appendices: appendix/event-catalog.md (all on_* events) + appendix/limits-table.md.
+  - API reference: 170 type/global pages (ref/<Name>/index.md: lead, linked union typedef, part-of link, Functions/Fields tables with per-member links) + 674 member pages (ref/<Parent>/<member>.md: signature code block, lead, Parameters table with linked types, Returns, Used-in quotes with source links).
+  - ref/index.md overview (5 domain tables + Types A–Z) and root index.md landing (authored at wiki_src/index.md so links get rewritten).
+  - scripts/generated/starlight-manifest.json: full sidebar (10 wiki groups + API reference group with Overview + 5 domain subgroups + Types A–Z, collapsed) + 913 redirects preserving every original minefort.com/docs/citadel URL.
+  - Self-validates: 3225 internal links + anchors checked pre-build (0 errors, 0 misses).
+- Scaffolded Astro 5.18 + Starlight 0.36: astro.config.mjs (manifest-driven sidebar/redirects, amber accent via --sl-hue-accent, Pagefind search default-on), src/content.config.ts (docsLoader + docsSchema + custom case-preserving generateId — the default slugifier lowercased paths and collapsed Camera/camera, World/world), src/styles/custom.css, public/favicon.svg, minimal package.json (astro, @astrojs/starlight, sharp only).
+- Fixed during build: Starlight 0.36 removed `search`/`breadcrumbs`/`footer` config keys (search is default via pagefind); case-collision redirect warnings dropped by emitting PascalCase-only redirects for case-twin originals; github-slugger double-hyphen anchor fix (half-blocks-detail--2).
+- Adapted platform tooling to Astro: .zscripts/dev.sh (dropped prisma db:push step, starts astro dev on :3000), .zscripts/build.sh (astro build -> dist/ + zero-dependency node server.js into next-service-dist/, keeps mini-services/Caddyfile/start.sh packaging), .zscripts/start.sh (static server instead of Next standalone + DB checks).
+- Deleted unused: Next.js app (src/app, src/components, src/lib, src/hooks, src/data 904 page JSONs), prisma + db + .env, shadcn/tailwind/postcss/eslint/next configs, 1.2 GB old node_modules, scripts/crawl_html (215 MB), scripts/analysis, scripts/content, old pipeline scripts (build_wiki.py, crawlers, extractors), all QA screenshots, tool-results, bun.lock, .next.
+- Verification: npm run build -> 907 pages in ~12 s; scripts/check_dist_links.py sweeps all built HTML: 217,327 links, 0 broken, 0 anchor misses; astro preview on :3000 (Caddy :81 target) smoke-tested; astro dev tested; Pagefind search (Ctrl+K) returns correct results; VLM QA 8–9/10 on home/wiki/member/ref-index/guide pages, mobile 390 px and light theme clean.
+
+Stage Summary:
+- Deliverable: Citadel Developer Wiki as an Astro Starlight static site at / (astro preview, port 3000).
+- Structure: 906 markdown pages — landing + 58 wiki articles in 10 sections + 2 generated appendices + 170 API type/global pages + 674 API member pages, all cross-linked, searchable (Pagefind), with sidebar navigation, breadcrumbs, prev/next, dark/light themes, mobile drawer.
+- Content source of truth: scripts/wiki_src/ + scripts/dataset.json; regenerate with `python3 scripts/gen_starlight.py && npm run build`.
+- Old minefort docs URLs keep working via 913 redirects from /docs/citadel/*.

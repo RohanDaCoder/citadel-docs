@@ -5,27 +5,23 @@ exec 2>&1
 
 set -e
 
-# 获取脚本所在目录（.zscripts 目录，即 workspace-agent/.zscripts）
-# 使用 $0 获取脚本路径（兼容 sh 和 bash）
+# 使用脚本所在目录（.zscripts 目录）
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
-# Next.js 项目路径
-NEXTJS_PROJECT_DIR="/home/z/my-project"
+# 项目路径（Astro 静态文档站点）
+PROJECT_DIR="/home/z/my-project"
 
-# 检查 Next.js 项目目录是否存在
-if [ ! -d "$NEXTJS_PROJECT_DIR" ]; then
-    echo "❌ 错误: Next.js 项目目录不存在: $NEXTJS_PROJECT_DIR"
+# 检查项目目录是否存在
+if [ ! -d "$PROJECT_DIR" ]; then
+    echo "❌ 错误：项目目录不存在: $PROJECT_DIR"
     exit 1
 fi
 
-echo "🚀 开始构建 Next.js 应用和 mini-services..."
-echo "📁 Next.js 项目路径: $NEXTJS_PROJECT_DIR"
+echo "🚀 开始构建 Astro 静态站点和 mini-services..."
+echo "📁 项目路径: $PROJECT_DIR"
 
-# 切换到 Next.js 项目目录
-cd "$NEXTJS_PROJECT_DIR" || exit 1
-
-# 设置环境变量
-export NEXT_TELEMETRY_DISABLED=1
+# 切换到项目目录
+cd "$PROJECT_DIR" || exit 1
 
 BUILD_DIR="/tmp/build_fullstack_$BUILD_ID"
 echo "📁 清理并创建构建目录: $BUILD_DIR"
@@ -35,77 +31,23 @@ mkdir -p "$BUILD_DIR"
 echo "📦 安装依赖..."
 bun install
 
-# 构建 Next.js 应用
-echo "🔨 构建 Next.js 应用..."
+# 构建 Astro 静态站点（产物输出到 dist/）
+echo "🔨 构建 Astro 静态站点..."
 bun run build
 
-# 校验 standalone 服务端入口是否生成（部署成功率守卫）。
-# Next 仅在 next.config 含 output:"standalone" 时产出 .next/standalone/server.js。
-# 若用户/AI 编辑项目时改写或删除了该配置，bun run build 仍会成功（static 照常
-# 产出、退出码 0），但 standalone 缺失——打出的包里没有 server.js，部署到 FC 后
-# start.sh 找不到 next-service-dist/server.js → 不启动 Next → Caddy:81 反代空的
-# 3000 → FC 健康检查 120s 超时失败（线上 warmup_412 / FunctionNotStarted 的主因）。
-# 这里做一次自愈：仅在确实缺失时，给 next.config 补回 output:"standalone" 并重建。
-# 正常项目（已生成 server.js）整段跳过，不读写任何用户文件。
-if [ ! -f ".next/standalone/server.js" ]; then
-    echo "⚠️  构建未产出 .next/standalone/server.js，开始自愈 next.config 的 output 配置..."
-    NEXT_CONFIG_FILE="$(ls next.config.ts next.config.js next.config.mjs next.config.cjs 2>/dev/null | head -1)"
-
-    if [ -z "$NEXT_CONFIG_FILE" ]; then
-        echo "❌ 构建失败：未找到 next.config.*，无法生成 standalone 部署产物。"
-        exit 1
-    fi
-
-    if grep -Eq "output\s*:\s*['\"]standalone['\"]" "$NEXT_CONFIG_FILE"; then
-        # 已声明 standalone 却仍没产出 server.js，说明不是配置缺失（可能 build 真
-        # 出错、自定义 distDir 等）。不臆改用户配置，直接失败并暴露原因。
-        echo "❌ 构建失败：$NEXT_CONFIG_FILE 已含 output:\"standalone\"，但仍未生成 .next/standalone/server.js。"
-        echo "   请检查上方构建日志中的报错或项目自定义的构建配置。"
-        exit 1
-    fi
-
-    if grep -Eq "output\s*:\s*['\"]" "$NEXT_CONFIG_FILE"; then
-        # 已显式声明了其它 output（如 "export" 静态导出 / "standalone" 之外的值）。
-        # "export" 与本部署模型（standalone + 自定义 server）互斥——不能注入第二个
-        # output 覆盖用户意图（JS 对象重复 key 后者生效，注入也无效）。明确失败。
-        echo "❌ 构建失败：$NEXT_CONFIG_FILE 已声明非 standalone 的 output（如 \"export\" 静态导出），与当前部署模型不兼容。"
-        echo "   当前部署需要 output:\"standalone\"。请改为 standalone，或确认该项目是否应走静态托管而非部署沙箱。"
-        exit 1
-    fi
-
-    echo "🔧 检测到 $NEXT_CONFIG_FILE 缺少 output:\"standalone\"，自动注入后重新构建..."
-    cp "$NEXT_CONFIG_FILE" "${NEXT_CONFIG_FILE}.zbak"
-    # 在第一个配置对象字面量起始的 { 之后插入 output:"standalone"，
-    # 覆盖脚手架常见写法：const nextConfig...= {  /  export default {  /  module.exports = {
-    perl -0pi -e 's/((?:const\s+\w+[^=]*=|export\s+default|module\.exports\s*=)\s*\{)/$1\n  output: "standalone",/' "$NEXT_CONFIG_FILE"
-
-    if ! grep -Eq "output\s*:\s*['\"]standalone['\"]" "$NEXT_CONFIG_FILE"; then
-        echo "❌ 未能匹配到可注入的配置对象，next.config 写法非常规，需人工添加 output:\"standalone\"。"
-        echo "   当前 $NEXT_CONFIG_FILE 内容："
-        cat "$NEXT_CONFIG_FILE"
-        mv "${NEXT_CONFIG_FILE}.zbak" "$NEXT_CONFIG_FILE"
-        exit 1
-    fi
-
-    echo "🔨 已注入 output:\"standalone\"，重新构建..."
-    bun run build
-
-    if [ ! -f ".next/standalone/server.js" ]; then
-        echo "❌ 注入 output:\"standalone\" 并重建后，仍未生成 .next/standalone/server.js。"
-        exit 1
-    fi
-    echo "✅ 自愈成功：standalone 服务端入口已生成。"
+# 校验静态产物是否生成（部署成功率守卫）。
+if [ ! -f "dist/index.html" ]; then
+    echo "❌ 构建失败：未生成 dist/index.html。"
+    exit 1
 fi
+echo "✅ 静态站点构建完成：dist/index.html 已生成。"
 
-# 构建 mini-services
-# 检查 Next.js 项目目录下是否有 mini-services 目录
-if [ -d "$NEXTJS_PROJECT_DIR/mini-services" ]; then
+# 构建 mini-services（目录为空时自动跳过）
+if [ -d "$PROJECT_DIR/mini-services" ]; then
     echo "🔨 构建 mini-services..."
-    # 使用 workspace-agent 目录下的 mini-services 脚本
     sh "$SCRIPT_DIR/mini-services-install.sh"
     sh "$SCRIPT_DIR/mini-services-build.sh"
 
-    # 复制 mini-services-start.sh 到 mini-services-dist 目录
     echo "  - 复制 mini-services-start.sh 到 $BUILD_DIR"
     cp "$SCRIPT_DIR/mini-services-start.sh" "$BUILD_DIR/mini-services-start.sh"
     chmod +x "$BUILD_DIR/mini-services-start.sh"
@@ -113,37 +55,98 @@ else
     echo "ℹ️  mini-services 目录不存在，跳过"
 fi
 
-# 将所有构建产物复制到临时构建目录
+# 收集构建产物：静态站点 + 零依赖静态文件服务器
 echo "📦 收集构建产物到 $BUILD_DIR..."
 
-# 复制 Next.js standalone 构建输出
-if [ -d ".next/standalone" ]; then
-    echo "  - 复制 .next/standalone"
-    cp -r .next/standalone "$BUILD_DIR/next-service-dist/"
-fi
+echo "  - 复制 dist/ 到 next-service-dist/"
+cp -r dist "$BUILD_DIR/next-service-dist/"
 
-# 复制 Next.js 静态文件
-if [ -d ".next/static" ]; then
-    echo "  - 复制 .next/static"
-    mkdir -p "$BUILD_DIR/next-service-dist/.next"
-    cp -r .next/static "$BUILD_DIR/next-service-dist/.next/"
-fi
+echo "  - 写入 server.js（零依赖静态文件服务器）"
+cat > "$BUILD_DIR/next-service-dist/server.js" <<'SERVER_EOF'
+// Zero-dependency static file server for the built Astro site (Citadel Developer Wiki).
+// Serves ./ on PORT (default 3000). Deployable with plain node or bun.
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
 
-# 复制 public 目录
-if [ -d "public" ]; then
-    echo "  - 复制 public"
-    cp -r public "$BUILD_DIR/next-service-dist/"
-fi
+const DIST = __dirname;
+const PORT = Number(process.env.PORT || 3000);
+const HOST = process.env.HOSTNAME || '0.0.0.0';
 
-# Python 不继承 workspace-agent 的 /home/z/.venv。若项目包含 Python 源码或
-# 依赖清单，在构建期将生产依赖固化到产物，并保持 Python 源码的项目相对路径。
-PROJECT_DIR="$NEXTJS_PROJECT_DIR" BUILD_DIR="$BUILD_DIR" \
-    bash "$SCRIPT_DIR/python-runtime-build.sh"
+const MIME = {
+	'.html': 'text/html; charset=utf-8',
+	'.css': 'text/css; charset=utf-8',
+	'.js': 'text/javascript; charset=utf-8',
+	'.mjs': 'text/javascript; charset=utf-8',
+	'.json': 'application/json; charset=utf-8',
+	'.svg': 'image/svg+xml',
+	'.png': 'image/png',
+	'.jpg': 'image/jpeg',
+	'.jpeg': 'image/jpeg',
+	'.gif': 'image/gif',
+	'.webp': 'image/webp',
+	'.avif': 'image/avif',
+	'.ico': 'image/x-icon',
+	'.txt': 'text/plain; charset=utf-8',
+	'.webmanifest': 'application/manifest+json',
+	'.woff': 'font/woff',
+	'.woff2': 'font/woff2',
+	'.ttf': 'font/ttf',
+	'.otf': 'font/otf',
+	'.wasm': 'application/wasm',
+	'.xml': 'application/xml',
+};
 
-# 有 Preview 数据库时复制现有数据；没有时直接在部署产物中初始化空库。
-# 模板源码不携带 db/custom.db，不能依赖 dev.sh 必须在 Deploy 前成功运行过。
-PROJECT_DIR="$NEXTJS_PROJECT_DIR" BUILD_DIR="$BUILD_DIR" \
-    bash "$SCRIPT_DIR/database-runtime-build.sh"
+function send(res, status, body, type) {
+	res.writeHead(status, {
+		'Content-Type': type || 'text/plain; charset=utf-8',
+		'Cache-Control': 'no-cache',
+	});
+	res.end(body);
+}
+
+function sendFile(res, filePath, status) {
+	fs.readFile(filePath, (err, data) => {
+		if (err) return send(res, 404, 'Not found');
+		const type = MIME[path.extname(filePath).toLowerCase()] || 'application/octet-stream';
+		res.writeHead(status || 200, { 'Content-Type': type, 'Cache-Control': 'no-cache' });
+		res.end(data);
+	});
+}
+
+const server = http.createServer((req, res) => {
+	let urlPath;
+	try {
+		urlPath = decodeURIComponent((req.url || '/').split('?')[0]);
+	} catch {
+		return send(res, 400, 'Bad request');
+	}
+	if (urlPath.includes('\0')) return send(res, 400, 'Bad request');
+
+	// 1. exact file (assets: /favicon.svg, /pagefind/...)
+	let filePath = path.join(DIST, urlPath);
+	if (!filePath.startsWith(DIST)) return send(res, 403, 'Forbidden');
+	if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+		return sendFile(res, filePath);
+	}
+	// 2. directory index (/systems/storage/ -> index.html)
+	const indexCandidate = path.join(filePath, 'index.html');
+	if (fs.existsSync(indexCandidate)) {
+		return sendFile(res, indexCandidate, urlPath.endsWith('/') ? 200 : 301);
+	}
+	// 3. bare path -> .html (legacy /some-page -> /some-page.html)
+	const htmlCandidate = filePath + '.html';
+	if (fs.existsSync(htmlCandidate)) {
+		return sendFile(res, htmlCandidate);
+	}
+	// 4. fall back to the 404 page
+	return sendFile(res, path.join(DIST, '404.html'), 404);
+});
+
+server.listen(PORT, HOST, () => {
+	console.log(`Citadel Developer Wiki static server listening on http://${HOST}:${PORT}`);
+});
+SERVER_EOF
 
 # 复制 Caddyfile（如果存在）
 if [ -f "Caddyfile" ]; then
@@ -165,9 +168,6 @@ echo "📦 打包构建产物到 $PACKAGE_FILE..."
 cd "$BUILD_DIR" || exit 1
 tar -czf "$PACKAGE_FILE" .
 cd - > /dev/null || exit 1
-
-# # 清理临时目录
-# rm -rf "$BUILD_DIR"
 
 echo ""
 echo "✅ 构建完成！所有产物已打包到 $PACKAGE_FILE"

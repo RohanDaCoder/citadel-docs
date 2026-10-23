@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "CommandOpts", "name": "help", "title": "commandOpts.help", "kind": "field", "lead": "The line /help shows after the usage.", "signature": "commandOpts.help: string ?", "params": [], "returns": [], "usedIn": []}

@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Budget", "name": "skipped", "title": "budget.skipped", "kind": "field", "lead": "Callbacks not run for want of budget, since the script started.", "signature": "budget.skipped: number", "params": [], "returns": [], "usedIn": []}

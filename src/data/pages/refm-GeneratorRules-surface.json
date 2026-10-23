@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "GeneratorRules", "name": "surface", "title": "generatorRules.surface", "kind": "field", "lead": "", "signature": "generatorRules.surface: { GroundRule }?", "params": [], "returns": [], "usedIn": []}

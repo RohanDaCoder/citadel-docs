@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Block", "name": "hardness", "title": "block.hardness", "kind": "field", "lead": "Seconds-scale hardness in this version's numbers; below zero is unbreakable.", "signature": "block.hardness: number", "params": [], "returns": [], "usedIn": []}

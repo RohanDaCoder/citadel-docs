@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "BlockAt", "name": "at", "title": "blockAt.at", "kind": "field", "lead": "The block's position; a live read.", "signature": "blockAt.at: Vec3", "params": [], "returns": [], "usedIn": []}

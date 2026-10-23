@@ -1,0 +1,8 @@
+---
+title: 'Drops type'
+description: 'What a broken block leaves'
+---
+
+What a broken block leaves. "table" is whatever the site that broke it would have left — the version's drop table for a player's hands, a roll for a blast, nothing at all for a fire — and "none" is nothing, which is what a pack block leaves unless it says otherwise.
+
+`"none"` | `"table"` | `{ ItemTable }`

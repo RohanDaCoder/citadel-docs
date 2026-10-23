@@ -1,1 +1,0 @@
-{"type": "ref", "name": "DialogNode", "kind": "type", "assocType": "", "lead": "A node of a dialog, made by `ui.kit`: a table with a `kind`.", "typedef": "{ [any]: any }", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "DialogNode type"}

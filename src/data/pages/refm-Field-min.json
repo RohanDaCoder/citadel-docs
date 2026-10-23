@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Field", "name": "min", "title": "field:min", "kind": "method", "lead": "", "signature": "field:min(other: Field | number) → Field", "params": [{"name": "other", "type": "Field | number", "required": true}], "returns": ["Field"], "usedIn": []}

@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Material", "name": "firm", "title": "material.firm", "kind": "field", "lead": "Snow and ice need it beneath them.", "signature": "material.firm: boolean", "params": [], "returns": [], "usedIn": []}

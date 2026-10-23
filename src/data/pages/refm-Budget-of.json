@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Budget", "name": "of", "title": "budget.of", "kind": "field", "lead": "`budget_ms` in citadel.yml; 2 by default.", "signature": "budget.of: number", "params": [], "returns": [], "usedIn": []}

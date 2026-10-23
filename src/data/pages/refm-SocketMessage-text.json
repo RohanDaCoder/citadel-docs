@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "SocketMessage", "name": "text", "title": "socketMessage.text", "kind": "field", "lead": "The message as text.", "signature": "socketMessage.text: string", "params": [], "returns": [], "usedIn": []}

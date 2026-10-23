@@ -1,1 +1,0 @@
-{"type": "ref", "name": "Used", "kind": "type", "assocType": "", "lead": "What `on_use` answers. Never true or false.", "typedef": "\"used\" | \"pass\"", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "Used type"}

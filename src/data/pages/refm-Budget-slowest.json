@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Budget", "name": "slowest", "title": "budget.slowest", "kind": "field", "lead": "The slowest single callback so far, by short hook name.", "signature": "budget.slowest: { hook: string, ms: number }?", "params": [], "returns": [], "usedIn": []}

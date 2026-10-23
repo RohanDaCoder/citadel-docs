@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Container", "name": "items", "title": "container:items", "kind": "method", "lead": "The filled slots, in order.", "signature": "container:items() → { InventorySlot & { slot: number } }", "params": [], "returns": ["{ InventorySlot & { slot: number } }"], "usedIn": []}

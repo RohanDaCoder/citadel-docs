@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "SoundStream", "name": "listen", "title": "soundStream:listen", "kind": "method", "lead": "Who hears it, changed while it plays.", "signature": "soundStream:listen(player: Player)", "params": [{"name": "player", "type": "Player", "required": true}], "returns": [], "usedIn": []}

@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "TextRuns", "name": "italic", "title": "textRuns.italic", "kind": "field", "lead": "Italic for every run that does not say otherwise.", "signature": "textRuns.italic: boolean ?", "params": [], "returns": [], "usedIn": []}

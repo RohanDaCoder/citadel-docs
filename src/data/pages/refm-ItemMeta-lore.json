@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "ItemMeta", "name": "lore", "title": "itemMeta.lore", "kind": "field", "lead": "One line or a list of lines, grey unless they say otherwise.", "signature": "itemMeta.lore: ({ Text } | Text)?", "params": [], "returns": [], "usedIn": []}

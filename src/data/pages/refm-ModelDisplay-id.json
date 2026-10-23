@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "ModelDisplay", "name": "id", "title": "modelDisplay.id", "kind": "field", "lead": "What `player:ride(model)` is handed; the seat is picked from `seats`.", "signature": "modelDisplay.id: number", "params": [], "returns": [], "usedIn": []}

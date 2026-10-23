@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Canvas", "name": "destroy", "title": "canvas:destroy", "kind": "method", "lead": "Removes the canvas; clients that saw it keep its last picture, and its id is never reused.", "signature": "canvas:destroy()", "params": [], "returns": [], "usedIn": []}

@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "HudPart", "name": "text", "title": "hudPart.text", "kind": "field", "lead": "A label's words.", "signature": "hudPart.text: string", "params": [], "returns": [], "usedIn": []}

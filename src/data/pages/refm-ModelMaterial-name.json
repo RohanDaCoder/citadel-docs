@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "ModelMaterial", "name": "name", "title": "modelMaterial.name", "kind": "field", "lead": "The name it was made with, which a display repaints it by.", "signature": "modelMaterial.name: string", "params": [], "returns": [], "usedIn": []}

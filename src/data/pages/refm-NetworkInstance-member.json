@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "NetworkInstance", "name": "member", "title": "networkInstance.member", "kind": "field", "lead": "", "signature": "networkInstance.member: string", "params": [], "returns": [], "usedIn": []}

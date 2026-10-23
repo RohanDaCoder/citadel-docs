@@ -1,1 +1,0 @@
-{"type": "ref", "name": "FixedCamera", "kind": "type", "assocType": "", "lead": "Camera modes expose only the fields they use. Values shared across players update all their views. A removed target reads nil and ends the active view.", "typedef": "", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "FixedCamera type"}

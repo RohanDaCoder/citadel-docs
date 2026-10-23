@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Breaker", "name": "cause", "title": "breaker.cause", "kind": "field", "lead": "What took the block out: a player, fire, an explosion, flowing water, or the loss of what held it up (\"support\").", "signature": "breaker.cause: \"player\" | \"fire\" | \"explosion\" | \"water\" | \"support\"", "params": [], "returns": [], "usedIn": []}

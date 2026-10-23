@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Puppet", "name": "destroy", "title": "puppet:destroy", "kind": "method", "lead": "Removes the puppet.", "signature": "puppet:destroy()", "params": [], "returns": [], "usedIn": []}

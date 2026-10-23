@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "ItemMeta", "name": "color", "title": "itemMeta.color", "kind": "field", "lead": "A potion's liquid colour; 1.11 and later.", "signature": "itemMeta.color: Color ?", "params": [], "returns": [], "usedIn": []}

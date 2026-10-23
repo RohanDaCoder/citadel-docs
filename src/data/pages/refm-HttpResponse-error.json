@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "HttpResponse", "name": "error", "title": "httpResponse.error", "kind": "field", "lead": "Why no answer came, or nil.", "signature": "httpResponse.error: string ?", "params": [], "returns": [], "usedIn": []}

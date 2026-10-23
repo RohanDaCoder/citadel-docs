@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "TextRuns", "name": "strike", "title": "textRuns.strike", "kind": "field", "lead": "Struck through for every run that does not say otherwise.", "signature": "textRuns.strike: boolean ?", "params": [], "returns": [], "usedIn": []}

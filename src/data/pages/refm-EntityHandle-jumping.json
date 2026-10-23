@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "EntityHandle", "name": "jumping", "title": "entityHandle.jumping", "kind": "field", "lead": "Intent: whether it wants to jump. A vehicle's seat 1 writes it from the keys every tick.", "signature": "entityHandle.jumping: boolean", "params": [], "returns": [], "usedIn": []}

@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "ShopPurchase", "name": "product", "title": "shopPurchase.product", "kind": "field", "lead": "The product's key.", "signature": "shopPurchase.product: string", "params": [], "returns": [], "usedIn": []}

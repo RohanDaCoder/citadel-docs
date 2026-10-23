@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Texture", "name": "fill", "title": "texture:fill", "kind": "method", "lead": "Paints every pixel one colour.", "signature": "texture:fill(color: Ink)", "params": [{"name": "color", "type": "Ink", "required": true}], "returns": [], "usedIn": []}

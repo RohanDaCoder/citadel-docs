@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "BlockSpec", "name": "texture", "title": "blockSpec.texture", "kind": "field", "lead": "Its own picture on 1.21.4+: one for every state, or one per state.", "signature": "blockSpec.texture: (Faces | { Faces })?", "params": [], "returns": [], "usedIn": []}

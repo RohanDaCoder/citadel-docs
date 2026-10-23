@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Field", "name": "clamp", "title": "field:clamp", "kind": "method", "lead": "", "signature": "field:clamp(low: number, high: number) → Field", "params": [{"name": "low", "type": "number", "required": true}, {"name": "high", "type": "number", "required": true}], "returns": ["Field"], "usedIn": []}

@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "EntityKind", "name": "mob", "title": "entityKind.mob", "kind": "field", "lead": "Whether the kind is a mob: true for a cow, false for an arrow.", "signature": "entityKind.mob: boolean", "params": [], "returns": [], "usedIn": []}

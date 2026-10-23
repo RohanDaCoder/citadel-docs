@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "PlantRule", "name": "y", "title": "plantRule.y", "kind": "field", "lead": "`{ low, high }`: the y it may start at.", "signature": "plantRule.y: { number }?", "params": [], "returns": [], "usedIn": []}

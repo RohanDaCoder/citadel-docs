@@ -1,1 +1,0 @@
-{"type": "ref", "name": "task", "kind": "global", "assocType": "", "lead": "The scheduler: `spawn`, `delay`, `defer`, `wait` and `cancel`.", "typedef": "", "docsLink": {"title": "Game logic", "href": "#/wiki/rooms-and-dimensions"}, "functions": [], "fields": [], "others": [], "title": "task global"}

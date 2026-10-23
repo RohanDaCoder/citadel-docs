@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "BiomeDefinition", "name": "name", "title": "biomeDefinition.name", "kind": "field", "lead": "Lower case letters, digits and underscores. The pack's name goes in front: \"crystal\" becomes \"mypack:crystal\".", "signature": "biomeDefinition.name: string", "params": [], "returns": [], "usedIn": []}

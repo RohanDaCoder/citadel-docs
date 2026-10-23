@@ -1,1 +1,0 @@
-{"type": "ref", "name": "Physics", "kind": "type", "assocType": "", "lead": "Which order of operations moves a body. Not a table of floats: the floats are the game version's, and this says which set of them applies.", "typedef": "\"vehicle\" | \"living\" | \"falling\" | \"item\" | \"none\"", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "Physics type"}

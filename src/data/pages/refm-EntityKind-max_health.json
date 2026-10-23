@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "EntityKind", "name": "max_health", "title": "entityKind.max_health", "kind": "field", "lead": "The most health one of this kind has, in this version's numbers. `health` on a kind is an error: health is what one entity has now.", "signature": "entityKind.max_health: number", "params": [], "returns": [], "usedIn": []}

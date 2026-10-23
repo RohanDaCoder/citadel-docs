@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Hitbox", "name": "at", "title": "hitbox.at", "kind": "field", "lead": "Its bottom centre; write it to move the hitbox, and its wall when solid.", "signature": "hitbox.at: Vec3", "params": [], "returns": [], "usedIn": []}

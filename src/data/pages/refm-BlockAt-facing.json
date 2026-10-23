@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "BlockAt", "name": "facing", "title": "blockAt.facing", "kind": "field", "lead": "A facing block's front: \"north\", \"south\", \"west\", \"east\"; nil otherwise. Writable.", "signature": "blockAt.facing: Facing ?", "params": [], "returns": [], "usedIn": []}

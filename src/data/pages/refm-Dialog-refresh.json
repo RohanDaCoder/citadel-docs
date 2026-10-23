@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Dialog", "name": "refresh", "title": "dialog:refresh", "kind": "method", "lead": "Whether the player still has it open. Draws a live view (a function) again.", "signature": "dialog:refresh()", "params": [], "returns": [], "usedIn": []}

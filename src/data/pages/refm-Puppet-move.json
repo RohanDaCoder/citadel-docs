@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Puppet", "name": "move", "title": "puppet:move", "kind": "method", "lead": "", "signature": "puppet:move(at: Vec3, rotation: BodyRotation ?)", "params": [{"name": "at", "type": "Vec3", "required": true}, {"name": "rotation", "type": "BodyRotation", "required": false}], "returns": [], "usedIn": []}

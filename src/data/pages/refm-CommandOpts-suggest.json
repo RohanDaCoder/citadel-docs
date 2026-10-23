@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "CommandOpts", "name": "suggest", "title": "commandOpts.suggest", "kind": "field", "lead": "Per argument name: the words to offer, or a function that returns them.", "signature": "commandOpts.suggest: { [string]: { Suggestion } | Suggester }?", "params": [], "returns": [], "usedIn": []}

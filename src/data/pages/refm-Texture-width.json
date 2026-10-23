@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Texture", "name": "width", "title": "texture.width", "kind": "field", "lead": "Width in pixels.", "signature": "texture.width: number", "params": [], "returns": [], "usedIn": []}

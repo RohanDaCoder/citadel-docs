@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "EntityHandle", "name": "name", "title": "entityHandle.name", "kind": "field", "lead": "The kind's name: \"cow\", \"rave:rocket\". Nil once it is gone.", "signature": "entityHandle.name: string ?", "params": [], "returns": [], "usedIn": []}

@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "HudPart", "name": "color", "title": "hudPart.color", "kind": "field", "lead": "A box's colour, a picture's tint, a label's ink; reads back as \"#rrggbb\".", "signature": "hudPart.color: Ink ?", "params": [], "returns": [], "usedIn": []}

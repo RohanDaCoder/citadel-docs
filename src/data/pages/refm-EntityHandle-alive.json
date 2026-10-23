@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "EntityHandle", "name": "alive", "title": "entityHandle.alive", "kind": "field", "lead": "Whether it is still in the world. A hook only runs for one that is.", "signature": "entityHandle.alive: boolean", "params": [], "returns": [], "usedIn": []}
