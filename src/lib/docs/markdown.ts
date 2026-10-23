@@ -13,7 +13,7 @@ export type Block =
   | { t: "code"; lang: string; code: string }
   | { t: "list"; ordered: boolean; items: { inlines: Inline[]; children: Block[] }[] }
   | { t: "table"; header: Inline[][]; rows: Inline[][][] }
-  | { t: "quote"; lines: string };
+  | { t: "quote"; lines: string; inlines: Inline[]; callout: string | null };
 
 function slugify(text: string): string {
   const s = text
@@ -228,7 +228,15 @@ export function parseMarkdown(src: string): Block[] {
         quoteLines.push(lines[i].replace(/^>\s?/, ""));
         i++;
       }
-      blocks.push({ t: "quote", lines: quoteLines.join("\n") });
+      const joined = quoteLines.join(" ").trim();
+      const cm = /^\*\*(In short|Note|Gotcha|Tip|Warning|Caution):?\*\*\s*/.exec(joined);
+      let callout: string | null = null;
+      let body = joined;
+      if (cm) {
+        callout = cm[1] === "Caution" ? "Warning" : cm[1];
+        body = joined.slice(cm[0].length);
+      }
+      blocks.push({ t: "quote", lines: joined, inlines: parseInline(body), callout });
       continue;
     }
 

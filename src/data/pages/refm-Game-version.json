@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Game", "name": "version", "title": "game.version", "kind": "field", "lead": "This game's version, such as \"a0.1.0\".", "signature": "game.version: string", "params": [], "returns": [], "usedIn": [{"quote": "game.version                         -- \"a0.1.0\"", "source": "Game data", "href": "#/wiki/game-data"}]}

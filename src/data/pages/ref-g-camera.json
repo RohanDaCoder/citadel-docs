@@ -1,0 +1,1 @@
+{"type": "ref", "name": "camera", "kind": "global", "assocType": "Camera", "lead": "Camera paths and modes per player.", "typedef": "", "docsLink": {"title": "Players", "href": "#/wiki/player-lifecycle"}, "functions": [], "fields": [], "others": [], "title": "camera global"}

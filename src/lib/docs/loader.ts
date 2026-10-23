@@ -6,20 +6,13 @@ export interface TocEntry {
   level: number;
 }
 
-export interface GuidePageData {
-  type: "guide";
+export interface WikiPageData {
+  type: "wiki";
   slug: string;
+  section: string;
   title: string;
   description: string;
-  markdown: string;
-  toc: TocEntry[];
-}
-
-export interface DocPageData {
-  type: "doc";
-  slug: string;
-  title: string;
-  topic: string;
+  tags: string[];
   markdown: string;
   toc: TocEntry[];
 }
@@ -29,7 +22,8 @@ export interface RefMemberListing {
   section: string;
   signature: string;
   description: string;
-  hasPage: boolean;
+  href: string;
+  href2: string | null;
 }
 
 export interface RefPageData {
@@ -37,21 +31,22 @@ export interface RefPageData {
   name: string;
   kind: "global" | "type";
   assocType: string;
-  topic: string;
+  title: string;
   lead: string;
   typedef: string;
-  docsLink: { title: string; href: string } | null;
+  docsLink: { title: string; href: string | null } | null;
   functions: RefMemberListing[];
   fields: RefMemberListing[];
+  others: RefMemberListing[];
 }
 
-export interface RefMemberParam {
+export interface RefParam {
   name: string;
   type: string;
-  required: boolean;
+  required: boolean | null;
 }
 
-export interface UsedIn {
+export interface RefUsedIn {
   quote: string;
   source: string;
   href: string;
@@ -65,47 +60,49 @@ export interface RefMemberPageData {
   kind: string;
   lead: string;
   signature: string;
-  params: RefMemberParam[];
+  params: RefParam[];
   returns: string[];
-  usedIn: UsedIn[];
+  usedIn: RefUsedIn[];
 }
 
-export type AnyPage = GuidePageData | DocPageData | RefPageData | RefMemberPageData;
+export type AnyPage = WikiPageData | RefPageData | RefMemberPageData;
+
+const loaderMap = new Map<string, (() => Promise<unknown>)>();
+for (const l of pageLoaders) loaderMap.set(l.key, l.load);
 
 const cache = new Map<string, AnyPage | null>();
 
-export async function loadPage(route: {
-  kind: string;
-  slug?: string;
-  name?: string;
-  member?: string;
-}): Promise<AnyPage | null> {
-  let id: string | null = null;
-  switch (route.kind) {
-    case "guide":
-      id = `guide-${route.slug}`;
-      break;
-    case "doc":
-      id = `doc-${route.slug}`;
-      break;
-    case "ref":
-      id = `ref-${route.name}`;
-      break;
-    case "refmember":
-      id = `refm-${route.name}-${route.member}`;
-      break;
-    default:
-      return null;
-  }
-  if (!id || !pageLoaders[id]) return null;
-  if (cache.has(id)) return cache.get(id)!;
-  try {
-    const mod = await pageLoaders[id]();
-    const data = mod.default as unknown as AnyPage;
-    cache.set(id, data);
-    return data;
-  } catch {
-    cache.set(id, null);
+function keyFor(routeKind: string, a: string, b?: string): string {
+  if (routeKind === "wiki") return `wiki:${a}`;
+  if (routeKind === "ref") return a;
+  return `${a}.${b}`;
+}
+
+export async function loadPage(route: { kind: string; slug?: string; name?: string; member?: string }): Promise<AnyPage | null> {
+  let key: string;
+  if (route.kind === "wiki") key = `wiki:${route.slug}`;
+  else if (route.kind === "ref") key = route.name!;
+  else key = `${route.name}.${route.member}`;
+
+  if (cache.has(key)) return cache.get(key)!;
+
+  const loader = loaderMap.get(key);
+  if (!loader) {
+    // case-insensitive fallback for ref pages
+    const lower = key.toLowerCase();
+    for (const [k, l] of loaderMap) {
+      if (k.toLowerCase() === lower) {
+        const mod = (await l()) as { default: AnyPage };
+        cache.set(key, mod.default);
+        return mod.default;
+      }
+    }
+    cache.set(key, null);
     return null;
   }
+  const mod = (await loader()) as { default: AnyPage };
+  cache.set(key, mod.default);
+  return mod.default;
 }
+
+export type { keyFor };

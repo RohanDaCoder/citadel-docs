@@ -1,1 +1,1 @@
-{"type": "ref", "name": "task", "kind": "global", "assocType": "", "topic": "Game logic", "lead": "Tasks return threads; cancel with task.cancel(thread).", "typedef": "", "docsLink": {"title": "Game logic", "href": "/docs/citadel/rooms"}, "functions": [], "fields": []}
+{"type": "ref", "name": "task", "kind": "global", "assocType": "", "lead": "The scheduler: `spawn`, `delay`, `defer`, `wait` and `cancel`.", "typedef": "", "docsLink": {"title": "Game logic", "href": "#/wiki/rooms-and-dimensions"}, "functions": [], "fields": [], "others": [], "title": "task global"}

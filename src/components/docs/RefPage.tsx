@@ -3,11 +3,9 @@
 import { useMemo, useState } from "react";
 import { ChevronRight, FunctionSquare, Variable, BookOpen, ArrowRight } from "lucide-react";
 import type { RefPageData } from "@/lib/docs/loader";
-import { docsUrlToHash } from "@/lib/docs/router";
 
 function MemberRow({ m, parentName }: { m: RefPageData["functions"][number]; parentName: string }) {
-  const href = m.hasPage ? `#/reference/${parentName}/${m.name}` : null;
-  const isField = m.section === "fields";
+  const href = m.href2 && m.href2.startsWith(`#/ref/`) ? m.href2 : null;
   const Wrapper = href ? "a" : "div";
   return (
     <Wrapper
@@ -52,7 +50,7 @@ export function RefPage({ data }: { data: RefPageData }) {
     );
   }, [filter, tab, data]);
 
-  const docsHash = data.docsLink ? docsUrlToHash(data.docsLink.href) : null;
+  const docsHash = data.docsLink?.href ?? null;
 
   return (
     <div className="mx-auto max-w-[820px] px-5 pb-24 pt-8 sm:px-8">
@@ -62,8 +60,8 @@ export function RefPage({ data }: { data: RefPageData }) {
           Citadel
         </a>
         <ChevronRight className="size-3" />
-        <a href="#/reference" className="transition-colors hover:text-zinc-700 dark:hover:text-zinc-300">
-          Reference
+        <a href="#/ref" className="transition-colors hover:text-zinc-700 dark:hover:text-zinc-300">
+          API reference
         </a>
         <ChevronRight className="size-3" />
         <span className="font-mono text-zinc-600 dark:text-zinc-300">{data.name}</span>
@@ -89,14 +87,9 @@ export function RefPage({ data }: { data: RefPageData }) {
           {data.assocType && data.assocType.toLowerCase() !== data.name.toLowerCase() && (
             <span className="text-[13px] text-zinc-400 dark:text-zinc-500">
               type{" "}
-              <a href={`#/reference/${data.assocType}`} className="font-mono text-violet-700 hover:underline dark:text-violet-300">
+              <a href={`#/ref/${data.assocType}`} className="font-mono text-violet-700 hover:underline dark:text-violet-300">
                 {data.assocType}
               </a>
-            </span>
-          )}
-          {data.topic && (
-            <span className="rounded-full bg-zinc-100 px-2.5 py-0.5 text-[11px] font-medium text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400">
-              {data.topic}
             </span>
           )}
         </div>
@@ -122,7 +115,7 @@ export function RefPage({ data }: { data: RefPageData }) {
             className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-amber-700 hover:text-amber-800 dark:text-amber-400 dark:hover:text-amber-300"
           >
             <BookOpen className="size-4" />
-            Read the guide: {data.docsLink?.title}
+            Read the article: {data.docsLink?.title}
             <ArrowRight className="size-3.5" />
           </a>
         )}

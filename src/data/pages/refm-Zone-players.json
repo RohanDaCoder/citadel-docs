@@ -1,1 +1,1 @@
-{"type": "refmember", "parent": "Zone", "name": "players", "title": "zone:players", "kind": "method", "lead": "Returns who is in the zone now.", "signature": "zone:players() \u2192 { Player }", "params": [], "returns": ["{ Player }"], "usedIn": []}
+{"type": "refmember", "parent": "Zone", "name": "players", "title": "zone:players", "kind": "method", "lead": "Returns who is in the zone now.", "signature": "zone:players() → { Player }", "params": [], "returns": ["{ Player }"], "usedIn": []}

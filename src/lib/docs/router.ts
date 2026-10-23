@@ -1,19 +1,36 @@
 import { useCallback, useMemo, useSyncExternalStore } from "react";
+import redirectsJson from "@/data/redirects.json";
 
 export type Route =
   | { kind: "home" }
-  | { kind: "guide"; slug: string }
-  | { kind: "doc"; slug: string }
+  | { kind: "wiki"; slug: string }
   | { kind: "reference" }
   | { kind: "ref"; name: string }
   | { kind: "refmember"; name: string; member: string };
+
+const redirects = redirectsJson as Record<string, string>;
 
 export function parseHash(hash: string): Route {
   const path = hash.replace(/^#/, "").replace(/^\/+|\/+$/g, "");
   if (!path) return { kind: "home" };
   const parts = path.split("/").map(decodeURIComponent);
-  if (parts[0] === "guides" && parts[1]) return { kind: "guide", slug: parts[1] };
-  if (parts[0] === "docs" && parts[1]) return { kind: "doc", slug: parts[1] };
+  if (parts[0] === "wiki" && parts[1]) return { kind: "wiki", slug: parts[1] };
+  if (parts[0] === "ref") {
+    if (!parts[1]) return { kind: "reference" };
+    if (parts[2]) return { kind: "refmember", name: parts[1], member: parts[2] };
+    return { kind: "ref", name: parts[1] };
+  }
+  // legacy shapes from the first build
+  if (parts[0] === "guides" && parts[1]) return { kind: "wiki", slug: `guide-${parts[1]}` };
+  if (parts[0] === "docs" && parts[1]) {
+    const leg = redirects[`/docs/citadel/${parts[1]}`];
+    if (leg) {
+      const target = leg.replace(/^#\/wiki\//, "");
+      if (leg.startsWith("#/wiki/")) return { kind: "wiki", slug: target };
+      if (leg === "#/ref") return { kind: "reference" };
+    }
+    return { kind: "wiki", slug: parts[1] };
+  }
   if (parts[0] === "reference") {
     if (!parts[1]) return { kind: "reference" };
     if (parts[2]) return { kind: "refmember", name: parts[1], member: parts[2] };
@@ -26,16 +43,14 @@ export function routeToHash(route: Route): string {
   switch (route.kind) {
     case "home":
       return "#/";
-    case "guide":
-      return `#/guides/${route.slug}`;
-    case "doc":
-      return `#/docs/${route.slug}`;
+    case "wiki":
+      return `#/wiki/${route.slug}`;
     case "reference":
-      return "#/reference";
+      return "#/ref";
     case "ref":
-      return `#/reference/${route.name}`;
+      return `#/ref/${route.name}`;
     case "refmember":
-      return `#/reference/${route.name}/${route.member}`;
+      return `#/ref/${route.name}/${route.member}`;
   }
 }
 
@@ -78,18 +93,31 @@ export function scrollToAnchor(id: string) {
   }
 }
 
-/** Convert original minefort docs URLs into local hash routes. */
-export function docsUrlToHash(href: string): string | null {
-  if (!href.startsWith("/docs/citadel")) return null;
-  let rest = href.replace("/docs/citadel", "").replace(/^\/+|\/+$/g, "");
-  if (!rest || rest === "docs") return "#/";
-  const parts = rest.split("/");
-  if (parts[0] === "guides" && parts[1]) return `#/guides/${parts[1]}`;
-  if (parts[0] === "reference") {
-    parts.shift();
-    if (parts.length === 0) return "#/reference";
-    if (parts.length === 1) return `#/reference/${parts[0]}`;
-    return `#/reference/${parts[0]}/${parts[1]}`;
+/**
+ * Convert any href found in content into a local hash route.
+ * Handles /wiki/..., /ref/..., /appendix/..., original /docs/citadel/... URLs
+ * (via the redirect map), and bare #anchors.
+ */
+export function linkToHash(href: string): string | null {
+  if (!href) return null;
+  if (href.startsWith("#")) return href;
+  if (href.startsWith("/wiki/")) return `#${href}`;
+  if (href.startsWith("/appendix/")) return `#${href.replace("/appendix/", "/wiki/")}`;
+  if (href.startsWith("/ref")) return `#${href}`;
+  if (href.startsWith("/docs/citadel")) {
+    const r = redirects[href];
+    if (r) return r;
+    // unmapped original URL — try closest guesses
+    const rest = href.replace("/docs/citadel", "").replace(/^\/+|\/+$/g, "");
+    if (!rest || rest === "docs") return "#/";
+    const parts = rest.split("/");
+    if (parts[0] === "reference") {
+      parts.shift();
+      if (parts.length === 0) return "#/ref";
+      if (parts.length === 1) return `#/ref/${parts[0]}`;
+      return `#/ref/${parts[0]}/${parts[1]}`;
+    }
+    return redirects[`/docs/citadel/${parts[0]}`] ?? null;
   }
-  return `#/docs/${rest}`;
+  return null;
 }

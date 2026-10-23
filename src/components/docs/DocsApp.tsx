@@ -54,13 +54,11 @@ export function DocsApp() {
       loadPage(route).then((data) => {
         if (cancelled) return;
         const label =
-          route.kind === "guide"
-            ? `Guide “${route.slug}”`
-            : route.kind === "doc"
-              ? `Page “${route.slug}”`
-              : route.kind === "ref"
-                ? `Reference “${route.name}”`
-                : `${route.name}.${route.member}`;
+          route.kind === "wiki"
+            ? `Page “${route.slug}”`
+            : route.kind === "ref"
+              ? `Reference “${route.name}”`
+              : `${route.name}.${route.member}`;
         setState({ key: routeKey, page: data, error: data ? null : label });
       });
     }
@@ -74,7 +72,7 @@ export function DocsApp() {
 
   const toc: TocEntry[] = useMemo(() => {
     if (!page) return [];
-    if (page.type === "guide" || page.type === "doc") return page.toc;
+    if (page.type === "wiki") return page.toc;
     return [];
   }, [page]);
 
@@ -124,8 +122,7 @@ export function DocsApp() {
     }
     if (!page) return null;
     switch (page.type) {
-      case "guide":
-      case "doc":
+      case "wiki":
         return <ArticlePage data={page} route={route} />;
       case "ref":
         return <RefPage data={page} />;
@@ -160,7 +157,7 @@ export function DocsApp() {
             <span className="flex size-7 items-center justify-center rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 font-mono text-sm font-black text-white shadow-sm shadow-amber-500/30">
               C
             </span>
-            <span className="text-[15px] font-semibold tracking-tight">Citadel Docs</span>
+            <span className="text-[15px] font-semibold tracking-tight">Citadel Wiki</span>
             <span className="hidden rounded-full border border-zinc-200 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-zinc-400 sm:inline dark:border-zinc-700 dark:text-zinc-500">
               v0.1.0
             </span>

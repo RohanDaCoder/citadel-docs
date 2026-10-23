@@ -1,1 +1,1 @@
-{"type": "ref", "name": "RayHit", "kind": "type", "assocType": "", "topic": "", "lead": "The first block a ray met, and the face it came in through.", "typedef": "{ block: Vec3, face: Face }", "docsLink": null, "functions": [], "fields": []}
+{"type": "ref", "name": "RayHit", "kind": "type", "assocType": "", "lead": "The first block a ray met, and the face it came in through.", "typedef": "{ block: Vec3, face: Face }", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "RayHit type"}

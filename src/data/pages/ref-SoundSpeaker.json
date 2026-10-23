@@ -1,1 +1,1 @@
-{"type": "ref", "name": "SoundSpeaker", "kind": "type", "assocType": "", "topic": "", "lead": "Where a speaker is: a point, or a player or an entity it follows.", "typedef": "Vec3 | Player | EntityHandle", "docsLink": null, "functions": [], "fields": []}
+{"type": "ref", "name": "SoundSpeaker", "kind": "type", "assocType": "", "lead": "Where a speaker is: a point, or a player or an entity it follows.", "typedef": "Vec3 | Player | EntityHandle", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "SoundSpeaker type"}

@@ -1,1 +1,1 @@
-{"type": "refmember", "parent": "SocketMessage", "name": "json", "title": "socketMessage:json", "kind": "method", "lead": "The message as a table; an error when it is not JSON.", "signature": "socketMessage:json() \u2192 any", "params": [], "returns": ["any"], "usedIn": []}
+{"type": "refmember", "parent": "SocketMessage", "name": "json", "title": "socketMessage:json", "kind": "method", "lead": "The message as a table; an error when it is not JSON.", "signature": "socketMessage:json() → any", "params": [], "returns": ["any"], "usedIn": []}

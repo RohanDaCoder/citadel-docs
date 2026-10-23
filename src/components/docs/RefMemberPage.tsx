@@ -2,7 +2,6 @@
 
 import { ChevronRight, CornerUpLeft, Quote } from "lucide-react";
 import type { RefMemberPageData } from "@/lib/docs/loader";
-import { docsUrlToHash } from "@/lib/docs/router";
 
 /** Colorize a type string: highlight known type names as links later. */
 function TypeCode({ src }: { src: string }) {
@@ -10,7 +9,7 @@ function TypeCode({ src }: { src: string }) {
 }
 
 export function RefMemberPage({ data }: { data: RefMemberPageData }) {
-  const parentHash = `#/reference/${data.parent}`;
+  const parentHash = `#/ref/${data.parent}`;
   const hasParams = data.params.length > 0;
   const hasReturns = data.returns.length > 0;
   const hasUsedIn = data.usedIn.length > 0;
@@ -23,8 +22,8 @@ export function RefMemberPage({ data }: { data: RefMemberPageData }) {
           Citadel
         </a>
         <ChevronRight className="size-3" />
-        <a href="#/reference" className="transition-colors hover:text-zinc-700 dark:hover:text-zinc-300">
-          Reference
+        <a href="#/ref" className="transition-colors hover:text-zinc-700 dark:hover:text-zinc-300">
+          API reference
         </a>
         <ChevronRight className="size-3" />
         <a href={parentHash} className="font-mono transition-colors hover:text-zinc-700 dark:hover:text-zinc-300">
@@ -111,10 +110,10 @@ export function RefMemberPage({ data }: { data: RefMemberPageData }) {
       {/* Used in */}
       {hasUsedIn && (
         <section className="mt-8">
-          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Used in</h2>
+          <h2 className="text-lg font-semibold text-zinc-900 dark:text-zinc-50">Examples from the docs</h2>
           <div className="mt-3 space-y-2">
             {data.usedIn.map((u, i) => {
-              const hash = docsUrlToHash(u.href);
+              const hash = u.href?.startsWith("#/") ? u.href : null;
               return (
                 <a
                   key={i}

@@ -1,0 +1,1895 @@
+
+
+===== REF: AskCount =====
+TITLE: AskCount type
+LEAD: What one kind of ask has cost this pack, and what every kind has together. An ask is a question the engine puts to a pack with a deadline on it; an answer that does not arrive in time is not used.
+SECTIONS: [{'title': 'Fields 6', 'type': 'fields'}]
+  [fields] askCount.asks: number :: Questions the engine put to this pack.
+  [fields] askCount.answered: number :: Answers that arrived in time.
+  [fields] askCount.missed: number :: Deadlines that passed with no answer.
+  [fields] askCount.late: number :: Answers that arrived after the engine had acted, and were dropped.
+  [fields] askCount.skipped: number :: Asks never sent, because this kind is switched off for this pack.
+  [fields] askCount.disabled: boolean :: True once the engine has stopped asking this pack this kind at all.
+
+
+===== REF: Asks =====
+TITLE: Asks type
+LEAD: What the engine's questions with a deadline have cost this pack, in total and per kind: `citadel.budget().asks`.
+TYPEDEF:
+AskCount
+SECTIONS: [{'title': 'Fields 1', 'type': 'fields'}]
+  [fields] asks.kinds: { [string]: AskCount } :: The same counters per kind of question, e.g. `kinds["break"].missed`.
+
+
+===== REF: Bar =====
+TITLE: Bar type
+LEAD: A boss bar, from `ui.bossbar` for the room or `player.ui.bossbar` for one player; title, progress and colour are live.
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}, {'title': 'Fields 4', 'type': 'fields'}]
+  [functions] bar:destroy() :: Removes the bar.
+  [fields] bar.title: Text :: Reads back the words; takes any text.
+  [fields] bar.progress: number :: How full the bar is, 0 to 1; live.
+  [fields] bar.color: BarColor :: The bar's colour, from its own closed set; anything else is white. Live.
+  [fields] bar.visible: boolean ? :: Whether players see the bar; false takes it off their screens, true or nil shows it again.
+
+
+===== REF: BarColor =====
+TITLE: BarColor type
+LEAD: A boss bar's colour is its own closed set — six the client draws, and anything else is white. It is not an `Ink`: the bar has no hex form.
+TYPEDEF:
+"pink" | "blue" | "red" | "green" | "yellow" | "purple" | "white"
+
+
+===== REF: Billboard =====
+TITLE: Billboard type
+LEAD: How a display turns toward the viewer: "fixed" never turns, "vertical" turns about the up axis, "horizontal" tips up and down, "center" does both.
+TYPEDEF:
+"fixed" | "vertical" | "horizontal" | "center"
+
+
+===== REF: BiomeDefinition =====
+TITLE: BiomeDefinition type
+LEAD: What a pack changes about the vanilla biome its own biome copies. Each colour is a `Color` or a colour name such as "#7fd8c8".
+SECTIONS: [{'title': 'Fields 9', 'type': 'fields'}]
+  [fields] biomeDefinition.name: string :: Lower case letters, digits and underscores. The pack's name goes in front: "crystal" becomes "mypack:crystal".
+  [fields] biomeDefinition.like: string ? :: The vanilla biome to copy; "plains" when left out.
+  [fields] biomeDefinition.grass: (Color | string)? :: 
+  [fields] biomeDefinition.leaves: (Color | string)? :: 
+  [fields] biomeDefinition.water: (Color | string)? :: 
+  [fields] biomeDefinition.water_fog: (Color | string)? :: The colour of the view under water.
+  [fields] biomeDefinition.sky: (Color | string)? :: 
+  [fields] biomeDefinition.fog: (Color | string)? :: The colour of the far distance.
+  [fields] biomeDefinition.weather: ("rain" | "snow" | "none" | false)? :: 
+
+
+===== REF: Biomes =====
+TITLE: Biomes type
+LEAD: The biomes a pack adds to the game.
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}]
+  [functions] biomes.define(def: BiomeDefinition) → string :: Defines a biome, or changes the one of that name, and returns its full name ("mypack:crystal"). Call it at the top of the script: a player learns the biomes when they join.
+
+
+===== REF: Block =====
+TITLE: Block type
+LEAD: One block the game version has, in its own numbers, from `game.block(name)`: hardness, light, fire and material.
+SECTIONS: [{'title': 'Fields 11', 'type': 'fields'}]
+  [fields] block.name: string :: The block's canonical name.
+  [fields] block.behaviour: string ? :: The rule Citadel runs for it, such as "grass", "flowing", "torch" or "falling"; nil for a block that does nothing on its own.
+  [fields] block.hardness: number :: Seconds-scale hardness in this version's numbers; below zero is unbreakable.
+  [fields] block.random_ticks: boolean :: Whether the random-tick pass acts on it.
+  [fields] block.opaque: boolean :: Whether it is an opaque full cube, which is not the material's question.
+  [fields] block.light: number :: What it gives off, 0..15, and what a step through it takes away.
+  [fields] block.light_filter: number :: What a step through it takes off the light, 0 to 15.
+  [fields] block.resistance: number ? :: The three the block-update tables own: nil in a game that has none.
+  [fields] block.flammability: { catches: number, burns_away: number }? :: Fire's two numbers: how readily it catches and how fast it burns away. Nil in a game with no block-update tables.
+  [fields] block.material: Material ? :: The jar's Material as five questions; nil in a game with no block-update tables.
+  [fields] block.drops: boolean ? :: The one field a pack writes. Whether a block of this kind that the world breaks by itself leaves its item: true leaves it on a lite world too, false never, nil is the world's default. Reads what this pack set.
+
+
+===== REF: BlockAmendSpec =====
+TITLE: BlockAmendSpec type
+LEAD: What `game.blocks.amend` takes: **hooks only**. Every tnt in every world already looks like tnt and is as hard as tnt, so a data column here is refused by name. For a block of your own with different numbers, `game.blocks.define { extends = "tnt" }`.
+SECTIONS: [{'title': 'Functions 11', 'type': 'functions'}]
+  [functions] blockAmendSpec.on_use((block: BlockAt, player: Player ?, held: string ?, base: (... any) -> any) -> Used ?) → ? :: Somebody right-clicked it; `held` is the item in hand. Answers "used" or "pass"; a missed deadline passes the click through.
+  [functions] blockAmendSpec.on_break((block: BlockAt, player: Player ?, by: Breaker, base: (... any) -> any) -> Drops ?) → ? :: Something broke it; `by` says what. Answers "none", "table" or a drops list.
+  [functions] blockAmendSpec.on_step((block: BlockAt, body: Body, base: (... any) -> any) -> ()) → ? :: A body (a player, mob, item or other) is standing on it.
+  [functions] blockAmendSpec.on_tick((block: BlockAt, base: (... any) -> any) -> ()) → ? :: A scheduled tick this block asked for came due.
+  [functions] blockAmendSpec.on_random_tick((block: BlockAt, base: (... any) -> any) -> ()) → ? :: The random pass landed on it.
+  [functions] blockAmendSpec.on_place((block: BlockAt, player: Player ?, base: (... any) -> any) -> ()) → ? :: A player put it down.
+  [functions] blockAmendSpec.on_neighbour((block: BlockAt, from: Vec3, announced: string, base: (... any) -> any) -> ()) → ? :: A neighbour at `from` changed; `announced` is the block the notifier announced itself as.
+  [functions] blockAmendSpec.on_trigger((block: BlockAt, cause: Trigger, base: (... any) -> any) -> ()) → ? :: It was lit, blasted or burnt; `cause` is "ignite", "explosion" or "fire".
+  [functions] blockAmendSpec.on_power((block: BlockAt, powered: boolean, base: (... any) -> any) -> ()) → ? :: A redstone signal started (`powered` is true) or stopped reaching it. Called once for each, not for every change beside it.
+  [functions] blockAmendSpec.on_added((block: BlockAt, base: (... any) -> any) -> ()) → ? :: It has just been stored, whatever stored it.
+  [functions] blockAmendSpec.on_removed((block: BlockAt, base: (... any) -> any) -> ()) → ? :: It has just gone.
+
+
+===== REF: BlockAt =====
+TITLE: BlockAt type
+LEAD: The block a hook was called about. Reads are fields and acts are methods. The reads are **live** — the world as it is right now — and everything that changes the world is carried out by the engine the moment the hook returns, in the order it was asked for.
+SECTIONS: [{'title': 'Functions 7', 'type': 'functions'}, {'title': 'Fields 7', 'type': 'fields'}]
+  [functions] blockAt:get(face: Face) → string ? :: The block one face away, by name; nil where that chunk is not in memory.
+  [functions] blockAt:set(block: BlockRef) :: Puts another block at this position.
+  [functions] blockAt:destroy() :: Takes it out, leaving nothing.
+  [functions] blockAt:become(entity: string, data: { [string]: any }?) :: **The door**: this block stops being a block, and that entity appears.
+  [functions] blockAt:drop(item: ItemSpec, count: number ?) :: A name, or an item table: a pack item keeps its id.
+  [functions] blockAt:schedule() :: Asks for this block's `on_tick`, `tick_every` seconds from now.
+  [functions] blockAt:notify() :: Tells the six neighbours this block changed.
+  [fields] blockAt.data: DataView :: What this block remembers beyond its state; kept with the position, saved with the chunk, and gone when the block goes. Nested writes are tracked; whole-record assignment is supported. Copy before keeping it beyond the hook.
+  [fields] blockAt.at: Vec3 :: The block's position; a live read.
+  [fields] blockAt.name: string :: The block's name with its namespace, such as "rave:crate"; a live read.
+  [fields] blockAt.room: number :: Which room the block is in.
+  [fields] blockAt.state: number :: Which of this definition's states it is in, counting from 1. Writable, and bounds-checked against the definition's own `looks` list: it *is* the block state, so a crop's stages cost nothing.
+  [fields] blockAt.facing: Facing ? :: A facing block's front: "north", "south", "west", "east"; nil otherwise. Writable.
+  [fields] blockAt.powered: boolean ? :: Whether a redstone signal reaches it: what a lamp asks. A live read; nil where the chunk is not loaded.
+
+
+===== REF: BlockDef =====
+TITLE: BlockDef type
+LEAD: The handle `define` hands back. Equality is identity — two handles are the same block when they name the same block.
+SECTIONS: [{'title': 'Fields 3', 'type': 'fields'}]
+  [fields] blockDef.name: string :: Canonical, with the pack's namespace already on it: "rave:crate".
+  [fields] blockDef.states: number :: How many states it has; `block.state` counts 1 to this.
+  [fields] blockDef.item: ItemTable ? :: The block as an item, when the definition gave it one: `player:give(def.item)`.
+
+
+===== REF: BlockPick =====
+TITLE: BlockPick type
+LEAD: One block, or one of a list chosen by a field: `floor(by)` counts through the list and starts again at its end.
+TYPEDEF:
+string | { [number]: string, by: (Field | number)? }
+
+
+===== REF: BlockRef =====
+TITLE: BlockRef type
+LEAD: A block, as anything that takes one will take it.
+TYPEDEF:
+string | BlockDef
+
+
+===== REF: BlockSpec =====
+TITLE: BlockSpec type
+LEAD: What a definition says a block *is*. Every hook takes `base` as its **last** argument: call it and you extended what is under you, leave it out and you replaced it. `base` is a decision rather than a reentrant call — its effects land when your hook returns, and calling it twice happens once.
+SECTIONS: [{'title': 'Functions 11', 'type': 'functions'}, {'title': 'Fields 16', 'type': 'fields'}]
+  [functions] blockSpec.on_use((block: BlockAt, player: Player ?, held: string ?, base: (... any) -> any) -> Used ?) → ? :: The hooks. Writing one is what asks for it — there is no flag beside `on_random_tick` saying the random pass may land here.
+  [functions] blockSpec.on_break((block: BlockAt, player: Player ?, by: Breaker, base: (... any) -> any) -> Drops ?) → ? :: Something broke it. Answers "none", "table" or a drops list; fails closed to the definition's `drops`.
+  [functions] blockSpec.on_step((block: BlockAt, body: Body, base: (... any) -> any) -> ()) → ? :: A body is standing on it; `body` is `{ id, kind }`.
+  [functions] blockSpec.on_tick((block: BlockAt, base: (... any) -> any) -> ()) → ? :: A scheduled tick this block asked for came due.
+  [functions] blockSpec.on_random_tick((block: BlockAt, base: (... any) -> any) -> ()) → ? :: The random pass landed on it. Not the same thing as `on_tick`, which is why it has the longer name.
+  [functions] blockSpec.on_place((block: BlockAt, player: Player ?, base: (... any) -> any) -> ()) → ? :: A player put it down; `block.data` is empty then, ready to be filled.
+  [functions] blockSpec.on_neighbour((block: BlockAt, from: Vec3, announced: string, base: (... any) -> any) -> ()) → ? :: A neighbour changed; `from` is its position and `announced` the block name the notifier announced itself as.
+  [functions] blockSpec.on_trigger((block: BlockAt, cause: Trigger, base: (... any) -> any) -> ()) → ? :: It was lit, blasted or burnt; `cause` is "ignite", "explosion" or "fire".
+  [functions] blockSpec.on_power((block: BlockAt, powered: boolean, base: (... any) -> any) -> ()) → ? :: A redstone signal started (`powered` is true) or stopped reaching it. Called once for each, not for every change beside it.
+  [functions] blockSpec.on_added((block: BlockAt, base: (... any) -> any) -> ()) → ? :: It has just been stored, whatever stored it.
+  [functions] blockSpec.on_removed((block: BlockAt, base: (... any) -> any) -> ()) → ? :: It has just gone from the world.
+  [fields] blockSpec.name: string :: Without a namespace. The pack's own is put in front of it, and a colon here is refused: a pack cannot write another pack's name.
+  [fields] blockSpec.looks: (string | { string })? :: A block state the client already draws, because a client has never heard of this pack. One name, or one per state in state order. `|` takes the first this version has: "crimson_planks|nether_brick".
+  [fields] blockSpec.hardness: number ? :: Seconds-scale, as vanilla's hardness is; below zero is unbreakable.
+  [fields] blockSpec.resistance: number ? :: What an explosion has to chew through.
+  [fields] blockSpec.material: { solid: boolean ?, covers: boolean ?, firm: boolean ?, liquid: boolean ?, burns: boolean ?, }? :: The jar's Material as five questions: solid, covers (grass under it dies), firm (snow and ice need it), liquid, burns.
+  [fields] blockSpec.opacity: number ? :: What a step through it takes off the light; 15 is an opaque cube.
+  [fields] blockSpec.light: number ? :: What it gives off, 0 to 15.
+  [fields] blockSpec.tick_every: number ? :: Seconds between `block:schedule()` and `on_tick`; 0.5 unless you say.
+  [fields] blockSpec.drops: (Drops | false)? :: What a break leaves — and, because `on_break` fails closed, what it leaves when this pack is too slow to answer. Never the looks block's. false is nothing, as "none" is.
+  [fields] blockSpec.item: (ItemTable | false)? :: The block in a hand. Its `id` is set to the block's name, so placing it puts this block down, and a break leaves it unless `drops` says. false is no item, also for a block with a texture.
+  [fields] blockSpec.texture: (Faces | { Faces })? :: Its own picture on 1.21.4+: one for every state, or one per state.
+  [fields] blockSpec.model: (Model | { Model })? :: Its own shape on 1.21.4+, in place of `texture`: a model that stays inside the block, one for every state or one per state. The block collides as its `looks` block does: "rail" is walked through.
+  [fields] blockSpec.facing: boolean ? :: Turns its front to whoever places it; `block.facing` reads and turns it.
+  [fields] blockSpec.power: (number | { [string]: number } | { number | { [string]: number } })? :: What it gives a redstone circuit, 0 or 15: one number for every face, a table keyed by face (the names `texture` takes), or a list of either with one entry per state. It is the power a block of redstone gives.
+  [fields] blockSpec.label: Text ? :: The name of the item a textured block comes with.
+  [fields] blockSpec.extends: (BlockRef | { [string]: any } | { any })? :: A handle, a game block's name, a plain table of fields and hooks, or a list of those **innermost first**. There is no class and no metatable: fields merge and hooks wrap.
+
+
+===== REF: Blocks =====
+TITLE: Blocks type
+LEAD: `game.blocks`: defines a pack's own blocks and amends the game's own, at load time.
+SECTIONS: [{'title': 'Functions 2', 'type': 'functions'}]
+  [functions] blocks.define(spec: BlockSpec) → BlockDef :: Load-time only: a world may already be holding blocks of a definition, so one that arrived later would change the rules under the players standing on it. Define at the top of `main.luau`.
+  [functions] blocks.amend(block: string, hooks: BlockAmendSpec) :: Only the game's own blocks, never another pack's.
+
+
+===== REF: Body =====
+TITLE: Body type
+LEAD: Whatever is standing on one. `kind` is `"mob"` for a cow or a zombie.
+TYPEDEF:
+{ id: number, kind: "player" | "mob" | "item" | "other" }
+
+
+===== REF: BodyRotation =====
+TITLE: BodyRotation type
+LEAD: Degrees: 0 yaw faces south, 90 west; positive pitch tips down. Constructors default missing angles to zero; later writes preserve them.
+TYPEDEF:
+{ read yaw: number ?, read pitch: number ? }
+
+
+===== REF: Breaker =====
+TITLE: Breaker type
+LEAD: What took a block out, and with what.
+SECTIONS: [{'title': 'Fields 3', 'type': 'fields'}]
+  [fields] breaker.cause: "player" | "fire" | "explosion" | "water" | "support" :: What took the block out: a player, fire, an explosion, flowing water, or the loss of what held it up ("support").
+  [fields] breaker.tool: string ? :: The item in hand, or nil for a bare hand and for the four causes that have none.
+  [fields] breaker.creative: boolean :: Whether a creative player broke it; creative takes the block and leaves nothing. False for the four causes with no player.
+
+
+===== REF: Budget =====
+TITLE: Budget type
+LEAD: What a pack's tick and event callbacks are allowed per tick, together, and what it did with it. Milliseconds throughout.
+SECTIONS: [{'title': 'Fields 7', 'type': 'fields'}]
+  [fields] budget.of: number :: `budget_ms` in citadel.yml; 2 by default.
+  [fields] budget.used: number :: What the last tick spent.
+  [fields] budget.peak: number :: The most any tick has spent.
+  [fields] budget.skipped: number :: Callbacks not run for want of budget, since the script started.
+  [fields] budget.dropped: number :: Ordinary events lost to queue overflow. Joins, leaves, deaths and respawns are retained with their original player sessions.
+  [fields] budget.slowest: { hook: string, ms: number }? :: The slowest single callback so far, by short hook name.
+  [fields] budget.asks: Asks :: The engine's questions to this pack, and what it did with those.
+
+
+===== REF: Builder =====
+TITLE: Builder type
+LEAD: What `world.build` hands the function it is given. Coordinates are whole blocks of the build's own and may be negative; later writes win.
+SECTIONS: [{'title': 'Functions 4', 'type': 'functions'}]
+  [functions] builder:block(pos: Vec3, block: string) :: Sets one block of the build; later writes win.
+  [functions] builder:box(from: Vec3, to: Vec3, block: string) :: Inclusive corners, in any order, like `chunk:fill`.
+  [functions] builder:line(from: Vec3, to: Vec3, block: string) :: Every block the straight line between the ends passes through.
+  [functions] builder:part(name: string, fn: () -> ()) :: What `fn` writes is a named part, found by `citadel render --part` and `citadel check` once pasted. Nested calls name "tower/roof".
+
+
+===== REF: Camera =====
+TITLE: Camera type
+LEAD: 
+TYPEDEF:
+FixedCamera | EntityCamera | FreeCamera | OrbitCamera | ChaseCamera
+
+
+===== REF: Canvas =====
+TITLE: Canvas type
+LEAD: A picture of one or more maps with no frame of its own, from `world.canvas`, for a frame display, a hand or a screen.
+TYPEDEF:
+Picture
+SECTIONS: [{'title': 'Functions 2', 'type': 'functions'}]
+  [functions] canvas:view(player: Player) → View :: The map id of its top-left map, for a `filled_map`. Returns that player's own layer over the canvas, drawn with the same calls; only they see it.
+  [functions] canvas:destroy() :: Removes the canvas; clients that saw it keep its last picture, and its id is never reused.
+
+
+===== REF: ChaseCamera =====
+TITLE: ChaseCamera type
+LEAD: 
+
+
+===== REF: Chunk =====
+TITLE: Chunk type
+LEAD: A 16 by 16 column of blocks, handed to `world.on_generate`, `world.on_populate` and a room's `generate` to fill.
+SECTIONS: [{'title': 'Functions 7', 'type': 'functions'}]
+  [functions] chunk:get(pos: Vec3) → string :: Chunk X coordinate (16 blocks each). Chunk Z coordinate (16 blocks each). The chunk's lowest corner, inclusive; y runs 0..255 or the game version's height. The chunk's highest corner, inclusive. Returns the block there now, by name; air outside the chunk.
+  [functions] chunk:set(pos: Vec3, block: string) :: Sets one block; positions outside the chunk are ignored.
+  [functions] chunk:fill(from: Vec3, to: Vec3, block: string) :: Fills a box of blocks, clipped to the chunk.
+  [functions] chunk:paste(schem: Schematic, origin: Vec3, opts: { air: boolean ?, part: string ? }?) :: Clipped to this chunk; air is skipped unless `air` is true. `part` names the paste for `citadel render --part` and `citadel check`; the build's own `b:part`s are then inside it ("house/roof").
+  [functions] chunk:get_biome(pos: Vec3) → string ? :: Returns the biome of the column at `pos`, by name; `nil` outside the chunk. A biome belongs to a column, so `pos.y` is not read.
+  [functions] chunk:set_biome(pos: Vec3, biome: string) :: Sets the biome of one column: a vanilla name ("desert") or the name `game.biomes.define` returned.
+  [functions] chunk:fill_biome(from: Vec3, to: Vec3, biome: string) :: Sets the biome of every column in a box, clipped to the chunk.
+
+
+===== REF: Color =====
+TITLE: Color type
+LEAD: 
+TYPEDEF:
+typeof(setmetatable({} :: ColorFields, {} ::
+
+
+===== REF: ColorName =====
+TITLE: ColorName type
+LEAD: Every colour's name: Minecraft's sixteen, which every client has had since 1.7, six more, and "transparent". `colors` holds the same names.
+TYPEDEF:
+"black" | "dark_blue" | "dark_green" | "dark_aqua" | "dark_red" | "dark_purple" | "gold" | "gray" | "dark_gray" | "blue" | "green" | "aqua" | "red" | "light_purple" | "yellow" | "white" | "orange" | "lime" | "cyan" | "purple" | "magenta" | "pink" | "transparent"
+
+
+===== REF: Command =====
+TITLE: Command type
+LEAD: A command a pack added, from `commands.add`; change its suggestions or `cancel` it.
+SECTIONS: [{'title': 'Functions 2', 'type': 'functions'}]
+  [functions] command:suggest(arg: string, words: ({ Suggestion } | Suggester | false)?) :: What `arg` offers from now on: a list, a function, or nil or false for nothing.
+  [functions] command:cancel() :: Takes the command away.
+
+
+===== REF: CommandOpts =====
+TITLE: CommandOpts type
+LEAD: The options of `commands.add`: a permission node, aliases, the /help line and suggestions per argument.
+SECTIONS: [{'title': 'Fields 4', 'type': 'fields'}]
+  [fields] commandOpts.permission: string ? :: A permission node; without it the command is not shown and not run.
+  [fields] commandOpts.aliases: { string }? :: More names for the same command: { "hub", "lobby" }.
+  [fields] commandOpts.help: string ? :: The line /help shows after the usage.
+  [fields] commandOpts.suggest: { [string]: { Suggestion } | Suggester }? :: Per argument name: the words to offer, or a function that returns them.
+
+
+===== REF: Commands =====
+TITLE: commands global · type Commands
+LEAD: Adds a room's slash commands from a usage line: the `commands` global, or `room.commands`.
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}]
+  [functions] commands.add(usage: string, fn: (player: Player, args: { [string]: any }) -> string ?, opts: CommandOpts ?) → Command :: usage: "bet <amount:integer 1..10000> [color:red|black]". Types: word, integer, number (with an optional min..max), player, a|b|c, text... (the rest of the line as a string), words... (as a list). args holds each argument by name; an optional one not typed is nil. Return a string and the player reads it in red.
+
+
+===== REF: Connection =====
+TITLE: Connection type
+LEAD: An event subscription or repeating timer; task functions return threads.
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}]
+  [functions] connection:cancel() :: Stops the subscription or repeating timer, including from its own callback.
+
+
+===== REF: Container =====
+TITLE: Container type
+LEAD: A chest's stacks: `world.container(pos)`. A chest a player has open is theirs until it closes — `take` takes nothing, `put` puts nothing.
+SECTIONS: [{'title': 'Functions 3', 'type': 'functions'}, {'title': 'Fields 2', 'type': 'fields'}]
+  [functions] container:items() → { InventorySlot & { slot: number } } :: The filled slots, in order.
+  [functions] container:take(item: ItemMatch, count: number ?) → number :: Up to `count` (1 unless you say) of what matches; how many it took.
+  [functions] container:put(item: ItemSpec) → number :: How many did not fit; 0 when all of it went in.
+  [fields] container.size: number :: How many slots the chest has, e.g. 27; 0 once it has gone.
+  [fields] container.at: Vec3 :: The chest's block position.
+
+
+===== REF: Context =====
+TITLE: Context type
+LEAD: How an item display is posed; a read gives back the same words.
+TYPEDEF:
+"none" | "frame" | "menu" | "dropped" | "worn" | "held" | "own_hand"
+
+
+===== REF: DamageHit =====
+TITLE: DamageHit type
+LEAD: A hit on a player, before it lands: what `players.on_damage` hands a pack.
+SECTIONS: [{'title': 'Fields 4', 'type': 'fields'}]
+  [fields] damageHit.amount: number :: Half hearts, before armour.
+  [fields] damageHit.cause: string :: "fall", "drown", "suffocate", "void", "lava", "fire", "cactus", "starve", "attack", "shot", "blast" or "magic".
+  [fields] damageHit.by: Player ? :: The player who hit, or who shot the arrow.
+  [fields] damageHit.kind: string ? :: The kind's name ("Skeleton") when a mob did it.
+
+
+===== REF: DataView =====
+TITLE: DataView type
+LEAD: An attached JSON record/list, with tracked nested writes and generalized iteration. Runtime userdata: use data.copy for ordinary table operations. Roots use string keys; nested lists use contiguous indices starting at 1. Assignment validates the entire value. Hook views expire after their callback batch finishes.
+TYPEDEF:
+{ [any]: any }
+
+
+===== REF: Dialog =====
+TITLE: Dialog type
+LEAD: An open dialog, from `player.ui.dialog`.
+SECTIONS: [{'title': 'Functions 3', 'type': 'functions'}]
+  [functions] dialog:refresh() :: Whether the player still has it open. Draws a live view (a function) again.
+  [functions] dialog:update(view: DialogNode | () -> DialogNode) :: A new view in place: a window, or a function that makes one.
+  [functions] dialog:destroy() :: Closes it.
+
+
+===== REF: DialogNode =====
+TITLE: DialogNode type
+LEAD: A node of a dialog, made by `ui.kit`: a table with a `kind`.
+TYPEDEF:
+{ [any]: any }
+
+
+===== REF: Display =====
+TITLE: Display type
+LEAD: An item, text, block or frame shown in the world, from `world.display`; its place, rotation, scale and look are live.
+SECTIONS: [{'title': 'Functions 3', 'type': 'functions'}, {'title': 'Fields 15', 'type': 'fields'}]
+  [functions] display:animate(opts: { at: Vec3 ?, scale: (Vec3 | number)?, rotation: Orientation ?, text: Text ?, color: Ink ?, background: (Ink | false)?, line_width: number ?, shadow: boolean ?, duration: number ?, }) :: Makes one tweened change of place, scale, rotation or text over `duration` seconds (0.5 by default), played by the client.
+  [functions] display:move(at: Vec3, rotation: Orientation ?) :: Removes the display. Sets position and optional rotation together.
+  [functions] display:destroy() :: 
+  [fields] display.id: number :: The raw entity id. `hit.entity` hands back this handle itself, so a pack rarely needs the number.
+  [fields] display.billboard: Billboard :: Whether it is still present. Read-only. Where it sits; live, every kind. Its yaw, pitch and roll in degrees; live. Pitch 90 lays a text flat on a table. Reads a vec3; write a number for every axis at once. How it turns toward the viewer; text defaults to "center", the other kinds to "fixed".
+  [fields] display.glow: (Color | false)? :: Its outline colour; nil or false for none.
+  [fields] display.duration: number :: Seconds later changes take to play out on the client (1.19.4 and later); 0 by default.
+  [fields] display.glide: number :: Advanced movement smoothing in seconds (1.20.2+); default 0.1, 0 follows duration.
+  [fields] display.lead: boolean ? :: Advanced: true enables linear prediction. Default false; nil restores it. Normally submit current positions and leave this alone.
+  [fields] display.item: string ? :: item kind
+  [fields] display.canvas: number ? :: Item kind: the canvas shown as a filled map; written as a canvas, read back as its map id.
+  [fields] display.context: Context ? :: Item kind: how the item is posed, as in a frame, a hand or on the ground.
+  [fields] display.text: string ? :: text kind Reads back the words; takes any text.
+  [fields] display.color: Color ? :: The colour of the words that did not pick one.
+  [fields] display.background: (Color | false)? :: Text kind: the colour behind the words; nil or false for none.
+  [fields] display.line_width: number ? :: Text kind: the width its lines wrap at; 200 by default.
+  [fields] display.shadow: boolean ? :: Text kind: whether the words have a shadow; false by default.
+  [fields] display.block: string ? :: block kind
+
+
+===== REF: Drops =====
+TITLE: Drops type
+LEAD: What a broken block leaves. "table" is whatever the site that broke it would have left — the version's drop table for a player's hands, a roll for a blast, nothing at all for a fire — and "none" is nothing, which is what a pack block leaves unless it says otherwise.
+TYPEDEF:
+"none" | "table" | { ItemTable }
+
+
+===== REF: DurableStore =====
+TITLE: DurableStore type
+LEAD: Shared durable stores. Calls yield; pcall catches structured errors such as {err = "conflict", version = 3}. One store per experience.
+SECTIONS: [{'title': 'Functions 8', 'type': 'functions'}]
+  [functions] durableStore:get(key: string) → (any, number) :: Returns a fact's value and its version; version 0 means absent.
+  [functions] durableStore:set(key: string, value: any, if_version: number, lease: number ?) → number :: Writes a fact if its version is still `if_version`, and returns the new version. A mismatch errors with {err = "conflict"}.
+  [functions] durableStore:delete(key: string, if_version: number, lease: number ?) :: Removes a fact if its version is still `if_version`.
+  [functions] durableStore:increment(key: string, by: number) → number :: Adds `by` to a number atomically, starting at zero, and returns the result. Never retry it blindly after a timeout.
+  [functions] durableStore:list(prefix: string ?, cursor: string ?, limit: number ?) → ({ string }, string ?) :: Returns fact keys with this prefix and the cursor for the next page, or nil at the end.
+  [functions] durableStore:blob_get(owner: string, key: string) → (string ?, number) :: Returns one player's binary blob, or nil, and its version; `owner` is the player's uuid.
+  [functions] durableStore:blob_put(owner: string, key: string, bytes: string, if_version: number, lease: number ?) → number :: Writes a player's binary blob if its version is still `if_version`, and returns the new version. At most 32 MiB.
+  [functions] durableStore:blob_delete(owner: string, key: string, if_version: number, lease: number ?) :: Deletes a player's blob if its version is still `if_version`.
+
+
+===== REF: Easing =====
+TITLE: Easing type
+LEAD: How a tween moves over its duration: "linear" (the default) at one speed, "in" starts slow, "out" ends slow, "in_out" both, "bounce" bounces at the end.
+TYPEDEF:
+"linear" | "in" | "out" | "in_out" | "bounce"
+
+
+===== REF: Effect =====
+TITLE: Effect type
+LEAD: A function called for every letter each frame a text shows, handing back how that letter looks; `i` of `n` is the letter's place, `t` is `time.now()`.
+TYPEDEF:
+(letter: string, i: number, n: number, t: number) -> LetterStyle ?
+
+
+===== REF: Entities =====
+TITLE: Entities type
+LEAD: `game.entities`: the three verbs over one shape.
+SECTIONS: [{'title': 'Functions 3', 'type': 'functions'}]
+  [functions] entities.define(spec: EntitySpec) → EntityDef :: Load time only. A definition is a fact about the world.
+  [functions] entities.amend(name: string, hooks: EntityAmendSpec, options: EntityAmendOptions ?) :: The game's own content only — never another pack's.
+  [functions] entities.names(query: { mob: boolean ? }?) → { string } :: Every kind by name: the pack's own and the game's, mob or not. `mob = true` gives the mob kinds only, `mob = false` the rest.
+
+
+===== REF: EntityAmendOptions =====
+TITLE: EntityAmendOptions type
+LEAD: A pack's hooks on one of the game's own entities. Hooks only: every pig already looks like a pig, so the data columns are refused by name.
+TYPEDEF:
+{ priority: number ?, replace: boolean ? }
+
+
+===== REF: EntityAmendSpec =====
+TITLE: EntityAmendSpec type
+LEAD: Called when a new entity of this kind spawns; told, never waited on.
+SECTIONS: [{'title': 'Functions 6', 'type': 'functions'}]
+  [functions] entityAmendSpec.on_spawn((e: EntityHandle) -> ()) → ? :: Called when a new entity of this kind spawns; told, never waited on.
+  [functions] entityAmendSpec.on_load((e: EntityHandle) -> ()) → ? :: Called for an entity that already existed: a saved chunk loaded it, or a reload rebound it.
+  [functions] entityAmendSpec.on_steer((e: EntityHandle, base: () -> ()) -> ()) → ? :: Wrapped behavior runs first unless options.replace = true.
+  [functions] entityAmendSpec.on_tick((e: EntityHandle, base: () -> ()) -> ()) → ? :: Wrapped behavior runs first unless options.replace = true.
+  [functions] entityAmendSpec.on_damage((e: EntityHandle, amount: number) -> ("take" | "ignore")?) → ? :: Asked when it takes damage; return "ignore" to cancel it. Silence or a missed deadline is "take".
+  [functions] entityAmendSpec.on_remove((e: EntityHandle, why: string ?) -> ()) → ? :: Called when it leaves the world; `why` is "removed", "settled", "killed" or "unloaded". Not called when the pack goes away.
+
+
+===== REF: EntityCamera =====
+TITLE: EntityCamera type
+LEAD: 
+
+
+===== REF: EntityDef =====
+TITLE: EntityDef type
+LEAD: What `define{}` hands back. Usable anywhere the name is, so an author rarely types the namespace at all.
+TYPEDEF:
+{ read name: string, read mob: false }
+
+
+===== REF: EntityHandle =====
+TITLE: EntityHandle type
+LEAD: A body the world moves: a pack's own entity, a mob, a stack on the ground. Every read is a fresh look at the world, so a handle to something that has died reads `nil`. Inside a hook the same handle reads the entity as it was at the top of the tick, and its writes land at that hook's own slot.
+SECTIONS: [{'title': 'Functions 7', 'type': 'functions'}, {'title': 'Fields 18', 'type': 'fields'}]
+  [functions] entityHandle:play(animation: string, opts: { speed: number ? }?) :: Model size: reads vec3; write a positive number or equal-axis vec3. Nil without a model. Plays a model entity's animation from the start; on the one already playing, `speed` only changes its speed.
+  [functions] entityHandle:stop(animation: string) :: Stops a model entity's animation; the parts stay where they are.
+  [functions] entityHandle:move(at: Vec3, rotation: BodyRotation ?) :: Gone on the next tick. Sets position and optional rotation together.
+  [functions] entityHandle:destroy() → boolean :: 
+  [functions] entityHandle:push(v: Vec3) → boolean :: A shove, in blocks a tick, added to what it is already doing.
+  [functions] entityHandle:settle() → boolean :: It stops being an entity and is a block again where it stands. No argument: the entity remembers what it was.
+  [functions] entityHandle:nearby(radius: number) → { EntityHandle } :: What else is around it, by horizontal distance.
+  [fields] entityHandle.id: number :: Its entity id, the one players.on_click reports in `hit.entity_id`.
+  [fields] entityHandle.name: string ? :: The kind's name: "cow", "rave:rocket". Nil once it is gone.
+  [fields] entityHandle.alive: boolean :: Whether it is still in the world. A hook only runs for one that is.
+  [fields] entityHandle.age: number ? :: Ticks lived.
+  [fields] entityHandle.velocity: Vec3 ? :: Where it is, live; writing it is a teleport. Nil once it is gone. Partial writes preserve other angles; nil after removal. Bodies have no roll. How it is moving, live; writing it is steering by hand. Nil once it is gone. writing it is steering by hand
+  [fields] entityHandle.on_ground: boolean ? :: Whether it stands on something. Nil once it is gone.
+  [fields] entityHandle.health: number ? :: Its health now. Nil once it is gone.
+  [fields] entityHandle.max_health: number ? :: The most health its kind gives it. Nil for an entity that is not a mob and once it is gone. Read-only.
+  [fields] entityHandle.hostile: boolean ? :: Whether its kind is hostile. Nil once it is gone.
+  [fields] entityHandle.physics: Physics ? :: Which order of operations moves it: "vehicle", "living", "falling", "item" or "none".
+  [fields] entityHandle.origin: string ? :: The block it used to be, for anything that arrived through a transition; nil for anything that was never a block.
+  [fields] entityHandle.data: DataView :: A pack-defined entity's attached record. Nested edits write through. Saved with persist = "save". Built-in entities raise an error on access. on_steer/on_tick views expire after the callback batch; copy to keep a snapshot.
+  [fields] entityHandle.forward: number :: The intent fields: what a body *wants* to do, which is what steering is. Writing one outside `on_steer` lasts until the next decision.
+  [fields] entityHandle.strafe: number :: Intent: 1 left, -1 right. A vehicle's seat 1 writes it from the keys every tick.
+  [fields] entityHandle.jumping: boolean :: Intent: whether it wants to jump. A vehicle's seat 1 writes it from the keys every tick.
+  [fields] entityHandle.flying: boolean :: Intent, a living body with can_fly only: true flies (no gravity; forward moves it along its look, pitch included), false falls and walks. Setting it true on another body is an error.
+  [fields] entityHandle.driver: Player ? :: Whether it is in water now. False for an entity that is not alive. The player supplying driving input from seat 1; nil for an NPC or empty seat.
+  [fields] entityHandle.paint: { [string]: Ink } :: Every occupant by seat number, including NPCs; nil means empty. Material name to colour; write-only.
+
+
+===== REF: EntityKind =====
+TITLE: EntityKind type
+LEAD: One kind the game version has, in its own numbers, from `game.entities.<kind>`: name, size, max_health, speed and drop. A kind that is not a mob (an arrow, a boat, primed TNT; `mob == false`) has `name`, `mob`, `width`, `height` and `physics` only: every other fact is nil for it, and a write to `spawn`, `attacks` or `interact` and a call of `amend` are errors.
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}, {'title': 'Fields 15', 'type': 'fields'}]
+  [functions] entityKind:amend(hooks: EntityAmendSpec, options: EntityAmendOptions ?) :: The same as `game.entities.amend(name, hooks)`.
+  [fields] entityKind.name: string :: Its modern registry name: "cow".
+  [fields] entityKind.mob: boolean :: Whether the kind is a mob: true for a cow, false for an arrow.
+  [fields] entityKind.physics: string ? :: For a kind that is not a mob, which order of operations moves it: "item", "falling", "vehicle" or "none". Nil for a mob kind.
+  [fields] entityKind.behaviour: string :: The name of the behaviour the engine runs for this kind, such as "sheep" or "living".
+  [fields] entityKind.profile: { [string]: string | number | boolean }? :: Read-only copy; nil for a specialized behavior without a shared profile.
+  [fields] entityKind.registry_name: string :: This version's own registry spelling: "Cow". A dungeon spawner stores this one.
+  [fields] entityKind.width: number :: Its width in blocks, in this version's numbers.
+  [fields] entityKind.height: number :: Its height in blocks, in this version's numbers.
+  [fields] entityKind.max_health: number :: The most health one of this kind has, in this version's numbers. `health` on a kind is an error: health is what one entity has now.
+  [fields] entityKind.speed: number :: Blocks a tick at a full walk.
+  [fields] entityKind.hostile: boolean :: Whether it is hostile.
+  [fields] entityKind.drop: string ? :: The item its death leaves behind, such as "leather"; nil for none.
+  [fields] entityKind.spawn: boolean ? :: The one writable field. `true`: the kind is in this world as the game defines it: it spawns by the game's own rule, also on a `mode: lite` world, and `attacks` and `interact` are on for it unless a pack sets them; an error on a 1.8.9 world with no biomes, where nothing would spawn it. `false`: the kind never spawns by itself in this world; spawner blocks, `world.spawn`, `/summon` and breeding still make it. `nil`: the pack says nothing and the world's default applies: no natural spawning on a `mode: lite` world and in a room from `rooms.create`, the game's own rule on a `mode: full` world and after `world.rules{ survival = true }`. A table is an error today. Reads what this pack set (`true`, `false` or nil), not the game's own rule. The value is this room's (`room.game.entities.cow.spawn`) and this pack's: a `false` of any pack wins. Every write is an error on a game with no natural spawning (a0.1.0 to a0.1.3).
+  [fields] entityKind.attacks: boolean ? :: Whether its hits hurt players. `nil`: on for a kind with `spawn = true`, else the room's `damage` rule. The kind's own setting is stronger than the room's rule. It covers the kind's own hit, its arrow (also after the shooter died) and a creeper's blast. `false` stops the damage to players only: a blast still breaks blocks.
+  [fields] entityKind.interact: boolean ? :: Whether a player's right click on it has the game's effect (milk, a saddle). `nil`: on for a kind with `spawn = true`, else the room's `survival`. `true` is an error on 1.8.9, which has no right click on a mob.
+
+
+===== REF: EntitySpec =====
+TITLE: EntitySpec type
+LEAD: A kind of entity a pack makes up. `base` is the last argument of every hook: call it and you extended, don't and you replaced.
+SECTIONS: [{'title': 'Functions 7', 'type': 'functions'}, {'title': 'Fields 17', 'type': 'fields'}]
+  [functions] entitySpec.on_spawn((e: EntityHandle) -> ()) → ? :: Told when one of this kind is spawned; nothing waits on it and its answer is not read.
+  [functions] entitySpec.on_load((e: EntityHandle) -> ()) → ? :: Told when one that already existed comes back: a saved chunk loaded it or a reload rebound it.
+  [functions] entitySpec.on_steer((e: EntityHandle, base: () -> ()) -> ()) → ? :: Runs before the physics each tick to decide where it goes; call `base(e)` to extend, leave it out to replace.
+  [functions] entitySpec.on_tick((e: EntityHandle, base: () -> ()) -> ()) → ? :: Runs after the physics each tick to react to where it ended up; call `base(e)` to extend.
+  [functions] entitySpec.on_think((b: Think) -> ()) → ? :: define only. The brain: one call for all due bodies of the kind, with their numbers in columns. The engine never waits for it; the answer lands on the next tick it is there, and is never dropped.
+  [functions] entitySpec.on_damage((e: EntityHandle, amount: number, by: Player ?) -> ("take" | "ignore")?) → ? :: Asked when a player hits it: answer "take" or "ignore". Nil or a missed deadline is "take". `by` is the player who hit.
+  [functions] entitySpec.on_remove((e: EntityHandle, why: string ?) -> ()) → ? :: Told when it goes; `why` is "removed", "settled", "killed" or "unloaded". Not called when the pack goes away.
+  [fields] entitySpec.name: string :: Your own word for the kind, lower case, digits and underscores; the pack's namespace is added for you ("rocket" is "rave:rocket").
+  [fields] entitySpec.looks: Looks | Model :: A shape the client draws, or a model from models.new.
+  [fields] entitySpec.physics: Physics ? :: Which order of operations moves it: "living", "falling", "item", "none", or "vehicle" to drive by seat 1's keys.
+  [fields] entitySpec.size: (number | { number })? :: One number, or { width, height }. An entity is as deep as it is wide.
+  [fields] entitySpec.persist: Persist ? :: "save" brings it back with its chunk, `data` and all; "despawn", the default, is gone when the chunk goes.
+  [fields] entitySpec.seats: { Vec3 }? :: A model's: where riders sit (model units, seat 1 drives), its size, and what a client older than 1.21.4 sees.
+  [fields] entitySpec.scale: number ? :: A model's size; 1 by default.
+  [fields] entitySpec.fallback: string ? :: What a client older than 1.21.4 sees in place of the model, such as "minecart".
+  [fields] entitySpec.speed: number ? :: How fast it goes, in blocks a second. A vehicle's top speed; a living body's walk at forward = 1, the game's own mob walk by default.
+  [fields] entitySpec.max_health: number ? :: physics = "living" only: the most health it has, and what it starts with. 1 to 1024; 20 by default.
+  [fields] entitySpec.drops: ({ { [string]: any } } | false)? :: physics = "living" only: what it leaves when it dies. Each row is { item = "stick", count = 2 }, count = { least, most } for a random count, chance = 0.05 for a row that comes from one death in twenty, or a pack item. false or nil: nothing.
+  [fields] entitySpec.sounds: ({ hurt: string ?, death: string ?, ambient: string ? } | false)? :: physics = "living" only: sound names for its hurt, its death and its idle sound, vanilla or "<pack>.<file>". false or nil: silent.
+  [fields] entitySpec.can_fly: boolean ? :: physics = "living" only: it may fly when its pack sets e.flying = true, and it takes no fall damage.
+  [fields] entitySpec.turn: number ? :: physics = "vehicle" only: degrees a second it turns at speed; 90 by default.
+  [fields] entitySpec.accel: number ? :: physics = "vehicle" only: seconds from standing to top speed; 1 by default.
+  [fields] entitySpec.step: number ? :: physics = "vehicle" only: blocks it climbs without a jump; 1 by default.
+  [fields] entitySpec.think_every: number ? :: define only. Seconds between two thinks of one body; one tick (0.05) by default, at most 60. The engine spreads the bodies over the ticks.
+
+
+===== REF: Face =====
+TITLE: Face type
+LEAD: One of a block's six faces: up, down, north, south, west or east, as `hit.face` and `world.raycast` report it.
+TYPEDEF:
+"up" | "down" | "north" | "south" | "west" | "east"
+
+
+===== REF: Faces =====
+TITLE: Faces type
+LEAD: A block's faces: one picture, or `all`, `side`, `top`, `bottom`, `front`, `back`, or a face by name.
+TYPEDEF:
+TextureRef |
+SECTIONS: [{'title': 'Fields 3', 'type': 'fields'}]
+  [fields] faces.all: TextureRef ?, side: TextureRef ?, top: TextureRef ?, bottom: TextureRef ? :: `all` is one picture for all six faces, `side` for the four sides (`all` if left out), `top` and `bottom` the ends.
+  [fields] faces.front: TextureRef ?, back: TextureRef ? :: `front` is the side a facing block faces and `back` the other; a face left out is `side`.
+  [fields] faces.down: TextureRef ?, up: TextureRef ?, north: TextureRef ?, south: TextureRef ?, west: TextureRef ?, east: TextureRef ? :: One face by its name; a face left out is `side`.
+
+
+===== REF: Facing =====
+TITLE: Facing type
+LEAD: One of the four sides: north, south, west or east; a facing block's front, or the side a screen faces.
+TYPEDEF:
+"north" | "south" | "west" | "east"
+
+
+===== REF: Feature =====
+TITLE: Feature type
+LEAD: What a client is able to show. Ask this instead of comparing versions: a script never sees a version number.
+TYPEDEF:
+"bossbar" | "potion_color" | "floor_frame" | "light" | "hex_color" | "glow_frame" | "display" | "hitbox" | "model" | "layout" | "dialog" | "overlay" | "resource_pack"
+
+
+===== REF: Field =====
+TITLE: Field type
+LEAD: A number at every block, as a recipe the engine works out. Sums (`+ - * / ^` and unary minus) and the methods make new fields; a plain number is a field too. A field above 0.5 is "true" where a rule asks a question.
+SECTIONS: [{'title': 'Functions 11', 'type': 'functions'}]
+  [functions] field:abs() → Field :: 
+  [functions] field:floor() → Field :: 
+  [functions] field:sqrt() → Field :: 
+  [functions] field:min(other: Field | number) → Field :: 
+  [functions] field:max(other: Field | number) → Field :: 
+  [functions] field:gt(other: Field | number) → Field :: 1 where this is the larger, else 0.
+  [functions] field:lt(other: Field | number) → Field :: 1 where this is the smaller, else 0.
+  [functions] field:clamp(low: number, high: number) → Field :: 
+  [functions] field:smooth(from: number, to: number) → Field :: 0 at `from`, 1 at `to`, smooth between. `from` may be the larger.
+  [functions] field:curve(points: { { number } }) → Field :: Straight lines through `{ { input, output }, ... }`, inputs rising.
+  [functions] field:at(dx: number, dy: number, dz: number) → Field :: This field read `dx, dy, dz` blocks away: `fields.water:at(1, 0, 0)` is the water east of here.
+
+
+===== REF: FixedCamera =====
+TITLE: FixedCamera type
+LEAD: Camera modes expose only the fields they use. Values shared across players update all their views. A removed target reads nil and ends the active view.
+
+
+===== REF: FluidRule =====
+TITLE: FluidRule type
+LEAD: The carved air under `below` becomes `block` (a lake, lava): the first rule that holds at each block. Never the open sky over the land.
+TYPEDEF:
+{ block: string, below: number, biome: string ?, when: (Field | number)? }
+
+
+===== REF: FreeCamera =====
+TITLE: FreeCamera type
+LEAD: 
+
+
+===== REF: Fx =====
+TITLE: fx global · type Fx
+LEAD: Particles for a room: Minecraft's particle packet; the `fx` global, or `room.fx`.
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}]
+  [functions] fx.particle(name: string, pos: Vec3 | { Vec3 }, opts: { count: number ?, spread: (number | Vec3)?, velocity: Vec3 ?, speed: number ?, color: Ink ?, size: number ?, }?) :: Shows particle `name` ("dust", "end_rod", "explosion", "firework", "flame", "note", "totem_of_undying") at `pos`, or at every point of a list. Each point reaches players in the room within 64 blocks of its origin in 3D, including the boundary, before spread or velocity. `count` (1) at each point in a box `spread` (0) out; or with `velocity`, one particle moving along it (`speed` 1 then, else 0). `color` and `size` are for dust only.
+
+
+===== REF: Game =====
+TITLE: game global · type Game
+LEAD: The game version a room runs, its entity kinds, blocks and items, and the pack's own blocks, items and recipes: the `game` global, or `room.game`.
+SECTIONS: [{'title': 'Functions 3', 'type': 'functions'}, {'title': 'Fields 9', 'type': 'fields'}]
+  [functions] game.block(name: string) → Block ? :: Returns one block in this version's numbers, or nil for a name this game has no word for.
+  [functions] game.item(name: string) → Item ? :: Returns an item this game has, or nil for a name it does not; never an error.
+  [functions] game.texture(width: number, height: number) → Texture :: Returns a new texture of width by height pixels, see-through until drawn on, for a pack's block or item.
+  [fields] game.version: string :: This game's version, such as "a0.1.0".
+  [fields] game.world_height: number :: How tall the world is in blocks: 128, or 256 for a 1.8.9 world.
+  [fields] game.sea_level: number :: The y of this world's sea level.
+  [fields] game.entities: Entities & { [string]: (EntityKind | EntityDef)? } :: The kinds of entity: `define` a pack's own, `amend` the game's own, and read a kind of the game: a mob kind by either spelling (`game.entities.cow`, `game.entities.Cow`), a kind that is not a mob by its name (`game.entities.arrow`); nil where the game has none. It iterates every kind, including pack definitions: `for name, kind in game.entities do`.
+  [fields] game.blocks: Blocks :: The one table that *adds* to a version rather than reading it.
+  [fields] game.biomes: Biomes :: Biomes of the pack's own: a vanilla biome with other colours and weather.
+  [fields] game.recipes: Recipes :: What a crafting grid and a furnace make of a pack's items; recipes are added while the pack loads.
+  [fields] game.items: Items :: Defines items of the pack's own, with a texture for clients from 1.21.4.
+  [fields] game.terrain: { snow: boolean ?, steps: { TerrainStep }? }? :: What this world's overworld is made of: `snow` and `steps`, as citadel.yml writes them; read-only, nil when there is no list.
+
+
+===== REF: Generated =====
+TITLE: Generated type
+LEAD: A declared world, for the script to ask what the engine answers.
+SECTIONS: [{'title': 'Functions 2', 'type': 'functions'}]
+  [functions] generated:sample(field: Field | number, pos: Vec3) → number ? :: Returns a field's value at a position; `nil` for a field made after `world.generate`, or for rules with no `height`.
+  [functions] generated:biome_at(pos: Vec3) → string ? :: Returns the biome name a column gets.
+
+
+===== REF: GeneratorRules =====
+TITLE: GeneratorRules type
+LEAD: What `world.generate` takes. Without `height` and `density`, the rules add to the land the game's own terrain made.
+SECTIONS: [{'title': 'Fields 13', 'type': 'fields'}]
+  [fields] generatorRules.height: (Field | number)? :: The y of the surface.
+  [fields] generatorRules.density: Field ? :: Solid where this is above 0, for caves, overhangs and land in the air.
+  [fields] generatorRules.sea: number ? :: Water fills the open air up to this y.
+  [fields] generatorRules.fluid: string ? :: 
+  [fields] generatorRules.floor: string ? :: The block at y 0; "bedrock" for a land of its own.
+  [fields] generatorRules.biomes: { { [number]: string, when: (Field | number)? } }? :: `{ "desert", when = field }`: the first that holds names the column's biome; one with no `when` is for the rest.
+  [fields] generatorRules.rock: { GroundRule }? :: The body of the land, under the ground rules.
+  [fields] generatorRules.surface: { GroundRule }? :: 
+  [fields] generatorRules.plants: { PlantRule }? :: 
+  [fields] generatorRules.things: { ThingGrid }? :: 
+  [fields] generatorRules.fluids: { FluidRule }? :: What fills the caves: needs `density` or `carvers`.
+  [fields] generatorRules.carvers: { "caves" | "ravines" }? :: The game version's own carvers, with the world seed, after the land and before the cave rules: "caves" (every version), "ravines" (b1.8 and later). Needs `height` or `density`.
+  [fields] generatorRules.structures: { "mineshaft" | "dungeon" }? :: The game version's own structures, with spawners and loot: "mineshaft", "dungeon" (1.7 to 1.12). Needs `height` or `density`.
+
+
+===== REF: GroundItem =====
+TITLE: GroundItem type
+LEAD: One stack lying on the ground.
+TYPEDEF:
+{ id: number, item: string, count: number, at: Vec3 }
+
+
+===== REF: GroundRule =====
+TITLE: GroundRule type
+LEAD: A layer of ground: `block` for the top `depth` blocks (1) of a surface. The first rule that holds wins.
+TYPEDEF:
+{ block: BlockPick, biome: string ?, when: (Field | number)?, depth: number ? }
+
+
+===== REF: HeadSkin =====
+TITLE: HeadSkin type
+LEAD: Whose face a player head shows: a Minecraft account's name, or the `textures` profile property of a skin no account wears.
+TYPEDEF:
+string | { value: string, signature: string ? }
+
+
+===== REF: Hit =====
+TITLE: Hit type
+LEAD: What `players.on_click` hands its callback: the button, the slot, and the player, entity, block and face the click met.
+SECTIONS: [{'title': 'Fields 7', 'type': 'fields'}]
+  [fields] hit.button: "left" | "right" :: "left" is an attack or swing, "right" is an interact or use.
+  [fields] hit.slot: number :: The hotbar slot in hand, 1..9.
+  [fields] hit.player: Player ? :: Another player, when that is what was clicked.
+  [fields] hit.entity: (Display | Hitbox | Npc | Puppet)? :: The thing clicked, as the handle the script holds for it.
+  [fields] hit.entity_id: number ? :: Its raw entity id, which is all there is for something the engine made itself, such as one of a screen's own frames.
+  [fields] hit.block: Vec3 ? :: The block, when the click hit one.
+  [fields] hit.face: Face ? :: The face of the block that was clicked.
+
+
+===== REF: Hitbox =====
+TITLE: Hitbox type
+LEAD: An invisible box a player can click, and a wall when solid, from `world.hitbox` (1.19.4 and later).
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}, {'title': 'Fields 2', 'type': 'fields'}]
+  [functions] hitbox:destroy() :: Removes the hitbox, and its wall when solid.
+  [fields] hitbox.id: number :: Its entity id, what `players.on_click` reports in `hit.entity_id`.
+  [fields] hitbox.at: Vec3 :: Its bottom centre; write it to move the hitbox, and its wall when solid.
+
+
+===== REF: HttpResponse =====
+TITLE: HttpResponse type
+LEAD: What `http.get` returns. A failed request is not an error: read `ok`.
+SECTIONS: [{'title': 'Functions 2', 'type': 'functions'}, {'title': 'Fields 5', 'type': 'fields'}]
+  [functions] httpResponse:json() → any :: The body as a table; an error when it is not JSON.
+  [functions] httpResponse:image() → {width: number, height: number, pixels: buffer} :: A PNG body: `pixels` is 4 bytes (RGBA) a pixel, row by row from the top.
+  [fields] httpResponse.ok: boolean :: True for a 2xx status.
+  [fields] httpResponse.status: number :: The HTTP status; 0 when no answer came.
+  [fields] httpResponse.error: string ? :: Why no answer came, or nil.
+  [fields] httpResponse.body: string :: The answer as bytes.
+  [fields] httpResponse.headers: {[string]: string } :: The answer's headers, names in lower case.
+
+
+===== REF: Hud =====
+TITLE: Hud type
+LEAD: A layout on one player's screen, from `player.ui.show`. `hud.<id>` is the item with that id.
+SECTIONS: [{'title': 'Functions 2', 'type': 'functions'}]
+  [functions] hud:set(values: { [string]: number | string | boolean }) :: A value per id: a number is a fill, a string a label's words, true or false whether it shows. An unknown id is an error that lists the ids.
+  [functions] hud:destroy() :: Takes it off the player's screen.
+
+
+===== REF: HudPart =====
+TITLE: HudPart type
+LEAD: One item of a shown layout, `hud.hp`: its live values. They tween.
+SECTIONS: [{'title': 'Fields 4', 'type': 'fields'}]
+  [fields] hudPart.fill: number :: How much of a box or picture shows, from its left edge: 0 to 1.
+  [fields] hudPart.text: string :: A label's words.
+  [fields] hudPart.visible: boolean ? :: Whether it shows; nil shows it again.
+  [fields] hudPart.color: Ink ? :: A box's colour, a picture's tint, a label's ink; reads back as "#rrggbb".
+
+
+===== REF: Ink =====
+TITLE: Ink type
+LEAD: Anywhere a colour is asked for, every spelling works: a `color` value, a name, or hex ("#ff8800"). A name nobody has is an error that says the nearest. A client from 1.16 gets the exact tone in text and an older one the nearest name it has.
+TYPEDEF:
+Color | ColorName | string
+
+
+===== REF: InventorySlot =====
+TITLE: InventorySlot type
+LEAD: A stack as a script reads it. `id` is there for a pack item, `damage` for a worn tool.
+TYPEDEF:
+{ item: string, count: number, id: string ?, damage: number ? }
+
+
+===== REF: Item =====
+TITLE: Item type
+LEAD: An item the game version has, from `game.item(name)`: its name and stack size.
+TYPEDEF:
+{ name: string, stack_size: number }
+
+
+===== REF: ItemMatch =====
+TITLE: ItemMatch type
+LEAD: An item to find — `take`, `count`, a recipe's ingredient. A name is the plain item and never a pack item made of it; a table matches the fields it names.
+TYPEDEF:
+string | { id: string ?, item: string ? }
+
+
+===== REF: ItemMeta =====
+TITLE: ItemMeta type
+LEAD: The extras an item table may carry: count, name, lore, colours, glint, a canvas map, a pack item id, wear, a 1.21.4+ model and a head's skin.
+SECTIONS: [{'title': 'Fields 11', 'type': 'fields'}]
+  [fields] itemMeta.count: number ? :: How many in the stack; 1 by default.
+  [fields] itemMeta.name: Text ? :: Never italic unless it says so.
+  [fields] itemMeta.lore: ({ Text } | Text)? :: One line or a list of lines, grey unless they say otherwise.
+  [fields] itemMeta.color: Color ? :: A potion's liquid colour; 1.11 and later.
+  [fields] itemMeta.dye: Color ? :: Leather armour's colour.
+  [fields] itemMeta.glint: boolean ? :: The enchanted shine, with no enchantment.
+  [fields] itemMeta.canvas: Canvas ? :: A filled map of that canvas: what the item *is*, so `item` may be left out. Everywhere an item is taken — a hand, a hotbar slot, a display.
+  [fields] itemMeta.id: string ? :: A pack's own item: a brick with `id = "copper_ingot"` is a copper ingot, kept under the pack's name and known by it everywhere it goes.
+  [fields] itemMeta.damage: number ? :: The wear a tool has taken; 0 is new.
+  [fields] itemMeta.model: string ? :: The item model a 1.21.4+ client draws: `assets/<pack>/items/<model>.json`.
+  [fields] itemMeta.skin: (string | { value: string, signature: string ? })? :: The face a "player_head" item shows: a player's name, or the raw `textures` property. On any other item it is an error.
+
+
+===== REF: ItemSpec =====
+TITLE: ItemSpec type
+LEAD: An item is a name, or a table with the meta it carries.
+TYPEDEF:
+string | ItemTable
+
+
+===== REF: ItemTable =====
+TITLE: ItemTable type
+LEAD: An item table names an item, or a canvas whose map it is.
+TYPEDEF:
+(ItemMeta & { item: string }) | (ItemMeta & { canvas: Canvas })
+
+
+===== REF: Items =====
+TITLE: Items type
+LEAD: `game.items`: items of the pack's own.
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}]
+  [functions] items.define(spec: { name: string, texture: TextureRef ?, label: Text ?, lore: ({ Text } | Text)?, looks: string ?, stack: number ?, glint: boolean ?, }) → ItemTable :: Load-time only. Hands back the item table: give it, match it, craft it.
+
+
+===== REF: Layout =====
+TITLE: Layout type
+LEAD: A layout the resource pack holds: what `ui.define` hands back.
+TYPEDEF:
+{ read _layout: true }
+
+
+===== REF: LayoutAlign =====
+TITLE: LayoutAlign type
+LEAD: How a row, a column or a stack lines its children up, and a label its words.
+TYPEDEF:
+"start" | "center" | "end"
+
+
+===== REF: LayoutNode =====
+TITLE: LayoutNode type
+LEAD: A piece of a layout's tree: what `ui.box`, `ui.image`, `ui.label`, `ui.row`, `ui.column` and `ui.stack` hand back. See "Layouts".
+TYPEDEF:
+{ read _layout_node: true }
+
+
+===== REF: LetterStyle =====
+TITLE: LetterStyle type
+LEAD: What an effect hands back for one letter; `text` shows something else in its place ("" hides it).
+TYPEDEF:
+{ color: Ink ?, bold: boolean ?, italic: boolean ?, underline: boolean ?, strike: boolean ?, text: string ? }
+
+
+===== REF: LightSource =====
+TITLE: LightSource type
+LEAD: One spot of light no block makes, for `world.light`: a position and a level from 1 to 15.
+TYPEDEF:
+{ at: Vec3, level: number ? }
+
+
+===== REF: Looks =====
+TITLE: Looks type
+LEAD: What a client is told a pack's entity is: a shape it already draws. The two table forms carry a payload — the block a falling block shows, the stack an item shows.
+TYPEDEF:
+string | { entity: string, block: string } | { entity: string, item: string }
+
+
+===== REF: Material =====
+TITLE: Material type
+LEAD: A block's material as five yes-or-no questions, from `block.material`: solid, covers, firm, liquid and burns.
+SECTIONS: [{'title': 'Fields 5', 'type': 'fields'}]
+  [fields] material.solid: boolean :: Whether the jar's Material counts as solid.
+  [fields] material.covers: boolean :: Grass under it dies.
+  [fields] material.firm: boolean :: Snow and ice need it beneath them.
+  [fields] material.liquid: boolean :: Whether the jar's Material is a liquid.
+  [fields] material.burns: boolean :: Whether the jar's Material burns.
+
+
+===== REF: Menu =====
+TITLE: Menu type
+LEAD: An open menu, from `player.ui.menu`.
+SECTIONS: [{'title': 'Functions 2', 'type': 'functions'}]
+  [functions] menu:destroy() :: Takes it down and forgets its callbacks. A Bedrock form cannot be taken back: it stays until the player answers, and the answer then lands nowhere.
+  [functions] menu:update(items: { ItemSpec }) → boolean :: New pictures in place, the menu left open: a bar that fills, a count that changes. `on_pick` still answers by position. `false` once the player has put it away; a Bedrock form keeps what it showed.
+
+
+===== REF: Model =====
+TITLE: Model type
+LEAD: A model the pack made, for `world.display{ kind = "model" }`.
+SECTIONS: [{'title': 'Fields 1', 'type': 'fields'}]
+  [fields] model.name: string :: The name the model was given in `models.new`.
+
+
+===== REF: ModelBuild =====
+TITLE: ModelBuild type
+LEAD: What `models.new` hands its build function: makes the model's materials, textures, parts and animations.
+SECTIONS: [{'title': 'Functions 4', 'type': 'functions'}]
+  [functions] modelBuild:material(name: string, color: Ink, opts: { grain: number ?, alpha: number ? }?) → ModelMaterial :: Makes a named colour a display may repaint; `grain` (0 to 1) darkens pixels into four tones, `alpha` below 1 is glass.
+  [functions] modelBuild:texture(width: number, height: number, opts: { tint: ModelMaterial ?, scroll: ("up" | "down" | "left" | "right")?, speed: number ? }?) → ModelTexture :: Makes a pixel picture for one face; with `tint`, drawn in greys and coloured by that material. With `scroll`, it moves by itself on a block drawn from the model, `speed` texels a tick (1, 2, 3, or 0.5, 0.25).
+  [functions] modelBuild:part(name: string, opts: { pivot: Vec3 ? }?) → ModelPart :: Makes a named child part of the root that turns around its `pivot`, the model's origin unless given.
+  [functions] modelBuild:animation(name: string, opts: { [string]: any }) :: `{ length = seconds, loop = false, <part name> = { rotation = { [t] = is both named fields and part names, so this one is open.
+
+
+===== REF: ModelDisplay =====
+TITLE: ModelDisplay type
+LEAD: A model visual in a room. Shares at, rotation, scale, alive and move with other visuals; adds named animations and model materials.
+SECTIONS: [{'title': 'Functions 4', 'type': 'functions'}, {'title': 'Fields 2', 'type': 'fields'}]
+  [functions] modelDisplay:move(at: Vec3, rotation: Orientation ?) :: Place and turn it in one step, every part and seat together.
+  [functions] modelDisplay:play(animation: string, opts: { speed: number ? }?) :: Starts an animation; replaying the current one changes speed without restarting.
+  [functions] modelDisplay:stop(animation: string) :: Where it is; the parts stay as they are.
+  [functions] modelDisplay:destroy() :: Removes the model from the room.
+  [fields] modelDisplay.id: number :: What `player:ride(model)` is handed; the seat is picked from `seats`.
+  [fields] modelDisplay.paint: { [string]: Ink } :: Whether it is still present. Read-only. Where it stands; live, and each write is a move of its own. Partial writes preserve other angles; nil after removal. Reads vec3; write a number or equal-axis vec3 for uniform size. Nil when gone. Material name to colour; write-only.
+
+
+===== REF: ModelMaterial =====
+TITLE: ModelMaterial type
+LEAD: A flat colour in a model. A display repaints it by this name.
+SECTIONS: [{'title': 'Fields 1', 'type': 'fields'}]
+  [fields] modelMaterial.name: string :: The name it was made with, which a display repaints it by.
+
+
+===== REF: ModelPart =====
+TITLE: ModelPart type
+LEAD: A named group of boxes that turns around its pivot. Units are 16 to the block, the origin is the model's bottom centre, and a box reaches -24..24.
+SECTIONS: [{'title': 'Functions 4', 'type': 'functions'}]
+  [functions] modelPart:part(name: string, opts: { pivot: Vec3 ? }?) → ModelPart :: Makes a child part of this one; it turns around `pivot`, the model's origin unless you give one.
+  [functions] modelPart:box(from: Vec3, to: Vec3, skin: ModelSkin, opts: { rotation: Vec3 ?, pivot: Vec3 ?, faces: { [Face]: ModelSkin }?, }?) :: Corners in any order; a box turns on one axis, in steps of 22.5 up to 45, and `pivot` is the box's own centre unless you give one.
+  [functions] modelPart:hitbox(from: Vec3, to: Vec3) :: A box a player can hit on a living body that wears the model (clients from 1.19.4). Not drawn; corners in any order, in model units. Square from above (its longer side), so split a long part. Animations do not move it. A model with none is hit on one box of the body's `size`.
+  [functions] modelPart:mirror(axis: "x") :: A mirrored copy of every box and hitbox this part has, and a mirrored twin named `<name>_mirrored` of every child. Only "x" in this version.
+
+
+===== REF: ModelSkin =====
+TITLE: ModelSkin type
+LEAD: What a box wears: one for all six faces, or one per face.
+TYPEDEF:
+ModelMaterial | ModelTexture
+
+
+===== REF: ModelTexture =====
+TITLE: ModelTexture type
+LEAD: Pixel art for one face of a box: plain RGBA, and never repainted.
+SECTIONS: [{'title': 'Functions 3', 'type': 'functions'}]
+  [functions] modelTexture:fill(color: Ink) :: Paints every pixel one colour.
+  [functions] modelTexture:pixel(x: number, y: number, color: Ink) :: Paints the pixel at x, y; `colors.transparent` makes it see-through.
+  [functions] modelTexture:rect(x: number, y: number, w: number, h: number, color: Ink) :: Paints a rectangle `w` by `h` pixels from x, y.
+
+
+===== REF: MountTarget =====
+TITLE: MountTarget type
+LEAD: Handles accepted by mounting and cameras; a Model is an asset, not a target.
+TYPEDEF:
+EntityHandle | Npc | Display | ModelDisplay | Hitbox | Puppet
+
+
+===== REF: NetworkInstance =====
+TITLE: NetworkInstance type
+LEAD: An instance of a member: a server the network started for itself.
+SECTIONS: [{'title': 'Fields 8', 'type': 'fields'}]
+  [fields] networkInstance.id: string :: The instance's name. `player:connect` takes it.
+  [fields] networkInstance.member: string :: 
+  [fields] networkInstance.label: string :: 
+  [fields] networkInstance.state: string :: "starting", then "online", then "stopping".
+  [fields] networkInstance.open: number ? :: The number of players it takes now, as it said with `network.status`.
+  [fields] networkInstance.status: string ? :: The instance's own word.
+  [fields] networkInstance.players: number ? :: The number of players on it.
+  [fields] networkInstance.meta: any :: The instance's own value.
+
+
+===== REF: NetworkStarted =====
+TITLE: NetworkStarted type
+LEAD: What `network.start` and `network.find` answer.
+SECTIONS: [{'title': 'Fields 2', 'type': 'fields'}]
+  [fields] networkStarted.id: string :: 
+  [fields] networkStarted.state: string :: "starting" or "online".
+
+
+===== REF: Noise =====
+TITLE: Noise type
+LEAD: Smooth random numbers from `noise.new`: the same seed gives the same numbers every time.
+SECTIONS: [{'title': 'Functions 2', 'type': 'functions'}]
+  [functions] noise:get(x: number, y_or_z: number, z: number ?) → number :: Returns about -1..1 at a point: `get(x, z)` for a height map, `get(x, y, z)` for caves and overhangs.
+  [functions] noise:grid(x: number, z: number, width: number, depth: number) → { number } :: Returns `width * depth` heights in one call, row by row: the number for `(x + dx, z + dz)` is at `[dz * width + dx + 1]`.
+
+
+===== REF: Npc =====
+TITLE: Npc type
+LEAD: A player-shaped entity every client from 1.8 sees, from `world.npc`; it can walk, talk, hold items, wear armour and ride.
+SECTIONS: [{'title': 'Functions 10', 'type': 'functions'}, {'title': 'Fields 5', 'type': 'fields'}]
+  [functions] npc:look_at(pos: Vec3) :: Where it stands; live, so setting it moves the NPC. A riding NPC reads the seat's position. Partial writes preserve other angles; nil after removal. Bodies have no roll. Turns head and body toward a point.
+  [functions] npc:swing() :: Plays the arm swing animation.
+  [functions] npc:hold(item: (ItemSpec | false)?) :: Puts an item in the main hand; nil or false empties it. An error on an unknown item.
+  [functions] npc:say(text: Text, color: Ink ?) :: Sends a chat line "<name> ..." to the room, or just the words for an NPC with no name.
+  [functions] npc:walk(opts: { path: { Vec3 }, speed: number ?, loop: boolean ? }?) :: Walks the points by itself, facing where it goes; nil stops it.
+  [functions] npc:wear(pieces: Worn) :: Puts armour on it, head first; each piece is an item.
+  [functions] npc:ride(thing: MountTarget, opts: { seat: number ? }?) → boolean :: Sits in a seat as `player:ride` does, and never drives; `false` when somebody sits there.
+  [functions] npc:dismount() :: Gets off where it sits; set `at` after it to put it somewhere else.
+  [functions] npc:move(at: Vec3, rotation: BodyRotation ?) :: Removes the NPC. Sets position and optional rotation together.
+  [functions] npc:destroy() :: 
+  [fields] npc.id: number :: The entity id, what `players.on_click` reports in `hit.entity_id`.
+  [fields] npc.name: string :: Whether it is still present. Read-only. "" for one made with no name, which has no name tag.
+  [fields] npc.walking: boolean :: True while it walks a path, until the last point; never false with `loop`.
+  [fields] npc.pose: NpcPose :: How the body is held; live.
+  [fields] npc.riding: boolean :: Whether it sits in a seat; live.
+
+
+===== REF: NpcPose =====
+TITLE: NpcPose type
+LEAD: How an NPC holds its body: standing, crouching, sleeping or swimming.
+TYPEDEF:
+"standing" | "crouching" | "sleeping" | "swimming"
+
+
+===== REF: Occupant =====
+TITLE: Occupant type
+LEAD: 
+TYPEDEF:
+Player | Npc | EntityHandle
+
+
+===== REF: OrbitCamera =====
+TITLE: OrbitCamera type
+LEAD: 
+
+
+===== REF: Orientation =====
+TITLE: Orientation type
+LEAD: Displays also accept a nose direction and roof direction; reads return angles.
+TYPEDEF:
+Rotation | { forward: Vec3, up: Vec3 }
+
+
+===== REF: Overlay =====
+TITLE: Overlay type
+LEAD: A canvas on one player's screen, from `player.ui.overlay`: 128 by 128, drawn like a canvas. Row 0 is the engine's and never shows; draw in rows 1 to 127. Colour `colors.transparent` shows the game through it.
+TYPEDEF:
+Picture
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}, {'title': 'Fields 1', 'type': 'fields'}]
+  [functions] overlay:destroy() :: Takes it off the player's screen.
+  [fields] overlay.open: boolean :: True until `destroy` or the player leaves.
+
+
+===== REF: PartDefinition =====
+TITLE: PartDefinition type
+LEAD: A named part of a stored world (`world: <folder>`) and the generator that writes it. Declared, not run: `citadel generate <pack> --part <name>`, or `/part generate <name>` in build mode, runs it; a changed file runs it again while nobody has edited the part. See "parts" in docs/luau-api.md.
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}, {'title': 'Fields 3', 'type': 'fields'}]
+  [functions] partDefinition.build(b: Builder) :: Exactly a world.build function.
+  [fields] partDefinition.name: string :: Unique; a path, "downtown/tower-3", nests.
+  [fields] partDefinition.at: Vec3 :: Where the build's block (0, 0, 0) lands.
+  [fields] partDefinition.detail: number ? :: 1 (whole blocks, the default) or 2 (half blocks), as world.build.
+
+
+===== REF: Persist =====
+TITLE: Persist type
+LEAD: Whether a kind survives a save. "save" puts it in the chunk record, `data` and all; "despawn" is gone when the chunk goes.
+TYPEDEF:
+"save" | "despawn"
+
+
+===== REF: Physics =====
+TITLE: Physics type
+LEAD: Which order of operations moves a body. Not a table of floats: the floats are the game version's, and this says which set of them applies.
+TYPEDEF:
+"vehicle" | "living" | "falling" | "item" | "none"
+
+
+===== REF: Picture =====
+TITLE: Picture type
+LEAD: The calls a screen, a canvas and a view all share.
+SECTIONS: [{'title': 'Functions 16', 'type': 'functions'}]
+  [functions] picture:clear(color: Ink ?) :: Its width in pixels: 128 for each map across. Its height in pixels: 128 for each map down. Paints every pixel one colour; black by default. On a view, the default clears it to see-through.
+  [functions] picture:set(x: number, y: number, color: Ink) :: Paints one pixel; (0, 0) is the top-left.
+  [functions] picture:fill(x: number, y: number, w: number, h: number, color: Ink) :: Fills a w by h box of pixels with one colour, its top-left at (x, y).
+  [functions] picture:rect(x: number, y: number, w: number, h: number, color: Ink, radius: number ?) :: Fills a box like `fill`, with smoothed rounded corners of `radius` pixels when given.
+  [functions] picture:circle(x: number, y: number, r: number, color: Ink) :: Fills a circle of radius `r` pixels around (x, y).
+  [functions] picture:text(x: number, y: number, text: string, color: Ink, size: number ?) → number :: Draws text in DejaVu Sans Bold, `size` pixels tall (16 by default), smoothed; returns its width in pixels.
+  [functions] picture:measure(text: string, size: number ?) → number :: The width in pixels that `text` would draw, without drawing it; for centring.
+  [functions] picture:line(x0: number, y0: number, x1: number, y1: number, color: Ink, width: number ?) :: Draws a smoothed line with round ends, `width` pixels wide (1 by default); positions may be fractions.
+  [functions] picture:ring(x: number, y: number, r: number, color: Ink, width: number ?) :: Draws a circle's outline, `width` pixels wide (1 by default), smoothed.
+  [functions] picture:polygon(points: { { number } | { x: number, y: number } }, color: Ink) :: Fills a smoothed shape with any number of corners; a point is `{x, y}` or `{ x = .., y = .. }`.
+  [functions] picture:gradient(x: number, y: number, w: number, h: number, from: Ink, to: Ink, across: string ?) :: Fills a box that fades from `from` to `to`, top to bottom; `"across"` runs it left to right.
+  [functions] picture:sprite(x: number, y: number, rows: { string }, inks: { [string]: Ink }, scale: number ?) :: Draws pixel art: each string a row, each character a dot `scale` pixels square (1 by default); a character with no ink is skipped.
+  [functions] picture:pixels(x: number, y: number, w: number, h: number, data: buffer | string) :: Writes raw RGB bytes (a buffer or a string), three a pixel, row by row, into a w by h box.
+  [functions] picture:draw(source: Screen | Canvas | View, x: number ?, y: number ?) :: Draws another screen, canvas or view with its top-left at (x, y), skipping its transparent pixels.
+  [functions] picture:part(col: number, row: number) → { id: number } :: One map of the picture, `{ id = .. }`, by column and row from (0, 0) top- left; for a hand or a single frame.
+  [functions] picture:play(opts: { file: string, fps: number ?, loop: boolean ? }) → Video :: Plays a raw RGB video file from the pack at `fps` 0.5 to 20, the engine drawing each frame; returns the Video.
+
+
+===== REF: PlantRule =====
+TITLE: PlantRule type
+LEAD: A plant on a column. Each column takes at most one: a rule that holds is tried with its `chance` (1), in the order of the list.
+SECTIONS: [{'title': 'Fields 12', 'type': 'fields'}]
+  [fields] plantRule.block: BlockPick ? :: 
+  [fields] plantRule.blocks: { BlockPick }? :: The blocks from the foot up, in place of `block`: a two-block flower.
+  [fields] plantRule.tip: BlockPick ? :: With `height`, the block on top of a plant that grows.
+  [fields] plantRule.height: (Field | number)? :: How many blocks a plant that grows is tall: `block` repeats.
+  [fields] plantRule.chance: (Field | number)? :: 
+  [fields] plantRule.biome: string ? :: 
+  [fields] plantRule.when: (Field | number)? :: 
+  [fields] plantRule.afloat: boolean ? :: On the water over a column, not on its ground.
+  [fields] plantRule.sink: number ? :: Blocks to stand lower: 1 is in the ground, or in the top of the water.
+  [fields] plantRule.clear: number ? :: Blocks of water to keep clear over a plant that grows in it.
+  [fields] plantRule.place: ("top" | "floor" | "ceiling" | "wall")? :: Where it goes: "top" (the default), or in the caves `density` or `carvers` dig: "floor", "ceiling" (it hangs down: `tip` is lowest) or "wall" (one block; `{wall}` in its name is the side the rock is on, `{facing}` the side away). One plant on each floor and each ceiling of a cave, and in each wall block. `when` and `chance` are read at the air block it starts in.
+  [fields] plantRule.y: { number }? :: `{ low, high }`: the y it may start at.
+
+
+===== REF: Player =====
+TITLE: Player type
+LEAD: A player in the room: what `players.on_join` and every player event hand you.
+SECTIONS: [{'title': 'Functions 34', 'type': 'functions'}, {'title': 'Fields 11', 'type': 'fields'}]
+  [functions] player:ride(thing: MountTarget, opts: { seat: number ?, locked: boolean ? }?) → boolean :: The player's name. The account's own id: the one name for a player a rename does not change. Where they stand now. Your own table, kept on the player for as long as they are connected. A player is one value while connected: `a == b` and `t[player]` work. The Room the player is in; nil while they move between rooms. Degrees: `yaw` sideways, `pitch` up or down; live, read only. True while the player sneaks; live. `attack` is the left button held on a block in reach (see player.reach); a client says nothing about a button held on air. True while the player sits on something; live. Seat 1 drives a vehicle; `locked` keeps a sneak from getting them off. `false` when somebody sits in that seat; keeps the current ride on failure. Works immediately after creating the target. Repeating the same ride keeps the seat; no delay or extra movement is needed.
+  [functions] player:dismount() :: Gets the player off what they ride; sneaking does the same, as off a horse.
+  [functions] player:message(text: Text, color: Ink ?) :: What shows on this player's screen: the calls `ui` has, for them alone, plus their own menu and overlay. Sends a chat line to this player alone; `color` is for the words that did not pick one. Chat is not part of the screen, so it is not in `ui`.
+  [functions] player:sound(name: string, opts: { at: Vec3 ?, volume: number ?, pitch: number ?, category: string ?, }?) :: Plays a sound by name to this player only, with an optional position, volume, pitch and category.
+  [functions] player:teleport(pos: Vec3, rotation: BodyRotation ?) :: Yaw and pitch left out keep the way they face.
+  [functions] player:move_to(room: Room) :: Moves the player to another room; the client swaps worlds in place.
+  [functions] player:travel(dimension: string, pos: Vec3 ?) :: Sends the player to another world of the group, at `pos` or its spawn.
+  [functions] player:give(item: ItemSpec) :: One item: "stone", or { item = "arrow", count = 16 }.
+  [functions] player:held() → InventorySlot ? :: Returns the stack in hand ({ item, count }, plus `id` for a pack item and `damage` for a worn tool), or nil.
+  [functions] player:inventory() → { InventorySlot } :: Returns one { item, count } row per filled slot.
+  [functions] player:take(item: ItemMatch, count: number ?) → number :: Up to `count` (1 unless you say) of what matches, the hand first; answers how many it took.
+  [functions] player:set_held(item: (ItemSpec | false)?) :: The stack in hand, replaced; nil or false empties the hand.
+  [functions] player:hotbar(slots: { [number]: ItemTable }) :: Replaces the nine hotbar slots; a missing index is empty.
+  [functions] player:wear(pieces: Worn) :: The four armour slots; a piece left out is bare.
+  [functions] player:kill() → boolean :: 0..20, or nil where the game version has no food bar. The food saturation, or nil where the game version has no food bar. True while the player is on the death screen. Kills the player; returns false on a version with no damage rules.
+  [functions] player:hide(other: Player) :: This player stops seeing `other`, or sees them again.
+  [functions] player:show(other: Player) :: This player sees `other` again after a `hide`.
+  [functions] player:can_see(other: Player) → boolean :: True unless `other` is not visible or is hidden from this player.
+  [functions] player:effect(name: string, opts: { level: number ?, duration: number ?, particles: boolean ? }?) :: A potion effect by its modern name; `duration` in seconds, math.huge for ever.
+  [functions] player:clear_effect(name: string) :: Takes a potion effect off the player, by its modern name.
+  [functions] player:push(velocity: Vec3) :: A shove in blocks per tick, on top of what they are doing.
+  [functions] player:damage(amount: number) → boolean :: A hit in half-hearts: the flash, the sound, the resistance window. `false` on a version with no damage rules.
+  [functions] player:look_at(pos: Vec3) :: Turns the player's head to a point, where they stand.
+  [functions] player:stop_sound(name: string ?) :: Where their view is from: the camera they look out of, or their eyes. One sound by name, or every sound; 1.13 and later.
+  [functions] player:kick(reason: Text ?) :: Disconnects the player, with that text on their screen.
+  [functions] player:connect(server: string) :: Asks Minefort to move the player to another server by name: an instance's `id`, the network's name (its default member) or "hub". Minefort decides and does not answer; a player still here was not moved.
+  [functions] player:count(item: ItemMatch) → number :: Returns how many of an item the player carries, across every slot.
+  [functions] player:has(node: string) → boolean :: True if the player's groups give them this permission node; operators have every node.
+  [functions] player:groups() → { string } :: Returns the player's groups; `default` is not listed.
+  [functions] player:add_group(group: string) :: Puts the player in a group until they leave; errors on a group citadel.yml does not define.
+  [functions] player:remove_group(group: string) :: Takes the player out of a group.
+  [functions] player:supports(feature: Feature) → boolean :: True if this player's client can show the feature.
+  [functions] player:look() → Vec3 :: Returns the unit vector the player faces.
+  [functions] player:set_slot(n: number) :: Selects hotbar slot 1..9.
+  [fields] player.gamemode: number :: The hotbar slot in hand, 1..9; live. 0 survival, 1 creative, 2 adventure, 3 spectator; writable.
+  [fields] player.spawn_point: Vec3 ? :: The player's own respawn point (the block of the position), or nil for the room's. Writable; a point a pack sets needs no bed. nil clears it, a bed's point too.
+  [fields] player.max_health: number ? :: Their health now, 0 to `max_health`; nil where the game version has no damage rules. Writable: set outright, no flash; 0 is a death; a number above `max_health` stops there. The most health they can have: 20 unless a pack set it; nil where the game version has no damage rules. Writable, 1 to 1024; nil gives the game's own back. A lower maximum takes `health` down to it. It lasts for the session. Every Java client draws its hearts; Bedrock draws none.
+  [fields] player.speed: number :: The body: what a pack sets on a player. See docs/luau-api.md, "Body and movement". Walk speed as a multiple of normal; 0 pins them.
+  [fields] player.can_fly: boolean :: May fly in a mode that cannot.
+  [fields] player.visible: boolean ? :: false: no other player is sent this body. The tab line stays. true or nil shows the body again.
+  [fields] player.scale: number :: 1/16 to 16; 1.20.5 and later, older clients stay as they are.
+  [fields] player.reach: number :: How far a block can be clicked or dug, 0 to 64 blocks (4.5 by default); 1.20.5 and later. Measured from the camera when there is one.
+  [fields] player.level: number :: The experience bar: the number over it, and how full it is (0..1).
+  [fields] player.xp: number :: How full the experience bar is, 0..1.
+  [fields] player.camera: (Camera | false)? :: What they look out of: a camera from camera.fixed/free/orbit/chase, or nil or false for their own eyes. No delay is needed after creating its target. Ends when the target is destroyed or the player leaves the room.
+
+
+===== REF: PlayerUi =====
+TITLE: PlayerUi type
+LEAD: `player.ui`: the calls `ui` has, for one player alone, plus what only one player's screen holds.
+TYPEDEF:
+Ui
+SECTIONS: [{'title': 'Functions 4', 'type': 'functions'}]
+  [functions] playerUi.menu(opts: { title: Text ?, items: { ItemSpec }, on_pick: (player: Player, n: number) -> (), on_close: ((player: Player) -> ())?, }) → Menu :: A titled grid of up to 54 items over the player's view; each pick is answered by `on_pick(player, n)`. Nothing goes in or out of it: the items are pictures, not stacks. A chest on Java, a form of buttons on Bedrock. `on_close` fires when the player puts it away without picking. A new menu replaces the open one.
+  [functions] playerUi.overlay(opts: { corner: ("top_left" | "top_right" | "bottom_left" | "bottom_right")?, size: number ?, margin: number ? }?) → Overlay ? :: Puts a canvas in a corner of this player's screen, `size` screen pixels square at GUI scale 1 (96 by default, 16 to 511), `margin` from the edges (4 by default); nil where `player:supports("overlay")` is false.
+  [functions] playerUi.show(layout: Layout) → Hud :: Puts a layout on this player's screen. A client older than 1.21.4 (`player:supports("layout")`) gets a handle that shows nothing.
+  [functions] playerUi.dialog(view: DialogNode | () -> DialogNode) → Dialog ? :: A screen of boxes, words and pictures (see "Dialogs"): a `ui.kit.window{}`, or a function that returns one and is drawn again after every click. nil where `player:supports("dialog")` is false.
+
+
+===== REF: Players =====
+TITLE: players global · type Players
+LEAD: A room's players and their events: the `players` global, or `room.players`.
+SECTIONS: [{'title': 'Functions 18', 'type': 'functions'}]
+  [functions] players.on_join(fn: (player: Player) -> ()) → Connection :: Calls `fn` when a player arrives: on the globals when a client connects, on a room's table each time a player moves into it.
+  [functions] players.on_leave(fn: (player: Player) -> ()) → Connection :: The same player value on_join had; it can no longer be sent to.
+  [functions] players.list() → { Player } :: Returns every player in the room.
+  [functions] players.get(name: string) → Player ? :: Returns the player with this name, or nil.
+  [functions] players.count() → number :: Returns how many players are in the room.
+  [functions] players.near(pos: Vec3, radius: number) → { Player } :: Who is within a radius of a point, and who is inside a box of blocks.
+  [functions] players.within(from: Vec3, to: Vec3) → { Player } :: Returns every player inside a box of blocks, corners included.
+  [functions] players.on_click(fn: (player: Player, hit: Hit) -> ()) → Connection :: Calls `fn` on a left or right click; `hit` holds the button and the entity, player, block and face it met.
+  [functions] players.on_sneak(fn: (player: Player, down: boolean) -> ()) → Connection :: Calls `fn` once per sneak press and release; `down` is true on the press.
+  [functions] players.on_slot(fn: (player: Player, slot: number) -> ()) → Connection :: Calls `fn` when a player picks a hotbar slot, 1..9.
+  [functions] players.on_chat(fn: (player: Player, text: string) -> boolean ?) → Connection :: Return false and the line is not said.
+  [functions] players.on_pickup(fn: (player: Player ?, item: string, count: number) -> ()) → Connection :: A stack taken off the ground, and one that landed on it. `player` is nil where the world dropped it, or where they have already left.
+  [functions] players.on_drop(fn: (player: Player ?, item: string, count: number) -> ()) → Connection :: Calls `fn` when a stack lands on the ground; `player` is nil where the world dropped it or they have left.
+  [functions] players.on_death(fn: (player: Player ?, cause: string, message: string, by: Player ?) -> ()) → Connection :: Calls `fn` when a player dies, with the cause (fall, drown, void, lava, ...) and the line broadcast; `player` is nil once they have left.
+  [functions] players.on_respawn(fn: (player: Player ?) -> ()) → Connection :: Calls `fn` when a player respawns; `player` is nil once they have left.
+  [functions] players.on_break(fn: (player: Player ?, pos: Vec3, block: string) -> boolean ?) → Connection :: Cancellable. Return `false` to stop it; return nothing to let it through. These are asked *before* the world changes and the engine waits milliseconds for the answer, so they must be quick and must never `task.wait`. Timeout, error, overflow and disabled handlers deny the action. Across packs any `false` wins. See docs/luau-api.md, "saying no".
+  [functions] players.on_place(fn: (player: Player ?, pos: Vec3, block: string) -> boolean ?) → Connection :: Asks `fn` before a player puts a block down; return false to cancel it. A missed deadline denies the place.
+  [functions] players.on_damage(fn: (player: Player ?, hit: DamageHit) -> boolean ?) → Connection :: Asks `fn` before damage lands on a player; return false to refuse it. A missed deadline denies it. A pack's own `player:damage` is not asked about.
+
+
+===== REF: Puppet =====
+TITLE: Puppet type
+LEAD: A mob's body with no mind of its own that the script moves, from `world.puppet`; its name tag always shows.
+SECTIONS: [{'title': 'Functions 2', 'type': 'functions'}, {'title': 'Fields 2', 'type': 'fields'}]
+  [functions] puppet:move(at: Vec3, rotation: BodyRotation ?) :: 
+  [functions] puppet:destroy() :: Removes the puppet.
+  [fields] puppet.id: number :: The raw entity id.
+  [fields] puppet.name: string ? :: The text of its name tag, which is always shown.
+
+
+===== REF: RayHit =====
+TITLE: RayHit type
+LEAD: The first block a ray met, and the face it came in through.
+TYPEDEF:
+{ block: Vec3, face: Face }
+
+
+===== REF: Recipes =====
+TITLE: Recipes type
+LEAD: `game.recipes`: what a crafting grid and a furnace make of a pack's items. Load-time only, like a block definition. The game's own recipes are asked first, so a pack adds and never takes away.
+SECTIONS: [{'title': 'Functions 3', 'type': 'functions'}]
+  [functions] recipes.shaped(spec: { pattern: { string }, keys: { [string]: ItemMatch }, result: ItemSpec }) :: 1 to 3 rows of 1 to 3 letters; a space is an empty cell.
+  [functions] recipes.shapeless(spec: { items: { ItemMatch }, result: ItemSpec }) :: Adds a crafting recipe whose ingredients may go anywhere in the grid.
+  [functions] recipes.smelt(spec: { input: ItemMatch, result: ItemSpec }) :: Adds a furnace recipe; a furnace smelts a pack item only by one of these.
+
+
+===== REF: Room =====
+TITLE: Room type
+LEAD: An isolated world with its own players and tables, from `rooms.create` or `rooms.main`.
+SECTIONS: [{'title': 'Functions 2', 'type': 'functions'}, {'title': 'Fields 1', 'type': 'fields'}]
+  [functions] room:message(text: Text, color: Ink ?) :: This room's `world` table: its blocks, entities and displays. This room's `players` table; its `on_join` fires each time a player moves in. This room's `sound` table. This room's `fx` table. This room's `ui` table. This room's `game` table: the game version it runs, its entity kinds and blocks. This room's `commands` table. Sends a chat line to everyone in this room.
+  [functions] room:destroy() :: Takes the room away; players still in it keep the world. Does nothing to `rooms.main`.
+  [fields] room.spawn_point: Vec3 :: The room's number. Rooms also compare by identity with `==`. Where players arrive in this room; writable. A write is not stored and does not move the chunks that stay loaded.
+
+
+===== REF: Rotation =====
+TITLE: Rotation type
+LEAD: 
+TYPEDEF:
+BodyRotation & { read roll: number ? }
+
+
+===== REF: Rules =====
+TITLE: Rules type
+LEAD: Which parts of the player simulation this room runs. All on for a `mode: full` server, all off on a pack server until the pack says. `survival` is the whole game: digging and its drops, placing, the inventory and crafting, respawning — and it turns fall, damage, hunger and day_cycle on. `anticheat` is on everywhere until a pack turns it off, and so is `redstone`: off, no signal moves in the room.
+TYPEDEF:
+{ survival: boolean, fall: boolean, damage: boolean, hunger: boolean, anticheat: boolean, day_cycle: boolean, redstone: boolean }
+
+
+===== REF: Schematic =====
+TITLE: Schematic type
+LEAD: A box of blocks: a `.schem` file from the pack, read once by `world.schematic`, or one a script wrote with `world.build`. `min` is the build's own lowest corner, which is the corner `origin` puts down; a file has no coordinates of its own, so its `min` is zero.
+SECTIONS: [{'title': 'Functions 2', 'type': 'functions'}]
+  [functions] schematic:rotate(degrees: number) → Schematic :: The build's width, height and length in blocks. The build's own lowest corner, which `origin` puts down; zero for a file. A new build turned clockwise seen from above (90, 180 or 270), states and all.
+  [functions] schematic:mirror(axis: "x" | "z") → Schematic :: A new build flipped: "x" swaps east and west, "z" north and south.
+
+
+===== REF: Screen =====
+TITLE: Screen type
+LEAD: A wall or floor of map frames showing a picture, from `world.screen`; it draws like a canvas and can answer clicks by pixel.
+TYPEDEF:
+Picture
+SECTIONS: [{'title': 'Functions 3', 'type': 'functions'}]
+  [functions] screen.on_click(((player: Player, x: number, y: number, button: "left" | "right") -> ()) | false) → ? :: Called with the pixel the player points at and the button, when a player clicks the screen. nil or false takes the hook off.
+  [functions] screen:view(player: Player) → View :: Returns this player's own layer over the screen; only they see it, and the shared picture shows where it is see-through.
+  [functions] screen:destroy() :: Removes the screen.
+
+
+===== REF: ScreenFacing =====
+TITLE: ScreenFacing type
+LEAD: The side a frame display hangs on: a wall side, or "up" to lie flat on a floor or table (1.13 and later).
+TYPEDEF:
+"north" | "south" | "west" | "east" | "up"
+
+
+===== REF: ShopPurchase =====
+TITLE: ShopPurchase type
+LEAD: A purchase the player paid for, in Gems, that the pack has not handed over.
+SECTIONS: [{'title': 'Fields 3', 'type': 'fields'}]
+  [fields] shopPurchase.request: string :: 
+  [fields] shopPurchase.player: string :: The player's uuid.
+  [fields] shopPurchase.product: string :: The product's key.
+
+
+===== REF: Slow =====
+TITLE: Slow type
+LEAD: One overrun, as `citadel.on_slow` is handed it.
+SECTIONS: [{'title': 'Fields 4', 'type': 'fields'}]
+  [fields] slow.hook: string :: The short name of the hook that ran out: "on_tick", "every", or the event's own.
+  [fields] slow.of: number :: The pack's budget per tick, in milliseconds: `budget_ms` in citadel.yml.
+  [fields] slow.used: number :: Milliseconds the pack spent in the tick that ran out.
+  [fields] slow.skipped: number :: Callbacks not run for want of budget, since the script started.
+
+
+===== REF: Socket =====
+TITLE: Socket type
+LEAD: A WebSocket a pack opened with `http.socket`.
+SECTIONS: [{'title': 'Functions 2', 'type': 'functions'}]
+  [functions] socket:send(text: string) → boolean :: True while the connection is up. Terminal receive-queue overflow; nil otherwise. Queues text; false when closed or full. Messages over 1 MiB are errors.
+  [functions] socket:cancel() :: Closes the socket for good.
+
+
+===== REF: SocketMessage =====
+TITLE: SocketMessage type
+LEAD: One message of a socket.
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}, {'title': 'Fields 1', 'type': 'fields'}]
+  [functions] socketMessage:json() → any :: The message as a table; an error when it is not JSON.
+  [fields] socketMessage.text: string :: The message as text.
+
+
+===== REF: Sound =====
+TITLE: sound global · type Sound
+LEAD: Plays and stops sounds for everyone in a room: the `sound` global, or `room.sound`.
+SECTIONS: [{'title': 'Functions 3', 'type': 'functions'}]
+  [functions] sound.play(name: string, opts: { at: Vec3 ?, volume: number ?, pitch: number ?, category: string ?, }?) :: Plays a sound by name to everyone in the room; volume above 1 carries further, pitch 0.5..2.0.
+  [functions] sound.stop(name: string ?) :: One sound by name, or every sound, for everyone in the room; 1.13+.
+  [functions] sound.stream(opts: { url: string ?, file: string ?, at: (SoundSpeaker | { SoundSpeaker })?, to: (Player | { Player })?, distance: number ?, loop: boolean ?, name: string ?, }) → SoundStream :: A live stream (MP3, or an FLV's sound) or a pack's sound file (OGG, MP3, WAV), heard through the mod a screen's stream uses. With `at`, from speakers: each player hears every speaker within `distance`. Without, from no place, at one volume. `to`: only these players. `loop`: files only.
+
+
+===== REF: SoundSpeaker =====
+TITLE: SoundSpeaker type
+LEAD: Where a speaker is: a point, or a player or an entity it follows.
+TYPEDEF:
+Vec3 | Player | EntityHandle
+
+
+===== REF: SoundStream =====
+TITLE: SoundStream type
+LEAD: A sound `sound.stream` plays. Speakers are numbered from 1.
+SECTIONS: [{'title': 'Functions 6', 'type': 'functions'}, {'title': 'Fields 1', 'type': 'fields'}]
+  [functions] soundStream:stop() :: 
+  [functions] soundStream:move(speaker: number, at: SoundSpeaker) :: Speakers, for a sound made with `at`; on one with no place, an error.
+  [functions] soundStream:add(at: SoundSpeaker) → number :: 
+  [functions] soundStream:remove(speaker: number) :: 
+  [functions] soundStream:listen(player: Player) :: Who hears it, changed while it plays.
+  [functions] soundStream:unlisten(player: Player) :: 
+  [fields] soundStream.playing: boolean :: False once stopped, or once a file that does not loop has played.
+
+
+===== REF: Suggester =====
+TITLE: Suggester type
+LEAD: Called as the player types; must answer at once (no task.wait). `args` holds the arguments typed before this one, by name.
+TYPEDEF:
+(player: Player, typed: string, args: { [string]: any }) -> { Suggestion }
+
+
+===== REF: Suggestion =====
+TITLE: Suggestion type
+LEAD: One word offered as a player types a command argument: a string, or a text with a tooltip.
+TYPEDEF:
+string | { text: string, tooltip: string ? }
+
+
+===== REF: TerrainStep =====
+TITLE: TerrainStep type
+LEAD: One populate step of the overworld, as citadel.yml writes it, read from `game.terrain.steps`.
+SECTIONS: [{'title': 'Fields 11', 'type': 'fields'}]
+  [fields] terrainStep.step: string :: Which populate step: "dungeons", "clay", "ore", "trees", "patch", "reeds", "cactus", "springs" or "snow".
+  [fields] terrainStep.block: string ? :: The block a clay, ore or patch step places.
+  [fields] terrainStep.fluid: string ? :: The fluid a springs step places: "water" or "lava".
+  [fields] terrainStep.count: number ? :: How many tries, veins, blobs, clumps or springs the step makes in a chunk.
+  [fields] terrainStep.size: number ? :: How long each clay blob or ore vein is.
+  [fields] terrainStep.below: number ? :: An ore step places its veins below this y.
+  [fields] terrainStep.bonus: number ? :: Trees: one chunk in this many gets one more tree.
+  [fields] terrainStep.big: number ? :: Trees: one chunk in this many grows big trees instead of small ones.
+  [fields] terrainStep.chance: number ? :: Patch: made one time in this many, in place of `count` times.
+  [fields] terrainStep.bound: number ? :: Springs: the y is picked below this bound before `nesting` pushes it deeper.
+  [fields] terrainStep.nesting: number ? :: Springs: how many times the y is picked again below itself; lava's 2 keeps it deeper than water's 1.
+
+
+===== REF: Text =====
+TITLE: Text type
+LEAD: A string, a table of runs, or a function of the time (`time.now()`) handing back a text, worked out again every frame it is on screen.
+TYPEDEF:
+string | TextRuns | ((t: number) -> any)
+
+
+===== REF: TextRuns =====
+TITLE: TextRuns type
+LEAD: Words wherever the API shows them: a string, or a table of runs. A table's entries are its runs in order (each a string or another table), and its named fields are the style of all of them; a run that names its own style keeps it. See "text" in docs/luau-api.md.
+SECTIONS: [{'title': 'Fields 6', 'type': 'fields'}]
+  [fields] textRuns.color: Ink ? :: The colour of every run that does not pick its own: a colour value, a name or hex.
+  [fields] textRuns.bold: boolean ? :: Bold for every run that does not say otherwise.
+  [fields] textRuns.italic: boolean ? :: Italic for every run that does not say otherwise.
+  [fields] textRuns.underline: boolean ? :: Underlined for every run that does not say otherwise.
+  [fields] textRuns.strike: boolean ? :: Struck through for every run that does not say otherwise.
+  [fields] textRuns.effect: Effect ? :: Called for every letter, every frame the text is on screen: hands back how that letter looks, or nil to leave it.
+
+
+===== REF: Texture =====
+TITLE: Texture type
+LEAD: A picture drawn in code: `game.texture(w, h)`. Where a texture is taken, a string is a PNG file in the pack instead.
+SECTIONS: [{'title': 'Functions 8', 'type': 'functions'}, {'title': 'Fields 2', 'type': 'fields'}]
+  [functions] texture:fill(color: Ink) :: Paints every pixel one colour.
+  [functions] texture:pixel(x: number, y: number, color: Ink) :: Sets one pixel; (0, 0) is the top left.
+  [functions] texture:rect(x: number, y: number, w: number, h: number, color: Ink) :: Fills a rectangle of pixels.
+  [functions] texture:frame(x: number, y: number, w: number, h: number, color: Ink) :: Draws a box's outline, one pixel wide.
+  [functions] texture:noise(x: number, y: number, w: number, h: number, colors: { Ink }, seed: number ?) :: Paints each pixel in the area one of the colours at random, as for stone, bark or grain.
+  [functions] texture:sprite(x: number, y: number, rows: { string }, inks: { [string]: Ink }, scale: number ?) :: Draws pixel art from rows of characters, each character painted with its ink, as on a screen.
+  [functions] texture:draw(other: Texture, x: number ?, y: number ?) :: Draws another texture over this one; its see-through pixels are skipped.
+  [functions] texture:copy() → Texture :: Returns a copy to draw on.
+  [fields] texture.width: number :: Width in pixels.
+  [fields] texture.height: number :: Height in pixels.
+
+
+===== REF: TextureRef =====
+TITLE: TextureRef type
+LEAD: A block or item picture: a `Texture` drawn in code with `game.texture`, or the name of a PNG file in the pack.
+TYPEDEF:
+Texture | string
+
+
+===== REF: ThingGrid =====
+TITLE: ThingGrid type
+LEAD: Things that share one grid of `cell` blocks (8): a cell holds at most one, at a place that is the cell's own, so a thing over a chunk border is whole.
+TYPEDEF:
+{ [number]: ThingRule, cell: number ?, seed: number ? }
+
+
+===== REF: ThingRule =====
+TITLE: ThingRule type
+LEAD: A thing that stands on a grid cell: one of `shapes`, its `(0, 0, 0)` on the block above the ground. `afloat` stands it on the water where the ground is under water; without it, nothing stands there. `place = "floor"` puts its `(0, 0, 0)` on the air block over a cave floor, `"ceiling"` on the air block under a ceiling (build it down from there).
+TYPEDEF:
+{ shapes: { Schematic }, chance: (Field | number)?, biome: string ?, when: (Field | number)?, afloat: boolean ?, place: ("top" | "floor" | "ceiling")?, y: { number }? }
+
+
+===== REF: Think =====
+TITLE: Think type
+LEAD: What `on_think` gets: `n` bodies, and one buffer for each column with one f64 per body (entry i at byte i * 8). A yes or no is 1 or 0, an id of nothing is 0. Write the last nine to change them; a value left as it was changes nothing.
+
+
+===== REF: TimeName =====
+TITLE: TimeName type
+LEAD: A named time of day that `world.time` holds the sky at: sunrise, day, noon, sunset, night or midnight.
+TYPEDEF:
+"sunrise" | "day" | "noon" | "sunset" | "night" | "midnight" x: number, y: number, z: number, magnitude: (self: Vec3) -> number, unit: (self: Vec3) -> Vec3, dot: (self: Vec3, other: Vec3) -> number, cross: (self: Vec3, other: Vec3) -> Vec3, distance: (self: Vec3, other: Vec3) -> number, lerp: (self: Vec3, other: Vec3, t: number) -> Vec3, floor: (self: Vec3) -> Vec3, with: (self: Vec3, fields: { x: number ?, y: number ?, z: number ? }) -> Vec3,
+
+
+===== REF: Trigger =====
+TITLE: Trigger type
+LEAD: Something that happened *to* a block.
+TYPEDEF:
+"ignite" | "explosion" | "fire"
+
+
+===== REF: Tween =====
+TITLE: Tween type
+LEAD: A field easing over time, from tween or camera.path.
+
+
+===== REF: Ui =====
+TITLE: ui global · type Ui
+LEAD: Titles, chat, the action bar, boss bars, the sidebar and the tab list: for everyone in a room (the `ui` global, or `room.ui`), or for one player (`player.ui`, the same calls). "Everyone" below is one player on `player.ui`.
+SECTIONS: [{'title': 'Functions 12', 'type': 'functions'}, {'title': 'Fields 1', 'type': 'fields'}]
+  [functions] ui.title(opts: { title: Text ?, subtitle: Text ?, color: Ink ?, fade_in: number ?, stay: number ?, fade_out: number ?, }) :: Shows a title and subtitle to everyone in the room; fades and stay are in seconds.
+  [functions] ui.actionbar(text: Text, color: Ink ?) :: Shows a line above the hotbar to everyone in the room.
+  [functions] ui.bossbar(opts: { title: Text ?, color: BarColor ?, progress: number ? }?) → Bar :: Shows a boss bar to everyone in the room and returns its handle; progress 0..1. 1.8 reads the title on its action bar.
+  [functions] ui.sidebar(opts: ({ title: Text ?, lines: { Text }? } | false)?) :: Sets the sidebar for everyone in the room; lines run top to bottom and only changed lines are sent. nil or false removes the sidebar.
+  [functions] ui.tab(opts: { header: Text ?, footer: Text ? }) :: Sets the player list's header and footer for everyone in the room.
+  [functions] ui.box(opts: { id: string ?, width: number, height: number, color: Ink ?, radius: number ? }) → LayoutNode :: The pieces of a layout (see "Layouts"). Sizes are pixels of the game's own HUD; a box is 1 to 256 a side. An item with an `id` is live.
+  [functions] ui.image(opts: { id: string ?, image: Texture, color: Ink ? }) → LayoutNode :: 
+  [functions] ui.label(opts: { id: string ?, text: string ?, width: number ?, align: LayoutAlign ?, color: Ink ? }) → LayoutNode :: Words in the client's own letters, space to `~`. Give a label whose words change a `width`.
+  [functions] ui.row(opts: { gap: number ?, align: LayoutAlign ?, [number]: LayoutNode }) → LayoutNode :: The children are the list part: `ui.row{ gap = 4, a, b }`.
+  [functions] ui.column(opts: { gap: number ?, align: LayoutAlign ?, [number]: LayoutNode }) → LayoutNode :: 
+  [functions] ui.stack(opts: { align: LayoutAlign ?, [number]: LayoutNode }) → LayoutNode :: 
+  [functions] ui.define(name: string, opts: { anchor: "bottom" ?, margin: number ?, [number]: LayoutNode }) → Layout :: A layout of one child, centred over the hotbar with its bottom edge `margin` pixels above the screen's (40, or 25 when `hide_hud` takes the hearts and the food away). While the pack loads only.
+  [fields] ui.kit: { [string]: any } :: What a dialog is made of (see "Dialogs"): row, column, stack, space, text, image, and window, button, tabs, close, badge, dot, progress, divider, card, grid, theme, mix and SCREEN.
+
+
+===== REF: Used =====
+TITLE: Used type
+LEAD: What `on_use` answers. Never true or false.
+TYPEDEF:
+"used" | "pass"
+
+
+===== REF: Vec3 =====
+TITLE: Vec3 type
+LEAD: 
+TYPEDEF:
+typeof(setmetatable({} :: Vec3Fields, {} :: r: number, g: number, b: number, lerp: (self: Color, other: Color, t: number) -> Color,
+
+
+===== REF: Video =====
+TITLE: Video type
+LEAD: A raw RGB video playing on a picture, from `picture:play`; read `playing` or call `stop`.
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}]
+  [functions] video:stop() :: False once it ends (and does not loop) or is stopped. Stops the video.
+
+
+===== REF: View =====
+TITLE: View type
+LEAD: One player's own layer over a screen or canvas, from `screen:view(player)`; only they see it, drawn with the same calls.
+TYPEDEF:
+Picture
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}]
+  [functions] view:destroy() :: Removes this player's view; they see the shared picture again.
+
+
+===== REF: World =====
+TITLE: world global · type World
+LEAD: A room's blocks, entities, displays, screens and time: the `world` global, or `room.world`.
+SECTIONS: [{'title': 'Functions 39', 'type': 'functions'}, {'title': 'Fields 1', 'type': 'fields'}]
+  [functions] world.on_generate(fn: (chunk: Chunk) -> ()) :: Called for a chunk each time it comes into memory, in a script world; it must make the same blocks every time.
+  [functions] world.on_populate(fn: (chunk: Chunk) -> ()) :: Each chunk the overworld terrain made, once, after it made it.
+  [functions] world.dimension(name: string) → World :: Another world of the server's group, by dimension id or its last part ("dungeon", "minecraft:the_nether"): that world's own `world` table.
+  [functions] world.drop(pos: Vec3, item: ItemSpec) :: A stack on the ground at a block, as a broken block leaves one.
+  [functions] world.container(pos: Vec3) → Container ? :: A chest's stacks, or nil where the block keeps none.
+  [functions] world.rules(opts: { survival: boolean ?, fall: boolean ?, damage: boolean ?, hunger: boolean ?, anticheat: boolean ?, day_cycle: boolean ?, redstone: boolean ? }?) → Rules :: `world.rules{ fall = true }` switches one on, false off; a rule left out or nil keeps its value, and a number or a string is an error. `world.rules()` reads them.
+  [functions] world.raycast(from: Vec3, direction: Vec3, max: number ?) → RayHit ? :: The first block a ray from `from` along `direction` meets within `max` blocks, and the face it came in through; nil for none.
+  [functions] world.sees(from: Vec3, to: Vec3) → boolean :: True when no block stops the line from `from` to `to`: a block with a collision box does (glass, leaves), water and grass do not.
+  [functions] world.raycasts(rays: buffer, out: buffer, n: number) :: `n` lines at once. `rays` holds six f64 a line (from x, y, z, to x, y, z); `out` gets one f64 a line: how far along it the first block is that stops it, or -1 for a clear line.
+  [functions] world.light_at(pos: Vec3) → (number, number, boolean) :: Block light and sky light, 0 to 15, and whether nothing above holds off the sky.
+  [functions] world.path(from: Vec3, to: Vec3, opts: { size: (number | { number })?, swim: boolean ?, fall: number ?, range: number ?, budget: number ? }?) → { Vec3 }? :: The points a body walks from `from` to the block at `to`, or nil. The game's own search: a step up of one block, falls of `fall` (3). `size` is { width, height } (0.6, 1.8); `swim` goes through water; `range` (the distance + 16) and `budget` (2000 nodes) stop a long search, which then gives the part that came closest.
+  [functions] world.zone(opts: { from: Vec3, to: Vec3, on_enter: ((player: Player) -> ())?, on_leave: ((player: Player) -> ())? }) → Zone :: Makes a box of blocks, both corners included, that knows who is in it; checked once a tick by feet position. Ends with the script.
+  [functions] world.set_block(pos: Vec3, block: BlockRef, opts: { skin: HeadSkin ? }?) :: `skin` is for "player_head" and "player_wall_head" only: an account's name, or the raw `textures` property.
+  [functions] world.set_blocks(changes: { { at: Vec3, block: BlockRef, skin: HeadSkin ? } }) :: Sets many blocks at once, live, stored and sent; the cheapest way. A row takes `skin` too, for a player head.
+  [functions] world.fill(from: Vec3, to: Vec3, block: BlockRef) :: Fills a box of blocks between two corners, live, stored and sent to everyone.
+  [functions] world.schematic(file: string) → Schematic :: A file inside the pack; a path that leaves it, or one that is not there, is an error naming the file.
+  [functions] world.build(fn: (b: Builder) -> (), opts: { detail: number ? }?) → Schematic :: The same value, written in code instead of read from a file. `{ detail = 2 }`: coordinates are half blocks, fitted to slabs and stairs.
+  [functions] world.paste(schem: Schematic, origin: Vec3, opts: { air: boolean ?, part: string ? }?) :: Live, stored and sent; air is skipped unless `air` is true.
+  [functions] world.get_block(pos: Vec3) → string ? :: `nil` where that chunk is not in memory: a read never generates.
+  [functions] world.block(pos: Vec3) → BlockAt ? :: The block there as the handle a hook gets: reads are live, and what it does lands on the next tick. `state` and `data` are for this pack's own blocks. `nil` where that chunk is not in memory.
+  [functions] world.get_biome(pos: Vec3) → string ? :: Returns the biome name of the column at `pos`; `nil` where that chunk is not in memory.
+  [functions] world.generate(rules: GeneratorRules) → Generated :: Declares this world: the engine makes each chunk from the rules, on every core, and no script runs for a chunk.
+  [functions] world.get_blocks(from: Vec3, to: Vec3) → { string ? } :: A box, in x, then z, then y order.
+  [functions] world.items() → { GroundItem } :: The stacks on the ground: `{ id, item, count, at }` rows.
+  [functions] world.spawn(def: EntityDef | string, pos: Vec3, data: { [string]: any }?) → EntityHandle ? :: Puts an entity at a point and returns its handle. A mob kind of the game by name (`world.spawn("cow", pos)`) is the game's own entity, and takes no `data`. A pack's own kind takes the data it starts life holding. `nil` for a kind nothing defined and this game does not have.
+  [functions] world.entities(query: { near: Vec3 ?, radius: number ?, kind: string ?, mob: boolean ? }?) → { EntityHandle } :: Live and queued entities, in ascending id. Optional near/radius select a sphere; kind filters by canonical name. near and radius go together. `mob = true` gives the mobs only, `mob = false` the rest.
+  [functions] world.explode(pos: Vec3, power: number ?) :: A blast at a point. The power is clamped by this game's own column and the tick's explosion budget decides when it goes off, never whether.
+  [functions] world.on_block_break(fn: (player: Player ?, pos: Vec3, block: string) -> ()) → Connection :: What the survival tick did. Observe-only: the world has already changed, and what the callback returns is not read.
+  [functions] world.on_block_place(fn: (player: Player ?, pos: Vec3, block: string) -> ()) → Connection :: Tells after a block was placed, with its canonical name. Observe-only; `player` is nil when nobody placed it or they left.
+  [functions] world.on_entity_spawn(fn: (entity: EntityHandle, name: string) -> ()) → Connection :: Tells after a mob appeared, with its handle and name; a natural spawn fires it on every game version that has one, and a pack's own `world.spawn("cow", pos)` fires it too. Mob kinds only.
+  [functions] world.on_entity_death(fn: (id: number, name: string) -> ()) → Connection :: Tells after a mob died; it is gone, so its id and name is all there is. Mob kinds only.
+  [functions] world.time((at: number | TimeName | (s: number) -> number | TimeName) -> ()) → & (() -> number) :: Holds the sky at a time (ticks, or "sunrise", "day", "noon", "sunset", "night", "midnight"), or asks a function each tick, `s` seconds after the call. With no argument: the time of day now, 0 to 23999.
+  [functions] world.light(sources: { LightSource }) :: Sends players light no block makes, 1 to 15 a source; each call replaces the last, `{}` ends it. 1.14 and later.
+  [functions] world.screen(opts: { at: Vec3, facing: Facing | "up", up: Facing ?, width: number ?, height: number ?, glow: boolean ?, on_click: ((player: Player, x: number, y: number, button: "left" | "right") -> ())?, }) → Screen :: Puts a wall of map frames, `width` by `height` frames (128 pixels each), in front of a wall; `at` is the top-left frame. Returns a Screen.
+  [functions] world.canvas(opts: { width: number ?, height: number ? }?) → Canvas :: Makes a picture of `width` by `height` maps (1 by 1 by default, 16 at most a side) with no frame of its own, for a frame, a hand or a screen.
+  [functions] world.display((opts: { kind: "model", model: Model, at: Vec3 ?, rotation: Orientation ?, scale: (number | Vec3)?, -- models require equal positive axes paint: { [string]: Ink }?, fallback: string ?, seats: { Vec3 }?, lead: boolean ?, }) -> ModelDisplay) → & ((opts: { kind: "item" | "text" | "block" | "frame", at: Vec3 ?, rotation: Orientation ?, scale: (Vec3 | number)?, billboard: Billboard ?, glow: (Ink | false)?, item: ItemSpec ?, canvas: Canvas ?, context: Context ?, text: Text ?, color: Ink ?, background: (Ink | false)?, line_width: number ?, shadow: boolean ?, block: string ?, facing: ScreenFacing ?, invisible: boolean ?, glide: number ?, lead: boolean ?, }) -> Display) :: A model stands in the world through the same call as everything else, and is the one kind that hands back something other than a Display.
+  [functions] world.hitbox(opts: { at: Vec3, width: number ?, height: number ?, depth: number ?, solid: boolean ?, on_click: ((player: Player, button: "left" | "right") -> ())?, }) → Hitbox :: Makes an invisible box a player can click; `solid` also makes it a wall. `depth` is the width unless given. 1.19.4 and later.
+  [functions] world.npc(opts: { name: string ?, at: Vec3 ?, rotation: BodyRotation ?, skin: (string | { value: string, signature: string } | false)?, }) → Npc :: Places a player-shaped entity every client from 1.8 sees; removed when the script ends or reloads.
+  [functions] world.puppet(opts: { kind: string, at: Vec3 ?, rotation: BodyRotation ?, name: Text ? }) → Puppet :: Places a mob's body with no mind of its own that the script moves; its name tag always shows. An error when this game has no such mob kind.
+  [fields] world.spawn_point: Vec3 :: Where players arrive in this room; writable. The same value as the room's `spawn_point`.
+
+
+===== REF: WorldTarget =====
+TITLE: WorldTarget type
+LEAD: 
+TYPEDEF:
+Player | MountTarget
+
+
+===== REF: Worn =====
+TITLE: Worn type
+LEAD: Armour, head first; each piece is an item like any other.
+TYPEDEF:
+{ head: ItemSpec ?, chest: ItemSpec ?, legs: ItemSpec ?, feet: ItemSpec ? }
+
+
+===== REF: Zone =====
+TITLE: Zone type
+LEAD: A box of blocks that knows who is in it, checked once a tick.
+SECTIONS: [{'title': 'Functions 3', 'type': 'functions'}]
+  [functions] zone:contains(player: Player) → boolean :: Returns true when the player is in the zone.
+  [functions] zone:players() → { Player } :: Returns who is in the zone now.
+  [functions] zone:destroy() :: Removes the zone.
+
+
+===== REF: camera =====
+TITLE: camera global
+LEAD: 
+
+
+===== REF: citadel =====
+TITLE: citadel global
+LEAD: The engine itself: the log, the engine and game versions, the environment, and this pack's tick budget.
+SECTIONS: [{'title': 'Functions 3', 'type': 'functions'}, {'title': 'Fields 3', 'type': 'fields'}]
+  [functions] citadel.log(... any) :: Writes its arguments to the server log, under this pack's name.
+  [functions] citadel.budget() → Budget :: This pack's slice of a tick, and what it did with it.
+  [functions] citadel.on_slow(fn: (slow: Slow) -> ()) → Connection :: Called when a batch runs out of budget; at most once a second.
+  [fields] citadel.version: string :: The engine version, e.g. "0.1.0".
+  [fields] citadel.game: string :: The game version from citadel.yml, e.g. "1.8.9".
+  [fields] citadel.env: string :: "development", "unlisted" or "published": which copy of the game this is.
+
+
+===== REF: color =====
+TITLE: color global
+LEAD: Makes a Color from red, green and blue, 0 to 1; also from hue, saturation and value, or the nearest map colour.
+TYPEDEF:
+((r: number, g: number, b: number) -> Color)
+SECTIONS: [{'title': 'Functions 3', 'type': 'functions'}]
+  [functions] color.hsv(h: number, s: number, v: number) → Color :: Makes a colour from hue, saturation and value, each 0 to 1.
+  [functions] color.nearest(c: Color) → Color :: The colour a picture really shows, since it snaps to the map palette.
+  [functions] color.gradient(list: { Ink }, u: number, loop: boolean ?) → Color :: The colour `u` (0 to 1) of the way along the list; with `loop`, `u` wraps and the last colour runs back into the first.
+
+
+===== REF: colors =====
+TITLE: colors global
+LEAD: Every `ColorName` as a value; any other name is an error naming the nearest ("grey" says "gray").
+SECTIONS: [{'title': 'Fields 23', 'type': 'fields'}]
+  [fields] colors.black: Color :: 
+  [fields] colors.dark_blue: Color :: 
+  [fields] colors.dark_green: Color :: 
+  [fields] colors.dark_aqua: Color :: 
+  [fields] colors.dark_red: Color :: 
+  [fields] colors.dark_purple: Color :: 
+  [fields] colors.gold: Color :: 
+  [fields] colors.gray: Color :: 
+  [fields] colors.dark_gray: Color :: 
+  [fields] colors.blue: Color :: 
+  [fields] colors.green: Color :: 
+  [fields] colors.aqua: Color :: 
+  [fields] colors.red: Color :: 
+  [fields] colors.light_purple: Color :: 
+  [fields] colors.yellow: Color :: 
+  [fields] colors.white: Color :: 
+  [fields] colors.orange: Color :: 
+  [fields] colors.lime: Color :: 
+  [fields] colors.cyan: Color :: 
+  [fields] colors.purple: Color :: 
+  [fields] colors.magenta: Color :: 
+  [fields] colors.pink: Color :: 
+  [fields] colors.transparent: Color :: 
+
+
+===== REF: commands =====
+TITLE: commands global · type Commands
+LEAD: Adds a room's slash commands from a usage line: the `commands` global, or `room.commands`.
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}]
+  [functions] commands.add(usage: string, fn: (player: Player, args: { [string]: any }) -> string ?, opts: CommandOpts ?) → Command :: usage: "bet <amount:integer 1..10000> [color:red|black]". Types: word, integer, number (with an optional min..max), player, a|b|c, text... (the rest of the line as a string), words... (as a list). args holds each argument by name; an optional one not typed is nil. Return a string and the player reads it in red.
+
+
+===== REF: data =====
+TITLE: data global
+LEAD: Helpers for persistent data views. Player.data remains an ordinary Lua table.
+SECTIONS: [{'title': 'Functions 3', 'type': 'functions'}]
+  [functions] data.copy(value: any) → any :: A detached JSON snapshot as ordinary Lua values/tables.
+  [functions] data.insert((list: DataView, value: any) -> ()) → & ((list: DataView, index: number, value: any) -> ()) :: Insert into a nested data list; omitted index appends.
+  [functions] data.remove(list: DataView, index: number ?) → any :: Remove and return a detached value; omitted index removes the last element.
+
+
+===== REF: fields =====
+TITLE: fields global
+LEAD: Recipes for numbers over the world, for `world.generate`.
+SECTIONS: [{'title': 'Functions 4', 'type': 'functions'}, {'title': 'Fields 9', 'type': 'fields'}]
+  [functions] fields.noise(opts: { seed: number ?, scale: number ?, octaves: number ?, gain: number ?, lacunarity: number ?, solid: boolean ? }?) → Field :: Smooth noise, about -1..1. `solid = true` changes with y too.
+  [functions] fields.mix(a: Field | number, b: Field | number, t: Field | number) → Field :: `a` where `t` is 0, `b` where it is 1.
+  [functions] fields.hash(cell: number ?, seed: number ?) → Field :: One number 0..1 for each square of `cell` blocks (1).
+  [functions] fields.cells(size: number, seed: number ?) → { distance: Field, random: Field } :: A scattered grid, one point per `size` blocks: the distance to the nearest point, and that point's own number 0..1.
+  [fields] fields.x: Field :: 
+  [fields] fields.y: Field :: 
+  [fields] fields.z: Field :: 
+  [fields] fields.height: Field :: The y of the surface of a column, as a block.
+  [fields] fields.slope: Field :: The step to the steepest of the four columns beside this one.
+  [fields] fields.water: Field :: How deep the water is over the surface; 0 and below on land.
+  [fields] fields.shore: Field :: 1 on a column at the water's edge with water beside it.
+  [fields] fields.depth: Field :: Blocks under the surface: `fields.height - fields.y`.
+  [fields] fields.room: Field :: The height of the open space a block is in: 0 in rock, 64 at most (and in the open sky). `density` cannot use it.
+
+
+===== REF: fx =====
+TITLE: fx global · type Fx
+LEAD: Particles for a room: Minecraft's particle packet; the `fx` global, or `room.fx`.
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}]
+  [functions] fx.particle(name: string, pos: Vec3 | { Vec3 }, opts: { count: number ?, spread: (number | Vec3)?, velocity: Vec3 ?, speed: number ?, color: Ink ?, size: number ?, }?) :: Shows particle `name` ("dust", "end_rod", "explosion", "firework", "flame", "note", "totem_of_undying") at `pos`, or at every point of a list. Each point reaches players in the room within 64 blocks of its origin in 3D, including the boundary, before spread or velocity. `count` (1) at each point in a box `spread` (0) out; or with `velocity`, one particle moving along it (`speed` 1 then, else 0). `color` and `size` are for dust only.
+
+
+===== REF: game =====
+TITLE: game global · type Game
+LEAD: The game version a room runs, its entity kinds, blocks and items, and the pack's own blocks, items and recipes: the `game` global, or `room.game`.
+SECTIONS: [{'title': 'Functions 3', 'type': 'functions'}, {'title': 'Fields 9', 'type': 'fields'}]
+  [functions] game.block(name: string) → Block ? :: Returns one block in this version's numbers, or nil for a name this game has no word for.
+  [functions] game.item(name: string) → Item ? :: Returns an item this game has, or nil for a name it does not; never an error.
+  [functions] game.texture(width: number, height: number) → Texture :: Returns a new texture of width by height pixels, see-through until drawn on, for a pack's block or item.
+  [fields] game.version: string :: This game's version, such as "a0.1.0".
+  [fields] game.world_height: number :: How tall the world is in blocks: 128, or 256 for a 1.8.9 world.
+  [fields] game.sea_level: number :: The y of this world's sea level.
+  [fields] game.entities: Entities & { [string]: (EntityKind | EntityDef)? } :: The kinds of entity: `define` a pack's own, `amend` the game's own, and read a kind of the game: a mob kind by either spelling (`game.entities.cow`, `game.entities.Cow`), a kind that is not a mob by its name (`game.entities.arrow`); nil where the game has none. It iterates every kind, including pack definitions: `for name, kind in game.entities do`.
+  [fields] game.blocks: Blocks :: The one table that *adds* to a version rather than reading it.
+  [fields] game.biomes: Biomes :: Biomes of the pack's own: a vanilla biome with other colours and weather.
+  [fields] game.recipes: Recipes :: What a crafting grid and a furnace make of a pack's items; recipes are added while the pack loads.
+  [fields] game.items: Items :: Defines items of the pack's own, with a texture for clients from 1.21.4.
+  [fields] game.terrain: { snow: boolean ?, steps: { TerrainStep }? }? :: What this world's overworld is made of: `snow` and `steps`, as citadel.yml writes them; read-only, nil when there is no list.
+
+
+===== REF: http =====
+TITLE: http global
+LEAD: Fetches public URLs. The call waits like `task.wait`.
+SECTIONS: [{'title': 'Functions 2', 'type': 'functions'}]
+  [functions] http.get(url: string, options: {query: {[string]: string }?, headers: {[string]: string }?, timeout: number ?, cache: number ?}?) → HttpResponse :: GET a URL. `cache` is the seconds a 200 answer is kept on disk; `timeout` is 1 to 60 seconds, 15 by default.
+  [functions] http.socket(url: string, options: {headers: {[string]: string }?, on_message: (message: SocketMessage) -> ()}) → Socket :: Opens a WebSocket (`ws` or `wss`) and keeps it open: when the connection ends, the engine dials again. `on_message` gets each message on a tick.
+
+
+===== REF: hub =====
+TITLE: hub global
+LEAD: What Minefort tells its own hub. Empty lists on every other server. The first call of servers, experiences or hubs waits up to two seconds for Minefort's lists.
+SECTIONS: [{'title': 'Functions 5', 'type': 'functions'}]
+  [functions] hub.servers() → { {id: string, name: string, category: string, motd: string ?, icon: string ?, banner: string ?, players: number ?, maxPlayers: number ?} } :: The players' servers that are online, and the published experiences (`category == "experience"`). `id` is what `player:connect` takes.
+  [functions] hub.experiences() → { {slot: number, experience: string, title: string, pitch: string ?, icon: string ?, banner: string ?, players: number ?} } :: The portals of the experience grounds. `experience` is what `/play` takes.
+  [functions] hub.hubs() → { {id: string, name: string, players: number ?, region: string ?} } :: Every hub that is online, this one included. `id` is what `player:connect` takes.
+  [functions] hub.rent(player: Player | string, slot: number, product: string, experience: string ?) → string ? :: Offers portal `slot` for Gems, to lead to `experience` (what `/play` takes). Returns the request id, or nil. More time on your own portal may leave `experience` out.
+  [functions] hub.point(player: Player | string, slot: number, experience: string) → boolean :: Turns the player's own live portal to another published experience.
+
+
+===== REF: message =====
+TITLE: message global
+LEAD: Sends a chat line to everyone in the main room; `color` is for the words that did not pick one.
+TYPEDEF:
+(text: Text, color: Ink ?) -> ()
+
+
+===== REF: models =====
+TITLE: models global
+LEAD: The models this pack makes. They go into the resource pack a client is handed when it joins, so `new` belongs at the top of the script: calling it from a callback is an error.
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}]
+  [functions] models.new(name: string, fn: (m: ModelBuild) -> ()) → Model :: Makes a model named `name` from the parts `fn` builds and returns it. Call it at the top of the script; from a callback it is an error.
+
+
+===== REF: network =====
+TITLE: network global
+LEAD: An experience made of more than one server: asks for instances of its members and is told about them. A failed call answers nil and a reason. Calls yield, but for `status`. Without a network every answer is no.
+SECTIONS: [{'title': 'Functions 8', 'type': 'functions'}]
+  [functions] network.start(options: {member: string, label: string, slots: number, data: any }) → (NetworkStarted ?, string ?) :: Starts an instance of `member`. Answers at once; it is online later.
+  [functions] network.find(options: {label: string, players: number ?, party: (Player | string)?, start: {member: string, slots: number, data: any }?}) → (NetworkStarted ?, string ?) :: The instance to send `players` players to (1 unless set), or nil when none has room. With `start`, one is started when none has room.
+  [functions] network.list(label: string ?) → ({ NetworkInstance }, string ?) :: The network's instances, or only those with `label`.
+  [functions] network.stop(id: string) → (boolean, string ?) :: Stops an instance of this network.
+  [functions] network.info() → ({network: string, id: string ?, member: string ?, label: string ?, slots: number ?, data: any }?, string ?) :: This server's network, by name, and the instance this pack runs on: `id` and the fields after it are nil on a server that is not one.
+  [functions] network.status(options: {open: number, status: string ?, meta: any }) :: Says where this instance is. At most one a second is sent: the first at once, then the last of those that came after.
+  [functions] network.on_instance(handler: (instance: NetworkInstance) -> ()) → Connection :: Called when an instance starts or changes.
+  [functions] network.on_gone(handler: (id: string) -> ()) → Connection :: Called with the id of an instance that is gone.
+
+
+===== REF: noise =====
+TITLE: noise global
+LEAD: Smooth random numbers for a generator, made by the engine.
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}]
+  [functions] noise.new(opts: { seed: number ?, scale: number ?, octaves: number ?, gain: number ?, lacunarity: number ? }?) → Noise :: Returns a noise. `scale` is the size of a hill in blocks (64), and each of the `octaves` (1) adds detail `lacunarity` (2) times finer and `gain` (0.5) times as strong.
+
+
+===== REF: parts =====
+TITLE: parts global
+LEAD: Declares named parts of a stored world and the generators that build them; nothing runs on load.
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}]
+  [functions] parts.define(def: PartDefinition) :: Declares a named part and its generator; nothing runs on load. A generator runs on request, or when its code changes.
+
+
+===== REF: players =====
+TITLE: players global · type Players
+LEAD: A room's players and their events: the `players` global, or `room.players`.
+SECTIONS: [{'title': 'Functions 18', 'type': 'functions'}]
+  [functions] players.on_join(fn: (player: Player) -> ()) → Connection :: Calls `fn` when a player arrives: on the globals when a client connects, on a room's table each time a player moves into it.
+  [functions] players.on_leave(fn: (player: Player) -> ()) → Connection :: The same player value on_join had; it can no longer be sent to.
+  [functions] players.list() → { Player } :: Returns every player in the room.
+  [functions] players.get(name: string) → Player ? :: Returns the player with this name, or nil.
+  [functions] players.count() → number :: Returns how many players are in the room.
+  [functions] players.near(pos: Vec3, radius: number) → { Player } :: Who is within a radius of a point, and who is inside a box of blocks.
+  [functions] players.within(from: Vec3, to: Vec3) → { Player } :: Returns every player inside a box of blocks, corners included.
+  [functions] players.on_click(fn: (player: Player, hit: Hit) -> ()) → Connection :: Calls `fn` on a left or right click; `hit` holds the button and the entity, player, block and face it met.
+  [functions] players.on_sneak(fn: (player: Player, down: boolean) -> ()) → Connection :: Calls `fn` once per sneak press and release; `down` is true on the press.
+  [functions] players.on_slot(fn: (player: Player, slot: number) -> ()) → Connection :: Calls `fn` when a player picks a hotbar slot, 1..9.
+  [functions] players.on_chat(fn: (player: Player, text: string) -> boolean ?) → Connection :: Return false and the line is not said.
+  [functions] players.on_pickup(fn: (player: Player ?, item: string, count: number) -> ()) → Connection :: A stack taken off the ground, and one that landed on it. `player` is nil where the world dropped it, or where they have already left.
+  [functions] players.on_drop(fn: (player: Player ?, item: string, count: number) -> ()) → Connection :: Calls `fn` when a stack lands on the ground; `player` is nil where the world dropped it or they have left.
+  [functions] players.on_death(fn: (player: Player ?, cause: string, message: string, by: Player ?) -> ()) → Connection :: Calls `fn` when a player dies, with the cause (fall, drown, void, lava, ...) and the line broadcast; `player` is nil once they have left.
+  [functions] players.on_respawn(fn: (player: Player ?) -> ()) → Connection :: Calls `fn` when a player respawns; `player` is nil once they have left.
+  [functions] players.on_break(fn: (player: Player ?, pos: Vec3, block: string) -> boolean ?) → Connection :: Cancellable. Return `false` to stop it; return nothing to let it through. These are asked *before* the world changes and the engine waits milliseconds for the answer, so they must be quick and must never `task.wait`. Timeout, error, overflow and disabled handlers deny the action. Across packs any `false` wins. See docs/luau-api.md, "saying no".
+  [functions] players.on_place(fn: (player: Player ?, pos: Vec3, block: string) -> boolean ?) → Connection :: Asks `fn` before a player puts a block down; return false to cancel it. A missed deadline denies the place.
+  [functions] players.on_damage(fn: (player: Player ?, hit: DamageHit) -> boolean ?) → Connection :: Asks `fn` before damage lands on a player; return false to refuse it. A missed deadline denies it. A pack's own `player:damage` is not asked about.
+
+
+===== REF: rooms =====
+TITLE: rooms global
+LEAD: The main room and new isolated rooms with their own chunks, players and effects.
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}, {'title': 'Fields 1', 'type': 'fields'}]
+  [functions] rooms.create(opts: { spawn_point: Vec3 ?, generate: ((chunk: Chunk) -> ())? }) → Room :: Creates an isolated room with its own chunks, players and effects; `spawn_point` defaults to (0.5, 65, 0.5), `generate` fills each chunk.
+  [fields] rooms.main: Room :: The main room, whose tables are the globals `world`, `players`, `ui` and the rest.
+
+
+===== REF: routes =====
+TITLE: routes global
+LEAD: How players get between the worlds of the group.
+SECTIONS: [{'title': 'Functions 1', 'type': 'functions'}]
+  [functions] routes.add(route: { from: string, to: string, trigger: { block: string, ticks: number ? }?, placement: Vec3 ? }) :: From one dimension to another: standing `ticks` ticks in `block`, or only by `player:travel` without a trigger; arriving at `placement` or the destination's spawn.
+
+
+===== REF: shop =====
+TITLE: shop global
+LEAD: Sells this experience's products for Gems. Minefort asks the player in its own dialog; the pack learns only paid or not, never a balance, price or reason. Calls yield. Without the platform's shop every answer is no.
+SECTIONS: [{'title': 'Functions 4', 'type': 'functions'}]
+  [functions] shop.prompt(player: Player | string, product: string) → string ? :: Asks Minefort to offer `product` to the player. Returns the request id, or nil when it was not offered.
+  [functions] shop.owns(player: Player | string, product: string) → boolean :: Whether the player owns this pass.
+  [functions] shop.on_paid(handler: (purchase: ShopPurchase) -> ()) → Connection :: Called once per paid purchase; returning without an error hands it over. An error leaves it waiting, to be called again later.
+  [functions] shop.on_declined(handler: (purchase: ShopPurchase) -> ()) → Connection :: Called when the player said no or did not answer.
+
+
+===== REF: sound =====
+TITLE: sound global · type Sound
+LEAD: Plays and stops sounds for everyone in a room: the `sound` global, or `room.sound`.
+SECTIONS: [{'title': 'Functions 3', 'type': 'functions'}]
+  [functions] sound.play(name: string, opts: { at: Vec3 ?, volume: number ?, pitch: number ?, category: string ?, }?) :: Plays a sound by name to everyone in the room; volume above 1 carries further, pitch 0.5..2.0.
+  [functions] sound.stop(name: string ?) :: One sound by name, or every sound, for everyone in the room; 1.13+.
+  [functions] sound.stream(opts: { url: string ?, file: string ?, at: (SoundSpeaker | { SoundSpeaker })?, to: (Player | { Player })?, distance: number ?, loop: boolean ?, name: string ?, }) → SoundStream :: A live stream (MP3, or an FLV's sound) or a pack's sound file (OGG, MP3, WAV), heard through the mod a screen's stream uses. With `at`, from speakers: each player hears every speaker within `distance`. Without, from no place, at one volume. `to`: only these players. `loop`: files only.
+
+
+===== REF: storage =====
+TITLE: storage global
+LEAD: Values a pack keeps between restarts, saved by key in its storage.json.
+SECTIONS: [{'title': 'Functions 5', 'type': 'functions'}]
+  [functions] storage.status() → { pending: boolean, error: string ? } :: Last persistence error and whether there are unsaved changes.
+  [functions] storage.flush() :: Yields until saved; raises an error on failure. After initialization only.
+  [functions] storage.get(key: string) → any :: Returns the value saved under `key`, or nil when there is none.
+  [functions] storage.set(key: string, value: any) :: Saves a value under `key` in this pack's storage.json; nil forgets it.
+  [functions] storage.keys(prefix: string ?) → { string } :: Every key, sorted; with a prefix, only those that start with it.
+
+
+===== REF: stores =====
+TITLE: stores global
+LEAD: Shared durable storage: the experience's one store, leases and raw queries; calls yield.
+SECTIONS: [{'title': 'Functions 6', 'type': 'functions'}]
+  [functions] stores.open() → DurableStore :: Returns the experience's one store. It takes no id; passing one is an error.
+  [functions] stores.request(query: {[string]: any }, bytes: string ?) → ({[string]: any }, string ?) :: Sends one raw query to the store and yields until it answers; returns the answer table and any blob bytes.
+  [functions] stores.lease(key: string, holder: string, ttl_ms: number) → number :: Takes a lease on `key` for `holder`, lasting `ttl_ms` milliseconds (up to one hour); returns a fencing token.
+  [functions] stores.renew(key: string, token: number) :: Extends the lease on `key` that `token` holds.
+  [functions] stores.release(key: string, token: number) :: Gives up the lease on `key` that `token` holds.
+  [functions] stores.blob_list(owner: string) → {{store: string, key: string, version: number, size: number }} :: Lists a player's blobs across all blob stores in this scope, each with its store, key, version and size.
+
+
+===== REF: task =====
+TITLE: task global
+LEAD: Tasks return threads; cancel with task.cancel(thread).
+
+
+===== REF: time =====
+TITLE: time global
+LEAD: Clocks for a pack: a callback every tick, one every few seconds, and the seconds since the pack started.
+SECTIONS: [{'title': 'Functions 3', 'type': 'functions'}]
+  [functions] time.on_tick(fn: (tick: number) -> ()) → Connection :: Calls `fn` every tick, 20 times a second, with the tick number; keep it short.
+  [functions] time.every(seconds: number, fn: () -> ()) → Connection :: Calls `fn` every `seconds`, precise to 1 ms and never drifting; use it for music.
+  [functions] time.now() → number :: Seconds since the pack started.
+
+
+===== REF: tween =====
+TITLE: tween global
+LEAD: Any live field eased over time: numbers, vec3 and color values tween; a table field is replaced when it lands.
+TYPEDEF:
+(target: any, to: { [string]: any }, opts: { duration: number ?, easing: Easing ?, on_done: (() -> ())? }?) -> Tween
+
+
+===== REF: ui =====
+TITLE: ui global · type Ui
+LEAD: Titles, chat, the action bar, boss bars, the sidebar and the tab list: for everyone in a room (the `ui` global, or `room.ui`), or for one player (`player.ui`, the same calls). "Everyone" below is one player on `player.ui`.
+SECTIONS: [{'title': 'Functions 12', 'type': 'functions'}, {'title': 'Fields 1', 'type': 'fields'}]
+  [functions] ui.title(opts: { title: Text ?, subtitle: Text ?, color: Ink ?, fade_in: number ?, stay: number ?, fade_out: number ?, }) :: Shows a title and subtitle to everyone in the room; fades and stay are in seconds.
+  [functions] ui.actionbar(text: Text, color: Ink ?) :: Shows a line above the hotbar to everyone in the room.
+  [functions] ui.bossbar(opts: { title: Text ?, color: BarColor ?, progress: number ? }?) → Bar :: Shows a boss bar to everyone in the room and returns its handle; progress 0..1. 1.8 reads the title on its action bar.
+  [functions] ui.sidebar(opts: ({ title: Text ?, lines: { Text }? } | false)?) :: Sets the sidebar for everyone in the room; lines run top to bottom and only changed lines are sent. nil or false removes the sidebar.
+  [functions] ui.tab(opts: { header: Text ?, footer: Text ? }) :: Sets the player list's header and footer for everyone in the room.
+  [functions] ui.box(opts: { id: string ?, width: number, height: number, color: Ink ?, radius: number ? }) → LayoutNode :: The pieces of a layout (see "Layouts"). Sizes are pixels of the game's own HUD; a box is 1 to 256 a side. An item with an `id` is live.
+  [functions] ui.image(opts: { id: string ?, image: Texture, color: Ink ? }) → LayoutNode :: 
+  [functions] ui.label(opts: { id: string ?, text: string ?, width: number ?, align: LayoutAlign ?, color: Ink ? }) → LayoutNode :: Words in the client's own letters, space to `~`. Give a label whose words change a `width`.
+  [functions] ui.row(opts: { gap: number ?, align: LayoutAlign ?, [number]: LayoutNode }) → LayoutNode :: The children are the list part: `ui.row{ gap = 4, a, b }`.
+  [functions] ui.column(opts: { gap: number ?, align: LayoutAlign ?, [number]: LayoutNode }) → LayoutNode :: 
+  [functions] ui.stack(opts: { align: LayoutAlign ?, [number]: LayoutNode }) → LayoutNode :: 
+  [functions] ui.define(name: string, opts: { anchor: "bottom" ?, margin: number ?, [number]: LayoutNode }) → Layout :: A layout of one child, centred over the hotbar with its bottom edge `margin` pixels above the screen's (40, or 25 when `hide_hud` takes the hearts and the food away). While the pack loads only.
+  [fields] ui.kit: { [string]: any } :: What a dialog is made of (see "Dialogs"): row, column, stack, space, text, image, and window, button, tabs, close, badge, dot, progress, divider, card, grid, theme, mix and SCREEN.
+
+
+===== REF: vec3 =====
+TITLE: vec3 global
+LEAD: Makes a Vec3 from x, y and z; `vec3.zero` and `vec3.up` are ready-made.
+TYPEDEF:
+((x: number, y: number, z: number) -> Vec3)
+SECTIONS: [{'title': 'Fields 2', 'type': 'fields'}]
+  [fields] vec3.zero: Vec3 :: vec3(0, 0, 0).
+  [fields] vec3.up: Vec3 :: vec3(0, 1, 0).
+
+
+===== REF: world =====
+TITLE: world global · type World
+LEAD: A room's blocks, entities, displays, screens and time: the `world` global, or `room.world`.
+SECTIONS: [{'title': 'Functions 39', 'type': 'functions'}, {'title': 'Fields 1', 'type': 'fields'}]
+  [functions] world.on_generate(fn: (chunk: Chunk) -> ()) :: Called for a chunk each time it comes into memory, in a script world; it must make the same blocks every time.
+  [functions] world.on_populate(fn: (chunk: Chunk) -> ()) :: Each chunk the overworld terrain made, once, after it made it.
+  [functions] world.dimension(name: string) → World :: Another world of the server's group, by dimension id or its last part ("dungeon", "minecraft:the_nether"): that world's own `world` table.
+  [functions] world.drop(pos: Vec3, item: ItemSpec) :: A stack on the ground at a block, as a broken block leaves one.
+  [functions] world.container(pos: Vec3) → Container ? :: A chest's stacks, or nil where the block keeps none.
+  [functions] world.rules(opts: { survival: boolean ?, fall: boolean ?, damage: boolean ?, hunger: boolean ?, anticheat: boolean ?, day_cycle: boolean ?, redstone: boolean ? }?) → Rules :: `world.rules{ fall = true }` switches one on, false off; a rule left out or nil keeps its value, and a number or a string is an error. `world.rules()` reads them.
+  [functions] world.raycast(from: Vec3, direction: Vec3, max: number ?) → RayHit ? :: The first block a ray from `from` along `direction` meets within `max` blocks, and the face it came in through; nil for none.
+  [functions] world.sees(from: Vec3, to: Vec3) → boolean :: True when no block stops the line from `from` to `to`: a block with a collision box does (glass, leaves), water and grass do not.
+  [functions] world.raycasts(rays: buffer, out: buffer, n: number) :: `n` lines at once. `rays` holds six f64 a line (from x, y, z, to x, y, z); `out` gets one f64 a line: how far along it the first block is that stops it, or -1 for a clear line.
+  [functions] world.light_at(pos: Vec3) → (number, number, boolean) :: Block light and sky light, 0 to 15, and whether nothing above holds off the sky.
+  [functions] world.path(from: Vec3, to: Vec3, opts: { size: (number | { number })?, swim: boolean ?, fall: number ?, range: number ?, budget: number ? }?) → { Vec3 }? :: The points a body walks from `from` to the block at `to`, or nil. The game's own search: a step up of one block, falls of `fall` (3). `size` is { width, height } (0.6, 1.8); `swim` goes through water; `range` (the distance + 16) and `budget` (2000 nodes) stop a long search, which then gives the part that came closest.
+  [functions] world.zone(opts: { from: Vec3, to: Vec3, on_enter: ((player: Player) -> ())?, on_leave: ((player: Player) -> ())? }) → Zone :: Makes a box of blocks, both corners included, that knows who is in it; checked once a tick by feet position. Ends with the script.
+  [functions] world.set_block(pos: Vec3, block: BlockRef, opts: { skin: HeadSkin ? }?) :: `skin` is for "player_head" and "player_wall_head" only: an account's name, or the raw `textures` property.
+  [functions] world.set_blocks(changes: { { at: Vec3, block: BlockRef, skin: HeadSkin ? } }) :: Sets many blocks at once, live, stored and sent; the cheapest way. A row takes `skin` too, for a player head.
+  [functions] world.fill(from: Vec3, to: Vec3, block: BlockRef) :: Fills a box of blocks between two corners, live, stored and sent to everyone.
+  [functions] world.schematic(file: string) → Schematic :: A file inside the pack; a path that leaves it, or one that is not there, is an error naming the file.
+  [functions] world.build(fn: (b: Builder) -> (), opts: { detail: number ? }?) → Schematic :: The same value, written in code instead of read from a file. `{ detail = 2 }`: coordinates are half blocks, fitted to slabs and stairs.
+  [functions] world.paste(schem: Schematic, origin: Vec3, opts: { air: boolean ?, part: string ? }?) :: Live, stored and sent; air is skipped unless `air` is true.
+  [functions] world.get_block(pos: Vec3) → string ? :: `nil` where that chunk is not in memory: a read never generates.
+  [functions] world.block(pos: Vec3) → BlockAt ? :: The block there as the handle a hook gets: reads are live, and what it does lands on the next tick. `state` and `data` are for this pack's own blocks. `nil` where that chunk is not in memory.
+  [functions] world.get_biome(pos: Vec3) → string ? :: Returns the biome name of the column at `pos`; `nil` where that chunk is not in memory.
+  [functions] world.generate(rules: GeneratorRules) → Generated :: Declares this world: the engine makes each chunk from the rules, on every core, and no script runs for a chunk.
+  [functions] world.get_blocks(from: Vec3, to: Vec3) → { string ? } :: A box, in x, then z, then y order.
+  [functions] world.items() → { GroundItem } :: The stacks on the ground: `{ id, item, count, at }` rows.
+  [functions] world.spawn(def: EntityDef | string, pos: Vec3, data: { [string]: any }?) → EntityHandle ? :: Puts an entity at a point and returns its handle. A mob kind of the game by name (`world.spawn("cow", pos)`) is the game's own entity, and takes no `data`. A pack's own kind takes the data it starts life holding. `nil` for a kind nothing defined and this game does not have.
+  [functions] world.entities(query: { near: Vec3 ?, radius: number ?, kind: string ?, mob: boolean ? }?) → { EntityHandle } :: Live and queued entities, in ascending id. Optional near/radius select a sphere; kind filters by canonical name. near and radius go together. `mob = true` gives the mobs only, `mob = false` the rest.
+  [functions] world.explode(pos: Vec3, power: number ?) :: A blast at a point. The power is clamped by this game's own column and the tick's explosion budget decides when it goes off, never whether.
+  [functions] world.on_block_break(fn: (player: Player ?, pos: Vec3, block: string) -> ()) → Connection :: What the survival tick did. Observe-only: the world has already changed, and what the callback returns is not read.
+  [functions] world.on_block_place(fn: (player: Player ?, pos: Vec3, block: string) -> ()) → Connection :: Tells after a block was placed, with its canonical name. Observe-only; `player` is nil when nobody placed it or they left.
+  [functions] world.on_entity_spawn(fn: (entity: EntityHandle, name: string) -> ()) → Connection :: Tells after a mob appeared, with its handle and name; a natural spawn fires it on every game version that has one, and a pack's own `world.spawn("cow", pos)` fires it too. Mob kinds only.
+  [functions] world.on_entity_death(fn: (id: number, name: string) -> ()) → Connection :: Tells after a mob died; it is gone, so its id and name is all there is. Mob kinds only.
+  [functions] world.time((at: number | TimeName | (s: number) -> number | TimeName) -> ()) → & (() -> number) :: Holds the sky at a time (ticks, or "sunrise", "day", "noon", "sunset", "night", "midnight"), or asks a function each tick, `s` seconds after the call. With no argument: the time of day now, 0 to 23999.
+  [functions] world.light(sources: { LightSource }) :: Sends players light no block makes, 1 to 15 a source; each call replaces the last, `{}` ends it. 1.14 and later.
+  [functions] world.screen(opts: { at: Vec3, facing: Facing | "up", up: Facing ?, width: number ?, height: number ?, glow: boolean ?, on_click: ((player: Player, x: number, y: number, button: "left" | "right") -> ())?, }) → Screen :: Puts a wall of map frames, `width` by `height` frames (128 pixels each), in front of a wall; `at` is the top-left frame. Returns a Screen.
+  [functions] world.canvas(opts: { width: number ?, height: number ? }?) → Canvas :: Makes a picture of `width` by `height` maps (1 by 1 by default, 16 at most a side) with no frame of its own, for a frame, a hand or a screen.
+  [functions] world.display((opts: { kind: "model", model: Model, at: Vec3 ?, rotation: Orientation ?, scale: (number | Vec3)?, -- models require equal positive axes paint: { [string]: Ink }?, fallback: string ?, seats: { Vec3 }?, lead: boolean ?, }) -> ModelDisplay) → & ((opts: { kind: "item" | "text" | "block" | "frame", at: Vec3 ?, rotation: Orientation ?, scale: (Vec3 | number)?, billboard: Billboard ?, glow: (Ink | false)?, item: ItemSpec ?, canvas: Canvas ?, context: Context ?, text: Text ?, color: Ink ?, background: (Ink | false)?, line_width: number ?, shadow: boolean ?, block: string ?, facing: ScreenFacing ?, invisible: boolean ?, glide: number ?, lead: boolean ?, }) -> Display) :: A model stands in the world through the same call as everything else, and is the one kind that hands back something other than a Display.
+  [functions] world.hitbox(opts: { at: Vec3, width: number ?, height: number ?, depth: number ?, solid: boolean ?, on_click: ((player: Player, button: "left" | "right") -> ())?, }) → Hitbox :: Makes an invisible box a player can click; `solid` also makes it a wall. `depth` is the width unless given. 1.19.4 and later.
+  [functions] world.npc(opts: { name: string ?, at: Vec3 ?, rotation: BodyRotation ?, skin: (string | { value: string, signature: string } | false)?, }) → Npc :: Places a player-shaped entity every client from 1.8 sees; removed when the script ends or reloads.
+  [functions] world.puppet(opts: { kind: string, at: Vec3 ?, rotation: BodyRotation ?, name: Text ? }) → Puppet :: Places a mob's body with no mind of its own that the script moves; its name tag always shows. An error when this game has no such mob kind.
+  [fields] world.spawn_point: Vec3 :: Where players arrive in this room; writable. The same value as the room's `spawn_point`.

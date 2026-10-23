@@ -1,1 +1,1 @@
-{"type": "refmember", "parent": "Field", "name": "floor", "title": "field:floor", "kind": "method", "lead": "", "signature": "field:floor() \u2192 Field", "params": [], "returns": ["Field"], "usedIn": []}
+{"type": "refmember", "parent": "Field", "name": "floor", "title": "field:floor", "kind": "method", "lead": "", "signature": "field:floor() → Field", "params": [], "returns": ["Field"], "usedIn": []}

@@ -1,10 +1,10 @@
 "use client";
 
 import { useMemo } from "react";
-import { Link2 } from "lucide-react";
+import { Link2, Info, AlertTriangle, Lightbulb, Zap, BookOpen } from "lucide-react";
 import { parseMarkdown, type Block, type Inline } from "@/lib/docs/markdown";
 import { CodeBlock } from "./CodeBlock";
-import { docsUrlToHash, scrollToAnchor } from "@/lib/docs/router";
+import { linkToHash, scrollToAnchor } from "@/lib/docs/router";
 
 function InlineRun({ nodes }: { nodes: Inline[] }) {
   return (
@@ -35,18 +35,21 @@ function InlineRun({ nodes }: { nodes: Inline[] }) {
               </em>
             );
           case "link": {
-            const hash = docsUrlToHash(n.href);
+            const hash = linkToHash(n.href);
             if (hash !== null) {
-              const anchorMatch = /^#\/([^#]*)#(.+)$/.exec(n.href);
-              void anchorMatch;
+              const isAnchor = hash.startsWith("#") && !hash.startsWith("#/");
               return (
                 <a
                   key={i}
                   href={hash}
                   onClick={(e) => {
                     e.preventDefault();
-                    window.location.hash = hash;
-                    window.scrollTo({ top: 0 });
+                    if (isAnchor) {
+                      scrollToAnchor(hash.slice(1));
+                    } else {
+                      window.location.hash = hash;
+                      window.scrollTo({ top: 0 });
+                    }
                   }}
                   className="font-medium text-amber-700 underline decoration-amber-300 underline-offset-2 transition-colors hover:text-amber-800 dark:text-amber-400 dark:decoration-amber-500/50 dark:hover:text-amber-300"
                 >
@@ -83,6 +86,46 @@ function HeadingAnchor({ id }: { id: string }) {
     >
       <Link2 className="size-3.5" />
     </button>
+  );
+}
+
+function Callout({ kind, children }: { kind: string; children: React.ReactNode }) {
+  const config: Record<string, { icon: React.ReactNode; label: string; cls: string }> = {
+    "In short": {
+      icon: <BookOpen className="size-4 shrink-0" />,
+      label: "In short",
+      cls: "border-amber-400/70 bg-amber-50/80 dark:border-amber-500/60 dark:bg-amber-950/25",
+    },
+    Note: {
+      icon: <Info className="size-4 shrink-0" />,
+      label: "Note",
+      cls: "border-sky-300 bg-sky-50/70 dark:border-sky-700 dark:bg-sky-950/25",
+    },
+    Gotcha: {
+      icon: <AlertTriangle className="size-4 shrink-0" />,
+      label: "Gotcha",
+      cls: "border-orange-300 bg-orange-50/70 dark:border-orange-700/80 dark:bg-orange-950/25",
+    },
+    Tip: {
+      icon: <Lightbulb className="size-4 shrink-0" />,
+      label: "Tip",
+      cls: "border-emerald-300 bg-emerald-50/70 dark:border-emerald-700 dark:bg-emerald-950/25",
+    },
+    Warning: {
+      icon: <Zap className="size-4 shrink-0" />,
+      label: "Warning",
+      cls: "border-red-300 bg-red-50/70 dark:border-red-800 dark:bg-red-950/25",
+    },
+  };
+  const c = config[kind] ?? config.Note;
+  return (
+    <div className={`my-5 rounded-xl border-l-4 px-4 py-3 ${c.cls}`}>
+      <div className="flex items-center gap-2 pb-1 text-[11px] font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+        {c.icon}
+        {c.label}
+      </div>
+      <div className="text-[15px] leading-7 text-zinc-700 dark:text-zinc-300">{children}</div>
+    </div>
   );
 }
 
@@ -165,15 +208,23 @@ function renderBlock(block: Block, key: number): React.ReactNode {
           </table>
         </div>
       );
-    case "quote":
+    case "quote": {
+      if (block.callout) {
+        return (
+          <Callout key={key} kind={block.callout}>
+            <InlineRun nodes={block.inlines} />
+          </Callout>
+        );
+      }
       return (
         <blockquote
           key={key}
-          className="my-5 border-l-4 border-amber-400 bg-amber-50 px-4 py-3 text-[15px] italic leading-7 text-zinc-700 dark:border-amber-500 dark:bg-amber-950/30 dark:text-zinc-300"
+          className="my-5 border-l-4 border-zinc-300 pl-4 text-[15px] italic leading-7 text-zinc-600 dark:border-zinc-700 dark:text-zinc-400"
         >
-          {block.lines}
+          <InlineRun nodes={block.inlines} />
         </blockquote>
       );
+    }
     default:
       return null;
   }

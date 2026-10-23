@@ -15,12 +15,12 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Citadel Docs — Build a Minecraft game in Luau",
-    template: "%s · Citadel Docs",
+    default: "Citadel Wiki — Minefort Citadel developer documentation",
+    template: "%s · Citadel Wiki",
   },
   description:
-    "Structured, searchable documentation for Minefort Citadel: 5 hands-on game guides, 9 concept topics (55 pages), and a full API reference with 29 globals and 136 types.",
-  keywords: ["Citadel", "Minefort", "Minecraft", "Luau", "game development", "docs", "API reference"],
+    "The developer wiki for Minefort Citadel — a Luau scripting engine for Minecraft servers. 60 structured articles, 5 guides, a cookbook, and a complete API reference: 29 globals, 141 types, 674 documented members.",
+  keywords: ["Citadel", "Minefort", "Minecraft", "Luau", "game development", "wiki", "docs", "API reference"],
 };
 
 export default function RootLayout({
