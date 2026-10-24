@@ -13,8 +13,8 @@
     "sync": "python3 scripts/sync_official.py"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.36.0",
-    "astro": "^5.14.0",
-    "sharp": "^0.34.0"
+    "@astrojs/starlight": "^0.42.7",
+    "astro": "^7.4.2",
+    "sharp": "^0.35.5"
   }
 }
