@@ -1,5 +1,5 @@
 ---
-title: 'partDefinition.name'
+title: "partDefinition.name"
 description: 'Unique; a path, "downtown/tower-3", nests.'
 ---
 

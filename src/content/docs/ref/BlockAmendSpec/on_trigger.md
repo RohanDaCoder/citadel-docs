@@ -1,5 +1,5 @@
 ---
-title: 'blockAmendSpec.on_trigger'
+title: "blockAmendSpec.on_trigger"
 description: 'It was lit, blasted or burnt; cause is "ignite", "explosion" or "fire".'
 ---
 
@@ -13,9 +13,9 @@ It was lit, blasted or burnt; `cause` is "ignite", "explosion" or "fire".
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(block` | `BlockAt , cause: Trigger , base: (... any ) -> any ) -> ()` | yes |
+| Name     | Type                                                         | Required |
+| -------- | ------------------------------------------------------------ | -------- |
+| `(block` | `BlockAt , cause: Trigger , base: (... any ) -> any ) -> ()` | yes      |
 
 ## Returns
 

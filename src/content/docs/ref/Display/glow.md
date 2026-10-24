@@ -1,6 +1,6 @@
 ---
-title: 'display.glow'
-description: 'Its outline colour; nil or false for none.'
+title: "display.glow"
+description: "Its outline colour; nil or false for none."
 ---
 
 Part of [`display`](/ref/Display/).

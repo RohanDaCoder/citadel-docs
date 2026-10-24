@@ -1,5 +1,5 @@
 ---
-title: 'generatorRules.floor'
+title: "generatorRules.floor"
 description: 'The block at y 0; "bedrock" for a land of its own.'
 ---
 

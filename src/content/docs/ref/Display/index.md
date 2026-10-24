@@ -1,34 +1,34 @@
 ---
-title: 'Display type'
-description: 'An item, text, block or frame shown in the world, from world.display; its place, rotation, scale and look are live.'
+title: "Display type"
+description: "An item, text, block or frame shown in the world, from world.display; its place, rotation, scale and look are live."
 ---
 
 An item, text, block or frame shown in the world, from `world.display`; its place, rotation, scale and look are live.
 
 ## Functions
 
-| Call | Purpose |
-| --- | --- |
+| Call                               | Purpose                                                                                                                    |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | [`animate`](/ref/Display/animate/) | Makes one tweened change of place, scale, rotation or text over `duration` seconds (0.5 by default), played by the client. |
-| [`move`](/ref/Display/move/) | Removes the display. Sets position and optional rotation together. |
-| [`destroy`](/ref/Display/destroy/) |  |
+| [`move`](/ref/Display/move/)       | Removes the display. Sets position and optional rotation together.                                                         |
+| [`destroy`](/ref/Display/destroy/) |                                                                                                                            |
 
 ## Fields
 
-| Field | Purpose |
-| --- | --- |
-| [`display.id: number`](/ref/Display/id/) | The raw entity id. `hit.entity` hands back this handle itself, so a pack rarely needs the number. |
-| [`display.billboard: Billboard`](/ref/Display/billboard/) | Whether it is still present. Read-only. Where it sits; live, every kind. Its yaw, pitch and roll in degrees; live. Pitch 90 lays a text flat on a table. Reads a vec3; write a number for every axis at once. How it turns toward the viewer; text defaults to "center", the other kinds to "fixed". |
-| [`display.glow: (Color \| false)?`](/ref/Display/glow/) | Its outline colour; nil or false for none. |
-| [`display.duration: number`](/ref/Display/duration/) | Seconds later changes take to play out on the client (1.19.4 and later); 0 by default. |
-| [`display.glide: number`](/ref/Display/glide/) | Advanced movement smoothing in seconds (1.20.2+); default 0.1, 0 follows duration. |
-| [`display.lead: boolean ?`](/ref/Display/lead/) | Advanced: true enables linear prediction. Default false; nil restores it. Normally submit current positions and leave this alone. |
-| [`display.item: string ?`](/ref/Display/item/) | item kind |
-| [`display.canvas: number ?`](/ref/Display/canvas/) | Item kind: the canvas shown as a filled map; written as a canvas, read back as its map id. |
-| [`display.context: Context ?`](/ref/Display/context/) | Item kind: how the item is posed, as in a frame, a hand or on the ground. |
-| [`display.text: string ?`](/ref/Display/text/) | text kind Reads back the words; takes any text. |
-| [`display.color: Color ?`](/ref/Display/color/) | The colour of the words that did not pick one. |
-| [`display.background: (Color \| false)?`](/ref/Display/background/) | Text kind: the colour behind the words; nil or false for none. |
-| [`display.line_width: number ?`](/ref/Display/line_width/) | Text kind: the width its lines wrap at; 200 by default. |
-| [`display.shadow: boolean ?`](/ref/Display/shadow/) | Text kind: whether the words have a shadow; false by default. |
-| [`display.block: string ?`](/ref/Display/block/) | block kind |
+| Field                                                               | Purpose                                                                                                                                                                                                                                                                                              |
+| ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`display.id: number`](/ref/Display/id/)                            | The raw entity id. `hit.entity` hands back this handle itself, so a pack rarely needs the number.                                                                                                                                                                                                    |
+| [`display.billboard: Billboard`](/ref/Display/billboard/)           | Whether it is still present. Read-only. Where it sits; live, every kind. Its yaw, pitch and roll in degrees; live. Pitch 90 lays a text flat on a table. Reads a vec3; write a number for every axis at once. How it turns toward the viewer; text defaults to "center", the other kinds to "fixed". |
+| [`display.glow: (Color \| false)?`](/ref/Display/glow/)             | Its outline colour; nil or false for none.                                                                                                                                                                                                                                                           |
+| [`display.duration: number`](/ref/Display/duration/)                | Seconds later changes take to play out on the client (1.19.4 and later); 0 by default.                                                                                                                                                                                                               |
+| [`display.glide: number`](/ref/Display/glide/)                      | Advanced movement smoothing in seconds (1.20.2+); default 0.1, 0 follows duration.                                                                                                                                                                                                                   |
+| [`display.lead: boolean ?`](/ref/Display/lead/)                     | Advanced: true enables linear prediction. Default false; nil restores it. Normally submit current positions and leave this alone.                                                                                                                                                                    |
+| [`display.item: string ?`](/ref/Display/item/)                      | item kind                                                                                                                                                                                                                                                                                            |
+| [`display.canvas: number ?`](/ref/Display/canvas/)                  | Item kind: the canvas shown as a filled map; written as a canvas, read back as its map id.                                                                                                                                                                                                           |
+| [`display.context: Context ?`](/ref/Display/context/)               | Item kind: how the item is posed, as in a frame, a hand or on the ground.                                                                                                                                                                                                                            |
+| [`display.text: string ?`](/ref/Display/text/)                      | text kind Reads back the words; takes any text.                                                                                                                                                                                                                                                      |
+| [`display.color: Color ?`](/ref/Display/color/)                     | The colour of the words that did not pick one.                                                                                                                                                                                                                                                       |
+| [`display.background: (Color \| false)?`](/ref/Display/background/) | Text kind: the colour behind the words; nil or false for none.                                                                                                                                                                                                                                       |
+| [`display.line_width: number ?`](/ref/Display/line_width/)          | Text kind: the width its lines wrap at; 200 by default.                                                                                                                                                                                                                                              |
+| [`display.shadow: boolean ?`](/ref/Display/shadow/)                 | Text kind: whether the words have a shadow; false by default.                                                                                                                                                                                                                                        |
+| [`display.block: string ?`](/ref/Display/block/)                    | block kind                                                                                                                                                                                                                                                                                           |

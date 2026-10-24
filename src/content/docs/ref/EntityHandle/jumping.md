@@ -1,6 +1,6 @@
 ---
-title: 'entityHandle.jumping'
-description: 'Intent: whether it wants to jump'
+title: "entityHandle.jumping"
+description: "Intent: whether it wants to jump"
 ---
 
 Part of [`entityHandle`](/ref/EntityHandle/).

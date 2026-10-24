@@ -1,6 +1,6 @@
 ---
-title: 'blockAmendSpec.on_tick'
-description: 'A scheduled tick this block asked for came due.'
+title: "blockAmendSpec.on_tick"
+description: "A scheduled tick this block asked for came due."
 ---
 
 Part of [`blockAmendSpec`](/ref/BlockAmendSpec/).
@@ -13,9 +13,9 @@ A scheduled tick this block asked for came due.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(block` | `BlockAt , base: (... any ) -> any ) -> ()` | yes |
+| Name     | Type                                        | Required |
+| -------- | ------------------------------------------- | -------- |
+| `(block` | `BlockAt , base: (... any ) -> any ) -> ()` | yes      |
 
 ## Returns
 

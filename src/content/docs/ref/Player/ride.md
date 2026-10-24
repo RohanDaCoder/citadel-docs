@@ -1,6 +1,6 @@
 ---
-title: 'player:ride'
-description: 'The player''s name'
+title: "player:ride"
+description: "The player's name"
 ---
 
 Part of [`Player`](/ref/Player/).
@@ -13,10 +13,10 @@ The player's name. The account's own id: the one name for a player a rename does
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `thing` | [`MountTarget`](/ref/MountTarget/) | yes |
-| `opts` | `{ seat: number ?, locked: boolean ? }` | no |
+| Name    | Type                                    | Required |
+| ------- | --------------------------------------- | -------- |
+| `thing` | [`MountTarget`](/ref/MountTarget/)      | yes      |
+| `opts`  | `{ seat: number ?, locked: boolean ? }` | no       |
 
 ## Returns
 
@@ -26,7 +26,7 @@ The player's name. The account's own id: the one name for a player a rename does
 
 > "Likewise, `player:ride` while a free/orbit camera is active is an error;" — [Cameras](/players/movement/)
 > "- For the driver's own eyes, seat them: `player:ride(car, { locked = true })`" — [Cameras](/players/movement/)
-> "player:ride(thing) -> boolean   -- sit on a display, a model, a hitbox or an npc, and go where it goes;" — [Input](/players/movement/)
-> "player:ride(c)                                -- seat 1: W and S throttle, A and D steer" — [Displays](/ui/displays/)
+> "player:ride(thing) -> boolean -- sit on a display, a model, a hitbox or an npc, and go where it goes;" — [Input](/players/movement/)
+> "player:ride(c) -- seat 1: W and S throttle, A and D steer" — [Displays](/ui/displays/)
 > "- A seat holds one rider. `player:ride` and `npc:ride` return `false` for a" — [Displays](/ui/displays/)
-> "n:ride(car, { seat = 2 }) -> boolean   -- sits as player:ride does; false when that seat is taken" — [NPCs](/entities/npcs/)
+> "n:ride(car, { seat = 2 }) -> boolean -- sits as player:ride does; false when that seat is taken" — [NPCs](/entities/npcs/)

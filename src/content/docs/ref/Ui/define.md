@@ -1,6 +1,6 @@
 ---
-title: 'ui.define'
-description: 'A layout of one child, centred over the hotbar with its bottom edge margin pixels above the screen''s (40, or 25 when hide_hud takes the hearts and the food away)'
+title: "ui.define"
+description: "A layout of one child, centred over the hotbar with its bottom edge margin pixels above the screen's (40, or 25 when hide_hud takes the hearts and the food away)"
 ---
 
 Part of [`ui`](/ref/Ui/).
@@ -13,10 +13,10 @@ A layout of one child, centred over the hotbar with its bottom edge `margin` pix
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `name` | `string` | yes |
-| `opts` | `{ anchor: "bottom" ?, margin: number ?, [ number ]: LayoutNode }` | yes |
+| Name   | Type                                                               | Required |
+| ------ | ------------------------------------------------------------------ | -------- |
+| `name` | `string`                                                           | yes      |
+| `opts` | `{ anchor: "bottom" ?, margin: number ?, [ number ]: LayoutNode }` | yes      |
 
 ## Returns
 

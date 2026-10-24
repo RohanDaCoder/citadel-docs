@@ -1,6 +1,6 @@
 ---
-title: 'damageHit.by'
-description: 'The player who hit, or who shot the arrow.'
+title: "damageHit.by"
+description: "The player who hit, or who shot the arrow."
 ---
 
 Part of [`damageHit`](/ref/DamageHit/).

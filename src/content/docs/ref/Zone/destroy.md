@@ -1,6 +1,6 @@
 ---
-title: 'zone:destroy'
-description: 'Removes the zone.'
+title: "zone:destroy"
+description: "Removes the zone."
 ---
 
 Part of [`Zone`](/ref/Zone/).

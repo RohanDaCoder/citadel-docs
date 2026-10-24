@@ -1,6 +1,6 @@
 ---
-title: 'Zones, raycasts and paths'
-description: 'Querying space — trigger zones with on_enter/on_leave, single and batched raycasts, line-of-sight checks, the mob pathfinder, light at a position, and nearby-player queries.'
+title: "Zones, raycasts and paths"
+description: "Querying space — trigger zones with on_enter/on_leave, single and batched raycasts, line-of-sight checks, the mob pathfinder, light at a position, and nearby-player queries."
 ---
 
 :::note[In short]
@@ -73,13 +73,13 @@ local points = world.path(from, to, { size = { 0.6, 1.95 } })
 -- the points a body walks, a list of vec3, or nil
 ```
 
-| Option | Meaning | Default |
-| --- | --- | --- |
-| `size` | A number, or `{ width, height }` | 0.6 by 1.8 |
-| `swim` | `true` to go through water | off |
-| `fall` | The most blocks it may fall | 3 |
-| `range` | How far it may go from the goal | the distance plus 16 |
-| `budget` | The most blocks it looks at | 2000 |
+| Option   | Meaning                          | Default              |
+| -------- | -------------------------------- | -------------------- |
+| `size`   | A number, or `{ width, height }` | 0.6 by 1.8           |
+| `swim`   | `true` to go through water       | off                  |
+| `fall`   | The most blocks it may fall      | 3                    |
+| `range`  | How far it may go from the goal  | the distance plus 16 |
+| `budget` | The most blocks it looks at      | 2000                 |
 
 - The search takes four ways from each block, a step up of one block, a fall
   of at most `fall` blocks. It gives the middle of each block to walk on,
@@ -97,7 +97,7 @@ local block, sky, open = world.light_at(pos)
 -- block light 0..15, sky light 0..15, and true when no block above stops the sky
 ```
 
-`world.light` is different — a client-side light *source* a pack places (see
+`world.light` is different — a client-side light _source_ a pack places (see
 [Displays](/ui/displays/)); `world.light_at` reads the real light of a
 position.
 

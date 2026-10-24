@@ -1,6 +1,6 @@
 ---
-title: 'game.terrain'
-description: 'What this world''s overworld is made of: snow and steps, as citadel.yml writes them; read-only, nil when there is no list.'
+title: "game.terrain"
+description: "What this world's overworld is made of: snow and steps, as citadel.yml writes them; read-only, nil when there is no list."
 ---
 
 Part of [`game`](/ref/Game/).

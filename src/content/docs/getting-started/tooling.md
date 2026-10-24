@@ -1,6 +1,6 @@
 ---
-title: 'Tooling'
-description: 'Set up luau-lsp with Citadel''s type definitions for autocomplete and strict type checking, and use the citadel CLI to run, check, generate and render packs.'
+title: "Tooling"
+description: "Set up luau-lsp with Citadel's type definitions for autocomplete and strict type checking, and use the citadel CLI to run, check, generate and render packs."
 ---
 
 :::note[In short]
@@ -45,17 +45,17 @@ With the `luau-lsp` extension installed, set in `.vscode/settings.json`:
 
 ## The `citadel` CLI
 
-| Command | What it does |
-| --- | --- |
-| `citadel --lite --pack ./first` | Run a lite server with one pack. `--full` (or no flag) runs survival. |
-| `citadel --packs-dir ./packs` | Run with every pack in a folder. |
-| `luau-lsp analyze ...` (above) | Type-check a pack's scripts. |
-| `citadel check <pack>` | Frame-check a build: says which named part an edit touched. |
-| `citadel render` | Render a build (or one named part) to an image. |
-| `citadel generate <pack> --from -4096,-6144 --to 4095,6143` | Pre-generate a world folder from the pack's `world.on_generate`, one script per core; a stopped run continues where it left off. `--threads n` caps cores. |
-| `citadel generate <pack> --part tower-3` | Run one named part's generator into the world folder. |
-| `citadel parts <pack>` | List every named part: clean, modified, kept or orphaned, and who edited it. |
-| `citadel import builds/lobby.schem <pack>/hub --at -186,48,-236 --spawn 0.5,65,0.5` | Import a `.schem` (Sponge or MCEdit) or a vanilla world as a pack's world folder. |
+| Command                                                                             | What it does                                                                                                                                               |
+| ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `citadel --lite --pack ./first`                                                     | Run a lite server with one pack. `--full` (or no flag) runs survival.                                                                                      |
+| `citadel --packs-dir ./packs`                                                       | Run with every pack in a folder.                                                                                                                           |
+| `luau-lsp analyze ...` (above)                                                      | Type-check a pack's scripts.                                                                                                                               |
+| `citadel check <pack>`                                                              | Frame-check a build: says which named part an edit touched.                                                                                                |
+| `citadel render`                                                                    | Render a build (or one named part) to an image.                                                                                                            |
+| `citadel generate <pack> --from -4096,-6144 --to 4095,6143`                         | Pre-generate a world folder from the pack's `world.on_generate`, one script per core; a stopped run continues where it left off. `--threads n` caps cores. |
+| `citadel generate <pack> --part tower-3`                                            | Run one named part's generator into the world folder.                                                                                                      |
+| `citadel parts <pack>`                                                              | List every named part: clean, modified, kept or orphaned, and who edited it.                                                                               |
+| `citadel import builds/lobby.schem <pack>/hub --at -186,48,-236 --spawn 0.5,65,0.5` | Import a `.schem` (Sponge or MCEdit) or a vanilla world as a pack's world folder.                                                                          |
 
 Details on world folders, named parts and build mode are in
 [Pack anatomy](/concepts/pack-anatomy/) and [Building](/world/building/).

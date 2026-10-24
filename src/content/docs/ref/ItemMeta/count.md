@@ -1,6 +1,6 @@
 ---
-title: 'itemMeta.count'
-description: 'How many in the stack; 1 by default.'
+title: "itemMeta.count"
+description: "How many in the stack; 1 by default."
 ---
 
 Part of [`itemMeta`](/ref/ItemMeta/).

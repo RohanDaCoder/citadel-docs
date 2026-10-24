@@ -1,6 +1,6 @@
 ---
-title: 'entityHandle.data'
-description: 'A pack-defined entity''s attached record'
+title: "entityHandle.data"
+description: "A pack-defined entity's attached record"
 ---
 
 Part of [`entityHandle`](/ref/EntityHandle/).

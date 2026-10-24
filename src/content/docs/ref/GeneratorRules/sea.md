@@ -1,6 +1,6 @@
 ---
-title: 'generatorRules.sea'
-description: 'Water fills the open air up to this y.'
+title: "generatorRules.sea"
+description: "Water fills the open air up to this y."
 ---
 
 Part of [`generatorRules`](/ref/GeneratorRules/).

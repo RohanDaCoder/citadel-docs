@@ -1,6 +1,6 @@
 ---
-title: 'modelDisplay.paint'
-description: 'Whether it is still present'
+title: "modelDisplay.paint"
+description: "Whether it is still present"
 ---
 
 Part of [`modelDisplay`](/ref/ModelDisplay/).

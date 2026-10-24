@@ -1,6 +1,6 @@
 ---
-title: 'entityAmendSpec.on_spawn'
-description: 'Called when a new entity of this kind spawns; told, never waited on.'
+title: "entityAmendSpec.on_spawn"
+description: "Called when a new entity of this kind spawns; told, never waited on."
 ---
 
 Part of [`entityAmendSpec`](/ref/EntityAmendSpec/).
@@ -13,9 +13,9 @@ Called when a new entity of this kind spawns; told, never waited on.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(e` | `EntityHandle ) -> ()` | yes |
+| Name | Type                   | Required |
+| ---- | ---------------------- | -------- |
+| `(e` | `EntityHandle ) -> ()` | yes      |
 
 ## Returns
 

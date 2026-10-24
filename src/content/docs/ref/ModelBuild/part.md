@@ -1,6 +1,6 @@
 ---
-title: 'modelBuild:part'
-description: 'Makes a named child part of the root that turns around its pivot, the model''s origin unless given.'
+title: "modelBuild:part"
+description: "Makes a named child part of the root that turns around its pivot, the model's origin unless given."
 ---
 
 Part of [`ModelBuild`](/ref/ModelBuild/).
@@ -13,10 +13,10 @@ Makes a named child part of the root that turns around its `pivot`, the model's 
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `name` | `string` | yes |
-| `opts` | `{ pivot: Vec3 ? }` | no |
+| Name   | Type                | Required |
+| ------ | ------------------- | -------- |
+| `name` | `string`            | yes      |
+| `opts` | `{ pivot: Vec3 ? }` | no       |
 
 ## Returns
 

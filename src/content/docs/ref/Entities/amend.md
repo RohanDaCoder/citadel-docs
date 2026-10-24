@@ -1,6 +1,6 @@
 ---
-title: 'entities.amend'
-description: 'The game''s own content only — never another pack''s.'
+title: "entities.amend"
+description: "The game's own content only — never another pack's."
 ---
 
 Part of [`entities`](/ref/Entities/).
@@ -13,11 +13,11 @@ The game's own content only — never another pack's.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `name` | `string` | yes |
-| `hooks` | [`EntityAmendSpec`](/ref/EntityAmendSpec/) | yes |
-| `options` | [`EntityAmendOptions`](/ref/EntityAmendOptions/) | no |
+| Name      | Type                                             | Required |
+| --------- | ------------------------------------------------ | -------- |
+| `name`    | `string`                                         | yes      |
+| `hooks`   | [`EntityAmendSpec`](/ref/EntityAmendSpec/)       | yes      |
+| `options` | [`EntityAmendOptions`](/ref/EntityAmendOptions/) | no       |
 
 ## Used in
 

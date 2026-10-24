@@ -1,6 +1,6 @@
 ---
-title: 'builder:part'
-description: 'What fn writes is a named part, found by citadel render --part and citadel check once pasted'
+title: "builder:part"
+description: "What fn writes is a named part, found by citadel render --part and citadel check once pasted"
 ---
 
 Part of [`Builder`](/ref/Builder/).
@@ -13,7 +13,7 @@ What `fn` writes is a named part, found by `citadel render --part` and `citadel 
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `name` | `string` | yes |
-| `fn` | `() -> ()` | yes |
+| Name   | Type       | Required |
+| ------ | ---------- | -------- |
+| `name` | `string`   | yes      |
+| `fn`   | `() -> ()` | yes      |

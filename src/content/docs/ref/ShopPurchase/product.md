@@ -1,6 +1,6 @@
 ---
-title: 'shopPurchase.product'
-description: 'The product''s key.'
+title: "shopPurchase.product"
+description: "The product's key."
 ---
 
 Part of [`shopPurchase`](/ref/ShopPurchase/).

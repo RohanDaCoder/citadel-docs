@@ -1,6 +1,6 @@
 ---
-title: 'container:put'
-description: 'How many did not fit; 0 when all of it went in.'
+title: "container:put"
+description: "How many did not fit; 0 when all of it went in."
 ---
 
 Part of [`Container`](/ref/Container/).
@@ -13,9 +13,9 @@ How many did not fit; 0 when all of it went in.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `item` | [`ItemSpec`](/ref/ItemSpec/) | yes |
+| Name   | Type                         | Required |
+| ------ | ---------------------------- | -------- |
+| `item` | [`ItemSpec`](/ref/ItemSpec/) | yes      |
 
 ## Returns
 

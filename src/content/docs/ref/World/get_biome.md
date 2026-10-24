@@ -1,6 +1,6 @@
 ---
-title: 'world.get_biome'
-description: 'Returns the biome name of the column at pos; nil where that chunk is not in memory.'
+title: "world.get_biome"
+description: "Returns the biome name of the column at pos; nil where that chunk is not in memory."
 ---
 
 Part of [`world`](/ref/World/).
@@ -13,9 +13,9 @@ Returns the biome name of the column at `pos`; `nil` where that chunk is not in 
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `pos` | [`Vec3`](/ref/Vec3/) | yes |
+| Name  | Type                 | Required |
+| ----- | -------------------- | -------- |
+| `pos` | [`Vec3`](/ref/Vec3/) | yes      |
 
 ## Returns
 
@@ -23,5 +23,5 @@ Returns the biome name of the column at `pos`; `nil` where that chunk is not in 
 
 ## Used in
 
-> "world.get_biome(pos)                      -- the biome name of a column, or nil (chunk not loaded)" — [Blocks and terrain](/world/terrain-generation/)
-> "world.get_biome(pos)                                -- the same for a loaded chunk; nil when it is not loaded" — [Blocks and terrain](/world/terrain-generation/)
+> "world.get_biome(pos) -- the biome name of a column, or nil (chunk not loaded)" — [Blocks and terrain](/world/terrain-generation/)
+> "world.get_biome(pos) -- the same for a loaded chunk; nil when it is not loaded" — [Blocks and terrain](/world/terrain-generation/)

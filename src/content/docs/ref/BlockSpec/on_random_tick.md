@@ -1,6 +1,6 @@
 ---
-title: 'blockSpec.on_random_tick'
-description: 'The random pass landed on it'
+title: "blockSpec.on_random_tick"
+description: "The random pass landed on it"
 ---
 
 Part of [`blockSpec`](/ref/BlockSpec/).
@@ -13,9 +13,9 @@ The random pass landed on it. Not the same thing as `on_tick`, which is why it h
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(block` | `BlockAt , base: (... any ) -> any ) -> ()` | yes |
+| Name     | Type                                        | Required |
+| -------- | ------------------------------------------- | -------- |
+| `(block` | `BlockAt , base: (... any ) -> any ) -> ()` | yes      |
 
 ## Returns
 

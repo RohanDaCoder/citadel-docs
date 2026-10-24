@@ -1,5 +1,5 @@
 ---
-title: 'biomes.define'
+title: "biomes.define"
 description: 'Defines a biome, or changes the one of that name, and returns its full name ("mypack:crystal")'
 ---
 
@@ -13,9 +13,9 @@ Defines a biome, or changes the one of that name, and returns its full name ("my
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `def` | [`BiomeDefinition`](/ref/BiomeDefinition/) | yes |
+| Name  | Type                                       | Required |
+| ----- | ------------------------------------------ | -------- |
+| `def` | [`BiomeDefinition`](/ref/BiomeDefinition/) | yes      |
 
 ## Returns
 

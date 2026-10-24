@@ -1,6 +1,6 @@
 ---
-title: 'Scoreboard with a button'
-description: 'A compact tutorial — a screen in the air, a Tap me item on the hotbar: right-click it, a hat sound plays, and every player''s tap count redraws on the board, kept in storage.'
+title: "Scoreboard with a button"
+description: "A compact tutorial — a screen in the air, a Tap me item on the hotbar: right-click it, a hat sound plays, and every player's tap count redraws on the board, kept in storage."
 ---
 
 :::note[In short]
@@ -12,6 +12,7 @@ restart.
 :::
 
 ## What you build
+
 - A stone floor, and a 4 by 2 screen in the air, facing south.
 - Every player who joins gets a lapis block, "Tap me", in hotbar slot 1.
 - Right-clicking the block in hand counts a tap: a hat sound plays, and
@@ -69,8 +70,7 @@ The board clears to black, writes the `TAPS` header in yellow at size 40,
 then a row per connected player: the name in white from x = 16, the count
 in cyan right-aligned — its x is `board.width - 16 - board:measure(..)`,
 the board's width less a 16-pixel margin less the text's measured width.
-`storage.get("taps." .. p.name) or 0` reads a player with no taps yet as
-0.
+`storage.get("taps." .. p.name) or 0` reads a player with no taps yet as 0.
 
 ## 4. Players in and out
 

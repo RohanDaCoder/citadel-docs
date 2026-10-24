@@ -8,6 +8,7 @@ task.spawn(function()
     print(hub.online())
 end)
 ```
+
 - `hub.servers()` returns a list of `{id, name, category, motd, icon, banner, players, maxPlayers}`. `id` is what `player:connect` takes. A field Minefort does not know is nil. An entry with `category = "experience"` is a published experience: its `id` is the name `/play` takes, `motd` its pitch, and `banner` the URL of its banner, or nil.
 - `hub.hubs()` returns a list of `{id, name, players, region}`, one per hub that is online, this one included. `player:connect(id)` sends a player to that hub.
 - `hub.role(player)` returns the player’s rank on Minefort: `"owner"`, `"admin"`, `"moderator"` or `"builder"`, and nil for everyone else. It also takes a uuid, with or without dashes.

@@ -1,6 +1,6 @@
 ---
-title: 'modelDisplay:play'
-description: 'Starts an animation; replaying the current one changes speed without restarting.'
+title: "modelDisplay:play"
+description: "Starts an animation; replaying the current one changes speed without restarting."
 ---
 
 Part of [`ModelDisplay`](/ref/ModelDisplay/).
@@ -13,7 +13,7 @@ Starts an animation; replaying the current one changes speed without restarting.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `animation` | `string` | yes |
-| `opts` | `{ speed: number ? }` | no |
+| Name        | Type                  | Required |
+| ----------- | --------------------- | -------- |
+| `animation` | `string`              | yes      |
+| `opts`      | `{ speed: number ? }` | no       |

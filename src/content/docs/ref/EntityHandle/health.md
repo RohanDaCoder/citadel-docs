@@ -1,6 +1,6 @@
 ---
-title: 'entityHandle.health'
-description: 'Its health now'
+title: "entityHandle.health"
+description: "Its health now"
 ---
 
 Part of [`entityHandle`](/ref/EntityHandle/).

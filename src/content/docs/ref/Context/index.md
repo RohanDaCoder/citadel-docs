@@ -1,6 +1,6 @@
 ---
-title: 'Context type'
-description: 'How an item display is posed; a read gives back the same words.'
+title: "Context type"
+description: "How an item display is posed; a read gives back the same words."
 ---
 
 How an item display is posed; a read gives back the same words.

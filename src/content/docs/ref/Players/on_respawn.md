@@ -1,6 +1,6 @@
 ---
-title: 'players.on_respawn'
-description: 'Calls fn when a player respawns; player is nil once they have left.'
+title: "players.on_respawn"
+description: "Calls fn when a player respawns; player is nil once they have left."
 ---
 
 Part of [`players`](/ref/Players/).
@@ -13,9 +13,9 @@ Calls `fn` when a player respawns; `player` is nil once they have left.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `fn` | `(player: Player ?) -> ()` | yes |
+| Name | Type                       | Required |
+| ---- | -------------------------- | -------- |
+| `fn` | `(player: Player ?) -> ()` | yes      |
 
 ## Returns
 

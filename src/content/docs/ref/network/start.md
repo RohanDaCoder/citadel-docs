@@ -1,6 +1,6 @@
 ---
-title: 'network.start'
-description: 'Starts an instance of member'
+title: "network.start"
+description: "Starts an instance of member"
 ---
 
 Part of [`network`](/ref/network/).
@@ -13,9 +13,9 @@ Starts an instance of `member`. Answers at once; it is online later.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `options` | `{member: string , label: string , slots: number , data: any }` | yes |
+| Name      | Type                                                            | Required |
+| --------- | --------------------------------------------------------------- | -------- |
+| `options` | `{member: string , label: string , slots: number , data: any }` | yes      |
 
 ## Returns
 

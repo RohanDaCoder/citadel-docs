@@ -1,6 +1,6 @@
 ---
-title: 'modelMaterial.name'
-description: 'The name it was made with, which a display repaints it by.'
+title: "modelMaterial.name"
+description: "The name it was made with, which a display repaints it by."
 ---
 
 Part of [`modelMaterial`](/ref/ModelMaterial/).

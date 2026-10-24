@@ -1,6 +1,6 @@
 ---
-title: 'display:destroy'
-description: 'display:destroy — method.'
+title: "display:destroy"
+description: "display:destroy — method."
 ---
 
 Part of [`Display`](/ref/Display/).

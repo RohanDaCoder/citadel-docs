@@ -1,6 +1,6 @@
 ---
-title: 'blockSpec.on_place'
-description: 'A player put it down; block.data is empty then, ready to be filled.'
+title: "blockSpec.on_place"
+description: "A player put it down; block.data is empty then, ready to be filled."
 ---
 
 Part of [`blockSpec`](/ref/BlockSpec/).
@@ -13,9 +13,9 @@ A player put it down; `block.data` is empty then, ready to be filled.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(block` | `BlockAt , player: Player ?, base: (... any ) -> any ) -> ()` | yes |
+| Name     | Type                                                          | Required |
+| -------- | ------------------------------------------------------------- | -------- |
+| `(block` | `BlockAt , player: Player ?, base: (... any ) -> any ) -> ()` | yes      |
 
 ## Returns
 

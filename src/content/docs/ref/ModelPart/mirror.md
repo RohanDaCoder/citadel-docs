@@ -1,6 +1,6 @@
 ---
-title: 'modelPart:mirror'
-description: 'A mirrored copy of every box and hitbox this part has, and a mirrored twin named <name>_mirrored of every child'
+title: "modelPart:mirror"
+description: "A mirrored copy of every box and hitbox this part has, and a mirrored twin named <name>_mirrored of every child"
 ---
 
 Part of [`ModelPart`](/ref/ModelPart/).
@@ -13,6 +13,6 @@ A mirrored copy of every box and hitbox this part has, and a mirrored twin named
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `axis` | `"x"` | yes |
+| Name   | Type  | Required |
+| ------ | ----- | -------- |
+| `axis` | `"x"` | yes      |

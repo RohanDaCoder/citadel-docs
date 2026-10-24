@@ -5,6 +5,7 @@ order: 8
 description: sound.play and player:sound for short effects through the client's resource pack, sound.stop, and sound.stream — music, ambience and radios through Simple Voice Chat, from speakers that move or no place at all.
 tags: [sound, audio, streams, speakers, voice-chat]
 ---
+
 # Sound
 
 > **In short:** play the game's sounds or the pack's own, for everyone or at a
@@ -66,14 +67,14 @@ radio:unlisten(player)          -- stops hearing it
 radio:stop()
 ```
 
-| Option | What it is |
-| --- | --- |
-| `url` or `file` | A live stream URL, or a pack sound file (OGG, MP3, WAV). Give one, never both |
-| `at` | A vec3, a player, an entity, or a list of them: the speakers |
-| `distance` | 1 to 128 blocks, 48 when not given; needs `at` |
-| `to` | A player or a list of players; without it, everyone in the room, players who join later too |
-| `loop` | `true` is for a file only: a live stream has no end, and if it drops it is tried again every 2 seconds |
-| `name` | 1 to 16 characters, `"Sounds"` when not given: the sound's own volume slider in the mod |
+| Option          | What it is                                                                                             |
+| --------------- | ------------------------------------------------------------------------------------------------------ |
+| `url` or `file` | A live stream URL, or a pack sound file (OGG, MP3, WAV). Give one, never both                          |
+| `at`            | A vec3, a player, an entity, or a list of them: the speakers                                           |
+| `distance`      | 1 to 128 blocks, 48 when not given; needs `at`                                                         |
+| `to`            | A player or a list of players; without it, everyone in the room, players who join later too            |
+| `loop`          | `true` is for a file only: a live stream has no end, and if it drops it is tried again every 2 seconds |
+| `name`          | 1 to 16 characters, `"Sounds"` when not given: the sound's own volume slider in the mod                |
 
 ## Speakers
 
@@ -103,12 +104,12 @@ over a pack-drawn picture — with `screen:play{ url = .. }`; see
 
 ## `sound.play` or `sound.stream`
 
-|  | `sound.play` | `sound.stream` |
-| --- | --- | --- |
-| How it reaches the player | The game's or the pack's resource pack; the client plays it | Simple Voice Chat, from the server |
-| Mod needed | No | Yes |
-| Control | Start and stop | Speakers, moving sources, a list of listeners, all players in time |
-| Best for | Short effects: a click, a door, an alarm | Music, ambience, long voice lines, radios, speaker systems |
+|                           | `sound.play`                                                | `sound.stream`                                                     |
+| ------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------ |
+| How it reaches the player | The game's or the pack's resource pack; the client plays it | Simple Voice Chat, from the server                                 |
+| Mod needed                | No                                                          | Yes                                                                |
+| Control                   | Start and stop                                              | Speakers, moving sources, a list of listeners, all players in time |
+| Best for                  | Short effects: a click, a door, an alarm                    | Music, ambience, long voice lines, radios, speaker systems         |
 
 ## See also
 

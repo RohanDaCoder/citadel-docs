@@ -1,5 +1,5 @@
 ---
-title: 'entityHandle.name'
+title: "entityHandle.name"
 description: 'The kind''s name: "cow", "rave:rocket"'
 ---
 

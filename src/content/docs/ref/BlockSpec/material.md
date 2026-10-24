@@ -1,6 +1,6 @@
 ---
-title: 'blockSpec.material'
-description: 'The jar''s Material as five questions: solid, covers (grass under it dies), firm (snow and ice need it), liquid, burns.'
+title: "blockSpec.material"
+description: "The jar's Material as five questions: solid, covers (grass under it dies), firm (snow and ice need it), liquid, burns."
 ---
 
 Part of [`blockSpec`](/ref/BlockSpec/).

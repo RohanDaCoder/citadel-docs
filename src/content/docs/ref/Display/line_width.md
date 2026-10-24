@@ -1,6 +1,6 @@
 ---
-title: 'display.line_width'
-description: 'Text kind: the width its lines wrap at; 200 by default.'
+title: "display.line_width"
+description: "Text kind: the width its lines wrap at; 200 by default."
 ---
 
 Part of [`display`](/ref/Display/).

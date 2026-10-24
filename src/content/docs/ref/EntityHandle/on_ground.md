@@ -1,6 +1,6 @@
 ---
-title: 'entityHandle.on_ground'
-description: 'Whether it stands on something'
+title: "entityHandle.on_ground"
+description: "Whether it stands on something"
 ---
 
 Part of [`entityHandle`](/ref/EntityHandle/).

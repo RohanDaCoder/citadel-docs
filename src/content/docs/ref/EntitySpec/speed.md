@@ -1,6 +1,6 @@
 ---
-title: 'entitySpec.speed'
-description: 'How fast it goes, in blocks a second'
+title: "entitySpec.speed"
+description: "How fast it goes, in blocks a second"
 ---
 
 Part of [`entitySpec`](/ref/EntitySpec/).

@@ -1,6 +1,6 @@
 ---
-title: 'ui.row'
-description: 'The children are the list part: ui.row{ gap = 4, a, b }.'
+title: "ui.row"
+description: "The children are the list part: ui.row{ gap = 4, a, b }."
 ---
 
 Part of [`ui`](/ref/Ui/).
@@ -13,9 +13,9 @@ The children are the list part: `ui.row{ gap = 4, a, b }`.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `opts` | `{ gap: number ?, align: LayoutAlign ?, [ number ]: LayoutNode }` | yes |
+| Name   | Type                                                              | Required |
+| ------ | ----------------------------------------------------------------- | -------- |
+| `opts` | `{ gap: number ?, align: LayoutAlign ?, [ number ]: LayoutNode }` | yes      |
 
 ## Returns
 

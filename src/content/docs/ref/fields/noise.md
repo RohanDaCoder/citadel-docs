@@ -1,6 +1,6 @@
 ---
-title: 'fields.noise'
-description: 'Smooth noise, about -1..1'
+title: "fields.noise"
+description: "Smooth noise, about -1..1"
 ---
 
 Part of [`fields`](/ref/fields/).
@@ -13,9 +13,9 @@ Smooth noise, about -1..1. `solid = true` changes with y too.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `opts` | `{ seed: number ?, scale: number ?, octaves: number ?, gain: number ?, lacunarity: number ?, solid: boolean ? }` | no |
+| Name   | Type                                                                                                             | Required |
+| ------ | ---------------------------------------------------------------------------------------------------------------- | -------- |
+| `opts` | `{ seed: number ?, scale: number ?, octaves: number ?, gain: number ?, lacunarity: number ?, solid: boolean ? }` | no       |
 
 ## Returns
 

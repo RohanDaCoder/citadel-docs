@@ -1,5 +1,5 @@
 ---
-title: 'LetterStyle type'
+title: "LetterStyle type"
 description: 'What an effect hands back for one letter; text shows something else in its place ("" hides it).'
 ---
 

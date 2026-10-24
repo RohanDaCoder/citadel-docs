@@ -1,6 +1,6 @@
 ---
-title: 'modelDisplay:destroy'
-description: 'Removes the model from the room.'
+title: "modelDisplay:destroy"
+description: "Removes the model from the room."
 ---
 
 Part of [`ModelDisplay`](/ref/ModelDisplay/).

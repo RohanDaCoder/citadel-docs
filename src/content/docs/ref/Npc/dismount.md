@@ -1,6 +1,6 @@
 ---
-title: 'npc:dismount'
-description: 'Gets off where it sits; set at after it to put it somewhere else.'
+title: "npc:dismount"
+description: "Gets off where it sits; set at after it to put it somewhere else."
 ---
 
 Part of [`Npc`](/ref/Npc/).

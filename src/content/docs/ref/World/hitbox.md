@@ -1,6 +1,6 @@
 ---
-title: 'world.hitbox'
-description: 'Makes an invisible box a player can click; solid also makes it a wall'
+title: "world.hitbox"
+description: "Makes an invisible box a player can click; solid also makes it a wall"
 ---
 
 Part of [`world`](/ref/World/).
@@ -13,9 +13,9 @@ Makes an invisible box a player can click; `solid` also makes it a wall. `depth`
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `opts` | `{ at: Vec3 , width: number ?, height: number ?, depth: number ?, solid: boolean ?, on_click: ((player: Player , button: "left" \| "right" ) -> ())?, }` | yes |
+| Name   | Type                                                                                                                                                     | Required |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `opts` | `{ at: Vec3 , width: number ?, height: number ?, depth: number ?, solid: boolean ?, on_click: ((player: Player , button: "left" \| "right" ) -> ())?, }` | yes      |
 
 ## Returns
 

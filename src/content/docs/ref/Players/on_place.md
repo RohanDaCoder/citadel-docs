@@ -1,6 +1,6 @@
 ---
-title: 'players.on_place'
-description: 'Asks fn before a player puts a block down; return false to cancel it'
+title: "players.on_place"
+description: "Asks fn before a player puts a block down; return false to cancel it"
 ---
 
 Part of [`players`](/ref/Players/).
@@ -13,9 +13,9 @@ Asks `fn` before a player puts a block down; return false to cancel it. A missed
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `fn` | `(player: Player ?, pos: Vec3 , block: string ) -> boolean` | no |
+| Name | Type                                                        | Required |
+| ---- | ----------------------------------------------------------- | -------- |
+| `fn` | `(player: Player ?, pos: Vec3 , block: string ) -> boolean` | no       |
 
 ## Returns
 

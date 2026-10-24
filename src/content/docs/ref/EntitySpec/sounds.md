@@ -1,5 +1,5 @@
 ---
-title: 'entitySpec.sounds'
+title: "entitySpec.sounds"
 description: 'physics = "living" only: sound names for its hurt, its death and its idle sound, vanilla or "<pack>.<file>"'
 ---
 

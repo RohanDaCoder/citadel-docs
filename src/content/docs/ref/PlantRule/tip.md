@@ -1,6 +1,6 @@
 ---
-title: 'plantRule.tip'
-description: 'With height, the block on top of a plant that grows.'
+title: "plantRule.tip"
+description: "With height, the block on top of a plant that grows."
 ---
 
 Part of [`plantRule`](/ref/PlantRule/).

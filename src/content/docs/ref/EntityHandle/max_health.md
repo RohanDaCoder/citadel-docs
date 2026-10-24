@@ -1,6 +1,6 @@
 ---
-title: 'entityHandle.max_health'
-description: 'The most health its kind gives it'
+title: "entityHandle.max_health"
+description: "The most health its kind gives it"
 ---
 
 Part of [`entityHandle`](/ref/EntityHandle/).

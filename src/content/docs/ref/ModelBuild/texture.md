@@ -1,6 +1,6 @@
 ---
-title: 'modelBuild:texture'
-description: 'Makes a pixel picture for one face; with tint, drawn in greys and coloured by that material'
+title: "modelBuild:texture"
+description: "Makes a pixel picture for one face; with tint, drawn in greys and coloured by that material"
 ---
 
 Part of [`ModelBuild`](/ref/ModelBuild/).
@@ -13,11 +13,11 @@ Makes a pixel picture for one face; with `tint`, drawn in greys and coloured by 
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `width` | `number` | yes |
-| `height` | `number` | yes |
-| `opts` | `{ tint: ModelMaterial ?, scroll: ( "up" \| "down" \| "left" \| "right" )?, speed: number ? }` | no |
+| Name     | Type                                                                                           | Required |
+| -------- | ---------------------------------------------------------------------------------------------- | -------- |
+| `width`  | `number`                                                                                       | yes      |
+| `height` | `number`                                                                                       | yes      |
+| `opts`   | `{ tint: ModelMaterial ?, scroll: ( "up" \| "down" \| "left" \| "right" )?, speed: number ? }` | no       |
 
 ## Returns
 

@@ -1,6 +1,6 @@
 ---
-title: 'blockSpec.on_break'
-description: 'Something broke it'
+title: "blockSpec.on_break"
+description: "Something broke it"
 ---
 
 Part of [`blockSpec`](/ref/BlockSpec/).
@@ -13,9 +13,9 @@ Something broke it. Answers "none", "table" or a drops list; fails closed to the
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(block` | `BlockAt , player: Player ?, by: Breaker , base: (... any ) -> any ) -> Drops` | no |
+| Name     | Type                                                                           | Required |
+| -------- | ------------------------------------------------------------------------------ | -------- |
+| `(block` | `BlockAt , player: Player ?, by: Breaker , base: (... any ) -> any ) -> Drops` | no       |
 
 ## Returns
 

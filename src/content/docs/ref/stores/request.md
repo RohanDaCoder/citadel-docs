@@ -1,6 +1,6 @@
 ---
-title: 'stores.request'
-description: 'Sends one raw query to the store and yields until it answers; returns the answer table and any blob bytes.'
+title: "stores.request"
+description: "Sends one raw query to the store and yields until it answers; returns the answer table and any blob bytes."
 ---
 
 Part of [`stores`](/ref/stores/).
@@ -13,10 +13,10 @@ Sends one raw query to the store and yields until it answers; returns the answer
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `query` | `{[ string ]: any }` | yes |
-| `bytes` | `string` | no |
+| Name    | Type                 | Required |
+| ------- | -------------------- | -------- |
+| `query` | `{[ string ]: any }` | yes      |
+| `bytes` | `string`             | no       |
 
 ## Returns
 

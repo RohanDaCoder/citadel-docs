@@ -1,6 +1,6 @@
 ---
-title: 'Inventory and items'
-description: 'ItemSpec forms — a name or a table with count, name, lore, colours, glint, canvas, id, damage, model and skin — the give/take/count/inventory/held calls, pack items, head items, armour via wear, and recipes.'
+title: "Inventory and items"
+description: "ItemSpec forms — a name or a table with count, name, lore, colours, glint, canvas, id, damage, model and skin — the give/take/count/inventory/held calls, pack items, head items, armour via wear, and recipes."
 ---
 
 :::note[In short]
@@ -35,32 +35,32 @@ takes either form.
 With `canvas = c`, the item becomes `filled_map` unless you name another. The
 table fields are the `ItemMeta`:
 
-| Field | Meaning |
-| --- | --- |
-| `count` | How many in the stack; 1 by default. |
-| `name` | Text; never italic unless it says so. |
-| `lore` | One line or a list of lines, grey unless they say otherwise. |
-| `color` | A potion's liquid colour; 1.11 and later. |
-| `dye` | Leather armour's colour. |
-| `glint` | The enchanted shine, with no enchantment. |
-| `canvas` | A filled map of that canvas: what the item *is*, so `item` may be left out. |
-| `id` | A pack's own item (below). |
-| `damage` | The wear a tool has taken; 0 is new. |
-| `model` | The item model a 1.21.4+ client draws: `assets/<pack>/items/<model>.json`. |
-| `skin` | The face a `"player_head"` item shows. On any other item it is an error. |
+| Field    | Meaning                                                                     |
+| -------- | --------------------------------------------------------------------------- |
+| `count`  | How many in the stack; 1 by default.                                        |
+| `name`   | Text; never italic unless it says so.                                       |
+| `lore`   | One line or a list of lines, grey unless they say otherwise.                |
+| `color`  | A potion's liquid colour; 1.11 and later.                                   |
+| `dye`    | Leather armour's colour.                                                    |
+| `glint`  | The enchanted shine, with no enchantment.                                   |
+| `canvas` | A filled map of that canvas: what the item _is_, so `item` may be left out. |
+| `id`     | A pack's own item (below).                                                  |
+| `damage` | The wear a tool has taken; 0 is new.                                        |
+| `model`  | The item model a 1.21.4+ client draws: `assets/<pack>/items/<model>.json`.  |
+| `skin`   | The face a `"player_head"` item shows. On any other item it is an error.    |
 
 ## give, take, count, inventory, held
 
-| Call | Returns | Purpose |
-| --- | --- | --- |
-| [`player:give(item: ItemSpec)`](/ref/Player/give/) | — | Puts a stack in the inventory. |
-| [`player:take(item: ItemMatch, count?)`](/ref/Player/take/) | number | Removes up to `count` (1 unless you say), the hand first. |
-| [`player:count(item: ItemMatch)`](/ref/Player/count/) | number | How many the player carries, across every slot. |
-| [`player:inventory()`](/ref/Player/inventory/) | `{ InventorySlot }` | One `{ item, count }` row per filled slot. |
-| [`player:held()`](/ref/Player/held/) | `InventorySlot?` | The stack in hand, or nil. |
-| [`player:set_held(item?)`](/ref/Player/set_held/) | — | Replaces the stack in hand; nil or false empties it. |
-| [`player:hotbar(slots)`](/ref/Player/hotbar/) | — | Replaces the nine hotbar slots; a missing index is empty. |
-| [`player:set_slot(n)`](/ref/Player/set_slot/) | — | Selects hotbar slot 1..9. |
+| Call                                                        | Returns             | Purpose                                                   |
+| ----------------------------------------------------------- | ------------------- | --------------------------------------------------------- |
+| [`player:give(item: ItemSpec)`](/ref/Player/give/)          | —                   | Puts a stack in the inventory.                            |
+| [`player:take(item: ItemMatch, count?)`](/ref/Player/take/) | number              | Removes up to `count` (1 unless you say), the hand first. |
+| [`player:count(item: ItemMatch)`](/ref/Player/count/)       | number              | How many the player carries, across every slot.           |
+| [`player:inventory()`](/ref/Player/inventory/)              | `{ InventorySlot }` | One `{ item, count }` row per filled slot.                |
+| [`player:held()`](/ref/Player/held/)                        | `InventorySlot?`    | The stack in hand, or nil.                                |
+| [`player:set_held(item?)`](/ref/Player/set_held/)           | —                   | Replaces the stack in hand; nil or false empties it.      |
+| [`player:hotbar(slots)`](/ref/Player/hotbar/)               | —                   | Replaces the nine hotbar slots; a missing index is empty. |
+| [`player:set_slot(n)`](/ref/Player/set_slot/)               | —                   | Selects hotbar slot 1..9.                                 |
 
 The give/take contract:
 
@@ -90,7 +90,7 @@ included.
 `name` and `lore`. The server knows it by its `id` everywhere, across
 restarts.
 
-Where a call *finds* an item (`take`, `count`, a recipe, a container):
+Where a call _finds_ an item (`take`, `count`, a recipe, a container):
 
 - A name matches the plain item only.
 - A table matches by the fields it names. `{ id = "x" }` is that pack item,

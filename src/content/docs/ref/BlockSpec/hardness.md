@@ -1,6 +1,6 @@
 ---
-title: 'blockSpec.hardness'
-description: 'Seconds-scale, as vanilla''s hardness is; below zero is unbreakable.'
+title: "blockSpec.hardness"
+description: "Seconds-scale, as vanilla's hardness is; below zero is unbreakable."
 ---
 
 Part of [`blockSpec`](/ref/BlockSpec/).

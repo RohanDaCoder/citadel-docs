@@ -1,6 +1,6 @@
 ---
-title: 'entitySpec.on_tick'
-description: 'Runs after the physics each tick to react to where it ended up; call base(e) to extend.'
+title: "entitySpec.on_tick"
+description: "Runs after the physics each tick to react to where it ended up; call base(e) to extend."
 ---
 
 Part of [`entitySpec`](/ref/EntitySpec/).
@@ -13,9 +13,9 @@ Runs after the physics each tick to react to where it ended up; call `base(e)` t
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(e` | `EntityHandle , base: () -> ()) -> ()` | yes |
+| Name | Type                                   | Required |
+| ---- | -------------------------------------- | -------- |
+| `(e` | `EntityHandle , base: () -> ()) -> ()` | yes      |
 
 ## Returns
 

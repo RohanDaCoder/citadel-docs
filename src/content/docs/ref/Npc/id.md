@@ -1,6 +1,6 @@
 ---
-title: 'npc.id'
-description: 'The entity id, what players.on_click reports in hit.entity_id.'
+title: "npc.id"
+description: "The entity id, what players.on_click reports in hit.entity_id."
 ---
 
 Part of [`npc`](/ref/Npc/).

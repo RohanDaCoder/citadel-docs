@@ -1,6 +1,6 @@
 ---
-title: 'ui.tab'
-description: 'Sets the player list''s header and footer for everyone in the room.'
+title: "ui.tab"
+description: "Sets the player list's header and footer for everyone in the room."
 ---
 
 Part of [`ui`](/ref/Ui/).
@@ -13,9 +13,9 @@ Sets the player list's header and footer for everyone in the room.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `opts` | `{ header: Text ?, footer: Text ? }` | yes |
+| Name   | Type                                 | Required |
+| ------ | ------------------------------------ | -------- |
+| `opts` | `{ header: Text ?, footer: Text ? }` | yes      |
 
 ## Used in
 

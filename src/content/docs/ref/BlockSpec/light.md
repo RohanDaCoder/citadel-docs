@@ -1,6 +1,6 @@
 ---
-title: 'blockSpec.light'
-description: 'What it gives off, 0 to 15.'
+title: "blockSpec.light"
+description: "What it gives off, 0 to 15."
 ---
 
 Part of [`blockSpec`](/ref/BlockSpec/).

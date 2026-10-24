@@ -1,6 +1,6 @@
 ---
-title: 'Architecture'
-description: 'How a Citadel server is put together — the main room, per-room tables, ticks and the scheduler, chunks and loading, the pack lifecycle, and what happens on reload.'
+title: "Architecture"
+description: "How a Citadel server is put together — the main room, per-room tables, ticks and the scheduler, chunks and loading, the pack lifecycle, and what happens on reload."
 ---
 
 :::note[In short]
@@ -17,14 +17,14 @@ actually replaces.
 A server has one **main room** at boot, and a pack can make more with
 `rooms.create{}`. Each room owns its own copy of the six room tables:
 
-| Room table | Covers |
-| --- | --- |
-| `world` | the room's blocks, entities, displays, screens and time |
-| `players` | who is in that room, and their room-scoped events |
-| `ui` | UI broadcast to everyone in the room |
-| `game` | that room's registries and spawn settings |
-| `rooms` | making and destroying rooms |
-| `sound` | sound heard in the room |
+| Room table | Covers                                                  |
+| ---------- | ------------------------------------------------------- |
+| `world`    | the room's blocks, entities, displays, screens and time |
+| `players`  | who is in that room, and their room-scoped events       |
+| `ui`       | UI broadcast to everyone in the room                    |
+| `game`     | that room's registries and spawn settings               |
+| `rooms`    | making and destroying rooms                             |
+| `sound`    | sound heard in the room                                 |
 
 The lowercase globals you use at the top of a script belong to the **main
 room**; `rooms.create{}` returns a room handle whose fields (`room.world`,

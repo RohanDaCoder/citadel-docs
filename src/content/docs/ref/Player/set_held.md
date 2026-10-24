@@ -1,6 +1,6 @@
 ---
-title: 'player:set_held'
-description: 'The stack in hand, replaced; nil or false empties the hand.'
+title: "player:set_held"
+description: "The stack in hand, replaced; nil or false empties the hand."
 ---
 
 Part of [`Player`](/ref/Player/).
@@ -13,10 +13,10 @@ The stack in hand, replaced; nil or false empties the hand.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `item` | `( ItemSpec \| false )` | no |
+| Name   | Type                    | Required |
+| ------ | ----------------------- | -------- |
+| `item` | `( ItemSpec \| false )` | no       |
 
 ## Used in
 
-> "player:set_held(item)       -- the stack in hand, replaced; nil or false empties the hand" — [Players](/players/player-lifecycle/)
+> "player:set_held(item) -- the stack in hand, replaced; nil or false empties the hand" — [Players](/players/player-lifecycle/)

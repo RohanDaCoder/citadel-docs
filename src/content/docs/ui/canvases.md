@@ -1,6 +1,6 @@
 ---
-title: 'Canvases and pictures'
-description: 'world.canvas — a picture of one or more maps with no frame of its own, shown on frames, in hands and on screens — plus frame displays, the map palette, and video, live-stream and streamed-sound playback.'
+title: "Canvases and pictures"
+description: "world.canvas — a picture of one or more maps with no frame of its own, shown on frames, in hands and on screens — plus frame displays, the map palette, and video, live-stream and streamed-sound playback."
 ---
 
 :::note[In short]

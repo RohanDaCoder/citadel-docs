@@ -1,5 +1,5 @@
 ---
-title: 'fx.particle'
+title: "fx.particle"
 description: 'Shows particle name ("dust", "end_rod", "explosion", "firework", "flame", "note", "totem_of_undying") at pos, or at every point of a list'
 ---
 
@@ -13,11 +13,11 @@ Shows particle `name` ("dust", "end_rod", "explosion", "firework", "flame", "not
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `name` | `string` | yes |
-| `pos` | `Vec3 \| { Vec3 }` | yes |
-| `opts` | `{ count: number ?, spread: ( number \| Vec3 )?, velocity: Vec3 ?, speed: number ?, color: Ink ?, size: number ?, }` | no |
+| Name   | Type                                                                                                                 | Required |
+| ------ | -------------------------------------------------------------------------------------------------------------------- | -------- |
+| `name` | `string`                                                                                                             | yes      |
+| `pos`  | `Vec3 \| { Vec3 }`                                                                                                   | yes      |
+| `opts` | `{ count: number ?, spread: ( number \| Vec3 )?, velocity: Vec3 ?, speed: number ?, color: Ink ?, size: number ?, }` | no       |
 
 ## Used in
 

@@ -1,6 +1,6 @@
 ---
-title: 'partDefinition.build'
-description: 'Exactly a world.build function.'
+title: "partDefinition.build"
+description: "Exactly a world.build function."
 ---
 
 Part of [`partDefinition`](/ref/PartDefinition/).
@@ -13,6 +13,6 @@ Exactly a world.build function.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `b` | [`Builder`](/ref/Builder/) | yes |
+| Name | Type                       | Required |
+| ---- | -------------------------- | -------- |
+| `b`  | [`Builder`](/ref/Builder/) | yes      |

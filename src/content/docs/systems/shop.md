@@ -1,6 +1,6 @@
 ---
-title: 'Shop'
-description: 'Selling products for Gems — shop.prompt and shop.owns, the on_paid delivery contract with its all-handlers-must-succeed acknowledgement, on_declined, product keys, and the retry and idempotence rules.'
+title: "Shop"
+description: "Selling products for Gems — shop.prompt and shop.owns, the on_paid delivery contract with its all-handlers-must-succeed acknowledgement, on_declined, product keys, and the retry and idempotence rules."
 ---
 
 :::note[In short]
@@ -31,12 +31,12 @@ players.on_join(function(player)
 end)
 ```
 
-| Call | Returns | Purpose |
-| --- | --- | --- |
+| Call                           | Returns            | Purpose                                                  |
+| ------------------------------ | ------------------ | -------------------------------------------------------- |
 | `shop.prompt(player, product)` | request id, or nil | Minefort shows its dialog; nil when it did not offer it. |
-| `shop.owns(player, product)` | boolean | Whether the player owns a pass. |
-| `shop.on_paid(fn)` | Connection | Called for each undelivered paid purchase. |
-| `shop.on_declined(fn)` | Connection | Called when the player said no or did not answer. |
+| `shop.owns(player, product)`   | boolean            | Whether the player owns a pass.                          |
+| `shop.on_paid(fn)`             | Connection         | Called for each undelivered paid purchase.               |
+| `shop.on_declined(fn)`         | Connection         | Called when the player said no or did not answer.        |
 
 A player or a uuid string works wherever a player is taken.
 

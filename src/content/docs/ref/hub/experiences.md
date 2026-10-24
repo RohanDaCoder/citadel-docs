@@ -1,6 +1,6 @@
 ---
-title: 'hub.experiences'
-description: 'The portals of the experience grounds'
+title: "hub.experiences"
+description: "The portals of the experience grounds"
 ---
 
 Part of [`hub`](/ref/hub/).

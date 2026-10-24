@@ -1,6 +1,6 @@
 ---
-title: 'players.get'
-description: 'Returns the player with this name, or nil.'
+title: "players.get"
+description: "Returns the player with this name, or nil."
 ---
 
 Part of [`players`](/ref/Players/).
@@ -13,9 +13,9 @@ Returns the player with this name, or nil.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `name` | `string` | yes |
+| Name   | Type     | Required |
+| ------ | -------- | -------- |
+| `name` | `string` | yes      |
 
 ## Returns
 
@@ -23,4 +23,4 @@ Returns the player with this name, or nil.
 
 ## Used in
 
-> "players.get(name)     -- player or nil" — [Players](/players/player-lifecycle/)
+> "players.get(name) -- player or nil" — [Players](/players/player-lifecycle/)

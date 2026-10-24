@@ -1,5 +1,5 @@
 ---
-title: 'commandOpts.aliases'
+title: "commandOpts.aliases"
 description: 'More names for the same command: { "hub", "lobby" }.'
 ---
 

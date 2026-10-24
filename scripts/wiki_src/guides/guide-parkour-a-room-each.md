@@ -5,6 +5,7 @@ order: 3
 description: Give every player a world of their own — /play makes a room with a random twelve-jump course, a live timer, gold checkpoints, an emerald finish, and a best time in storage.
 tags: [tutorial, rooms, zones, commands, storage, timer]
 ---
+
 # Parkour, a room each
 
 > **In short:** this tutorial gives every player a private parkour world.
@@ -14,6 +15,7 @@ tags: [tutorial, rooms, zones, commands, storage, timer]
 > player, made at runtime.
 
 ## What you build
+
 - A lobby: a small platform, and a title that says to type `/play`.
 - `/play` makes a room with a random course of twelve jumps. Every fourth
   jump is a gold checkpoint; the last one is an emerald.

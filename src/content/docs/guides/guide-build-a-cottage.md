@@ -1,6 +1,6 @@
 ---
-title: 'Build a cottage'
-description: 'Code a cottage — plinth, walls, set-back windows, gable roof, garden — as one world.build with named parts, paste it into generated ground, and check it with the citadel CLI.'
+title: "Build a cottage"
+description: "Code a cottage — plinth, walls, set-back windows, gable roof, garden — as one world.build with named parts, paste it into generated ground, and check it with the citadel CLI."
 ---
 
 :::note[In short]
@@ -11,6 +11,7 @@ building well.
 :::
 
 ## What you build
+
 - A cottage of 9 by 7 blocks on a cobblestone plinth, with oak posts and
   white walls.
 - Windows set back into the wall, with a sill under each.

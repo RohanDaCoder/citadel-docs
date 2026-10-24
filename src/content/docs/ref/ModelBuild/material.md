@@ -1,6 +1,6 @@
 ---
-title: 'modelBuild:material'
-description: 'Makes a named colour a display may repaint; grain (0 to 1) darkens pixels into four tones, alpha below 1 is glass.'
+title: "modelBuild:material"
+description: "Makes a named colour a display may repaint; grain (0 to 1) darkens pixels into four tones, alpha below 1 is glass."
 ---
 
 Part of [`ModelBuild`](/ref/ModelBuild/).
@@ -13,11 +13,11 @@ Makes a named colour a display may repaint; `grain` (0 to 1) darkens pixels into
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `name` | `string` | yes |
-| `color` | [`Ink`](/ref/Ink/) | yes |
-| `opts` | `{ grain: number ?, alpha: number ? }` | no |
+| Name    | Type                                   | Required |
+| ------- | -------------------------------------- | -------- |
+| `name`  | `string`                               | yes      |
+| `color` | [`Ink`](/ref/Ink/)                     | yes      |
+| `opts`  | `{ grain: number ?, alpha: number ? }` | no       |
 
 ## Returns
 

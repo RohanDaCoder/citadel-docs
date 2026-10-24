@@ -5,6 +5,7 @@ order: 1
 description: Chat lines, titles and subtitles, the action bar, boss bars, the sidebar and the tab list — the ui global and player.ui — plus the text-run system, colour names and moving text that every text surface shares.
 tags: [ui, text, titles, actionbar, bossbar, sidebar, tab-list, overlay, colors]
 ---
+
 # UI basics
 
 > **In short:** the text surfaces of a player's screen — chat, titles, the
@@ -21,15 +22,15 @@ family of calls. `ui` (or `room.ui`) reaches everyone in a room; `player.ui`
 holds the same calls for one player — "everyone" below is one player on
 `player.ui`.
 
-| Call | Returns | Purpose |
-| --- | --- | --- |
-| [`ui.title{ title, subtitle, color, fade_in, stay, fade_out }`](/ref/Ui/title) | — | Title and subtitle; fades and stay in seconds |
-| [`ui.actionbar(text, color?)`](/ref/Ui/actionbar) | — | The line above the hotbar |
-| [`ui.bossbar{ title, color, progress }`](/ref/Ui/bossbar) | `Bar` | A boss bar; progress 0..1 |
-| [`ui.sidebar{ title, lines }`](/ref/Ui/sidebar) | — | The sidebar; `nil` or `false` removes it |
-| [`ui.tab{ header, footer }`](/ref/Ui/tab) | — | The tab list's header and footer |
-| [`message(text, color?)`](/ref/message) | — | A chat line to everyone in the main room |
-| [`player:message(text, color?)`](/ref/Player/message) | — | A chat line to this player alone |
+| Call                                                                           | Returns | Purpose                                       |
+| ------------------------------------------------------------------------------ | ------- | --------------------------------------------- |
+| [`ui.title{ title, subtitle, color, fade_in, stay, fade_out }`](/ref/Ui/title) | —       | Title and subtitle; fades and stay in seconds |
+| [`ui.actionbar(text, color?)`](/ref/Ui/actionbar)                              | —       | The line above the hotbar                     |
+| [`ui.bossbar{ title, color, progress }`](/ref/Ui/bossbar)                      | `Bar`   | A boss bar; progress 0..1                     |
+| [`ui.sidebar{ title, lines }`](/ref/Ui/sidebar)                                | —       | The sidebar; `nil` or `false` removes it      |
+| [`ui.tab{ header, footer }`](/ref/Ui/tab)                                      | —       | The tab list's header and footer              |
+| [`message(text, color?)`](/ref/message)                                        | —       | A chat line to everyone in the main room      |
+| [`player:message(text, color?)`](/ref/Player/message)                          | —       | A chat line to this player alone              |
 
 ## Chat lines
 
@@ -70,12 +71,12 @@ local mine = player.ui.bossbar{ title = "Your horse: Lightning" }   -- one playe
 
 The [`Bar`](/ref/Bar) handle's live fields:
 
-| Field | What it is |
-| --- | --- |
-| `bar.title` | Reads back the words; takes any text |
-| `bar.progress` | How full the bar is, 0 to 1 |
-| `bar.color` | From the bar's own closed set; anything else is white |
-| `bar.visible` | `false` takes it off every screen; `true` or `nil` shows it again |
+| Field          | What it is                                                        |
+| -------------- | ----------------------------------------------------------------- |
+| `bar.title`    | Reads back the words; takes any text                              |
+| `bar.progress` | How full the bar is, 0 to 1                                       |
+| `bar.color`    | From the bar's own closed set; anything else is white             |
+| `bar.visible`  | `false` takes it off every screen; `true` or `nil` shows it again |
 
 A boss bar needs the `bossbar` feature: clients from 1.9.
 
@@ -192,22 +193,22 @@ function(_, i, _, t) if i > (t - from) * rate then return { text = "" } end end
 Anywhere a colour is asked for, every spelling works: a `color` value, a name,
 or hex (`"#ff8800"`). A name nobody has is an error that says the nearest.
 
-| Set | Names |
-| --- | --- |
+| Set                                         | Names                                                                                                                                                                      |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Minecraft's sixteen, every client since 1.7 | `black`, `dark_blue`, `dark_green`, `dark_aqua`, `dark_red`, `dark_purple`, `gold`, `gray`, `dark_gray`, `blue`, `green`, `aqua`, `red`, `light_purple`, `yellow`, `white` |
-| Six more | `orange`, `lime`, `cyan`, `purple`, `magenta`, `pink` |
-| Special | `transparent` |
+| Six more                                    | `orange`, `lime`, `cyan`, `purple`, `magenta`, `pink`                                                                                                                      |
+| Special                                     | `transparent`                                                                                                                                                              |
 
 `colors` holds the same names as values; any other name is an error naming the
 nearest (`colors.grey` says `gray`).
 
-| Helper | What it does |
-| --- | --- |
-| `color(r, g, b)` | A colour from red, green and blue, each 0 to 1 |
-| `color.hsv(h, s, v)` | From hue, saturation and value, each 0 to 1 |
+| Helper                           | What it does                                                                                                           |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `color(r, g, b)`                 | A colour from red, green and blue, each 0 to 1                                                                         |
+| `color.hsv(h, s, v)`             | From hue, saturation and value, each 0 to 1                                                                            |
 | `color.gradient(list, u, loop?)` | The colour `u` (0 to 1) of the way along the list; with `loop`, `u` wraps and the last colour runs back into the first |
-| `color.nearest(c)` | The colour a picture really shows, since a picture snaps to the map palette |
-| `kit.mix(a, b, t)` | Mixes two `"#rrggbb"` colours (see [Dialogs](/wiki/dialogs)) |
+| `color.nearest(c)`               | The colour a picture really shows, since a picture snaps to the map palette                                            |
+| `kit.mix(a, b, t)`               | Mixes two `"#rrggbb"` colours (see [Dialogs](/wiki/dialogs))                                                           |
 
 ## A canvas on the player's screen
 

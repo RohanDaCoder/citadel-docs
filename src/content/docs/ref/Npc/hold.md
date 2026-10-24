@@ -1,6 +1,6 @@
 ---
-title: 'npc:hold'
-description: 'Puts an item in the main hand; nil or false empties it'
+title: "npc:hold"
+description: "Puts an item in the main hand; nil or false empties it"
 ---
 
 Part of [`Npc`](/ref/Npc/).
@@ -13,9 +13,9 @@ Puts an item in the main hand; nil or false empties it. An error on an unknown i
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `item` | `( ItemSpec \| false )` | no |
+| Name   | Type                    | Required |
+| ------ | ----------------------- | -------- |
+| `item` | `( ItemSpec \| false )` | no       |
 
 ## Used in
 

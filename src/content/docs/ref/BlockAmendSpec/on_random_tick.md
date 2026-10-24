@@ -1,6 +1,6 @@
 ---
-title: 'blockAmendSpec.on_random_tick'
-description: 'The random pass landed on it.'
+title: "blockAmendSpec.on_random_tick"
+description: "The random pass landed on it."
 ---
 
 Part of [`blockAmendSpec`](/ref/BlockAmendSpec/).
@@ -13,9 +13,9 @@ The random pass landed on it.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(block` | `BlockAt , base: (... any ) -> any ) -> ()` | yes |
+| Name     | Type                                        | Required |
+| -------- | ------------------------------------------- | -------- |
+| `(block` | `BlockAt , base: (... any ) -> any ) -> ()` | yes      |
 
 ## Returns
 

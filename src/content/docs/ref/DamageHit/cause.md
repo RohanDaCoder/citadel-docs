@@ -1,5 +1,5 @@
 ---
-title: 'damageHit.cause'
+title: "damageHit.cause"
 description: '"fall", "drown", "suffocate", "void", "lava", "fire", "cactus", "starve", "attack", "shot", "blast" or "magic".'
 ---
 

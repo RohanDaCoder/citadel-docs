@@ -1,6 +1,6 @@
 ---
-title: 'picture:rect'
-description: 'Fills a box like fill, with smoothed rounded corners of radius pixels when given.'
+title: "picture:rect"
+description: "Fills a box like fill, with smoothed rounded corners of radius pixels when given."
 ---
 
 Part of [`Picture`](/ref/Picture/).
@@ -13,11 +13,11 @@ Fills a box like `fill`, with smoothed rounded corners of `radius` pixels when g
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `x` | `number` | yes |
-| `y` | `number` | yes |
-| `w` | `number` | yes |
-| `h` | `number` | yes |
-| `color` | [`Ink`](/ref/Ink/) | yes |
-| `radius` | `number` | no |
+| Name     | Type               | Required |
+| -------- | ------------------ | -------- |
+| `x`      | `number`           | yes      |
+| `y`      | `number`           | yes      |
+| `w`      | `number`           | yes      |
+| `h`      | `number`           | yes      |
+| `color`  | [`Ink`](/ref/Ink/) | yes      |
+| `radius` | `number`           | no       |

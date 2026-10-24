@@ -1,6 +1,6 @@
 ---
-title: 'ui.column'
-description: 'ui.column — function.'
+title: "ui.column"
+description: "ui.column — function."
 ---
 
 Part of [`ui`](/ref/Ui/).
@@ -11,9 +11,9 @@ ui.column(opts: { gap: number ?, align: LayoutAlign ?, [number]: LayoutNode }) �
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `opts` | `{ gap: number ?, align: LayoutAlign ?, [ number ]: LayoutNode }` | yes |
+| Name   | Type                                                              | Required |
+| ------ | ----------------------------------------------------------------- | -------- |
+| `opts` | `{ gap: number ?, align: LayoutAlign ?, [ number ]: LayoutNode }` | yes      |
 
 ## Returns
 

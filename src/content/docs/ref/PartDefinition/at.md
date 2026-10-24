@@ -1,6 +1,6 @@
 ---
-title: 'partDefinition.at'
-description: 'Where the build''s block (0, 0, 0) lands.'
+title: "partDefinition.at"
+description: "Where the build's block (0, 0, 0) lands."
 ---
 
 Part of [`partDefinition`](/ref/PartDefinition/).

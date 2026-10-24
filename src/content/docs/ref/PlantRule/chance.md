@@ -1,6 +1,6 @@
 ---
-title: 'plantRule.chance'
-description: 'plantRule.chance — field.'
+title: "plantRule.chance"
+description: "plantRule.chance — field."
 ---
 
 Part of [`plantRule`](/ref/PlantRule/).

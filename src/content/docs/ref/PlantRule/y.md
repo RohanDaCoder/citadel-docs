@@ -1,6 +1,6 @@
 ---
-title: 'plantRule.y'
-description: '{ low, high }: the y it may start at.'
+title: "plantRule.y"
+description: "{ low, high }: the y it may start at."
 ---
 
 Part of [`plantRule`](/ref/PlantRule/).

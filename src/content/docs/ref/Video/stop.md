@@ -1,6 +1,6 @@
 ---
-title: 'video:stop'
-description: 'False once it ends (and does not loop) or is stopped'
+title: "video:stop"
+description: "False once it ends (and does not loop) or is stopped"
 ---
 
 Part of [`Video`](/ref/Video/).

@@ -1,5 +1,5 @@
 ---
-title: 'entityKind.physics'
+title: "entityKind.physics"
 description: 'For a kind that is not a mob, which order of operations moves it: "item", "falling", "vehicle" or "none"'
 ---
 

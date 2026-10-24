@@ -1,6 +1,6 @@
 ---
-title: 'Storage'
-description: 'The per-pack local JSON store — storage.get/set/keys by key in the pack''s storage.json, what a JSON value may be, the UTF-8 rule, atomic writes, and storage.status/flush for when a write fails.'
+title: "Storage"
+description: "The per-pack local JSON store — storage.get/set/keys by key in the pack's storage.json, what a JSON value may be, the UTF-8 rule, atomic writes, and storage.status/flush for when a write fails."
 ---
 
 :::note[In short]
@@ -14,13 +14,13 @@ experience, see [Shared stores](/systems/shared-stores/).
 
 ## The calls
 
-| Call | Returns | Purpose |
-| --- | --- | --- |
-| `storage.get(key: string)` | any | The value saved under `key`, or nil when there is none. |
-| `storage.set(key: string, value: any)` | — | Saves a value under `key`; nil forgets it. |
-| `storage.keys(prefix: string?)` | `{ string }` | Every key, sorted; with a prefix, only those that start with it. |
-| `storage.status()` | `{ pending, error }` | Last persistence error and whether there are unsaved changes. |
-| `storage.flush()` | — | Yields until saved; raises an error on failure. |
+| Call                                   | Returns              | Purpose                                                          |
+| -------------------------------------- | -------------------- | ---------------------------------------------------------------- |
+| `storage.get(key: string)`             | any                  | The value saved under `key`, or nil when there is none.          |
+| `storage.set(key: string, value: any)` | —                    | Saves a value under `key`; nil forgets it.                       |
+| `storage.keys(prefix: string?)`        | `{ string }`         | Every key, sorted; with a prefix, only those that start with it. |
+| `storage.status()`                     | `{ pending, error }` | Last persistence error and whether there are unsaved changes.    |
+| `storage.flush()`                      | —                    | Yields until saved; raises an error on failure.                  |
 
 `storage.set` changes memory immediately; unflushed changes can still be lost
 if the process crashes. **Only `nil` deletes** — `{}` saves and reads back as

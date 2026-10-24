@@ -1,6 +1,6 @@
 ---
-title: 'data.copy'
-description: 'A detached JSON snapshot as ordinary Lua values/tables.'
+title: "data.copy"
+description: "A detached JSON snapshot as ordinary Lua values/tables."
 ---
 
 Part of [`data`](/ref/data/).
@@ -13,9 +13,9 @@ A detached JSON snapshot as ordinary Lua values/tables.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `value` | `any` | yes |
+| Name    | Type  | Required |
+| ------- | ----- | -------- |
+| `value` | `any` | yes      |
 
 ## Returns
 
@@ -23,5 +23,5 @@ A detached JSON snapshot as ordinary Lua values/tables.
 
 ## Used in
 
-> "local snapshot = data.copy(e.data)      -- an ordinary, detached Lua table" — [Custom blocks](/world/custom-blocks/)
+> "local snapshot = data.copy(e.data) -- an ordinary, detached Lua table" — [Custom blocks](/world/custom-blocks/)
 > "are userdata, so use `data.copy(view)` before ordinary `table.*`, `pairs`, or" — [Custom blocks](/world/custom-blocks/)

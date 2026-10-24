@@ -1,6 +1,6 @@
 ---
-title: 'stores.lease'
-description: 'Takes a lease on key for holder, lasting ttl_ms milliseconds (up to one hour); returns a fencing token.'
+title: "stores.lease"
+description: "Takes a lease on key for holder, lasting ttl_ms milliseconds (up to one hour); returns a fencing token."
 ---
 
 Part of [`stores`](/ref/stores/).
@@ -13,11 +13,11 @@ Takes a lease on `key` for `holder`, lasting `ttl_ms` milliseconds (up to one ho
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `key` | `string` | yes |
-| `holder` | `string` | yes |
-| `ttl_ms` | `number` | yes |
+| Name     | Type     | Required |
+| -------- | -------- | -------- |
+| `key`    | `string` | yes      |
+| `holder` | `string` | yes      |
+| `ttl_ms` | `number` | yes      |
 
 ## Returns
 

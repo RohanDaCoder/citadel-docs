@@ -1,6 +1,6 @@
 ---
-title: 'world.spawn'
-description: 'Puts an entity at a point and returns its handle'
+title: "world.spawn"
+description: "Puts an entity at a point and returns its handle"
 ---
 
 Part of [`world`](/ref/World/).
@@ -13,11 +13,11 @@ Puts an entity at a point and returns its handle. A mob kind of the game by name
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `def` | `EntityDef \| string` | yes |
-| `pos` | [`Vec3`](/ref/Vec3/) | yes |
-| `data` | `{ [ string ]: any }` | no |
+| Name   | Type                  | Required |
+| ------ | --------------------- | -------- |
+| `def`  | `EntityDef \| string` | yes      |
+| `pos`  | [`Vec3`](/ref/Vec3/)  | yes      |
+| `data` | `{ [ string ]: any }` | no       |
 
 ## Returns
 

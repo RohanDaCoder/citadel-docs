@@ -1,6 +1,6 @@
 ---
-title: 'faces.down'
-description: 'One face by its name; a face left out is side.'
+title: "faces.down"
+description: "One face by its name; a face left out is side."
 ---
 
 Part of [`faces`](/ref/Faces/).

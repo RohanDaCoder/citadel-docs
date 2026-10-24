@@ -1,6 +1,6 @@
 ---
-title: 'screen:view'
-description: 'Returns this player''s own layer over the screen; only they see it, and the shared picture shows where it is see-through.'
+title: "screen:view"
+description: "Returns this player's own layer over the screen; only they see it, and the shared picture shows where it is see-through."
 ---
 
 Part of [`Screen`](/ref/Screen/).
@@ -13,9 +13,9 @@ Returns this player's own layer over the screen; only they see it, and the share
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `player` | [`Player`](/ref/Player/) | yes |
+| Name     | Type                     | Required |
+| -------- | ------------------------ | -------- |
+| `player` | [`Player`](/ref/Player/) | yes      |
 
 ## Returns
 

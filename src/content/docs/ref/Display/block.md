@@ -1,6 +1,6 @@
 ---
-title: 'display.block'
-description: 'block kind'
+title: "display.block"
+description: "block kind"
 ---
 
 Part of [`display`](/ref/Display/).

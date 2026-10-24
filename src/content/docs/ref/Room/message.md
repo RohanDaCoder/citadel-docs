@@ -1,6 +1,6 @@
 ---
-title: 'room:message'
-description: 'This room''s world table: its blocks, entities and displays'
+title: "room:message"
+description: "This room's world table: its blocks, entities and displays"
 ---
 
 Part of [`Room`](/ref/Room/).
@@ -13,11 +13,11 @@ This room's `world` table: its blocks, entities and displays. This room's `playe
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `text` | [`Text`](/ref/Text/) | yes |
-| `color` | [`Ink`](/ref/Ink/) | no |
+| Name    | Type                 | Required |
+| ------- | -------------------- | -------- |
+| `text`  | [`Text`](/ref/Text/) | yes      |
+| `color` | [`Ink`](/ref/Ink/)   | no       |
 
 ## Used in
 
-> "room:message("A new round starts")   -- a chat line to everyone in this room" — [Rooms](/concepts/rooms-and-dimensions/)
+> "room:message("A new round starts") -- a chat line to everyone in this room" — [Rooms](/concepts/rooms-and-dimensions/)

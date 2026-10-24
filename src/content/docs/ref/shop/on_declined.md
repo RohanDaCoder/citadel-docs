@@ -1,6 +1,6 @@
 ---
-title: 'shop.on_declined'
-description: 'Called when the player said no or did not answer.'
+title: "shop.on_declined"
+description: "Called when the player said no or did not answer."
 ---
 
 Part of [`shop`](/ref/shop/).
@@ -13,9 +13,9 @@ Called when the player said no or did not answer.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `handler` | `(purchase: ShopPurchase ) -> ()` | yes |
+| Name      | Type                              | Required |
+| --------- | --------------------------------- | -------- |
+| `handler` | `(purchase: ShopPurchase ) -> ()` | yes      |
 
 ## Returns
 

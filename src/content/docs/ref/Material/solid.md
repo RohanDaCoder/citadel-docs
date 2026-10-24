@@ -1,6 +1,6 @@
 ---
-title: 'material.solid'
-description: 'Whether the jar''s Material counts as solid.'
+title: "material.solid"
+description: "Whether the jar's Material counts as solid."
 ---
 
 Part of [`material`](/ref/Material/).

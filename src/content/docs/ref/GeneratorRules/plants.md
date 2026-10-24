@@ -1,6 +1,6 @@
 ---
-title: 'generatorRules.plants'
-description: 'generatorRules.plants — field.'
+title: "generatorRules.plants"
+description: "generatorRules.plants — field."
 ---
 
 Part of [`generatorRules`](/ref/GeneratorRules/).

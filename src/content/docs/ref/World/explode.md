@@ -1,6 +1,6 @@
 ---
-title: 'world.explode'
-description: 'A blast at a point'
+title: "world.explode"
+description: "A blast at a point"
 ---
 
 Part of [`world`](/ref/World/).
@@ -13,10 +13,10 @@ A blast at a point. The power is clamped by this game's own column and the tick'
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `pos` | [`Vec3`](/ref/Vec3/) | yes |
-| `power` | `number` | no |
+| Name    | Type                 | Required |
+| ------- | -------------------- | -------- |
+| `pos`   | [`Vec3`](/ref/Vec3/) | yes      |
+| `power` | `number`             | no       |
 
 ## Used in
 

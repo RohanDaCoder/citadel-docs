@@ -1,6 +1,6 @@
 ---
-title: 'game.items'
-description: 'Defines items of the pack''s own, with a texture for clients from 1.21.4.'
+title: "game.items"
+description: "Defines items of the pack's own, with a texture for clients from 1.21.4."
 ---
 
 Part of [`game`](/ref/Game/).

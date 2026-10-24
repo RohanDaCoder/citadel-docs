@@ -1,6 +1,6 @@
 ---
-title: 'GroundItem type'
-description: 'One stack lying on the ground.'
+title: "GroundItem type"
+description: "One stack lying on the ground."
 ---
 
 One stack lying on the ground.

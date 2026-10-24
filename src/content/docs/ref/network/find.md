@@ -1,6 +1,6 @@
 ---
-title: 'network.find'
-description: 'The instance to send players players to (1 unless set), or nil when none has room'
+title: "network.find"
+description: "The instance to send players players to (1 unless set), or nil when none has room"
 ---
 
 Part of [`network`](/ref/network/).
@@ -13,9 +13,9 @@ The instance to send `players` players to (1 unless set), or nil when none has r
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `options` | `{label: string , players: number ?, party: ( Player \| string )?, start: {member: string , slots: number , data: any }?}` | yes |
+| Name      | Type                                                                                                                       | Required |
+| --------- | -------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `options` | `{label: string , players: number ?, party: ( Player \| string )?, start: {member: string , slots: number , data: any }?}` | yes      |
 
 ## Returns
 

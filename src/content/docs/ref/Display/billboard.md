@@ -1,6 +1,6 @@
 ---
-title: 'display.billboard'
-description: 'Whether it is still present'
+title: "display.billboard"
+description: "Whether it is still present"
 ---
 
 Part of [`display`](/ref/Display/).

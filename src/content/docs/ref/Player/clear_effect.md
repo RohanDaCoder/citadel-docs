@@ -1,6 +1,6 @@
 ---
-title: 'player:clear_effect'
-description: 'Takes a potion effect off the player, by its modern name.'
+title: "player:clear_effect"
+description: "Takes a potion effect off the player, by its modern name."
 ---
 
 Part of [`Player`](/ref/Player/).
@@ -13,9 +13,9 @@ Takes a potion effect off the player, by its modern name.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `name` | `string` | yes |
+| Name   | Type     | Required |
+| ------ | -------- | -------- |
+| `name` | `string` | yes      |
 
 ## Used in
 

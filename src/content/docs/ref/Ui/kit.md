@@ -1,5 +1,5 @@
 ---
-title: 'ui.kit'
+title: "ui.kit"
 description: 'What a dialog is made of (see "Dialogs"): row, column, stack, space, text, image, and window, button, tabs, close, badge, dot, progress, divider, card, grid, theme, mix and SCREEN.'
 ---
 

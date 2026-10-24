@@ -1,5 +1,5 @@
 ---
-title: 'schematic:mirror'
+title: "schematic:mirror"
 description: 'A new build flipped: "x" swaps east and west, "z" north and south.'
 ---
 
@@ -13,9 +13,9 @@ A new build flipped: "x" swaps east and west, "z" north and south.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `axis` | `"x" \| "z"` | yes |
+| Name   | Type         | Required |
+| ------ | ------------ | -------- |
+| `axis` | `"x" \| "z"` | yes      |
 
 ## Returns
 

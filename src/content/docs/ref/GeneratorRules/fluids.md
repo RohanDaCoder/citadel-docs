@@ -1,6 +1,6 @@
 ---
-title: 'generatorRules.fluids'
-description: 'What fills the caves: needs density or carvers.'
+title: "generatorRules.fluids"
+description: "What fills the caves: needs density or carvers."
 ---
 
 Part of [`generatorRules`](/ref/GeneratorRules/).

@@ -1,5 +1,5 @@
 ---
-title: 'breaker.cause'
+title: "breaker.cause"
 description: 'What took the block out: a player, fire, an explosion, flowing water, or the loss of what held it up ("support").'
 ---
 

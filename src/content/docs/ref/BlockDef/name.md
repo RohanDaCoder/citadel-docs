@@ -1,5 +1,5 @@
 ---
-title: 'blockDef.name'
+title: "blockDef.name"
 description: 'Canonical, with the pack''s namespace already on it: "rave:crate".'
 ---
 

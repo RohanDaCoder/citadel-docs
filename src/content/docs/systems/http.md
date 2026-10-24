@@ -1,6 +1,6 @@
 ---
-title: 'HTTP'
-description: 'http.get fetches public URLs with headers, timeout and an on-disk cache; the answer is an HttpResponse with :json() and :image(). Plus http.socket WebSockets, the queue limits, and fetching chunk terrain live.'
+title: "HTTP"
+description: "http.get fetches public URLs with headers, timeout and an on-disk cache; the answer is an HttpResponse with :json() and :image(). Plus http.socket WebSockets, the queue limits, and fetching chunk terrain live."
 ---
 
 :::note[In short]
@@ -30,12 +30,12 @@ res:json()    -- the body as a table; an error when it is not JSON
 res:image()   -- a PNG body as { width, height, pixels }; pixels is a buffer, 4 bytes (RGBA) a pixel, row by row
 ```
 
-| Option | Meaning |
-| --- | --- |
-| `query` | Added to the URL, encoded. |
-| `headers` | Request headers, such as `{ accept = "image/png" }`. |
-| `timeout` | Seconds, 1 .. 60; 15 is the default. Clamped, and must be finite. |
-| `cache` | Seconds a 200 answer is kept on disk; left out, nothing is kept. Negative means zero. |
+| Option    | Meaning                                                                               |
+| --------- | ------------------------------------------------------------------------------------- |
+| `query`   | Added to the URL, encoded.                                                            |
+| `headers` | Request headers, such as `{ accept = "image/png" }`.                                  |
+| `timeout` | Seconds, 1 .. 60; 15 is the default. Clamped, and must be finite.                     |
+| `cache`   | Seconds a 200 answer is kept on disk; left out, nothing is kept. Negative means zero. |
 
 `res:image()` reads PNG with 8 bits a channel, not interlaced.
 

@@ -1,6 +1,6 @@
 ---
-title: 'generated:biome_at'
-description: 'Returns the biome name a column gets.'
+title: "generated:biome_at"
+description: "Returns the biome name a column gets."
 ---
 
 Part of [`Generated`](/ref/Generated/).
@@ -13,9 +13,9 @@ Returns the biome name a column gets.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `pos` | [`Vec3`](/ref/Vec3/) | yes |
+| Name  | Type                 | Required |
+| ----- | -------------------- | -------- |
+| `pos` | [`Vec3`](/ref/Vec3/) | yes      |
 
 ## Returns
 

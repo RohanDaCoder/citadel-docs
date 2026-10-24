@@ -1,6 +1,6 @@
 ---
-title: 'entitySpec.on_steer'
-description: 'Runs before the physics each tick to decide where it goes; call base(e) to extend, leave it out to replace.'
+title: "entitySpec.on_steer"
+description: "Runs before the physics each tick to decide where it goes; call base(e) to extend, leave it out to replace."
 ---
 
 Part of [`entitySpec`](/ref/EntitySpec/).
@@ -13,9 +13,9 @@ Runs before the physics each tick to decide where it goes; call `base(e)` to ext
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(e` | `EntityHandle , base: () -> ()) -> ()` | yes |
+| Name | Type                                   | Required |
+| ---- | -------------------------------------- | -------- |
+| `(e` | `EntityHandle , base: () -> ()) -> ()` | yes      |
 
 ## Returns
 

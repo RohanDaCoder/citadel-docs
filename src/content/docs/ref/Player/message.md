@@ -1,6 +1,6 @@
 ---
-title: 'player:message'
-description: 'What shows on this player''s screen: the calls ui has, for them alone, plus their own menu and overlay'
+title: "player:message"
+description: "What shows on this player's screen: the calls ui has, for them alone, plus their own menu and overlay"
 ---
 
 Part of [`Player`](/ref/Player/).
@@ -13,10 +13,10 @@ What shows on this player's screen: the calls `ui` has, for them alone, plus the
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `text` | [`Text`](/ref/Text/) | yes |
-| `color` | [`Ink`](/ref/Ink/) | no |
+| Name    | Type                 | Required |
+| ------- | -------------------- | -------- |
+| `text`  | [`Text`](/ref/Text/) | yes      |
+| `color` | [`Ink`](/ref/Ink/)   | no       |
 
 ## Used in
 

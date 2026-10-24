@@ -1,5 +1,5 @@
 ---
-title: 'entityKind.name'
+title: "entityKind.name"
 description: 'Its modern registry name: "cow".'
 ---
 

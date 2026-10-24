@@ -1,6 +1,6 @@
 ---
-title: 'picture:ring'
-description: 'Draws a circle''s outline, width pixels wide (1 by default), smoothed.'
+title: "picture:ring"
+description: "Draws a circle's outline, width pixels wide (1 by default), smoothed."
 ---
 
 Part of [`Picture`](/ref/Picture/).
@@ -13,10 +13,10 @@ Draws a circle's outline, `width` pixels wide (1 by default), smoothed.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `x` | `number` | yes |
-| `y` | `number` | yes |
-| `r` | `number` | yes |
-| `color` | [`Ink`](/ref/Ink/) | yes |
-| `width` | `number` | no |
+| Name    | Type               | Required |
+| ------- | ------------------ | -------- |
+| `x`     | `number`           | yes      |
+| `y`     | `number`           | yes      |
+| `r`     | `number`           | yes      |
+| `color` | [`Ink`](/ref/Ink/) | yes      |
+| `width` | `number`           | no       |

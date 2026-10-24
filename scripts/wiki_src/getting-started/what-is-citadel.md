@@ -5,6 +5,7 @@ order: 1
 description: Citadel is Minefort's Luau scripting engine for Minecraft servers — one pack runs unchanged on every Java client from 1.8 to 26.x, as the whole game (lite mode) or as a plugin over survival (full mode).
 tags: [overview, platform, modes, hosting]
 ---
+
 # What is Citadel?
 
 > **In short:** Citadel is a scripting engine for Minecraft servers, built by
@@ -28,11 +29,11 @@ sent, and you can query support per player with `player:supports`.
 
 The `mode` key in a pack's manifest says **who owns the game**:
 
-| Mode | Meaning |
-| --- | --- |
-| `mode: lite` | Your scripts are the game. No survival: no natural mob spawning, no block drops, no health rules — unless you switch each on with `world.rules` or per-kind fields. Terrain comes from your `world.on_generate` (or a world folder). |
-| `mode: full` | **Citadel plays survival** — terrain, health, hunger, mining, inventory, mobs, world rules — and your pack *adds* to it: a shop, a scoreboard, a custom drop. |
-| no `mode` key | The pack runs on either kind of server, like a plugin. Useful for packs that work everywhere. |
+| Mode          | Meaning                                                                                                                                                                                                                              |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `mode: lite`  | Your scripts are the game. No survival: no natural mob spawning, no block drops, no health rules — unless you switch each on with `world.rules` or per-kind fields. Terrain comes from your `world.on_generate` (or a world folder). |
+| `mode: full`  | **Citadel plays survival** — terrain, health, hunger, mining, inventory, mobs, world rules — and your pack _adds_ to it: a shop, a scoreboard, a custom drop.                                                                        |
+| no `mode` key | The pack runs on either kind of server, like a plugin. Useful for packs that work everywhere.                                                                                                                                        |
 
 The server decides its mode in this order: a `--lite`/`--full` flag, then the
 server's own `citadel.yml`, then what the packs' manifests agree on, and
@@ -43,7 +44,7 @@ an empty world and no game.
 
 - **Locally**: a `citadel` binary on your machine. `citadel --lite --pack ./first`
   starts a server on `localhost:25565` you join from Minecraft Java Edition.
-- **On Minefort**: a *development workload* builds an **experience**; its
+- **On Minefort**: a _development workload_ builds an **experience**; its
   instances are the published copies players join. `citadel.env` tells a script
   which copy it is on (`"development"`, `"unlisted"`, `"published"`).
 - On Minefort, a development workload and all instances of its experience share

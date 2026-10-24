@@ -1,6 +1,6 @@
 ---
-title: 'entityHandle.age'
-description: 'Ticks lived.'
+title: "entityHandle.age"
+description: "Ticks lived."
 ---
 
 Part of [`entityHandle`](/ref/EntityHandle/).

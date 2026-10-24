@@ -1,6 +1,6 @@
 ---
-title: 'world.screen'
-description: 'Puts a wall of map frames, width by height frames (128 pixels each), in front of a wall; at is the top-left frame'
+title: "world.screen"
+description: "Puts a wall of map frames, width by height frames (128 pixels each), in front of a wall; at is the top-left frame"
 ---
 
 Part of [`world`](/ref/World/).
@@ -13,9 +13,9 @@ Puts a wall of map frames, `width` by `height` frames (128 pixels each), in fron
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `opts` | `{ at: Vec3 , facing: Facing \| "up" , up: Facing ?, width: number ?, height: number ?, glow: boolean ?, on_click: ((player: Player , x: number , y: number , button: "left" \| "right" ) -> ())?, }` | yes |
+| Name   | Type                                                                                                                                                                                                  | Required |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `opts` | `{ at: Vec3 , facing: Facing \| "up" , up: Facing ?, width: number ?, height: number ?, glow: boolean ?, on_click: ((player: Player , x: number , y: number , button: "left" \| "right" ) -> ())?, }` | yes      |
 
 ## Returns
 

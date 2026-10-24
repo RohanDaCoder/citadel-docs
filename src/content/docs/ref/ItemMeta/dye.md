@@ -1,6 +1,6 @@
 ---
-title: 'itemMeta.dye'
-description: 'Leather armour''s colour.'
+title: "itemMeta.dye"
+description: "Leather armour's colour."
 ---
 
 Part of [`itemMeta`](/ref/ItemMeta/).

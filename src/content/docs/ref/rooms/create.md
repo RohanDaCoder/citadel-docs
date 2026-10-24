@@ -1,6 +1,6 @@
 ---
-title: 'rooms.create'
-description: 'Creates an isolated room with its own chunks, players and effects; spawn_point defaults to (0.5, 65, 0.5), generate fills each chunk.'
+title: "rooms.create"
+description: "Creates an isolated room with its own chunks, players and effects; spawn_point defaults to (0.5, 65, 0.5), generate fills each chunk."
 ---
 
 Part of [`rooms`](/ref/rooms/).
@@ -13,9 +13,9 @@ Creates an isolated room with its own chunks, players and effects; `spawn_point`
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `opts` | `{ spawn_point: Vec3 ?, generate: ((chunk: Chunk ) -> ())? }` | yes |
+| Name   | Type                                                          | Required |
+| ------ | ------------------------------------------------------------- | -------- |
+| `opts` | `{ spawn_point: Vec3 ?, generate: ((chunk: Chunk ) -> ())? }` | yes      |
 
 ## Returns
 

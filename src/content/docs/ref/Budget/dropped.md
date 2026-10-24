@@ -1,6 +1,6 @@
 ---
-title: 'budget.dropped'
-description: 'Ordinary events lost to queue overflow'
+title: "budget.dropped"
+description: "Ordinary events lost to queue overflow"
 ---
 
 Part of [`budget`](/ref/Budget/).

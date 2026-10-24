@@ -1,6 +1,6 @@
 ---
-title: 'durableStore:list'
-description: 'Returns fact keys with this prefix and the cursor for the next page, or nil at the end.'
+title: "durableStore:list"
+description: "Returns fact keys with this prefix and the cursor for the next page, or nil at the end."
 ---
 
 Part of [`DurableStore`](/ref/DurableStore/).
@@ -13,11 +13,11 @@ Returns fact keys with this prefix and the cursor for the next page, or nil at t
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `prefix` | `string` | no |
-| `cursor` | `string` | no |
-| `limit` | `number` | no |
+| Name     | Type     | Required |
+| -------- | -------- | -------- |
+| `prefix` | `string` | no       |
+| `cursor` | `string` | no       |
+| `limit`  | `number` | no       |
 
 ## Returns
 

@@ -1,6 +1,6 @@
 ---
-title: 'blockSpec.name'
-description: 'Without a namespace'
+title: "blockSpec.name"
+description: "Without a namespace"
 ---
 
 Part of [`blockSpec`](/ref/BlockSpec/).

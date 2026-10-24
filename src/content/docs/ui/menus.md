@@ -1,6 +1,6 @@
 ---
-title: 'Menus'
-description: 'player.ui.menu — a titled grid of up to 54 items every client draws, chest on Java and form on Bedrock — and the hotbar as a per-player menu of nine items with live canvas maps.'
+title: "Menus"
+description: "player.ui.menu — a titled grid of up to 54 items every client draws, chest on Java and form on Bedrock — and the hotbar as a per-player menu of nine items with live canvas maps."
 ---
 
 :::note[In short]
@@ -31,11 +31,11 @@ commands.add("kit", function(player)
 end)
 ```
 
-| Option | What it is |
-| --- | --- |
-| `title` | The menu's title (text — see [UI basics](/ui/ui-basics/#text-runs)) |
-| `items` | Up to 54 item specs |
-| `on_pick` | `function(player, n)` — `n` is the item picked, 1 up |
+| Option     | What it is                                                                    |
+| ---------- | ----------------------------------------------------------------------------- |
+| `title`    | The menu's title (text — see [UI basics](/ui/ui-basics/#text-runs))           |
+| `items`    | Up to 54 item specs                                                           |
+| `on_pick`  | `function(player, n)` — `n` is the item picked, 1 up                          |
 | `on_close` | `function(player)` — fired when the player puts the menu away without picking |
 
 ## Items

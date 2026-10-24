@@ -1,6 +1,6 @@
 ---
-title: 'texture:copy'
-description: 'Returns a copy to draw on.'
+title: "texture:copy"
+description: "Returns a copy to draw on."
 ---
 
 Part of [`Texture`](/ref/Texture/).

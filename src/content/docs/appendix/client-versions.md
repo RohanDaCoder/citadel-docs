@@ -1,6 +1,6 @@
 ---
-title: 'Client versions'
-description: 'The player:supports feature matrix — which client version each UI and world feature needs, how resource-pack refusals read, and what min_client does.'
+title: "Client versions"
+description: "The player:supports feature matrix — which client version each UI and world feature needs, how resource-pack refusals read, and what min_client does."
 ---
 
 :::note[In short]
@@ -12,21 +12,21 @@ cannot show a feature is not sent it; guard only to show something else.
 
 ## The feature matrix
 
-| Feature | What needs it | From |
-| --- | --- | --- |
-| `bossbar` | `ui.bossbar`, `player.ui.bossbar` | 1.9 |
-| `potion_color` | an item's `color` | 1.11 |
-| `floor_frame` | a screen or frame with `facing = "up"` | 1.13 |
-| `light` | `world.light` | 1.14 |
-| `hex_color` | a colour outside Minecraft's sixteen names | 1.16 |
-| `glow_frame` | `glow = true` on a screen | 1.17 |
-| `display` | `world.display`, any kind | 1.19.4 |
-| `hitbox` | `world.hitbox` | 1.19.4 |
-| `model` | `world.display{ kind = "model" }` | 1.21.4 |
-| `layout` | `player.ui.show` | 1.21.4 |
-| `dialog` | `player.ui.dialog` | 1.21.6 |
-| `overlay` | `player.ui.overlay` | 26.3 only |
-| `resource_pack` | the pack's textures, models and sounds | a client that did not turn the pack down |
+| Feature         | What needs it                              | From                                     |
+| --------------- | ------------------------------------------ | ---------------------------------------- |
+| `bossbar`       | `ui.bossbar`, `player.ui.bossbar`          | 1.9                                      |
+| `potion_color`  | an item's `color`                          | 1.11                                     |
+| `floor_frame`   | a screen or frame with `facing = "up"`     | 1.13                                     |
+| `light`         | `world.light`                              | 1.14                                     |
+| `hex_color`     | a colour outside Minecraft's sixteen names | 1.16                                     |
+| `glow_frame`    | `glow = true` on a screen                  | 1.17                                     |
+| `display`       | `world.display`, any kind                  | 1.19.4                                   |
+| `hitbox`        | `world.hitbox`                             | 1.19.4                                   |
+| `model`         | `world.display{ kind = "model" }`          | 1.21.4                                   |
+| `layout`        | `player.ui.show`                           | 1.21.4                                   |
+| `dialog`        | `player.ui.dialog`                         | 1.21.6                                   |
+| `overlay`       | `player.ui.overlay`                        | 26.3 only                                |
+| `resource_pack` | the pack's textures, models and sounds     | a client that did not turn the pack down |
 
 - A name not in this table is an error.
 - A Bedrock client answers `false` to every feature in the table (except where noted in the topic pages).

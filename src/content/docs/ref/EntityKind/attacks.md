@@ -1,6 +1,6 @@
 ---
-title: 'entityKind.attacks'
-description: 'Whether its hits hurt players'
+title: "entityKind.attacks"
+description: "Whether its hits hurt players"
 ---
 
 Part of [`entityKind`](/ref/EntityKind/).

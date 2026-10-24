@@ -1,6 +1,6 @@
 ---
-title: 'items.define'
-description: 'Load-time only'
+title: "items.define"
+description: "Load-time only"
 ---
 
 Part of [`items`](/ref/Items/).
@@ -13,9 +13,9 @@ Load-time only. Hands back the item table: give it, match it, craft it.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `spec` | `{ name: string , texture: TextureRef ?, label: Text ?, lore: ({ Text } \| Text )?, looks: string ?, stack: number ?, glint: boolean ?, }` | yes |
+| Name   | Type                                                                                                                                       | Required |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
+| `spec` | `{ name: string , texture: TextureRef ?, label: Text ?, lore: ({ Text } \| Text )?, looks: string ?, stack: number ?, glint: boolean ?, }` | yes      |
 
 ## Returns
 

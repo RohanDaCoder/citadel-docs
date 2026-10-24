@@ -1,6 +1,6 @@
 ---
-title: 'npc:move'
-description: 'Removes the NPC'
+title: "npc:move"
+description: "Removes the NPC"
 ---
 
 Part of [`Npc`](/ref/Npc/).
@@ -13,7 +13,7 @@ Removes the NPC. Sets position and optional rotation together.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `at` | [`Vec3`](/ref/Vec3/) | yes |
-| `rotation` | [`BodyRotation`](/ref/BodyRotation/) | no |
+| Name       | Type                                 | Required |
+| ---------- | ------------------------------------ | -------- |
+| `at`       | [`Vec3`](/ref/Vec3/)                 | yes      |
+| `rotation` | [`BodyRotation`](/ref/BodyRotation/) | no       |

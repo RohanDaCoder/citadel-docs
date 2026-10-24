@@ -1,6 +1,6 @@
 ---
-title: 'data.insert'
-description: 'Insert into a nested data list; omitted index appends.'
+title: "data.insert"
+description: "Insert into a nested data list; omitted index appends."
 ---
 
 Part of [`data`](/ref/data/).
@@ -13,9 +13,9 @@ Insert into a nested data list; omitted index appends.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(list` | `DataView , value: any ) -> ()` | yes |
+| Name    | Type                            | Required |
+| ------- | ------------------------------- | -------- |
+| `(list` | `DataView , value: any ) -> ()` | yes      |
 
 ## Returns
 

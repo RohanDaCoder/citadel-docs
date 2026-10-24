@@ -5,6 +5,7 @@ order: 2
 description: Build a first Citadel pack from scratch — manifest, script, terrain, a join handler, a command — then run it, edit it live, and understand what the reload did.
 tags: [tutorial, first pack, citadel.yml, on_generate, commands]
 ---
+
 # Quick start
 
 > **In short:** a Citadel pack is two files — a `citadel.yml` manifest and one
@@ -29,14 +30,14 @@ world: script
 
 What each key did:
 
-| Key | Meaning |
-| --- | --- |
-| `entry` | The script to run: `main.luau`, beside this file. |
-| `world: script` | Your script supplies the terrain through `world.on_generate`. A chunk the script does not fill is air. |
-| `mode: lite` | The pack is the game — no survival underneath. |
-| `gamemode: 2` | Adventure mode: players explore without breaking the floor. |
-| `spawn_point` | Where players arrive: `[0.5, 65.0, 0.5]` puts their feet one block above the floor, centred on the gold marker you create next. |
-| `motd` | The message of the day shown in the server list. |
+| Key             | Meaning                                                                                                                         |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `entry`         | The script to run: `main.luau`, beside this file.                                                                               |
+| `world: script` | Your script supplies the terrain through `world.on_generate`. A chunk the script does not fill is air.                          |
+| `mode: lite`    | The pack is the game — no survival underneath.                                                                                  |
+| `gamemode: 2`   | Adventure mode: players explore without breaking the floor.                                                                     |
+| `spawn_point`   | Where players arrive: `[0.5, 65.0, 0.5]` puts their feet one block above the floor, centred on the gold marker you create next. |
+| `motd`          | The message of the day shown in the server list.                                                                                |
 
 ## 2. Add the script
 

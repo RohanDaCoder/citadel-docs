@@ -1,6 +1,6 @@
 ---
-title: 'world.zone'
-description: 'Makes a box of blocks, both corners included, that knows who is in it; checked once a tick by feet position'
+title: "world.zone"
+description: "Makes a box of blocks, both corners included, that knows who is in it; checked once a tick by feet position"
 ---
 
 Part of [`world`](/ref/World/).
@@ -13,9 +13,9 @@ Makes a box of blocks, both corners included, that knows who is in it; checked o
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `opts` | `{ from: Vec3 , to: Vec3 , on_enter: ((player: Player ) -> ())?, on_leave: ((player: Player ) -> ())? }` | yes |
+| Name   | Type                                                                                                     | Required |
+| ------ | -------------------------------------------------------------------------------------------------------- | -------- |
+| `opts` | `{ from: Vec3 , to: Vec3 , on_enter: ((player: Player ) -> ())?, on_leave: ((player: Player ) -> ())? }` | yes      |
 
 ## Returns
 

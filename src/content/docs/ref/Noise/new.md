@@ -1,6 +1,6 @@
 ---
-title: 'noise.new'
-description: 'Returns a noise'
+title: "noise.new"
+description: "Returns a noise"
 ---
 
 Part of [`noise`](/ref/noise/).
@@ -13,9 +13,9 @@ Returns a noise. `scale` is the size of a hill in blocks (64), and each of the `
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `opts` | `{ seed: number ?, scale: number ?, octaves: number ?, gain: number ?, lacunarity: number ? }` | no |
+| Name   | Type                                                                                           | Required |
+| ------ | ---------------------------------------------------------------------------------------------- | -------- |
+| `opts` | `{ seed: number ?, scale: number ?, octaves: number ?, gain: number ?, lacunarity: number ? }` | no       |
 
 ## Returns
 

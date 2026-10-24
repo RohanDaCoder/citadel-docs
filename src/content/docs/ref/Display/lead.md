@@ -1,6 +1,6 @@
 ---
-title: 'display.lead'
-description: 'Advanced: true enables linear prediction'
+title: "display.lead"
+description: "Advanced: true enables linear prediction"
 ---
 
 Part of [`display`](/ref/Display/).

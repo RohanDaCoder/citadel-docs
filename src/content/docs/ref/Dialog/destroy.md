@@ -1,6 +1,6 @@
 ---
-title: 'dialog:destroy'
-description: 'Closes it.'
+title: "dialog:destroy"
+description: "Closes it."
 ---
 
 Part of [`Dialog`](/ref/Dialog/).

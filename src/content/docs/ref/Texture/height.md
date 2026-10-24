@@ -1,6 +1,6 @@
 ---
-title: 'texture.height'
-description: 'Height in pixels.'
+title: "texture.height"
+description: "Height in pixels."
 ---
 
 Part of [`texture`](/ref/Texture/).

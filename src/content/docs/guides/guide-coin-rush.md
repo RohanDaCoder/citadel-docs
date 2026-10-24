@@ -1,6 +1,6 @@
 ---
-title: 'Coin rush'
-description: 'Build a sixty-second arcade game — a round arena, gold plates taken by walking on them, a boss-bar countdown, live sidebar scores, and best scores kept in storage.'
+title: "Coin rush"
+description: "Build a sixty-second arcade game — a round arena, gold plates taken by walking on them, a boss-bar countdown, live sidebar scores, and best scores kept in storage."
 ---
 
 :::note[In short]
@@ -12,6 +12,7 @@ tasks and the UI bars together.
 :::
 
 ## What you build
+
 - A round grass arena with a fence on its rim.
 - Five gold pressure plates, the coins, at random places on the floor.
   Walk onto one to take it; a new one appears somewhere else.

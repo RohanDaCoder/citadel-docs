@@ -1,6 +1,6 @@
 ---
-title: 'blockAt:become'
-description: 'The door: this block stops being a block, and that entity appears.'
+title: "blockAt:become"
+description: "The door: this block stops being a block, and that entity appears."
 ---
 
 Part of [`BlockAt`](/ref/BlockAt/).
@@ -13,7 +13,7 @@ blockAt:become(entity: string, data: { [string]: any }?)
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `entity` | `string` | yes |
-| `data` | `{ [ string ]: any }` | no |
+| Name     | Type                  | Required |
+| -------- | --------------------- | -------- |
+| `entity` | `string`              | yes      |
+| `data`   | `{ [ string ]: any }` | no       |

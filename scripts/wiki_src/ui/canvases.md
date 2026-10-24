@@ -5,6 +5,7 @@ order: 3
 description: world.canvas — a picture of one or more maps with no frame of its own, shown on frames, in hands and on screens — plus frame displays, the map palette, and video, live-stream and streamed-sound playback.
 tags: [ui, canvas, pictures, maps, video, streams, frame]
 ---
+
 # Canvases and pictures
 
 > **In short:** a canvas is a picture of one or more maps (128×128 pixels each)

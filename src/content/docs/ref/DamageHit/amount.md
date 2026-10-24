@@ -1,6 +1,6 @@
 ---
-title: 'damageHit.amount'
-description: 'Half hearts, before armour.'
+title: "damageHit.amount"
+description: "Half hearts, before armour."
 ---
 
 Part of [`damageHit`](/ref/DamageHit/).

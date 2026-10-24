@@ -1,6 +1,6 @@
 ---
-title: 'modelPart:part'
-description: 'Makes a child part of this one; it turns around pivot, the model''s origin unless you give one.'
+title: "modelPart:part"
+description: "Makes a child part of this one; it turns around pivot, the model's origin unless you give one."
 ---
 
 Part of [`ModelPart`](/ref/ModelPart/).
@@ -13,10 +13,10 @@ Makes a child part of this one; it turns around `pivot`, the model's origin unle
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `name` | `string` | yes |
-| `opts` | `{ pivot: Vec3 ? }` | no |
+| Name   | Type                | Required |
+| ------ | ------------------- | -------- |
+| `name` | `string`            | yes      |
+| `opts` | `{ pivot: Vec3 ? }` | no       |
 
 ## Returns
 

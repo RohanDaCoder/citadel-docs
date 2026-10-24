@@ -1,6 +1,6 @@
 ---
-title: 'game.recipes'
-description: 'What a crafting grid and a furnace make of a pack''s items; recipes are added while the pack loads.'
+title: "game.recipes"
+description: "What a crafting grid and a furnace make of a pack's items; recipes are added while the pack loads."
 ---
 
 Part of [`game`](/ref/Game/).

@@ -1,6 +1,6 @@
 ---
-title: 'game.item'
-description: 'Returns an item this game has, or nil for a name it does not; never an error.'
+title: "game.item"
+description: "Returns an item this game has, or nil for a name it does not; never an error."
 ---
 
 Part of [`game`](/ref/Game/).
@@ -13,9 +13,9 @@ Returns an item this game has, or nil for a name it does not; never an error.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `name` | `string` | yes |
+| Name   | Type     | Required |
+| ------ | -------- | -------- |
+| `name` | `string` | yes      |
 
 ## Returns
 

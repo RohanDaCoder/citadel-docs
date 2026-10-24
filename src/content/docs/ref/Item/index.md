@@ -1,6 +1,6 @@
 ---
-title: 'Item type'
-description: 'An item the game version has, from game.item(name): its name and stack size.'
+title: "Item type"
+description: "An item the game version has, from game.item(name): its name and stack size."
 ---
 
 An item the game version has, from `game.item(name)`: its name and stack size.

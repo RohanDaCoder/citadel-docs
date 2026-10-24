@@ -1,6 +1,6 @@
 ---
-title: 'SoundSpeaker type'
-description: 'Where a speaker is: a point, or a player or an entity it follows.'
+title: "SoundSpeaker type"
+description: "Where a speaker is: a point, or a player or an entity it follows."
 ---
 
 Where a speaker is: a point, or a player or an entity it follows.

@@ -1,6 +1,6 @@
 ---
-title: 'durableStore:delete'
-description: 'Removes a fact if its version is still if_version.'
+title: "durableStore:delete"
+description: "Removes a fact if its version is still if_version."
 ---
 
 Part of [`DurableStore`](/ref/DurableStore/).
@@ -13,8 +13,8 @@ Removes a fact if its version is still `if_version`.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `key` | `string` | yes |
-| `if_version` | `number` | yes |
-| `lease` | `number` | no |
+| Name         | Type     | Required |
+| ------------ | -------- | -------- |
+| `key`        | `string` | yes      |
+| `if_version` | `number` | yes      |
+| `lease`      | `number` | no       |

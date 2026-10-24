@@ -1,6 +1,6 @@
 ---
-title: 'picture:polygon'
-description: 'Fills a smoothed shape with any number of corners; a point is {x, y} or { x = .., y = .'
+title: "picture:polygon"
+description: "Fills a smoothed shape with any number of corners; a point is {x, y} or { x = .., y = ."
 ---
 
 Part of [`Picture`](/ref/Picture/).
@@ -13,7 +13,7 @@ Fills a smoothed shape with any number of corners; a point is `{x, y}` or `{ x =
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `points` | `{ { number } \| { x: number , y: number } }` | yes |
-| `color` | [`Ink`](/ref/Ink/) | yes |
+| Name     | Type                                          | Required |
+| -------- | --------------------------------------------- | -------- |
+| `points` | `{ { number } \| { x: number , y: number } }` | yes      |
+| `color`  | [`Ink`](/ref/Ink/)                            | yes      |

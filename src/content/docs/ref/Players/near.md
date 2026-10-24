@@ -1,6 +1,6 @@
 ---
-title: 'players.near'
-description: 'Who is within a radius of a point, and who is inside a box of blocks.'
+title: "players.near"
+description: "Who is within a radius of a point, and who is inside a box of blocks."
 ---
 
 Part of [`players`](/ref/Players/).
@@ -13,10 +13,10 @@ Who is within a radius of a point, and who is inside a box of blocks.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `pos` | [`Vec3`](/ref/Vec3/) | yes |
-| `radius` | `number` | yes |
+| Name     | Type                 | Required |
+| -------- | -------------------- | -------- |
+| `pos`    | [`Vec3`](/ref/Vec3/) | yes      |
+| `radius` | `number`             | yes      |
 
 ## Returns
 
@@ -24,4 +24,4 @@ Who is within a radius of a point, and who is inside a box of blocks.
 
 ## Used in
 
-> "players.near(pos, 8)                 -- every player within eight blocks of a point" — [Zones and raycasts](/world/spatial-queries/)
+> "players.near(pos, 8) -- every player within eight blocks of a point" — [Zones and raycasts](/world/spatial-queries/)

@@ -1,6 +1,6 @@
 ---
-title: 'durableStore:blob_put'
-description: 'Writes a player''s binary blob if its version is still if_version, and returns the new version'
+title: "durableStore:blob_put"
+description: "Writes a player's binary blob if its version is still if_version, and returns the new version"
 ---
 
 Part of [`DurableStore`](/ref/DurableStore/).
@@ -13,13 +13,13 @@ Writes a player's binary blob if its version is still `if_version`, and returns 
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `owner` | `string` | yes |
-| `key` | `string` | yes |
-| `bytes` | `string` | yes |
-| `if_version` | `number` | yes |
-| `lease` | `number` | no |
+| Name         | Type     | Required |
+| ------------ | -------- | -------- |
+| `owner`      | `string` | yes      |
+| `key`        | `string` | yes      |
+| `bytes`      | `string` | yes      |
+| `if_version` | `number` | yes      |
+| `lease`      | `number` | no       |
 
 ## Returns
 

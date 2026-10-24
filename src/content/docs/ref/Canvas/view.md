@@ -1,6 +1,6 @@
 ---
-title: 'canvas:view'
-description: 'The map id of its top-left map, for a filled_map'
+title: "canvas:view"
+description: "The map id of its top-left map, for a filled_map"
 ---
 
 Part of [`Canvas`](/ref/Canvas/).
@@ -13,9 +13,9 @@ The map id of its top-left map, for a `filled_map`. Returns that player's own la
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `player` | [`Player`](/ref/Player/) | yes |
+| Name     | Type                     | Required |
+| -------- | ------------------------ | -------- |
+| `player` | [`Player`](/ref/Player/) | yes      |
 
 ## Returns
 

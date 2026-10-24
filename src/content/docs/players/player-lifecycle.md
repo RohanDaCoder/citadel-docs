@@ -1,6 +1,6 @@
 ---
-title: 'Player lifecycle'
-description: 'The four player events — on_join, on_leave, on_death and on_respawn — the one player value and its per-session data table, what survives a reconnect, and moving a player to another server with player:connect.'
+title: "Player lifecycle"
+description: "The four player events — on_join, on_leave, on_death and on_respawn — the one player value and its per-session data table, what survives a reconnect, and moving a player to another server with player:connect."
 ---
 
 :::note[In short]
@@ -38,12 +38,12 @@ player. Make it safe to run twice.
 Every lifecycle subscription returns a connection; `connection:cancel()`
 unsubscribes (see [The event model](/concepts/events/)).
 
-| Event | Callback | Fires |
-| --- | --- | --- |
-| [`players.on_join`](/ref/Players/on_join/) | `(player)` | A client connects (global table); each move into a room (room's table). |
-| [`players.on_leave`](/ref/Players/on_leave/) | `(player)` | The same player value `on_join` had; it can no longer be sent to. |
-| [`players.on_death`](/ref/Players/on_death/) | `(player?, cause, message, by?)` | A player dies; `player` is nil once they have left. |
-| [`players.on_respawn`](/ref/Players/on_respawn/) | `(player?)` | A player respawns; `player` is nil once they have left. |
+| Event                                            | Callback                         | Fires                                                                   |
+| ------------------------------------------------ | -------------------------------- | ----------------------------------------------------------------------- |
+| [`players.on_join`](/ref/Players/on_join/)       | `(player)`                       | A client connects (global table); each move into a room (room's table). |
+| [`players.on_leave`](/ref/Players/on_leave/)     | `(player)`                       | The same player value `on_join` had; it can no longer be sent to.       |
+| [`players.on_death`](/ref/Players/on_death/)     | `(player?, cause, message, by?)` | A player dies; `player` is nil once they have left.                     |
+| [`players.on_respawn`](/ref/Players/on_respawn/) | `(player?)`                      | A player respawns; `player` is nil once they have left.                 |
 
 Delivery is guaranteed where it matters:
 
@@ -64,13 +64,13 @@ task threads keep the 100 ms runaway limit instead. See
 
 `cause` in `players.on_death` says what killed them:
 
-| Cause | What it is |
-| --- | --- |
-| `fall`, `drown`, `suffocate`, `void`, `lava`, `fire`, `cactus`, `starve` | The environment. |
-| `attack` | A mob's or a player's hit. |
-| `shot` | An arrow. |
-| `blast`, `magic` | An explosion, magic. |
-| `other` | A pack's own `player:damage`. |
+| Cause                                                                    | What it is                    |
+| ------------------------------------------------------------------------ | ----------------------------- |
+| `fall`, `drown`, `suffocate`, `void`, `lava`, `fire`, `cactus`, `starve` | The environment.              |
+| `attack`                                                                 | A mob's or a player's hit.    |
+| `shot`                                                                   | An arrow.                     |
+| `blast`, `magic`                                                         | An explosion, magic.          |
+| `other`                                                                  | A pack's own `player:damage`. |
 
 `message` is the broadcast English death line. `by` is the player who hit or
 shot them, or `nil`. What happens at zero health — and what does not — is on
@@ -85,13 +85,13 @@ Every event passes the same `player`:
 
 The identifying fields:
 
-| Field | Holds |
-| --- | --- |
-| `player.name` | The player's name. |
+| Field         | Holds                                                                     |
+| ------------- | ------------------------------------------------------------------------- |
+| `player.name` | The player's name.                                                        |
 | `player.uuid` | The account's own id: the one name for a player a rename does not change. |
-| `player.at` | Where they stand now. |
-| `player.room` | The Room the player is in; nil while they move between rooms. |
-| `player.data` | Your own table, kept on the player for as long as they are connected. |
+| `player.at`   | Where they stand now.                                                     |
+| `player.room` | The Room the player is in; nil while they move between rooms.             |
+| `player.data` | Your own table, kept on the player for as long as they are connected.     |
 
 ## player.data
 
@@ -124,11 +124,11 @@ too (hidden players, `visible`; see
 the player: a BungeeCord `Connect` for a Java player, a `Transfer` to that
 name for a Bedrock player. It returns nothing and does not yield.
 
-| `server` is | The player goes to |
-| --- | --- |
-| an instance's `id` | that instance (see [Network](/systems/network/)) |
+| `server` is        | The player goes to                                        |
+| ------------------ | --------------------------------------------------------- |
+| an instance's `id` | that instance (see [Network](/systems/network/))          |
 | the network's name | its default member; `network.info().network` is that name |
-| `hub` | Minefort's hub |
+| `hub`              | Minefort's hub                                            |
 
 The fine print:
 

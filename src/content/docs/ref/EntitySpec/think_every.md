@@ -1,6 +1,6 @@
 ---
-title: 'entitySpec.think_every'
-description: 'define only'
+title: "entitySpec.think_every"
+description: "define only"
 ---
 
 Part of [`entitySpec`](/ref/EntitySpec/).

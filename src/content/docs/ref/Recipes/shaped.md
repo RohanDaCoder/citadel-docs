@@ -1,6 +1,6 @@
 ---
-title: 'recipes.shaped'
-description: '1 to 3 rows of 1 to 3 letters; a space is an empty cell.'
+title: "recipes.shaped"
+description: "1 to 3 rows of 1 to 3 letters; a space is an empty cell."
 ---
 
 Part of [`recipes`](/ref/Recipes/).
@@ -13,9 +13,9 @@ recipes.shaped(spec: { pattern: { string }, keys: { [string]: ItemMatch }, resul
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `spec` | `{ pattern: { string }, keys: { [ string ]: ItemMatch }, result: ItemSpec }` | yes |
+| Name   | Type                                                                         | Required |
+| ------ | ---------------------------------------------------------------------------- | -------- |
+| `spec` | `{ pattern: { string }, keys: { [ string ]: ItemMatch }, result: ItemSpec }` | yes      |
 
 ## Used in
 

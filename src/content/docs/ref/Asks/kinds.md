@@ -1,6 +1,6 @@
 ---
-title: 'asks.kinds'
-description: 'The same counters per kind of question, e.g'
+title: "asks.kinds"
+description: "The same counters per kind of question, e.g"
 ---
 
 Part of [`asks`](/ref/Asks/).

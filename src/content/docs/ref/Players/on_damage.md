@@ -1,6 +1,6 @@
 ---
-title: 'players.on_damage'
-description: 'Asks fn before damage lands on a player; return false to refuse it'
+title: "players.on_damage"
+description: "Asks fn before damage lands on a player; return false to refuse it"
 ---
 
 Part of [`players`](/ref/Players/).
@@ -13,9 +13,9 @@ Asks `fn` before damage lands on a player; return false to refuse it. A missed d
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `fn` | `(player: Player ?, hit: DamageHit ) -> boolean` | no |
+| Name | Type                                             | Required |
+| ---- | ------------------------------------------------ | -------- |
+| `fn` | `(player: Player ?, hit: DamageHit ) -> boolean` | no       |
 
 ## Returns
 

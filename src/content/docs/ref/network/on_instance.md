@@ -1,6 +1,6 @@
 ---
-title: 'network.on_instance'
-description: 'Called when an instance starts or changes.'
+title: "network.on_instance"
+description: "Called when an instance starts or changes."
 ---
 
 Part of [`network`](/ref/network/).
@@ -13,9 +13,9 @@ Called when an instance starts or changes.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `handler` | `(instance: NetworkInstance ) -> ()` | yes |
+| Name      | Type                                 | Required |
+| --------- | ------------------------------------ | -------- |
+| `handler` | `(instance: NetworkInstance ) -> ()` | yes      |
 
 ## Returns
 

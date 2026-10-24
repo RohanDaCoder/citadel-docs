@@ -1,6 +1,6 @@
 ---
-title: 'storage.get'
-description: 'Returns the value saved under key, or nil when there is none.'
+title: "storage.get"
+description: "Returns the value saved under key, or nil when there is none."
 ---
 
 Part of [`storage`](/ref/storage/).
@@ -13,9 +13,9 @@ Returns the value saved under `key`, or nil when there is none.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `key` | `string` | yes |
+| Name  | Type     | Required |
+| ----- | -------- | -------- |
+| `key` | `string` | yes      |
 
 ## Returns
 

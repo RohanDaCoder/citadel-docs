@@ -1,6 +1,6 @@
 ---
-title: 'breaker.creative'
-description: 'Whether a creative player broke it; creative takes the block and leaves nothing'
+title: "breaker.creative"
+description: "Whether a creative player broke it; creative takes the block and leaves nothing"
 ---
 
 Part of [`breaker`](/ref/Breaker/).

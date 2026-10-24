@@ -1,5 +1,5 @@
 ---
-title: 'plantRule.place'
+title: "plantRule.place"
 description: 'Where it goes: "top" (the default), or in the caves density or carvers dig: "floor", "ceiling" (it hangs down: tip is lowest) or "wall" (one block; {wall} in its name is the side the rock is on, {faci'
 ---
 

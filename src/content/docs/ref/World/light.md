@@ -1,6 +1,6 @@
 ---
-title: 'world.light'
-description: 'Sends players light no block makes, 1 to 15 a source; each call replaces the last, {} ends it'
+title: "world.light"
+description: "Sends players light no block makes, 1 to 15 a source; each call replaces the last, {} ends it"
 ---
 
 Part of [`world`](/ref/World/).
@@ -13,9 +13,9 @@ Sends players light no block makes, 1 to 15 a source; each call replaces the las
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `sources` | `{ LightSource }` | yes |
+| Name      | Type              | Required |
+| --------- | ----------------- | -------- |
+| `sources` | `{ LightSource }` | yes      |
 
 ## Used in
 

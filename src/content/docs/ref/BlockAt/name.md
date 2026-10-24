@@ -1,5 +1,5 @@
 ---
-title: 'blockAt.name'
+title: "blockAt.name"
 description: 'The block''s name with its namespace, such as "rave:crate"; a live read.'
 ---
 

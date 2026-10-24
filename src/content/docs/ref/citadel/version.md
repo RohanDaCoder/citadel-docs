@@ -1,6 +1,6 @@
 ---
-title: 'citadel.version'
-description: 'The engine version, e.g'
+title: "citadel.version"
+description: "The engine version, e.g"
 ---
 
 Part of [`citadel`](/ref/citadel/).
@@ -13,5 +13,5 @@ The engine version, e.g. "0.1.0".
 
 ## Used in
 
-> "citadel.version                      -- the engine version" — [Version info](/getting-started/tooling/)
+> "citadel.version -- the engine version" — [Version info](/getting-started/tooling/)
 > "`citadel.version` is the engine build (`0.1.0`)." — [Version info](/getting-started/tooling/)

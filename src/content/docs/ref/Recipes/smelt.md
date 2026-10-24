@@ -1,6 +1,6 @@
 ---
-title: 'recipes.smelt'
-description: 'Adds a furnace recipe; a furnace smelts a pack item only by one of these.'
+title: "recipes.smelt"
+description: "Adds a furnace recipe; a furnace smelts a pack item only by one of these."
 ---
 
 Part of [`recipes`](/ref/Recipes/).
@@ -13,9 +13,9 @@ Adds a furnace recipe; a furnace smelts a pack item only by one of these.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `spec` | `{ input: ItemMatch , result: ItemSpec }` | yes |
+| Name   | Type                                      | Required |
+| ------ | ----------------------------------------- | -------- |
+| `spec` | `{ input: ItemMatch , result: ItemSpec }` | yes      |
 
 ## Used in
 

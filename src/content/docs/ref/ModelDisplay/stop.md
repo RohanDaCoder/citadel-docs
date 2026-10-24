@@ -1,6 +1,6 @@
 ---
-title: 'modelDisplay:stop'
-description: 'Where it is; the parts stay as they are.'
+title: "modelDisplay:stop"
+description: "Where it is; the parts stay as they are."
 ---
 
 Part of [`ModelDisplay`](/ref/ModelDisplay/).
@@ -13,6 +13,6 @@ Where it is; the parts stay as they are.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `animation` | `string` | yes |
+| Name        | Type     | Required |
+| ----------- | -------- | -------- |
+| `animation` | `string` | yes      |

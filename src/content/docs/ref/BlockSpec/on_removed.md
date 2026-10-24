@@ -1,6 +1,6 @@
 ---
-title: 'blockSpec.on_removed'
-description: 'It has just gone from the world.'
+title: "blockSpec.on_removed"
+description: "It has just gone from the world."
 ---
 
 Part of [`blockSpec`](/ref/BlockSpec/).
@@ -13,9 +13,9 @@ It has just gone from the world.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(block` | `BlockAt , base: (... any ) -> any ) -> ()` | yes |
+| Name     | Type                                        | Required |
+| -------- | ------------------------------------------- | -------- |
+| `(block` | `BlockAt , base: (... any ) -> any ) -> ()` | yes      |
 
 ## Returns
 

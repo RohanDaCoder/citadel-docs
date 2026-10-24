@@ -1,5 +1,5 @@
 ---
-title: 'entityKind.drop'
+title: "entityKind.drop"
 description: 'The item its death leaves behind, such as "leather"; nil for none.'
 ---
 

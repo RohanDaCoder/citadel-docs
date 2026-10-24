@@ -1,6 +1,6 @@
 ---
-title: 'blockAmendSpec.on_added'
-description: 'It has just been stored, whatever stored it.'
+title: "blockAmendSpec.on_added"
+description: "It has just been stored, whatever stored it."
 ---
 
 Part of [`blockAmendSpec`](/ref/BlockAmendSpec/).
@@ -13,9 +13,9 @@ It has just been stored, whatever stored it.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(block` | `BlockAt , base: (... any ) -> any ) -> ()` | yes |
+| Name     | Type                                        | Required |
+| -------- | ------------------------------------------- | -------- |
+| `(block` | `BlockAt , base: (... any ) -> any ) -> ()` | yes      |
 
 ## Returns
 

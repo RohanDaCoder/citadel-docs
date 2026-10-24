@@ -1,6 +1,6 @@
 ---
-title: 'texture:frame'
-description: 'Draws a box''s outline, one pixel wide.'
+title: "texture:frame"
+description: "Draws a box's outline, one pixel wide."
 ---
 
 Part of [`Texture`](/ref/Texture/).
@@ -13,10 +13,10 @@ Draws a box's outline, one pixel wide.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `x` | `number` | yes |
-| `y` | `number` | yes |
-| `w` | `number` | yes |
-| `h` | `number` | yes |
-| `color` | [`Ink`](/ref/Ink/) | yes |
+| Name    | Type               | Required |
+| ------- | ------------------ | -------- |
+| `x`     | `number`           | yes      |
+| `y`     | `number`           | yes      |
+| `w`     | `number`           | yes      |
+| `h`     | `number`           | yes      |
+| `color` | [`Ink`](/ref/Ink/) | yes      |

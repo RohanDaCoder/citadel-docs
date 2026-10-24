@@ -1,6 +1,6 @@
 ---
-title: 'player:set_slot'
-description: 'Selects hotbar slot 1..9.'
+title: "player:set_slot"
+description: "Selects hotbar slot 1..9."
 ---
 
 Part of [`Player`](/ref/Player/).
@@ -13,10 +13,10 @@ Selects hotbar slot 1..9.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `n` | `number` | yes |
+| Name | Type     | Required |
+| ---- | -------- | -------- |
+| `n`  | `number` | yes      |
 
 ## Used in
 
-> "player:set_slot(n)         -- selects hotbar slot 1..9" — [Input](/players/movement/)
+> "player:set_slot(n) -- selects hotbar slot 1..9" — [Input](/players/movement/)

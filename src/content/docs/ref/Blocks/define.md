@@ -1,6 +1,6 @@
 ---
-title: 'blocks.define'
-description: 'Load-time only: a world may already be holding blocks of a definition, so one that arrived later would change the rules under the players standing on it'
+title: "blocks.define"
+description: "Load-time only: a world may already be holding blocks of a definition, so one that arrived later would change the rules under the players standing on it"
 ---
 
 Part of [`blocks`](/ref/Blocks/).
@@ -13,9 +13,9 @@ Load-time only: a world may already be holding blocks of a definition, so one th
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `spec` | [`BlockSpec`](/ref/BlockSpec/) | yes |
+| Name   | Type                           | Required |
+| ------ | ------------------------------ | -------- |
+| `spec` | [`BlockSpec`](/ref/BlockSpec/) | yes      |
 
 ## Returns
 

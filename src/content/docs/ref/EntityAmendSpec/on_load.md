@@ -1,6 +1,6 @@
 ---
-title: 'entityAmendSpec.on_load'
-description: 'Called for an entity that already existed: a saved chunk loaded it, or a reload rebound it.'
+title: "entityAmendSpec.on_load"
+description: "Called for an entity that already existed: a saved chunk loaded it, or a reload rebound it."
 ---
 
 Part of [`entityAmendSpec`](/ref/EntityAmendSpec/).
@@ -13,9 +13,9 @@ Called for an entity that already existed: a saved chunk loaded it, or a reload 
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(e` | `EntityHandle ) -> ()` | yes |
+| Name | Type                   | Required |
+| ---- | ---------------------- | -------- |
+| `(e` | `EntityHandle ) -> ()` | yes      |
 
 ## Returns
 

@@ -1,6 +1,6 @@
 ---
-title: 'entitySpec.size'
-description: 'One number, or { width, height }'
+title: "entitySpec.size"
+description: "One number, or { width, height }"
 ---
 
 Part of [`entitySpec`](/ref/EntitySpec/).

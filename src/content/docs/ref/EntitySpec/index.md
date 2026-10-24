@@ -1,40 +1,40 @@
 ---
-title: 'EntitySpec type'
-description: 'A kind of entity a pack makes up'
+title: "EntitySpec type"
+description: "A kind of entity a pack makes up"
 ---
 
 A kind of entity a pack makes up. `base` is the last argument of every hook: call it and you extended, don't and you replaced.
 
 ## Functions
 
-| Call | Purpose |
-| --- | --- |
-| [`on_spawn`](/ref/EntitySpec/on_spawn/) | Told when one of this kind is spawned; nothing waits on it and its answer is not read. |
-| [`on_load`](/ref/EntitySpec/on_load/) | Told when one that already existed comes back: a saved chunk loaded it or a reload rebound it. |
-| [`on_steer`](/ref/EntitySpec/on_steer/) | Runs before the physics each tick to decide where it goes; call `base(e)` to extend, leave it out to replace. |
-| [`on_tick`](/ref/EntitySpec/on_tick/) | Runs after the physics each tick to react to where it ended up; call `base(e)` to extend. |
-| [`on_think`](/ref/EntitySpec/on_think/) | define only. The brain: one call for all due bodies of the kind, with their numbers in columns. The engine never waits for it; the answer lands on the next tick it is there, and is never dropped. |
-| [`on_damage`](/ref/EntitySpec/on_damage/) | Asked when a player hits it: answer "take" or "ignore". Nil or a missed deadline is "take". `by` is the player who hit. |
-| [`on_remove`](/ref/EntitySpec/on_remove/) | Told when it goes; `why` is "removed", "settled", "killed" or "unloaded". Not called when the pack goes away. |
+| Call                                      | Purpose                                                                                                                                                                                             |
+| ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`on_spawn`](/ref/EntitySpec/on_spawn/)   | Told when one of this kind is spawned; nothing waits on it and its answer is not read.                                                                                                              |
+| [`on_load`](/ref/EntitySpec/on_load/)     | Told when one that already existed comes back: a saved chunk loaded it or a reload rebound it.                                                                                                      |
+| [`on_steer`](/ref/EntitySpec/on_steer/)   | Runs before the physics each tick to decide where it goes; call `base(e)` to extend, leave it out to replace.                                                                                       |
+| [`on_tick`](/ref/EntitySpec/on_tick/)     | Runs after the physics each tick to react to where it ended up; call `base(e)` to extend.                                                                                                           |
+| [`on_think`](/ref/EntitySpec/on_think/)   | define only. The brain: one call for all due bodies of the kind, with their numbers in columns. The engine never waits for it; the answer lands on the next tick it is there, and is never dropped. |
+| [`on_damage`](/ref/EntitySpec/on_damage/) | Asked when a player hits it: answer "take" or "ignore". Nil or a missed deadline is "take". `by` is the player who hit.                                                                             |
+| [`on_remove`](/ref/EntitySpec/on_remove/) | Told when it goes; `why` is "removed", "settled", "killed" or "unloaded". Not called when the pack goes away.                                                                                       |
 
 ## Fields
 
-| Field | Purpose |
-| --- | --- |
-| [`entitySpec.name: string`](/ref/EntitySpec/name/) | Your own word for the kind, lower case, digits and underscores; the pack's namespace is added for you ("rocket" is "rave:rocket"). |
-| [`entitySpec.looks: Looks \| Model`](/ref/EntitySpec/looks/) | A shape the client draws, or a model from models.new. |
-| [`entitySpec.physics: Physics ?`](/ref/EntitySpec/physics/) | Which order of operations moves it: "living", "falling", "item", "none", or "vehicle" to drive by seat 1's keys. |
-| [`entitySpec.size: (number \| { number })?`](/ref/EntitySpec/size/) | One number, or { width, height }. An entity is as deep as it is wide. |
-| [`entitySpec.persist: Persist ?`](/ref/EntitySpec/persist/) | "save" brings it back with its chunk, `data` and all; "despawn", the default, is gone when the chunk goes. |
-| [`entitySpec.seats: { Vec3 }?`](/ref/EntitySpec/seats/) | A model's: where riders sit (model units, seat 1 drives), its size, and what a client older than 1.21.4 sees. |
-| [`entitySpec.scale: number ?`](/ref/EntitySpec/scale/) | A model's size; 1 by default. |
-| [`entitySpec.fallback: string ?`](/ref/EntitySpec/fallback/) | What a client older than 1.21.4 sees in place of the model, such as "minecart". |
-| [`entitySpec.speed: number ?`](/ref/EntitySpec/speed/) | How fast it goes, in blocks a second. A vehicle's top speed; a living body's walk at forward = 1, the game's own mob walk by default. |
-| [`entitySpec.max_health: number ?`](/ref/EntitySpec/max_health/) | physics = "living" only: the most health it has, and what it starts with. 1 to 1024; 20 by default. |
-| [`entitySpec.drops: ({ { [string]: any } } \| false)?`](/ref/EntitySpec/drops/) | physics = "living" only: what it leaves when it dies. Each row is { item = "stick", count = 2 }, count = { least, most } for a random count, chance = 0.05 for a row that comes from one death in twenty, or a pack item. false or nil: nothing. |
-| [`entitySpec.sounds: ({ hurt: string ?, death: string ?, ambient: string ? } \| false)?`](/ref/EntitySpec/sounds/) | physics = "living" only: sound names for its hurt, its death and its idle sound, vanilla or "<pack>.<file>". false or nil: silent. |
-| [`entitySpec.can_fly: boolean ?`](/ref/EntitySpec/can_fly/) | physics = "living" only: it may fly when its pack sets e.flying = true, and it takes no fall damage. |
-| [`entitySpec.turn: number ?`](/ref/EntitySpec/turn/) | physics = "vehicle" only: degrees a second it turns at speed; 90 by default. |
-| [`entitySpec.accel: number ?`](/ref/EntitySpec/accel/) | physics = "vehicle" only: seconds from standing to top speed; 1 by default. |
-| [`entitySpec.step: number ?`](/ref/EntitySpec/step/) | physics = "vehicle" only: blocks it climbs without a jump; 1 by default. |
-| [`entitySpec.think_every: number ?`](/ref/EntitySpec/think_every/) | define only. Seconds between two thinks of one body; one tick (0.05) by default, at most 60. The engine spreads the bodies over the ticks. |
+| Field                                                                                                              | Purpose                                                                                                                                                                                                                                          |
+| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| [`entitySpec.name: string`](/ref/EntitySpec/name/)                                                                 | Your own word for the kind, lower case, digits and underscores; the pack's namespace is added for you ("rocket" is "rave:rocket").                                                                                                               |
+| [`entitySpec.looks: Looks \| Model`](/ref/EntitySpec/looks/)                                                       | A shape the client draws, or a model from models.new.                                                                                                                                                                                            |
+| [`entitySpec.physics: Physics ?`](/ref/EntitySpec/physics/)                                                        | Which order of operations moves it: "living", "falling", "item", "none", or "vehicle" to drive by seat 1's keys.                                                                                                                                 |
+| [`entitySpec.size: (number \| { number })?`](/ref/EntitySpec/size/)                                                | One number, or { width, height }. An entity is as deep as it is wide.                                                                                                                                                                            |
+| [`entitySpec.persist: Persist ?`](/ref/EntitySpec/persist/)                                                        | "save" brings it back with its chunk, `data` and all; "despawn", the default, is gone when the chunk goes.                                                                                                                                       |
+| [`entitySpec.seats: { Vec3 }?`](/ref/EntitySpec/seats/)                                                            | A model's: where riders sit (model units, seat 1 drives), its size, and what a client older than 1.21.4 sees.                                                                                                                                    |
+| [`entitySpec.scale: number ?`](/ref/EntitySpec/scale/)                                                             | A model's size; 1 by default.                                                                                                                                                                                                                    |
+| [`entitySpec.fallback: string ?`](/ref/EntitySpec/fallback/)                                                       | What a client older than 1.21.4 sees in place of the model, such as "minecart".                                                                                                                                                                  |
+| [`entitySpec.speed: number ?`](/ref/EntitySpec/speed/)                                                             | How fast it goes, in blocks a second. A vehicle's top speed; a living body's walk at forward = 1, the game's own mob walk by default.                                                                                                            |
+| [`entitySpec.max_health: number ?`](/ref/EntitySpec/max_health/)                                                   | physics = "living" only: the most health it has, and what it starts with. 1 to 1024; 20 by default.                                                                                                                                              |
+| [`entitySpec.drops: ({ { [string]: any } } \| false)?`](/ref/EntitySpec/drops/)                                    | physics = "living" only: what it leaves when it dies. Each row is { item = "stick", count = 2 }, count = { least, most } for a random count, chance = 0.05 for a row that comes from one death in twenty, or a pack item. false or nil: nothing. |
+| [`entitySpec.sounds: ({ hurt: string ?, death: string ?, ambient: string ? } \| false)?`](/ref/EntitySpec/sounds/) | physics = "living" only: sound names for its hurt, its death and its idle sound, vanilla or "<pack>.<file>". false or nil: silent.                                                                                                               |
+| [`entitySpec.can_fly: boolean ?`](/ref/EntitySpec/can_fly/)                                                        | physics = "living" only: it may fly when its pack sets e.flying = true, and it takes no fall damage.                                                                                                                                             |
+| [`entitySpec.turn: number ?`](/ref/EntitySpec/turn/)                                                               | physics = "vehicle" only: degrees a second it turns at speed; 90 by default.                                                                                                                                                                     |
+| [`entitySpec.accel: number ?`](/ref/EntitySpec/accel/)                                                             | physics = "vehicle" only: seconds from standing to top speed; 1 by default.                                                                                                                                                                      |
+| [`entitySpec.step: number ?`](/ref/EntitySpec/step/)                                                               | physics = "vehicle" only: blocks it climbs without a jump; 1 by default.                                                                                                                                                                         |
+| [`entitySpec.think_every: number ?`](/ref/EntitySpec/think_every/)                                                 | define only. Seconds between two thinks of one body; one tick (0.05) by default, at most 60. The engine spreads the bodies over the ticks.                                                                                                       |

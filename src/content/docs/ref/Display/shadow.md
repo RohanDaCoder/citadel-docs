@@ -1,6 +1,6 @@
 ---
-title: 'display.shadow'
-description: 'Text kind: whether the words have a shadow; false by default.'
+title: "display.shadow"
+description: "Text kind: whether the words have a shadow; false by default."
 ---
 
 Part of [`display`](/ref/Display/).

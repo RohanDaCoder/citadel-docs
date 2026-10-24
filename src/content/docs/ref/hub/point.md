@@ -1,6 +1,6 @@
 ---
-title: 'hub.point'
-description: 'Turns the player''s own live portal to another published experience.'
+title: "hub.point"
+description: "Turns the player's own live portal to another published experience."
 ---
 
 Part of [`hub`](/ref/hub/).
@@ -13,11 +13,11 @@ Turns the player's own live portal to another published experience.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `player` | `Player \| string` | yes |
-| `slot` | `number` | yes |
-| `experience` | `string` | yes |
+| Name         | Type               | Required |
+| ------------ | ------------------ | -------- |
+| `player`     | `Player \| string` | yes      |
+| `slot`       | `number`           | yes      |
+| `experience` | `string`           | yes      |
 
 ## Returns
 

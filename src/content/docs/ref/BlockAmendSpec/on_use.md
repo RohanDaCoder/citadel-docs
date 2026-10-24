@@ -1,6 +1,6 @@
 ---
-title: 'blockAmendSpec.on_use'
-description: 'Somebody right-clicked it; held is the item in hand'
+title: "blockAmendSpec.on_use"
+description: "Somebody right-clicked it; held is the item in hand"
 ---
 
 Part of [`blockAmendSpec`](/ref/BlockAmendSpec/).
@@ -13,9 +13,9 @@ Somebody right-clicked it; `held` is the item in hand. Answers "used" or "pass";
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(block` | `BlockAt , player: Player ?, held: string ?, base: (... any ) -> any ) -> Used` | no |
+| Name     | Type                                                                            | Required |
+| -------- | ------------------------------------------------------------------------------- | -------- |
+| `(block` | `BlockAt , player: Player ?, held: string ?, base: (... any ) -> any ) -> Used` | no       |
 
 ## Returns
 

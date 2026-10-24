@@ -1,6 +1,6 @@
 ---
-title: 'dialog:update'
-description: 'A new view in place: a window, or a function that makes one.'
+title: "dialog:update"
+description: "A new view in place: a window, or a function that makes one."
 ---
 
 Part of [`Dialog`](/ref/Dialog/).
@@ -13,6 +13,6 @@ A new view in place: a window, or a function that makes one.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `view` | `DialogNode \| () -> DialogNode` | yes |
+| Name   | Type                             | Required |
+| ------ | -------------------------------- | -------- |
+| `view` | `DialogNode \| () -> DialogNode` | yes      |

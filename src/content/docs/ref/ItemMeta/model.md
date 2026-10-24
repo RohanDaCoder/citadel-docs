@@ -1,6 +1,6 @@
 ---
-title: 'itemMeta.model'
-description: 'The item model a 1.21.4+ client draws: assets/<pack>/items/<model>.json.'
+title: "itemMeta.model"
+description: "The item model a 1.21.4+ client draws: assets/<pack>/items/<model>.json."
 ---
 
 Part of [`itemMeta`](/ref/ItemMeta/).

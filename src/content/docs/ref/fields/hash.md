@@ -1,6 +1,6 @@
 ---
-title: 'fields.hash'
-description: 'One number 0..1 for each square of cell blocks (1).'
+title: "fields.hash"
+description: "One number 0..1 for each square of cell blocks (1)."
 ---
 
 Part of [`fields`](/ref/fields/).
@@ -13,10 +13,10 @@ One number 0..1 for each square of `cell` blocks (1).
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `cell` | `number` | no |
-| `seed` | `number` | no |
+| Name   | Type     | Required |
+| ------ | -------- | -------- |
+| `cell` | `number` | no       |
+| `seed` | `number` | no       |
 
 ## Returns
 
@@ -24,5 +24,5 @@ One number 0..1 for each square of `cell` blocks (1).
 
 ## Used in
 
-> "fields.hash(cell, seed)                     -- one number 0 .. 1 for each square of `cell` blocks" — [Blocks and terrain](/world/terrain-generation/)
+> "fields.hash(cell, seed) -- one number 0 .. 1 for each square of `cell` blocks" — [Blocks and terrain](/world/terrain-generation/)
 > "`{ "stone", "andesite", by = fields.hash(3) * 2 }`. `floor(by)` counts" — [Blocks and terrain](/world/terrain-generation/)

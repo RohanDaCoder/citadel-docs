@@ -30,18 +30,18 @@ limits the engine enforces.
 
 ## How the wiki is organized
 
-| Section | What you find there |
-| --- | --- |
-| [Getting started](/wiki/what-is-citadel) | The platform, your first pack, tooling, the Luau primer. |
-| [Core concepts](/wiki/architecture) | Architecture, pack anatomy, runtime, events, conventions, rooms and dimensions. |
-| [World & building](/wiki/terrain-generation) | Terrain generation, block reference, building, custom blocks, game data, world state. |
-| [Entities](/wiki/custom-entities) | Custom entities, entity handles, mobs and drops, NPCs. |
-| [Players](/wiki/player-lifecycle) | Lifecycle, movement and cameras, inventory, visibility, health, permissions. |
-| [Interface & media](/wiki/ui-basics) | Messages, titles and bars, screens, canvases, menus, dialogs, displays, fx, sound. |
-| [Server systems](/wiki/commands) | Commands, storage, shared stores, network, HTTP, shop, hub, server settings, limits. |
-| [Guides](/wiki/guide-build-a-cottage) | Five complete, step-by-step builds — cottage, coin rush, parkour, a dungeon dimension, a scoreboard. |
-| [Cookbook](/wiki/cookbook-cooldowns) | Drop-in patterns: cooldowns, leaderboards, teleport pads, kits, teams, a minigame loop, save/load. |
-| [Appendix](/appendix/event-catalog) | The event catalog, client version matrix, the limits table, and the FAQ. |
+| Section                                      | What you find there                                                                                  |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| [Getting started](/wiki/what-is-citadel)     | The platform, your first pack, tooling, the Luau primer.                                             |
+| [Core concepts](/wiki/architecture)          | Architecture, pack anatomy, runtime, events, conventions, rooms and dimensions.                      |
+| [World & building](/wiki/terrain-generation) | Terrain generation, block reference, building, custom blocks, game data, world state.                |
+| [Entities](/wiki/custom-entities)            | Custom entities, entity handles, mobs and drops, NPCs.                                               |
+| [Players](/wiki/player-lifecycle)            | Lifecycle, movement and cameras, inventory, visibility, health, permissions.                         |
+| [Interface & media](/wiki/ui-basics)         | Messages, titles and bars, screens, canvases, menus, dialogs, displays, fx, sound.                   |
+| [Server systems](/wiki/commands)             | Commands, storage, shared stores, network, HTTP, shop, hub, server settings, limits.                 |
+| [Guides](/wiki/guide-build-a-cottage)        | Five complete, step-by-step builds — cottage, coin rush, parkour, a dungeon dimension, a scoreboard. |
+| [Cookbook](/wiki/cookbook-cooldowns)         | Drop-in patterns: cooldowns, leaderboards, teleport pads, kits, teams, a minigame loop, save/load.   |
+| [Appendix](/appendix/event-catalog)          | The event catalog, client version matrix, the limits table, and the FAQ.                             |
 
 ## API reference
 

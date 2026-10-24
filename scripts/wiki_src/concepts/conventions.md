@@ -5,6 +5,7 @@ order: 5
 description: The rules every Citadel API call follows — namespaces, vec3 positions, colours and colour names, text runs, options tables with strict field checking, the nil/false/true tri-state, and the spelling invariants.
 tags: [conventions, api-basics, vec3, color, text, options]
 ---
+
 # Conventions
 
 > **In short:** the whole API follows a handful of rules. Learn them once and
@@ -15,11 +16,11 @@ tags: [conventions, api-basics, vec3, color, text, options]
 
 ## Namespaces
 
-| Kind | Globals |
-| --- | --- |
-| The main room's tables | `world`, `players`, `ui`, `game`, `rooms`, `sound` — `rooms.create{}` gives another room the same six |
-| Server-wide | `fx`, `commands`, `time`, `task`, `storage`, `stores`, `http`, `network`, `shop`, `hub`, `models`, `parts`, `routes`, `data`, `fields`, `message` |
-| Values and helpers | `vec3`, `color`, `colors`, `noise`, `tween`, `camera`, `citadel` |
+| Kind                   | Globals                                                                                                                                           |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The main room's tables | `world`, `players`, `ui`, `game`, `rooms`, `sound` — `rooms.create{}` gives another room the same six                                             |
+| Server-wide            | `fx`, `commands`, `time`, `task`, `storage`, `stores`, `http`, `network`, `shop`, `hub`, `models`, `parts`, `routes`, `data`, `fields`, `message` |
+| Values and helpers     | `vec3`, `color`, `colors`, `noise`, `tween`, `camera`, `citadel`                                                                                  |
 
 A pack is its files. `loadstring` is not there, so a pack cannot run text as
 code; `require` reads only files inside the pack; `getfenv` and `setfenv` are
@@ -59,7 +60,7 @@ default, and **the tables are strict**:
 
 > **Gotcha:** an unknown field is an error that names the nearest valid one.
 > `world.display{ kind = "text", colour = "red" }` stops the script with
-> *no option "colour"; did you mean "color"?* — and a field of the wrong type
+> _no option "colour"; did you mean "color"?_ — and a field of the wrong type
 > is also an error.
 
 ## `nil`, `false` and `true`
@@ -79,12 +80,12 @@ For optional settings that accept both, **`nil` removes an override and
 
 ## One spelling per idea
 
-| Idea | Spelling |
-| --- | --- |
-| A position | `at` |
-| Removing a thing | `:destroy()` |
-| Stopping a timer or an event | `:cancel()` |
-| A box's corners | `from` and `to` |
+| Idea                         | Spelling        |
+| ---------------------------- | --------------- |
+| A position                   | `at`            |
+| Removing a thing             | `:destroy()`    |
+| Stopping a timer or an event | `:cancel()`     |
+| A box's corners              | `from` and `to` |
 
 ## Block names
 

@@ -1,6 +1,6 @@
 ---
-title: 'Save and load'
-description: 'Choosing and using the three persistence layers — player.data for the session, storage for the pack, stores for the experience — with flush, conflict and reload rules in one place.'
+title: "Save and load"
+description: "Choosing and using the three persistence layers — player.data for the session, storage for the pack, stores for the experience — with flush, conflict and reload rules in one place."
 ---
 
 :::note[In short]
@@ -13,11 +13,11 @@ two working patterns.
 
 ## Choosing the layer
 
-| Need | Use | Lifetime | Limits |
-| --- | --- | --- | --- |
-| Score mid-round, cooldown stamp, team | `player.data` | the player's connection | in-memory |
-| Best score, settings, per-pack state | `storage.get/set` | the pack, across restarts | local JSON file, per-pack |
-| Cross-server values, purchases, player blobs | `stores:*` | the experience | facts 1 MiB, blobs 32 MiB, 512 MiB hosted |
+| Need                                         | Use               | Lifetime                  | Limits                                    |
+| -------------------------------------------- | ----------------- | ------------------------- | ----------------------------------------- |
+| Score mid-round, cooldown stamp, team        | `player.data`     | the player's connection   | in-memory                                 |
+| Best score, settings, per-pack state         | `storage.get/set` | the pack, across restarts | local JSON file, per-pack                 |
+| Cross-server values, purchases, player blobs | `stores:*`        | the experience            | facts 1 MiB, blobs 32 MiB, 512 MiB hosted |
 
 `player.data` is a plain table — no calls, no yields, gone on reconnect.
 `storage` is per-pack even on a published world. `stores` is shared by a

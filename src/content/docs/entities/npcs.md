@@ -1,6 +1,6 @@
 ---
-title: 'NPCs'
-description: 'world.npc and the Npc API — skins, name tags, poses, walking, holding items, armour and riding — plus world.puppet, a mob body with no mind of its own that the script moves.'
+title: "NPCs"
+description: "world.npc and the Npc API — skins, name tags, poses, walking, holding items, armour and riding — plus world.puppet, a mob body with no mind of its own that the script moves."
 ---
 
 :::note[In short]
@@ -23,11 +23,11 @@ local n = world.npc{ name = "Dealer", at = vec3(0.5, 65, 4.5), rotation = { yaw 
 --   leave skin out, or write false, for the default skin; any other value is an error
 ```
 
-| Option | What it is |
-| --- | --- |
-| `name` | at most 16 characters. |
-| `at`, `rotation` | where it stands and which way it faces; set them later and the NPC moves. |
-| `skin` | a player's name (the engine looks the skin up), `{ value = ..., signature = ... }` (the raw profile property), or left out / `false` for the default skin. Any other value is an error. |
+| Option           | What it is                                                                                                                                                                              |
+| ---------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`           | at most 16 characters.                                                                                                                                                                  |
+| `at`, `rotation` | where it stands and which way it faces; set them later and the NPC moves.                                                                                                               |
+| `skin`           | a player's name (the engine looks the skin up), `{ value = ..., signature = ... }` (the raw profile property), or left out / `false` for the default skin. Any other value is an error. |
 
 - **Leave `name` out and the NPC has no name tag** from 1.8 on. A 1.7 client still shows a tag with an engine-made name.
 - A `skin` given as a player's name costs two calls to Mojang. The NPC shows its own skin until the answer arrives. If no account has that name, the log says so.
@@ -59,18 +59,18 @@ n:destroy()
 
 The calls in table form:
 
-| Call | Returns | Purpose |
-| --- | --- | --- |
-| `npc:look_at(pos)` | — | Turn head and body toward a point |
-| `npc:swing()` | — | The arm animation |
-| `npc:hold(item)` | — | Item in the main hand; `nil`/`false` empties it |
-| `npc:say(text, color?)` | — | A chat line `"<name> ..."` to the room |
-| `npc:walk{ path, speed, loop }` | — | Walk the points by itself |
-| `npc:wear(pieces)` | — | Armour, head first |
+| Call                            | Returns   | Purpose                                                   |
+| ------------------------------- | --------- | --------------------------------------------------------- |
+| `npc:look_at(pos)`              | —         | Turn head and body toward a point                         |
+| `npc:swing()`                   | —         | The arm animation                                         |
+| `npc:hold(item)`                | —         | Item in the main hand; `nil`/`false` empties it           |
+| `npc:say(text, color?)`         | —         | A chat line `"<name> ..."` to the room                    |
+| `npc:walk{ path, speed, loop }` | —         | Walk the points by itself                                 |
+| `npc:wear(pieces)`              | —         | Armour, head first                                        |
 | `npc:ride(thing, { seat = n })` | `boolean` | Sit as `player:ride` does; `false` when the seat is taken |
-| `npc:dismount()` | — | Get off where it sits |
-| `npc:move(at, rotation?)` | — | Set position and rotation together |
-| `npc:destroy()` | — | Remove the NPC |
+| `npc:dismount()`                | —         | Get off where it sits                                     |
+| `npc:move(at, rotation?)`       | —         | Set position and rotation together                        |
+| `npc:destroy()`                 | —         | Remove the NPC                                            |
 
 The fields: `n.id` (the entity id), `n.name` (`""` for one made with no
 name), `n.at` and `n.rotation` (live; set them and the NPC moves), and —
@@ -96,11 +96,11 @@ A **pose** stays during a walk or a ride. A client that cannot show a pose
 sees the NPC standing. `"standing"` is the default; the other
 [`NpcPose`](/ref/NpcPose/) values arrive with the client versions:
 
-| pose | shown from |
-| --- | --- |
-| `"crouching"` | 1.8 |
-| `"sleeping"` | 1.8: lying on its back, feet at `at`, head toward the yaw's side (to a quarter turn before 1.14) |
-| `"swimming"` | 1.13 |
+| pose          | shown from                                                                                       |
+| ------------- | ------------------------------------------------------------------------------------------------ |
+| `"crouching"` | 1.8                                                                                              |
+| `"sleeping"`  | 1.8: lying on its back, feet at `at`, head toward the yaw's side (to a quarter turn before 1.14) |
+| `"swimming"`  | 1.13                                                                                             |
 
 :::caution[Gotcha]
 for a client before 1.14, the engine puts a bed under a

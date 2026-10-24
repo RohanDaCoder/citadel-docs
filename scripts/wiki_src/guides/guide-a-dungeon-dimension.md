@@ -5,6 +5,7 @@ order: 4
 description: Add a second world to a pack — declare a dungeon dimension in citadel.yml, generate mossy corridors under a bedrock roof, step on a carpet to travel in, and /leave to come back.
 tags: [tutorial, dimensions, routes, travel, citadel.yml]
 ---
+
 # A dungeon dimension
 
 > **In short:** this tutorial adds a second world to a pack: `dungeon`,
@@ -14,6 +15,7 @@ tags: [tutorial, dimensions, routes, travel, citadel.yml]
 > them back. It is the guide for dimensions and routes.
 
 ## What you build
+
 - A castle yard of stone bricks with a square of blue carpet in it.
 - `dungeon`, a second world: bedrock at both ends, mossy walls, two
   crossing corridors. A client draws it with the Nether's dark sky.

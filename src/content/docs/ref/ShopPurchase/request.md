@@ -1,6 +1,6 @@
 ---
-title: 'shopPurchase.request'
-description: 'shopPurchase.request — field.'
+title: "shopPurchase.request"
+description: "shopPurchase.request — field."
 ---
 
 Part of [`shopPurchase`](/ref/ShopPurchase/).

@@ -1,6 +1,6 @@
 ---
-title: 'shopPurchase.player'
-description: 'The player''s uuid.'
+title: "shopPurchase.player"
+description: "The player's uuid."
 ---
 
 Part of [`shopPurchase`](/ref/ShopPurchase/).

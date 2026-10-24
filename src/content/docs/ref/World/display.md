@@ -1,6 +1,6 @@
 ---
-title: 'world.display'
-description: 'A model stands in the world through the same call as everything else, and is the one kind that hands back something other than a Display.'
+title: "world.display"
+description: "A model stands in the world through the same call as everything else, and is the one kind that hands back something other than a Display."
 ---
 
 Part of [`world`](/ref/World/).
@@ -13,9 +13,9 @@ A model stands in the world through the same call as everything else, and is the
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(opts` | `{ kind: "model" , model: Model , at: Vec3 ?, rotation: Orientation ?, scale: ( number \| Vec3 )?, -- models require equal positive axes paint: { [ string ]: Ink }?, fallback: string ?, seats: { Vec3 }?, lead: boolean ?, }) -> ModelDisplay` | yes |
+| Name    | Type                                                                                                                                                                                                                                             | Required |
+| ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------- |
+| `(opts` | `{ kind: "model" , model: Model , at: Vec3 ?, rotation: Orientation ?, scale: ( number \| Vec3 )?, -- models require equal positive axes paint: { [ string ]: Ink }?, fallback: string ?, seats: { Vec3 }?, lead: boolean ?, }) -> ModelDisplay` | yes      |
 
 ## Returns
 

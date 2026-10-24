@@ -1,6 +1,6 @@
 ---
-title: 'texture:sprite'
-description: 'Draws pixel art from rows of characters, each character painted with its ink, as on a screen.'
+title: "texture:sprite"
+description: "Draws pixel art from rows of characters, each character painted with its ink, as on a screen."
 ---
 
 Part of [`Texture`](/ref/Texture/).
@@ -13,10 +13,10 @@ Draws pixel art from rows of characters, each character painted with its ink, as
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `x` | `number` | yes |
-| `y` | `number` | yes |
-| `rows` | `{ string }` | yes |
-| `inks` | `{ [ string ]: Ink }` | yes |
-| `scale` | `number` | no |
+| Name    | Type                  | Required |
+| ------- | --------------------- | -------- |
+| `x`     | `number`              | yes      |
+| `y`     | `number`              | yes      |
+| `rows`  | `{ string }`          | yes      |
+| `inks`  | `{ [ string ]: Ink }` | yes      |
+| `scale` | `number`              | no       |

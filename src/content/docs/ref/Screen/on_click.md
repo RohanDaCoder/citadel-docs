@@ -1,6 +1,6 @@
 ---
-title: 'screen.on_click'
-description: 'Called with the pixel the player points at and the button, when a player clicks the screen'
+title: "screen.on_click"
+description: "Called with the pixel the player points at and the button, when a player clicks the screen"
 ---
 
 Part of [`screen`](/ref/Screen/).
@@ -13,9 +13,9 @@ Called with the pixel the player points at and the button, when a player clicks 
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `((player` | `Player , x: number , y: number , button: "left" \| "right" ) -> ()) \| false` | yes |
+| Name       | Type                                                                           | Required |
+| ---------- | ------------------------------------------------------------------------------ | -------- |
+| `((player` | `Player , x: number , y: number , button: "left" \| "right" ) -> ()) \| false` | yes      |
 
 ## Returns
 

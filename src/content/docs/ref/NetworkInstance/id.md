@@ -1,6 +1,6 @@
 ---
-title: 'networkInstance.id'
-description: 'The instance''s name'
+title: "networkInstance.id"
+description: "The instance's name"
 ---
 
 Part of [`networkInstance`](/ref/NetworkInstance/).

@@ -1,5 +1,5 @@
 ---
-title: 'entityAmendSpec.on_damage'
+title: "entityAmendSpec.on_damage"
 description: 'Asked when it takes damage; return "ignore" to cancel it'
 ---
 
@@ -13,9 +13,9 @@ Asked when it takes damage; return "ignore" to cancel it. Silence or a missed de
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(e` | `EntityHandle , amount: number ) -> ( "take" \| "ignore" )` | no |
+| Name | Type                                                        | Required |
+| ---- | ----------------------------------------------------------- | -------- |
+| `(e` | `EntityHandle , amount: number ) -> ( "take" \| "ignore" )` | no       |
 
 ## Returns
 

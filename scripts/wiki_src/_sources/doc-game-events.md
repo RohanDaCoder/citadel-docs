@@ -10,9 +10,12 @@ world.on_entity_death(function(id, name) end) -> connection    -- a mob died; it
 players.on_pickup(function(player, item, count) end) -> connection
 players.on_drop(function(player, item, count) end) -> connection
 ```
+
 `player` is `nil` when:
+
 - the world dropped the stack (a leaf decays, a mob dies, an explosion);
 - the player has already left the room.
+
 ```luau
 world.on_block_break(function(player, pos, block)
     if block == "diamond_ore" and player then
@@ -20,6 +23,7 @@ world.on_block_break(function(player, pos, block)
     end
 end)
 ```
+
 `world.on_entity_spawn` fires for mob kinds only. `world.on_entity_death`
 fires for mob kinds and for a pack’s living body (`physics = "living"`). They
 do not fire for an arrow, an item or another pack kind.

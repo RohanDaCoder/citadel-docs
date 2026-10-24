@@ -1,6 +1,6 @@
 ---
-title: 'ui.image'
-description: 'ui.image — function.'
+title: "ui.image"
+description: "ui.image — function."
 ---
 
 Part of [`ui`](/ref/Ui/).
@@ -11,9 +11,9 @@ ui.image(opts: { id: string ?, image: Texture, color: Ink ? }) → LayoutNode
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `opts` | `{ id: string ?, image: Texture , color: Ink ? }` | yes |
+| Name   | Type                                              | Required |
+| ------ | ------------------------------------------------- | -------- |
+| `opts` | `{ id: string ?, image: Texture , color: Ink ? }` | yes      |
 
 ## Returns
 

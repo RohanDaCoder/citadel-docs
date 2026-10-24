@@ -1,6 +1,6 @@
 ---
-title: 'Feature type'
-description: 'What a client is able to show'
+title: "Feature type"
+description: "What a client is able to show"
 ---
 
 What a client is able to show. Ask this instead of comparing versions: a script never sees a version number.

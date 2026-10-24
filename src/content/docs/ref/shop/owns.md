@@ -1,6 +1,6 @@
 ---
-title: 'shop.owns'
-description: 'Whether the player owns this pass.'
+title: "shop.owns"
+description: "Whether the player owns this pass."
 ---
 
 Part of [`shop`](/ref/shop/).
@@ -13,10 +13,10 @@ Whether the player owns this pass.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `player` | `Player \| string` | yes |
-| `product` | `string` | yes |
+| Name      | Type               | Required |
+| --------- | ------------------ | -------- |
+| `player`  | `Player \| string` | yes      |
+| `product` | `string`           | yes      |
 
 ## Returns
 

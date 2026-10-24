@@ -1,6 +1,6 @@
 ---
-title: 'network.on_gone'
-description: 'Called with the id of an instance that is gone.'
+title: "network.on_gone"
+description: "Called with the id of an instance that is gone."
 ---
 
 Part of [`network`](/ref/network/).
@@ -13,9 +13,9 @@ Called with the id of an instance that is gone.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `handler` | `(id: string ) -> ()` | yes |
+| Name      | Type                  | Required |
+| --------- | --------------------- | -------- |
+| `handler` | `(id: string ) -> ()` | yes      |
 
 ## Returns
 

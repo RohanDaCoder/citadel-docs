@@ -1,6 +1,6 @@
 ---
-title: 'Cooldowns'
-description: 'Rate-limit commands and actions with player.data and time.now — per-player cooldowns that survive reloads safely and degrade correctly.'
+title: "Cooldowns"
+description: "Rate-limit commands and actions with player.data and time.now — per-player cooldowns that survive reloads safely and degrade correctly."
 ---
 
 :::note[In short]

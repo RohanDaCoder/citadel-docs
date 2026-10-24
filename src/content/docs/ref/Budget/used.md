@@ -1,6 +1,6 @@
 ---
-title: 'budget.used'
-description: 'What the last tick spent.'
+title: "budget.used"
+description: "What the last tick spent."
 ---
 
 Part of [`budget`](/ref/Budget/).

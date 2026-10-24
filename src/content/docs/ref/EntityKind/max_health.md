@@ -1,6 +1,6 @@
 ---
-title: 'entityKind.max_health'
-description: 'The most health one of this kind has, in this version''s numbers'
+title: "entityKind.max_health"
+description: "The most health one of this kind has, in this version's numbers"
 ---
 
 Part of [`entityKind`](/ref/EntityKind/).

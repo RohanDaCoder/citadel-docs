@@ -5,6 +5,7 @@ order: 4
 description: Who sees whom — player.visible removes a body from every client, viewer:hide removes it from one viewer only, and can_see reads the two together; what hidden means, how long it lasts and what a new session resets.
 tags: [visibility, hide, show, teams, lobby, invisibility]
 ---
+
 # Visibility and teams
 
 > **In short:** a player sees others in their room who are in view. Two
@@ -25,12 +26,12 @@ viewer:hide(player)           -- from this viewer only; viewer:show(player) undo
 viewer:can_see(player)        -- what the two add up to
 ```
 
-| Setting | Effect |
-| --- | --- |
+| Setting                                         | Effect                                                                   |
+| ----------------------------------------------- | ------------------------------------------------------------------------ |
 | [`player.visible = false`](/ref/Player/visible) | No other player is sent this body. `true` or `nil` shows the body again. |
-| [`viewer:hide(player)`](/ref/Player/hide) | This viewer stops seeing `player`. |
-| [`viewer:show(player)`](/ref/Player/show) | This viewer sees `player` again after a `hide`. |
-| [`viewer:can_see(player)`](/ref/Player/can_see) | True unless `player` is not visible or is hidden from this viewer. |
+| [`viewer:hide(player)`](/ref/Player/hide)       | This viewer stops seeing `player`.                                       |
+| [`viewer:show(player)`](/ref/Player/show)       | This viewer sees `player` again after a `hide`.                          |
+| [`viewer:can_see(player)`](/ref/Player/can_see) | True unless `player` is not visible or is hidden from this viewer.       |
 
 > **Note:** `player.visible = nil` shows the player again, because a player is
 > visible by default.

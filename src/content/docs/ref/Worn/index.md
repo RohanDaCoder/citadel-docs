@@ -1,6 +1,6 @@
 ---
-title: 'Worn type'
-description: 'Armour, head first; each piece is an item like any other.'
+title: "Worn type"
+description: "Armour, head first; each piece is an item like any other."
 ---
 
 Armour, head first; each piece is an item like any other.

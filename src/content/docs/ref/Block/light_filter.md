@@ -1,6 +1,6 @@
 ---
-title: 'block.light_filter'
-description: 'What a step through it takes off the light, 0 to 15.'
+title: "block.light_filter"
+description: "What a step through it takes off the light, 0 to 15."
 ---
 
 Part of [`block`](/ref/Block/).

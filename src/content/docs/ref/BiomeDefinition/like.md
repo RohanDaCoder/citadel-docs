@@ -1,5 +1,5 @@
 ---
-title: 'biomeDefinition.like'
+title: "biomeDefinition.like"
 description: 'The vanilla biome to copy; "plains" when left out.'
 ---
 

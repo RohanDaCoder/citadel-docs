@@ -1,6 +1,6 @@
 ---
-title: 'blockAt:destroy'
-description: 'Takes it out, leaving nothing.'
+title: "blockAt:destroy"
+description: "Takes it out, leaving nothing."
 ---
 
 Part of [`BlockAt`](/ref/BlockAt/).

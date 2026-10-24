@@ -1,6 +1,6 @@
 ---
-title: 'player:hide'
-description: 'This player stops seeing other, or sees them again.'
+title: "player:hide"
+description: "This player stops seeing other, or sees them again."
 ---
 
 Part of [`Player`](/ref/Player/).
@@ -13,10 +13,10 @@ This player stops seeing `other`, or sees them again.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `other` | [`Player`](/ref/Player/) | yes |
+| Name    | Type                     | Required |
+| ------- | ------------------------ | -------- |
+| `other` | [`Player`](/ref/Player/) | yes      |
 
 ## Used in
 
-> "player:hide(other)        -- this player stops seeing `other`; player:show(other) undoes it" — [Players](/players/player-lifecycle/)
+> "player:hide(other) -- this player stops seeing `other`; player:show(other) undoes it" — [Players](/players/player-lifecycle/)

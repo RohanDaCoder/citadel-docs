@@ -1,6 +1,6 @@
 ---
-title: 'TimeName type'
-description: 'A named time of day that world.time holds the sky at: sunrise, day, noon, sunset, night or midnight.'
+title: "TimeName type"
+description: "A named time of day that world.time holds the sky at: sunrise, day, noon, sunset, night or midnight."
 ---
 
 A named time of day that `world.time` holds the sky at: sunrise, day, noon, sunset, night or midnight.

@@ -1,6 +1,6 @@
 ---
-title: 'network.stop'
-description: 'Stops an instance of this network.'
+title: "network.stop"
+description: "Stops an instance of this network."
 ---
 
 Part of [`network`](/ref/network/).
@@ -13,9 +13,9 @@ Stops an instance of this network.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `id` | `string` | yes |
+| Name | Type     | Required |
+| ---- | -------- | -------- |
+| `id` | `string` | yes      |
 
 ## Returns
 

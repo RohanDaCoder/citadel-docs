@@ -5,6 +5,7 @@ order: 5
 description: player.health, max_health, food and saturation — nil where the game version has no rule, the 1..1024 maximum, healing and respawn — plus player:damage, the death causes, the damage/fall/survival room rules and PvP through players.on_click.
 tags: [health, damage, food, max_health, death, respawn, rules, pvp]
 ---
+
 # Health and damage
 
 > **In short:** `player.health`, `max_health`, `food` and `saturation` are
@@ -27,12 +28,12 @@ and for a kind (a kind has `max_health` only).
 
 ## The maximum: `max_health`
 
-| Write | Result |
-| --- | --- |
-| `player.max_health = n` (1 to 1024) | Sets the most health they can have. |
-| `player.max_health = nil` | Gives the game's own (20) back. |
-| Another type, or out of range | An error. |
-| Any write, on a version with no damage rules | An error. |
+| Write                                        | Result                              |
+| -------------------------------------------- | ----------------------------------- |
+| `player.max_health = n` (1 to 1024)          | Sets the most health they can have. |
+| `player.max_health = nil`                    | Gives the game's own (20) back.     |
+| Another type, or out of range                | An error.                           |
+| Any write, on a version with no damage rules | An error.                           |
 
 - A lower maximum takes `player.health` down to it. A higher maximum does not
   heal.
@@ -43,13 +44,13 @@ and for a kind (a kind has `max_health` only).
 
 ## health, food and saturation
 
-| Field | Meaning |
-| --- | --- |
-| `player.health` | Their health now, 0 to `max_health`; `nil` where the game version has no damage rules. |
-| `player.max_health` | The most health they can have: 20 unless a pack set it. |
-| `player.food` | 0..20, or nil where the game version has no food bar. |
-| `player.saturation` | The food saturation, or nil where the game version has no food bar. |
-| `player.dead` | True while the player is on the death screen. |
+| Field               | Meaning                                                                                |
+| ------------------- | -------------------------------------------------------------------------------------- |
+| `player.health`     | Their health now, 0 to `max_health`; `nil` where the game version has no damage rules. |
+| `player.max_health` | The most health they can have: 20 unless a pack set it.                                |
+| `player.food`       | 0..20, or nil where the game version has no food bar.                                  |
+| `player.saturation` | The food saturation, or nil where the game version has no food bar.                    |
+| `player.dead`       | True while the player is on the death screen.                                          |
 
 `player.health` is writable: set outright, no flash; `0` is a death; a number
 above `max_health` stops there. Food, regeneration and peaceful healing stop
@@ -82,13 +83,13 @@ at the maximum. A respawn fills to it.
 the broadcast English death line as `message`, and `by` — the player who hit
 or shot them, or `nil`:
 
-| `cause` | What it is |
-| --- | --- |
-| `fall`, `drown`, `suffocate`, `void`, `lava`, `fire`, `cactus`, `starve` | The environment. |
-| `attack` | A mob's or a player's hit. |
-| `shot` | An arrow. |
-| `blast`, `magic` | An explosion, magic. |
-| `other` | A pack's own `player:damage`. |
+| `cause`                                                                  | What it is                    |
+| ------------------------------------------------------------------------ | ----------------------------- |
+| `fall`, `drown`, `suffocate`, `void`, `lava`, `fire`, `cactus`, `starve` | The environment.              |
+| `attack`                                                                 | A mob's or a player's hit.    |
+| `shot`                                                                   | An arrow.                     |
+| `blast`, `magic`                                                         | An explosion, magic.          |
+| `other`                                                                  | A pack's own `player:damage`. |
 
 `players.on_respawn` fires when they come back; a respawn fills health to the
 maximum. The session facts — one player value, `data` kept ten seconds — are

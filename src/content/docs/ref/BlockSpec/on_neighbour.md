@@ -1,6 +1,6 @@
 ---
-title: 'blockSpec.on_neighbour'
-description: 'A neighbour changed; from is its position and announced the block name the notifier announced itself as.'
+title: "blockSpec.on_neighbour"
+description: "A neighbour changed; from is its position and announced the block name the notifier announced itself as."
 ---
 
 Part of [`blockSpec`](/ref/BlockSpec/).
@@ -13,9 +13,9 @@ A neighbour changed; `from` is its position and `announced` the block name the n
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(block` | `BlockAt , from: Vec3 , announced: string , base: (... any ) -> any ) -> ()` | yes |
+| Name     | Type                                                                         | Required |
+| -------- | ---------------------------------------------------------------------------- | -------- |
+| `(block` | `BlockAt , from: Vec3 , announced: string , base: (... any ) -> any ) -> ()` | yes      |
 
 ## Returns
 

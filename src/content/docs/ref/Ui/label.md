@@ -1,6 +1,6 @@
 ---
-title: 'ui.label'
-description: 'Words in the client''s own letters, space to ~'
+title: "ui.label"
+description: "Words in the client's own letters, space to ~"
 ---
 
 Part of [`ui`](/ref/Ui/).
@@ -13,9 +13,9 @@ Words in the client's own letters, space to `~`. Give a label whose words change
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `opts` | `{ id: string ?, text: string ?, width: number ?, align: LayoutAlign ?, color: Ink ? }` | yes |
+| Name   | Type                                                                                    | Required |
+| ------ | --------------------------------------------------------------------------------------- | -------- |
+| `opts` | `{ id: string ?, text: string ?, width: number ?, align: LayoutAlign ?, color: Ink ? }` | yes      |
 
 ## Returns
 

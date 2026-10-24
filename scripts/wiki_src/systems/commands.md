@@ -5,6 +5,7 @@ order: 1
 description: commands.add builds slash commands from a usage line — the argument types and ranges, permission nodes, aliases, tab-completion suggestions with tooltips, one name with several shapes, and what /help shows.
 tags: [commands, usage line, suggestions, permissions, aliases, help]
 ---
+
 # Commands
 
 > **In short:** a pack adds slash commands with `commands.add` from a usage
@@ -55,15 +56,15 @@ name carry several shapes — see [One name, several shapes](#one-name-several-s
 
 What the player types, and what `args.name` is inside the function:
 
-| type | the player types | `args.name` is |
-| --- | --- | --- |
-| `word` | one word | a string |
-| `integer`, `integer 1..64` | a whole number, in the range if there is one | a number |
-| `number`, `number 0..1` | any number, in the range if there is one | a number |
-| `player` | the name of someone in this room | that player |
-| `red|black` | one of the listed words | the word, in lower case |
-| `text...` | the rest of the line | a string |
-| `words...` | the rest of the line | a list of words |
+| type                       | the player types                             | `args.name` is          |
+| -------------------------- | -------------------------------------------- | ----------------------- |
+| `word`                     | one word                                     | a string                |
+| `integer`, `integer 1..64` | a whole number, in the range if there is one | a number                |
+| `number`, `number 0..1`    | any number, in the range if there is one     | a number                |
+| `player`                   | the name of someone in this room             | that player             |
+| `red                       | black`                                       | one of the listed words | the word, in lower case |
+| `text...`                  | the rest of the line                         | a string                |
+| `words...`                 | the rest of the line                         | a list of words         |
 
 ## The function and what it returns
 
@@ -78,12 +79,12 @@ behaviour rules:
 
 ## Options
 
-| Option | Type | Meaning |
-| --- | --- | --- |
-| `permission` | string | A permission node; without it, a player does not see or run the command. |
-| `aliases` | `{ string }` | More names for the same command, such as `{ "hub" }`. |
-| `help` | string | The text `/help` shows after the usage. |
-| `suggest` | `{ [arg]: list or function }` | Per argument: the words to offer as the player types. |
+| Option       | Type                          | Meaning                                                                  |
+| ------------ | ----------------------------- | ------------------------------------------------------------------------ |
+| `permission` | string                        | A permission node; without it, a player does not see or run the command. |
+| `aliases`    | `{ string }`                  | More names for the same command, such as `{ "hub" }`.                    |
+| `help`       | string                        | The text `/help` shows after the usage.                                  |
+| `suggest`    | `{ [arg]: list or function }` | Per argument: the words to offer as the player types.                    |
 
 `/help` is the engine's own: it lists **every command the player may run**, so
 a command behind a permission node the player lacks does not appear there.

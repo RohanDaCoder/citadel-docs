@@ -1,6 +1,6 @@
 ---
-title: 'chunk:set'
-description: 'Sets one block; positions outside the chunk are ignored.'
+title: "chunk:set"
+description: "Sets one block; positions outside the chunk are ignored."
 ---
 
 Part of [`Chunk`](/ref/Chunk/).
@@ -13,10 +13,10 @@ Sets one block; positions outside the chunk are ignored.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `pos` | [`Vec3`](/ref/Vec3/) | yes |
-| `block` | `string` | yes |
+| Name    | Type                 | Required |
+| ------- | -------------------- | -------- |
+| `pos`   | [`Vec3`](/ref/Vec3/) | yes      |
+| `block` | `string`             | yes      |
 
 ## Used in
 

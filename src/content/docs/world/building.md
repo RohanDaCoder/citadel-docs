@@ -1,6 +1,6 @@
 ---
-title: 'Building'
-description: 'world.build and the Builder API, Schematic values, pasting with world.paste and chunk:paste, turning, cropping and replacing builds, .schem import, the render/check workflow, craft advice for building well, and named parts with build mode.'
+title: "Building"
+description: "world.build and the Builder API, Schematic values, pasting with world.paste and chunk:paste, turning, cropping and replacing builds, .schem import, the render/check workflow, craft advice for building well, and named parts with build mode."
 ---
 
 :::note[In short]
@@ -44,12 +44,12 @@ Coordinates are whole blocks of the build's own and may be negative; later
 writes win. `{ detail = 2 }` makes every coordinate a half block, fitted to
 slabs and stairs — see [Block reference](/world/block-reference/#half-blocks-detail--2).
 
-| Call | Returns | Purpose |
-| --- | --- | --- |
-| [`b:block(pos, block)`](/ref/Builder/block/) | — | Sets one block of the build; later writes win |
-| [`b:box(from, to, block)`](/ref/Builder/box/) | — | Inclusive corners, in any order, like `chunk:fill` |
-| [`b:line(from, to, block)`](/ref/Builder/line/) | — | Every block the straight line between the ends passes through |
-| [`b:part(name, fn)`](/ref/Builder/part/) | — | What `fn` writes is a named part; nested calls name `"tower/roof"` |
+| Call                                            | Returns | Purpose                                                            |
+| ----------------------------------------------- | ------- | ------------------------------------------------------------------ |
+| [`b:block(pos, block)`](/ref/Builder/block/)    | —       | Sets one block of the build; later writes win                      |
+| [`b:box(from, to, block)`](/ref/Builder/box/)   | —       | Inclusive corners, in any order, like `chunk:fill`                 |
+| [`b:line(from, to, block)`](/ref/Builder/line/) | —       | Every block the straight line between the ends passes through      |
+| [`b:part(name, fn)`](/ref/Builder/part/)        | —       | What `fn` writes is a named part; nested calls name `"tower/roof"` |
 
 ### Naming the parts inside a build
 
@@ -84,11 +84,11 @@ file read once by `world.schematic`. `size` is the build's width, height and
 length in blocks; `min` is the build's own lowest corner, which is the corner
 `origin` puts down — zero for a file.
 
-| Call | Returns | Purpose |
-| --- | --- | --- |
-| [`world.paste(schem, origin, opts?)`](/ref/World/paste/) | — | Live, stored and sent; air is skipped unless `air = true` |
-| [`schematic:rotate(degrees)`](/ref/Schematic/rotate/) | `Schematic` | A new build turned clockwise seen from above |
-| [`schematic:mirror(axis)`](/ref/Schematic/mirror/) | `Schematic` | A new build flipped: `"x"` swaps east and west, `"z"` north and south |
+| Call                                                     | Returns     | Purpose                                                               |
+| -------------------------------------------------------- | ----------- | --------------------------------------------------------------------- |
+| [`world.paste(schem, origin, opts?)`](/ref/World/paste/) | —           | Live, stored and sent; air is skipped unless `air = true`             |
+| [`schematic:rotate(degrees)`](/ref/Schematic/rotate/)    | `Schematic` | A new build turned clockwise seen from above                          |
+| [`schematic:mirror(axis)`](/ref/Schematic/mirror/)       | `Schematic` | A new build flipped: `"x"` swaps east and west, `"z"` north and south |
 
 ## Turning a build
 
@@ -170,11 +170,11 @@ The rules:
 with a render and a check. Name the parts as you go (`b:part`), so renders and
 the check can name them.
 
-| stage | what is built | look with | ask |
-| --- | --- | --- | --- |
-| 1. massing | the footprint, the main volumes, the roof shapes | `--view sides,roof` | Does the outline say what it is? Are the proportions right: towers tall enough, roof steep enough, wings in scale? |
-| 2. architecture | openings, wall depth, eaves, how parts join | `--view approach,entrance,plan` and `citadel check` | Are windows holes with sills and frames? Does the way in read? Can a player walk to every floor? |
-| 3. setting and detail | paths, ground, lighting, props, trim | `--view approach,cutaway` and `citadel check` | Does it sit in a place? Is the detail where the eye goes? |
+| stage                 | what is built                                    | look with                                           | ask                                                                                                                |
+| --------------------- | ------------------------------------------------ | --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| 1. massing            | the footprint, the main volumes, the roof shapes | `--view sides,roof`                                 | Does the outline say what it is? Are the proportions right: towers tall enough, roof steep enough, wings in scale? |
+| 2. architecture       | openings, wall depth, eaves, how parts join      | `--view approach,entrance,plan` and `citadel check` | Are windows holes with sills and frames? Does the way in read? Can a player walk to every floor?                   |
+| 3. setting and detail | paths, ground, lighting, props, trim             | `--view approach,cutaway` and `citadel check`       | Does it sit in a place? Is the detail where the eye goes?                                                          |
 
 At each stage:
 
@@ -185,14 +185,14 @@ At each stage:
 
 **The four ways a build fails:**
 
-- *Painted flat.* A window keeps its glass in the wall's plane, with a sill and
+- _Painted flat._ A window keeps its glass in the wall's plane, with a sill and
   a frame that stand out in front of it; glass pushed behind a wall one block
   thick sits inside the room. Give walls depth: plinths, beams, cornices.
-- *Visible boxes.* Taper what grows: a tower narrows, a roof flares at its
+- _Visible boxes._ Taper what grows: a tower narrows, a roof flares at its
   eaves. Break long edges. Let parts overlap and sink into each other.
-- *No setting.* Add a path, a fence, a tree, a barrel, a lamp, and shape the
+- _No setting._ Add a path, a fence, a tree, a barrel, a lamp, and shape the
   ground to meet them.
-- *Detail everywhere, or nowhere.* Put detail where the eye goes.
+- _Detail everywhere, or nowhere._ Put detail where the eye goes.
 
 **Half blocks are the detail.** Use `detail = 2` for shapes finer than a block:
 roofs, eaves, sills, steps, cornices, arches. The build turns half steps into
@@ -271,16 +271,16 @@ citadel render ./castle --out v.png --view plan,cutaway          # the enclosed 
 citadel render ./castle --out gate.png --at 0,66,30 --look 0,70,-10   # one camera, placed
 ```
 
-| view | camera | the question it answers |
-| --- | --- | --- |
-| `sides` | four, round the build, a little above it | silhouette and proportion from every side |
-| `approach` | a player's eye height, out from the main door | what a player sees walking up to it |
-| `entrance` | close on the main door, eye height | does the way in read as the way in |
-| `roof` | high up, at an angle | the roof line, and where the parts meet |
-| `plan` | straight down, to scale, one per storey | the enclosed spaces, walls and doors of each floor |
-| `cutaway` | at an angle, one per storey | the enclosed spaces as a player stands in them |
-| `eye` | in each named part, where a player stands, at eye height | the part as one who walks in sees it: a hall from inside, a square from its edge |
-| `night` | as `sides`, at night | the light: only blocks that give light (lanterns, lamps, glowstone, froglights) light the build |
+| view       | camera                                                   | the question it answers                                                                         |
+| ---------- | -------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `sides`    | four, round the build, a little above it                 | silhouette and proportion from every side                                                       |
+| `approach` | a player's eye height, out from the main door            | what a player sees walking up to it                                                             |
+| `entrance` | close on the main door, eye height                       | does the way in read as the way in                                                              |
+| `roof`     | high up, at an angle                                     | the roof line, and where the parts meet                                                         |
+| `plan`     | straight down, to scale, one per storey                  | the enclosed spaces, walls and doors of each floor                                              |
+| `cutaway`  | at an angle, one per storey                              | the enclosed spaces as a player stands in them                                                  |
+| `eye`      | in each named part, where a player stands, at eye height | the part as one who walks in sees it: a hall from inside, a square from its edge                |
+| `night`    | as `sides`, at night                                     | the light: only blocks that give light (lanterns, lamps, glowstone, froglights) light the build |
 
 - `--part name` frames that part and the parts inside it.
   `--from x,y,z --to x,y,z` frames a box. Without either, `--view` frames every
@@ -334,26 +334,26 @@ It lists:
 
 Then it lists the findings:
 
-| finding | kind | what it means |
-| --- | --- | --- |
-| `FLOATING` | fix | blocks that touch nothing standing |
-| `DOOR_BLOCKED` | fix | a block in a door's way at foot or head height, named |
-| `DOOR_DROP` | fix | a door that opens onto nothing to stand on |
-| `DOOR_UNREACHED` | fix | a door nobody can walk to from outside |
-| `UNREACHED` | fix | floor inside walls and under a roof that nobody can walk to from outside |
-| `STOREYS` | fix | `--storeys n` asked for, and not what enclosed spaces stand on |
-| `NOT_CLOSED_IN` | fix with `--enclosed` | outside air reaches the inside with doors and windows shut, and where it comes in |
-| `FLAT_FACE` | advice | a face nearly all in one plane |
-| `FLUSH_WINDOWS` | advice | windows with nothing in front of them: no sill, lintel or post that stands out |
-| `ONE_MATERIAL` | advice | a face nearly all one block |
-| `FLAT_ROOF` | advice | the top one flat height, not stepped |
-| `BLOCKY_ROOF` | advice | a sloping roof of whole blocks where stairs could be |
-| `LOW_CEILING` | advice | a room two blocks high |
-| `NO_SETTING` | advice | bare ground all round |
-| `BARE_FACE` | advice | a face with few shape blocks (stairs, slabs, walls, trapdoors, lanterns): masses without detail |
-| `DARK_AT_NIGHT` | advice | over half of the places a player walks to is dark at night |
-| `SPARSE` | advice | a part where players walk with little detail near them: an empty hall, square or deck |
-| `PART_OVERLAP` | advice | two parts (`parts.define`) overlap without one inside the other: regenerating either rewrites the other |
+| finding          | kind                  | what it means                                                                                           |
+| ---------------- | --------------------- | ------------------------------------------------------------------------------------------------------- |
+| `FLOATING`       | fix                   | blocks that touch nothing standing                                                                      |
+| `DOOR_BLOCKED`   | fix                   | a block in a door's way at foot or head height, named                                                   |
+| `DOOR_DROP`      | fix                   | a door that opens onto nothing to stand on                                                              |
+| `DOOR_UNREACHED` | fix                   | a door nobody can walk to from outside                                                                  |
+| `UNREACHED`      | fix                   | floor inside walls and under a roof that nobody can walk to from outside                                |
+| `STOREYS`        | fix                   | `--storeys n` asked for, and not what enclosed spaces stand on                                          |
+| `NOT_CLOSED_IN`  | fix with `--enclosed` | outside air reaches the inside with doors and windows shut, and where it comes in                       |
+| `FLAT_FACE`      | advice                | a face nearly all in one plane                                                                          |
+| `FLUSH_WINDOWS`  | advice                | windows with nothing in front of them: no sill, lintel or post that stands out                          |
+| `ONE_MATERIAL`   | advice                | a face nearly all one block                                                                             |
+| `FLAT_ROOF`      | advice                | the top one flat height, not stepped                                                                    |
+| `BLOCKY_ROOF`    | advice                | a sloping roof of whole blocks where stairs could be                                                    |
+| `LOW_CEILING`    | advice                | a room two blocks high                                                                                  |
+| `NO_SETTING`     | advice                | bare ground all round                                                                                   |
+| `BARE_FACE`      | advice                | a face with few shape blocks (stairs, slabs, walls, trapdoors, lanterns): masses without detail         |
+| `DARK_AT_NIGHT`  | advice                | over half of the places a player walks to is dark at night                                              |
+| `SPARSE`         | advice                | a part where players walk with little detail near them: an empty hall, square or deck                   |
+| `PART_OVERLAP`   | advice                | two parts (`parts.define`) overlap without one inside the other: regenerating either rewrites the other |
 
 - A fix is wrong for any build. Weigh advice against the build's purpose: a
   market stall is open, and a tower's roof may be flat.
@@ -397,22 +397,27 @@ The rules:
 
 Each part is in one of four states, kept in `<world>/parts.json`:
 
-| state | means | when its code changes |
-| --- | --- | --- |
-| **clean** | the box holds exactly what its generator last wrote | written again, by itself |
-| **modified** | somebody edited blocks in it since | left alone, and reported: "its code changed" |
-| **kept** | somebody chose its blocks: they are in `parts/<name>.schem` in the pack | ignored: the generator no longer owns it |
-| **orphaned** | its definition is gone from the pack | reported: keep it, or regenerate it to remove its blocks |
+| state        | means                                                                   | when its code changes                                    |
+| ------------ | ----------------------------------------------------------------------- | -------------------------------------------------------- |
+| **clean**    | the box holds exactly what its generator last wrote                     | written again, by itself                                 |
+| **modified** | somebody edited blocks in it since                                      | left alone, and reported: "its code changed"             |
+| **kept**     | somebody chose its blocks: they are in `parts/<name>.schem` in the pack | ignored: the generator no longer owns it                 |
+| **orphaned** | its definition is gone from the pack                                    | reported: keep it, or regenerate it to remove its blocks |
 
 ```json
-{ "tower-3": {
+{
+  "tower-3": {
     "state": "modified",
-    "region": [[48, 64, 4], [64, 119, 26]],
+    "region": [
+      [48, 64, 4],
+      [64, 119, 26]
+    ],
     "module": "city.luau",
     "generated": "sha256:…",
     "at": "2026-09-27T14:02:11Z",
     "edits": { "count": 214, "by": { "melvin": 200, "agent:claude": 14 } }
-} }
+  }
+}
 ```
 
 **Only people and the agent make edits, never scripts.**

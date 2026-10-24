@@ -1,5 +1,5 @@
 ---
-title: 'npc:say'
+title: "npc:say"
 description: 'Sends a chat line "<name> ..." to the room, or just the words for an NPC with no name.'
 ---
 
@@ -13,10 +13,10 @@ Sends a chat line "<name> ..." to the room, or just the words for an NPC with no
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `text` | [`Text`](/ref/Text/) | yes |
-| `color` | [`Ink`](/ref/Ink/) | no |
+| Name    | Type                 | Required |
+| ------- | -------------------- | -------- |
+| `text`  | [`Text`](/ref/Text/) | yes      |
+| `color` | [`Ink`](/ref/Ink/)   | no       |
 
 ## Used in
 

@@ -1,6 +1,6 @@
 ---
-title: 'Kits'
-description: 'Give players starter kits with player:give — inventory merging rules, taking items back, replacing the whole loadout, and hotbar shortcuts for one-click kits.'
+title: "Kits"
+description: "Give players starter kits with player:give — inventory merging rules, taking items back, replacing the whole loadout, and hotbar shortcuts for one-click kits."
 ---
 
 :::note[In short]
@@ -33,7 +33,7 @@ What `player:give` does with each stack:
 - What does not fit is **dropped from the give, not duplicated** — count what
   you need before sending a full inventory.
 - One item is a bare string (`"stone"`), several are `{ item = "arrow",
-  count = 16 }`. A pack's own item carries its `id`.
+count = 16 }`. A pack's own item carries its `id`.
 
 ## A kit that costs something
 

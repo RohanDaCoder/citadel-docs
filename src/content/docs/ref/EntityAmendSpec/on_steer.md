@@ -1,6 +1,6 @@
 ---
-title: 'entityAmendSpec.on_steer'
-description: 'Wrapped behavior runs first unless options.replace = true.'
+title: "entityAmendSpec.on_steer"
+description: "Wrapped behavior runs first unless options.replace = true."
 ---
 
 Part of [`entityAmendSpec`](/ref/EntityAmendSpec/).
@@ -13,9 +13,9 @@ Wrapped behavior runs first unless options.replace = true.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(e` | `EntityHandle , base: () -> ()) -> ()` | yes |
+| Name | Type                                   | Required |
+| ---- | -------------------------------------- | -------- |
+| `(e` | `EntityHandle , base: () -> ()) -> ()` | yes      |
 
 ## Returns
 

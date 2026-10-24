@@ -1,6 +1,6 @@
 ---
-title: 'field:min'
-description: 'field:min — method.'
+title: "field:min"
+description: "field:min — method."
 ---
 
 Part of [`Field`](/ref/Field/).
@@ -11,9 +11,9 @@ field:min(other: Field | number) → Field
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `other` | `Field \| number` | yes |
+| Name    | Type              | Required |
+| ------- | ----------------- | -------- |
+| `other` | `Field \| number` | yes      |
 
 ## Returns
 

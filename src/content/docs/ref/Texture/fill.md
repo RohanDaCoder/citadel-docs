@@ -1,6 +1,6 @@
 ---
-title: 'texture:fill'
-description: 'Paints every pixel one colour.'
+title: "texture:fill"
+description: "Paints every pixel one colour."
 ---
 
 Part of [`Texture`](/ref/Texture/).
@@ -13,6 +13,6 @@ Paints every pixel one colour.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `color` | [`Ink`](/ref/Ink/) | yes |
+| Name    | Type               | Required |
+| ------- | ------------------ | -------- |
+| `color` | [`Ink`](/ref/Ink/) | yes      |

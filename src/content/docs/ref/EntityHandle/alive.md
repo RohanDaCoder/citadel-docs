@@ -1,6 +1,6 @@
 ---
-title: 'entityHandle.alive'
-description: 'Whether it is still in the world'
+title: "entityHandle.alive"
+description: "Whether it is still in the world"
 ---
 
 Part of [`entityHandle`](/ref/EntityHandle/).

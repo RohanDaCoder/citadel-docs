@@ -1,6 +1,6 @@
 ---
-title: 'shop.on_paid'
-description: 'Called once per paid purchase; returning without an error hands it over'
+title: "shop.on_paid"
+description: "Called once per paid purchase; returning without an error hands it over"
 ---
 
 Part of [`shop`](/ref/shop/).
@@ -13,9 +13,9 @@ Called once per paid purchase; returning without an error hands it over. An erro
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `handler` | `(purchase: ShopPurchase ) -> ()` | yes |
+| Name      | Type                              | Required |
+| --------- | --------------------------------- | -------- |
+| `handler` | `(purchase: ShopPurchase ) -> ()` | yes      |
 
 ## Returns
 

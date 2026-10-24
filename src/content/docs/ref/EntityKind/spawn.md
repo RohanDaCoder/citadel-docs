@@ -1,6 +1,6 @@
 ---
-title: 'entityKind.spawn'
-description: 'The one writable field'
+title: "entityKind.spawn"
+description: "The one writable field"
 ---
 
 Part of [`entityKind`](/ref/EntityKind/).

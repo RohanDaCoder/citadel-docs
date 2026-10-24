@@ -1,6 +1,6 @@
 ---
-title: 'generatorRules.rock'
-description: 'The body of the land, under the ground rules.'
+title: "generatorRules.rock"
+description: "The body of the land, under the ground rules."
 ---
 
 Part of [`generatorRules`](/ref/GeneratorRules/).

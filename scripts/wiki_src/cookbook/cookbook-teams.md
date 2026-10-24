@@ -5,6 +5,7 @@ order: 5
 description: Set up teams with player.data, make members visible only to their own team, and keep the assignments alive across joins and reloads.
 tags: [teams, visibility, player.data, pattern]
 ---
+
 # Teams
 
 > **In short:** a team is a field on the player — `player.data.team` — plus

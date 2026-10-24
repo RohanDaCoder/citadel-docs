@@ -1,6 +1,6 @@
 ---
-title: 'player.max_health'
-description: 'Their health now, 0 to max_health; nil where the game version has no damage rules'
+title: "player.max_health"
+description: "Their health now, 0 to max_health; nil where the game version has no damage rules"
 ---
 
 Part of [`player`](/ref/Player/).
@@ -13,6 +13,6 @@ Their health now, 0 to `max_health`; nil where the game version has no damage ru
 
 ## Used in
 
-> "player.health          -- their health now, 0 to player.max_health; nil where the version has no damage rules" — [Players](/players/player-lifecycle/)
-> "player.max_health      -- the most health they can have: 20 unless a pack set it; nil for the same reason" — [Players](/players/player-lifecycle/)
-> "player.health = 20             -- set outright, no flash; 0 is a death; above player.max_health it stops there" — [Body and movement](/players/movement/)
+> "player.health -- their health now, 0 to player.max_health; nil where the version has no damage rules" — [Players](/players/player-lifecycle/)
+> "player.max_health -- the most health they can have: 20 unless a pack set it; nil for the same reason" — [Players](/players/player-lifecycle/)
+> "player.health = 20 -- set outright, no flash; 0 is a death; above player.max_health it stops there" — [Body and movement](/players/movement/)

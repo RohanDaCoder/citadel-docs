@@ -1,6 +1,6 @@
 ---
-title: 'entitySpec.on_think'
-description: 'define only'
+title: "entitySpec.on_think"
+description: "define only"
 ---
 
 Part of [`entitySpec`](/ref/EntitySpec/).
@@ -13,9 +13,9 @@ define only. The brain: one call for all due bodies of the kind, with their numb
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(b` | `Think ) -> ()` | yes |
+| Name | Type            | Required |
+| ---- | --------------- | -------- |
+| `(b` | `Think ) -> ()` | yes      |
 
 ## Returns
 

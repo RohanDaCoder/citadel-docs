@@ -1,6 +1,6 @@
 ---
-title: 'Orientation type'
-description: 'Displays also accept a nose direction and roof direction; reads return angles.'
+title: "Orientation type"
+description: "Displays also accept a nose direction and roof direction; reads return angles."
 ---
 
 Displays also accept a nose direction and roof direction; reads return angles.

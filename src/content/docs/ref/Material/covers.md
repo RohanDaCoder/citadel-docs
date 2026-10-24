@@ -1,6 +1,6 @@
 ---
-title: 'material.covers'
-description: 'Grass under it dies.'
+title: "material.covers"
+description: "Grass under it dies."
 ---
 
 Part of [`material`](/ref/Material/).

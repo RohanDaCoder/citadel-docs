@@ -5,6 +5,7 @@ order: 6
 description: Permission nodes — wildcards, a leading minus, most-specific-wins — groups in the pack's citadel.yml with inheritance, putting players in groups from script until they leave, operators with every node, and gating commands with player:has.
 tags: [permissions, groups, nodes, citadel-yml, operators, commands]
 ---
+
 # Permissions
 
 > **In short:** a permission node is a dotted name. `casino.*` covers
@@ -16,12 +17,12 @@ tags: [permissions, groups, nodes, citadel-yml, operators, commands]
 
 ## Node syntax
 
-| Node | What it covers |
-| --- | --- |
-| `casino.play` | Exactly this node. |
-| `casino.*` | Everything under `casino`. |
-| `*` | Everything. |
-| `-casino.debug` | Takes the node away. |
+| Node            | What it covers             |
+| --------------- | -------------------------- |
+| `casino.play`   | Exactly this node.         |
+| `casino.*`      | Everything under `casino`. |
+| `*`             | Everything.                |
+| `-casino.debug` | Takes the node away.       |
 
 The resolution rules:
 
@@ -40,13 +41,17 @@ group may inherit the nodes of others with `inherits`:
 ```yaml
 permissions:
   default: { nodes: [casino.play] }
-  vip:     { inherits: [default], nodes: [casino.vip] }
-  staff:   { inherits: [vip], nodes: [minecraft.command.gamemode, "casino.*", "-casino.debug"] }
+  vip: { inherits: [default], nodes: [casino.vip] }
+  staff:
+    {
+      inherits: [vip],
+      nodes: [minecraft.command.gamemode, "casino.*", "-casino.debug"],
+    }
 ```
 
-| Key | Meaning |
-| --- | --- |
-| `nodes` | The group's permission nodes. |
+| Key        | Meaning                                    |
+| ---------- | ------------------------------------------ |
+| `nodes`    | The group's permission nodes.              |
 | `inherits` | The other groups this group inherits from. |
 
 The `staff` group shows all three node forms at once: an exact node, a
@@ -54,11 +59,11 @@ wildcard, and a negation — and it inherits `vip`, which inherits `default`.
 
 ## Putting players in groups
 
-| Call | Returns | Purpose |
-| --- | --- | --- |
-| [`player:add_group(group)`](/ref/Player/add_group) | — | Puts the player in a group until they leave. |
-| [`player:remove_group(group)`](/ref/Player/remove_group) | — | Takes the player out of a group. |
-| [`player:groups()`](/ref/Player/groups) | `{ string }` | The player's groups; `default` is not listed. |
+| Call                                                     | Returns      | Purpose                                       |
+| -------------------------------------------------------- | ------------ | --------------------------------------------- |
+| [`player:add_group(group)`](/ref/Player/add_group)       | —            | Puts the player in a group until they leave.  |
+| [`player:remove_group(group)`](/ref/Player/remove_group) | —            | Takes the player out of a group.              |
+| [`player:groups()`](/ref/Player/groups)                  | `{ string }` | The player's groups; `default` is not listed. |
 
 - Groups last until the player leaves. Store them and re-add them in
   `players.on_join` — see [Player lifecycle](/wiki/player-lifecycle).

@@ -1,6 +1,6 @@
 ---
-title: 'display.text'
-description: 'text kind Reads back the words; takes any text.'
+title: "display.text"
+description: "text kind Reads back the words; takes any text."
 ---
 
 Part of [`display`](/ref/Display/).

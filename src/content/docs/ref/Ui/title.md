@@ -1,6 +1,6 @@
 ---
-title: 'ui.title'
-description: 'Shows a title and subtitle to everyone in the room; fades and stay are in seconds.'
+title: "ui.title"
+description: "Shows a title and subtitle to everyone in the room; fades and stay are in seconds."
 ---
 
 Part of [`ui`](/ref/Ui/).
@@ -13,9 +13,9 @@ Shows a title and subtitle to everyone in the room; fades and stay are in second
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `opts` | `{ title: Text ?, subtitle: Text ?, color: Ink ?, fade_in: number ?, stay: number ?, fade_out: number ?, }` | yes |
+| Name   | Type                                                                                                        | Required |
+| ------ | ----------------------------------------------------------------------------------------------------------- | -------- |
+| `opts` | `{ title: Text ?, subtitle: Text ?, color: Ink ?, fade_in: number ?, stay: number ?, fade_out: number ?, }` | yes      |
 
 ## Used in
 

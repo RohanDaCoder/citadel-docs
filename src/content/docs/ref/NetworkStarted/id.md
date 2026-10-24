@@ -1,6 +1,6 @@
 ---
-title: 'networkStarted.id'
-description: 'networkStarted.id — field.'
+title: "networkStarted.id"
+description: "networkStarted.id — field."
 ---
 
 Part of [`networkStarted`](/ref/NetworkStarted/).

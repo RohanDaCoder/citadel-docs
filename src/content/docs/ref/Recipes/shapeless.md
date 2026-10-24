@@ -1,6 +1,6 @@
 ---
-title: 'recipes.shapeless'
-description: 'Adds a crafting recipe whose ingredients may go anywhere in the grid.'
+title: "recipes.shapeless"
+description: "Adds a crafting recipe whose ingredients may go anywhere in the grid."
 ---
 
 Part of [`recipes`](/ref/Recipes/).
@@ -13,9 +13,9 @@ Adds a crafting recipe whose ingredients may go anywhere in the grid.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `spec` | `{ items: { ItemMatch }, result: ItemSpec }` | yes |
+| Name   | Type                                         | Required |
+| ------ | -------------------------------------------- | -------- |
+| `spec` | `{ items: { ItemMatch }, result: ItemSpec }` | yes      |
 
 ## Used in
 

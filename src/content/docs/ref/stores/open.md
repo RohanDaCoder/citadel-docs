@@ -1,6 +1,6 @@
 ---
-title: 'stores.open'
-description: 'Returns the experience''s one store'
+title: "stores.open"
+description: "Returns the experience's one store"
 ---
 
 Part of [`stores`](/ref/stores/).

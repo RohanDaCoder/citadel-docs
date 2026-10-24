@@ -1,6 +1,6 @@
 ---
-title: 'httpResponse.status'
-description: 'The HTTP status; 0 when no answer came.'
+title: "httpResponse.status"
+description: "The HTTP status; 0 when no answer came."
 ---
 
 Part of [`httpResponse`](/ref/HttpResponse/).

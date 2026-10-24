@@ -1,6 +1,6 @@
 ---
-title: 'httpResponse.headers'
-description: 'The answer''s headers, names in lower case.'
+title: "httpResponse.headers"
+description: "The answer's headers, names in lower case."
 ---
 
 Part of [`httpResponse`](/ref/HttpResponse/).

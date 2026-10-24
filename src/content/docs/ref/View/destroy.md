@@ -1,6 +1,6 @@
 ---
-title: 'view:destroy'
-description: 'Removes this player''s view; they see the shared picture again.'
+title: "view:destroy"
+description: "Removes this player's view; they see the shared picture again."
 ---
 
 Part of [`View`](/ref/View/).

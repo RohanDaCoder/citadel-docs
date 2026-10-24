@@ -1,6 +1,6 @@
 ---
-title: 'entityKind.hostile'
-description: 'Whether it is hostile.'
+title: "entityKind.hostile"
+description: "Whether it is hostile."
 ---
 
 Part of [`entityKind`](/ref/EntityKind/).

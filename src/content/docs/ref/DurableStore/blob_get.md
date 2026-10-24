@@ -1,6 +1,6 @@
 ---
-title: 'durableStore:blob_get'
-description: 'Returns one player''s binary blob, or nil, and its version; owner is the player''s uuid.'
+title: "durableStore:blob_get"
+description: "Returns one player's binary blob, or nil, and its version; owner is the player's uuid."
 ---
 
 Part of [`DurableStore`](/ref/DurableStore/).
@@ -13,10 +13,10 @@ Returns one player's binary blob, or nil, and its version; `owner` is the player
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `owner` | `string` | yes |
-| `key` | `string` | yes |
+| Name    | Type     | Required |
+| ------- | -------- | -------- |
+| `owner` | `string` | yes      |
+| `key`   | `string` | yes      |
 
 ## Returns
 

@@ -1,5 +1,5 @@
 ---
-title: 'picture:gradient'
+title: "picture:gradient"
 description: 'Fills a box that fades from from to to, top to bottom; "across" runs it left to right.'
 ---
 
@@ -13,12 +13,12 @@ Fills a box that fades from `from` to `to`, top to bottom; `"across"` runs it le
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `x` | `number` | yes |
-| `y` | `number` | yes |
-| `w` | `number` | yes |
-| `h` | `number` | yes |
-| `from` | [`Ink`](/ref/Ink/) | yes |
-| `to` | [`Ink`](/ref/Ink/) | yes |
-| `across` | `string` | no |
+| Name     | Type               | Required |
+| -------- | ------------------ | -------- |
+| `x`      | `number`           | yes      |
+| `y`      | `number`           | yes      |
+| `w`      | `number`           | yes      |
+| `h`      | `number`           | yes      |
+| `from`   | [`Ink`](/ref/Ink/) | yes      |
+| `to`     | [`Ink`](/ref/Ink/) | yes      |
+| `across` | `string`           | no       |

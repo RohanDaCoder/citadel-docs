@@ -1,6 +1,6 @@
 ---
-title: 'world.on_block_break'
-description: 'What the survival tick did'
+title: "world.on_block_break"
+description: "What the survival tick did"
 ---
 
 Part of [`world`](/ref/World/).
@@ -13,9 +13,9 @@ What the survival tick did. Observe-only: the world has already changed, and wha
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `fn` | `(player: Player ?, pos: Vec3 , block: string ) -> ()` | yes |
+| Name | Type                                                   | Required |
+| ---- | ------------------------------------------------------ | -------- |
+| `fn` | `(player: Player ?, pos: Vec3 , block: string ) -> ()` | yes      |
 
 ## Returns
 

@@ -1,6 +1,6 @@
 ---
-title: 'itemMeta.canvas'
-description: 'A filled map of that canvas: what the item is, so item may be left out'
+title: "itemMeta.canvas"
+description: "A filled map of that canvas: what the item is, so item may be left out"
 ---
 
 Part of [`itemMeta`](/ref/ItemMeta/).
@@ -9,4 +9,4 @@ Part of [`itemMeta`](/ref/ItemMeta/).
 itemMeta.canvas: Canvas ?
 ```
 
-A filled map of that canvas: what the item *is*, so `item` may be left out. Everywhere an item is taken — a hand, a hotbar slot, a display.
+A filled map of that canvas: what the item _is_, so `item` may be left out. Everywhere an item is taken — a hand, a hotbar slot, a display.

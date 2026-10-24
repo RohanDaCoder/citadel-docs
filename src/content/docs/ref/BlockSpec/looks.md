@@ -1,6 +1,6 @@
 ---
-title: 'blockSpec.looks'
-description: 'A block state the client already draws, because a client has never heard of this pack'
+title: "blockSpec.looks"
+description: "A block state the client already draws, because a client has never heard of this pack"
 ---
 
 Part of [`blockSpec`](/ref/BlockSpec/).

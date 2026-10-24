@@ -5,6 +5,7 @@ order: 1
 description: Rate-limit commands and actions with player.data and time.now — per-player cooldowns that survive reloads safely and degrade correctly.
 tags: [cooldown, time, commands, pattern]
 ---
+
 # Cooldowns
 
 > **In short:** a cooldown is a per-player timestamp plus a check. Store the
@@ -46,7 +47,7 @@ Why each piece is what it is:
 > the pack's start — but `player.data` is also reset per session, so the two
 > stay consistent. For cooldowns that must survive restarts, store the
 > timestamp in [storage](/wiki/storage) with `storage.set("cooldown." ..
-> player.uuid, time.now())` instead.
+player.uuid, time.now())` instead.
 
 ## Cooldown on an action, not a command
 

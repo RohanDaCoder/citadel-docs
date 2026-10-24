@@ -1,6 +1,6 @@
 ---
-title: 'blockAmendSpec.on_neighbour'
-description: 'A neighbour at from changed; announced is the block the notifier announced itself as.'
+title: "blockAmendSpec.on_neighbour"
+description: "A neighbour at from changed; announced is the block the notifier announced itself as."
 ---
 
 Part of [`blockAmendSpec`](/ref/BlockAmendSpec/).
@@ -13,9 +13,9 @@ A neighbour at `from` changed; `announced` is the block the notifier announced i
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(block` | `BlockAt , from: Vec3 , announced: string , base: (... any ) -> any ) -> ()` | yes |
+| Name     | Type                                                                         | Required |
+| -------- | ---------------------------------------------------------------------------- | -------- |
+| `(block` | `BlockAt , from: Vec3 , announced: string , base: (... any ) -> any ) -> ()` | yes      |
 
 ## Returns
 

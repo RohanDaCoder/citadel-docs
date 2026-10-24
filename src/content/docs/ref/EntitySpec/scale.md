@@ -1,6 +1,6 @@
 ---
-title: 'entitySpec.scale'
-description: 'A model''s size; 1 by default.'
+title: "entitySpec.scale"
+description: "A model's size; 1 by default."
 ---
 
 Part of [`entitySpec`](/ref/EntitySpec/).

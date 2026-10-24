@@ -1,6 +1,6 @@
 ---
-title: 'player:sound'
-description: 'Plays a sound by name to this player only, with an optional position, volume, pitch and category.'
+title: "player:sound"
+description: "Plays a sound by name to this player only, with an optional position, volume, pitch and category."
 ---
 
 Part of [`Player`](/ref/Player/).
@@ -13,10 +13,10 @@ Plays a sound by name to this player only, with an optional position, volume, pi
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `name` | `string` | yes |
-| `opts` | `{ at: Vec3 ?, volume: number ?, pitch: number ?, category: string ?, }` | no |
+| Name   | Type                                                                     | Required |
+| ------ | ------------------------------------------------------------------------ | -------- |
+| `name` | `string`                                                                 | yes      |
+| `opts` | `{ at: Vec3 ?, volume: number ?, pitch: number ?, category: string ?, }` | no       |
 
 ## Used in
 

@@ -1,6 +1,6 @@
 ---
-title: 'storage.set'
-description: 'Saves a value under key in this pack''s storage.json; nil forgets it.'
+title: "storage.set"
+description: "Saves a value under key in this pack's storage.json; nil forgets it."
 ---
 
 Part of [`storage`](/ref/storage/).
@@ -13,10 +13,10 @@ Saves a value under `key` in this pack's storage.json; nil forgets it.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `key` | `string` | yes |
-| `value` | `any` | yes |
+| Name    | Type     | Required |
+| ------- | -------- | -------- |
+| `key`   | `string` | yes      |
+| `value` | `any`    | yes      |
 
 ## Used in
 

@@ -1,6 +1,6 @@
 ---
-title: 'field:curve'
-description: 'Straight lines through { { input, output }, ..'
+title: "field:curve"
+description: "Straight lines through { { input, output }, .."
 ---
 
 Part of [`Field`](/ref/Field/).
@@ -13,9 +13,9 @@ Straight lines through `{ { input, output }, ... }`, inputs rising.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `points` | `{ { number } }` | yes |
+| Name     | Type             | Required |
+| -------- | ---------------- | -------- |
+| `points` | `{ { number } }` | yes      |
 
 ## Returns
 

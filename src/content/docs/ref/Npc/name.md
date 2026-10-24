@@ -1,6 +1,6 @@
 ---
-title: 'npc.name'
-description: 'Whether it is still present'
+title: "npc.name"
+description: "Whether it is still present"
 ---
 
 Part of [`npc`](/ref/Npc/).

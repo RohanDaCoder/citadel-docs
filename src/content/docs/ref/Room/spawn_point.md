@@ -1,6 +1,6 @@
 ---
-title: 'room.spawn_point'
-description: 'The room''s number'
+title: "room.spawn_point"
+description: "The room's number"
 ---
 
 Part of [`room`](/ref/Room/).
@@ -13,5 +13,5 @@ The room's number. Rooms also compare by identity with `==`. Where players arriv
 
 ## Used in
 
-> "room.spawn_point = vec3(0.5, 80, 0.5)     -- the same field of a different room" — [Rooms](/concepts/rooms-and-dimensions/)
+> "room.spawn_point = vec3(0.5, 80, 0.5) -- the same field of a different room" — [Rooms](/concepts/rooms-and-dimensions/)
 > "- A write to `world.spawn_point` or `room.spawn_point` changes where a player" — [Rooms](/concepts/rooms-and-dimensions/)

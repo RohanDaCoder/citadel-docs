@@ -1,6 +1,6 @@
 ---
-title: 'durableStore:get'
-description: 'Returns a fact''s value and its version; version 0 means absent.'
+title: "durableStore:get"
+description: "Returns a fact's value and its version; version 0 means absent."
 ---
 
 Part of [`DurableStore`](/ref/DurableStore/).
@@ -13,9 +13,9 @@ Returns a fact's value and its version; version 0 means absent.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `key` | `string` | yes |
+| Name  | Type     | Required |
+| ----- | -------- | -------- |
+| `key` | `string` | yes      |
 
 ## Returns
 

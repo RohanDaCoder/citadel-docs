@@ -1,6 +1,6 @@
 ---
-title: 'texture.width'
-description: 'Width in pixels.'
+title: "texture.width"
+description: "Width in pixels."
 ---
 
 Part of [`texture`](/ref/Texture/).

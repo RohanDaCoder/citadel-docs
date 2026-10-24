@@ -1,6 +1,6 @@
 ---
-title: 'display.color'
-description: 'The colour of the words that did not pick one.'
+title: "display.color"
+description: "The colour of the words that did not pick one."
 ---
 
 Part of [`display`](/ref/Display/).

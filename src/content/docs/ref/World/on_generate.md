@@ -1,6 +1,6 @@
 ---
-title: 'world.on_generate'
-description: 'Called for a chunk each time it comes into memory, in a script world; it must make the same blocks every time.'
+title: "world.on_generate"
+description: "Called for a chunk each time it comes into memory, in a script world; it must make the same blocks every time."
 ---
 
 Part of [`world`](/ref/World/).
@@ -13,9 +13,9 @@ Called for a chunk each time it comes into memory, in a script world; it must ma
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `fn` | `(chunk: Chunk ) -> ()` | yes |
+| Name | Type                    | Required |
+| ---- | ----------------------- | -------- |
+| `fn` | `(chunk: Chunk ) -> ()` | yes      |
 
 ## Used in
 

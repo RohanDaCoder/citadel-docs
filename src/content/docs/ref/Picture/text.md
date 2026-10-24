@@ -1,6 +1,6 @@
 ---
-title: 'picture:text'
-description: 'Draws text in DejaVu Sans Bold, size pixels tall (16 by default), smoothed; returns its width in pixels.'
+title: "picture:text"
+description: "Draws text in DejaVu Sans Bold, size pixels tall (16 by default), smoothed; returns its width in pixels."
 ---
 
 Part of [`Picture`](/ref/Picture/).
@@ -13,13 +13,13 @@ Draws text in DejaVu Sans Bold, `size` pixels tall (16 by default), smoothed; re
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `x` | `number` | yes |
-| `y` | `number` | yes |
-| `text` | `string` | yes |
-| `color` | [`Ink`](/ref/Ink/) | yes |
-| `size` | `number` | no |
+| Name    | Type               | Required |
+| ------- | ------------------ | -------- |
+| `x`     | `number`           | yes      |
+| `y`     | `number`           | yes      |
+| `text`  | `string`           | yes      |
+| `color` | [`Ink`](/ref/Ink/) | yes      |
+| `size`  | `number`           | no       |
 
 ## Returns
 

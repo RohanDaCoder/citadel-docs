@@ -1,6 +1,6 @@
 ---
-title: 'entities.define'
-description: 'Load time only'
+title: "entities.define"
+description: "Load time only"
 ---
 
 Part of [`entities`](/ref/Entities/).
@@ -13,9 +13,9 @@ Load time only. A definition is a fact about the world.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `spec` | [`EntitySpec`](/ref/EntitySpec/) | yes |
+| Name   | Type                             | Required |
+| ------ | -------------------------------- | -------- |
+| `spec` | [`EntitySpec`](/ref/EntitySpec/) | yes      |
 
 ## Returns
 

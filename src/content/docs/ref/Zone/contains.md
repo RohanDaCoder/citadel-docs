@@ -1,6 +1,6 @@
 ---
-title: 'zone:contains'
-description: 'Returns true when the player is in the zone.'
+title: "zone:contains"
+description: "Returns true when the player is in the zone."
 ---
 
 Part of [`Zone`](/ref/Zone/).
@@ -13,9 +13,9 @@ Returns true when the player is in the zone.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `player` | [`Player`](/ref/Player/) | yes |
+| Name     | Type                     | Required |
+| -------- | ------------------------ | -------- |
+| `player` | [`Player`](/ref/Player/) | yes      |
 
 ## Returns
 

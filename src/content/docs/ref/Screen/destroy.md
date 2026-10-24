@@ -1,6 +1,6 @@
 ---
-title: 'screen:destroy'
-description: 'Removes the screen.'
+title: "screen:destroy"
+description: "Removes the screen."
 ---
 
 Part of [`Screen`](/ref/Screen/).

@@ -1,6 +1,6 @@
 ---
-title: 'DataView type'
-description: 'An attached JSON record/list, with tracked nested writes and generalized iteration'
+title: "DataView type"
+description: "An attached JSON record/list, with tracked nested writes and generalized iteration"
 ---
 
 An attached JSON record/list, with tracked nested writes and generalized iteration. Runtime userdata: use data.copy for ordinary table operations. Roots use string keys; nested lists use contiguous indices starting at 1. Assignment validates the entire value. Hook views expire after their callback batch finishes.

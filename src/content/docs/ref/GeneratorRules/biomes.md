@@ -1,5 +1,5 @@
 ---
-title: 'generatorRules.biomes'
+title: "generatorRules.biomes"
 description: '{ "desert", when = field }: the first that holds names the column''s biome; one with no when is for the rest.'
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: 'playerUi.dialog'
+title: "playerUi.dialog"
 description: 'A screen of boxes, words and pictures (see "Dialogs"): a ui.kit.window{}, or a function that returns one and is drawn again after every click'
 ---
 
@@ -13,9 +13,9 @@ A screen of boxes, words and pictures (see "Dialogs"): a `ui.kit.window{}`, or a
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `view` | `DialogNode \| () -> DialogNode` | yes |
+| Name   | Type                             | Required |
+| ------ | -------------------------------- | -------- |
+| `view` | `DialogNode \| () -> DialogNode` | yes      |
 
 ## Returns
 

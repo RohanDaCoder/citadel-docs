@@ -1,6 +1,6 @@
 ---
-title: 'menu:destroy'
-description: 'Takes it down and forgets its callbacks'
+title: "menu:destroy"
+description: "Takes it down and forgets its callbacks"
 ---
 
 Part of [`Menu`](/ref/Menu/).

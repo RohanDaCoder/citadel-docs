@@ -1,5 +1,5 @@
 ---
-title: 'hudPart.color'
+title: "hudPart.color"
 description: 'A box''s colour, a picture''s tint, a label''s ink; reads back as "#rrggbb".'
 ---
 

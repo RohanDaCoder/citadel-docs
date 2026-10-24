@@ -1,6 +1,6 @@
 ---
-title: 'material.burns'
-description: 'Whether the jar''s Material burns.'
+title: "material.burns"
+description: "Whether the jar's Material burns."
 ---
 
 Part of [`material`](/ref/Material/).

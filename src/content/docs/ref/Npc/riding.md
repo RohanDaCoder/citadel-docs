@@ -1,6 +1,6 @@
 ---
-title: 'npc.riding'
-description: 'Whether it sits in a seat; live.'
+title: "npc.riding"
+description: "Whether it sits in a seat; live."
 ---
 
 Part of [`npc`](/ref/Npc/).

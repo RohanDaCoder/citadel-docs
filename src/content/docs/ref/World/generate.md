@@ -1,6 +1,6 @@
 ---
-title: 'world.generate'
-description: 'Declares this world: the engine makes each chunk from the rules, on every core, and no script runs for a chunk.'
+title: "world.generate"
+description: "Declares this world: the engine makes each chunk from the rules, on every core, and no script runs for a chunk."
 ---
 
 Part of [`world`](/ref/World/).
@@ -13,9 +13,9 @@ Declares this world: the engine makes each chunk from the rules, on every core, 
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `rules` | [`GeneratorRules`](/ref/GeneratorRules/) | yes |
+| Name    | Type                                     | Required |
+| ------- | ---------------------------------------- | -------- |
+| `rules` | [`GeneratorRules`](/ref/GeneratorRules/) | yes      |
 
 ## Returns
 

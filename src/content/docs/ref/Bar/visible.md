@@ -1,6 +1,6 @@
 ---
-title: 'bar.visible'
-description: 'Whether players see the bar; false takes it off their screens, true or nil shows it again.'
+title: "bar.visible"
+description: "Whether players see the bar; false takes it off their screens, true or nil shows it again."
 ---
 
 Part of [`bar`](/ref/Bar/).
@@ -13,5 +13,5 @@ Whether players see the bar; false takes it off their screens, true or nil shows
 
 ## Used in
 
-> "bar.title, bar.progress, bar.color, bar.visible   -- live; progress 0..1" — [HUD](/ui/ui-basics/)
-> "bar.visible = false   -- off every screen; true or nil shows it again" — [HUD](/ui/ui-basics/)
+> "bar.title, bar.progress, bar.color, bar.visible -- live; progress 0..1" — [HUD](/ui/ui-basics/)
+> "bar.visible = false -- off every screen; true or nil shows it again" — [HUD](/ui/ui-basics/)

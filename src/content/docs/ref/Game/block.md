@@ -1,6 +1,6 @@
 ---
-title: 'game.block'
-description: 'Returns one block in this version''s numbers, or nil for a name this game has no word for.'
+title: "game.block"
+description: "Returns one block in this version's numbers, or nil for a name this game has no word for."
 ---
 
 Part of [`game`](/ref/Game/).
@@ -13,9 +13,9 @@ Returns one block in this version's numbers, or nil for a name this game has no 
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `name` | `string` | yes |
+| Name   | Type     | Required |
+| ------ | -------- | -------- |
+| `name` | `string` | yes      |
 
 ## Returns
 

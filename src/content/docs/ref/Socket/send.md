@@ -1,6 +1,6 @@
 ---
-title: 'socket:send'
-description: 'True while the connection is up'
+title: "socket:send"
+description: "True while the connection is up"
 ---
 
 Part of [`Socket`](/ref/Socket/).
@@ -13,9 +13,9 @@ True while the connection is up. Terminal receive-queue overflow; nil otherwise.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `text` | `string` | yes |
+| Name   | Type     | Required |
+| ------ | -------- | -------- |
+| `text` | `string` | yes      |
 
 ## Returns
 

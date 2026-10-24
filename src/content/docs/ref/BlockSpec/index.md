@@ -1,43 +1,43 @@
 ---
-title: 'BlockSpec type'
-description: 'What a definition says a block is'
+title: "BlockSpec type"
+description: "What a definition says a block is"
 ---
 
-What a definition says a block *is*. Every hook takes `base` as its **last** argument: call it and you extended what is under you, leave it out and you replaced it. `base` is a decision rather than a reentrant call — its effects land when your hook returns, and calling it twice happens once.
+What a definition says a block _is_. Every hook takes `base` as its **last** argument: call it and you extended what is under you, leave it out and you replaced it. `base` is a decision rather than a reentrant call — its effects land when your hook returns, and calling it twice happens once.
 
 ## Functions
 
-| Call | Purpose |
-| --- | --- |
-| [`on_use`](/ref/BlockSpec/on_use/) | The hooks. Writing one is what asks for it — there is no flag beside `on_random_tick` saying the random pass may land here. |
-| [`on_break`](/ref/BlockSpec/on_break/) | Something broke it. Answers "none", "table" or a drops list; fails closed to the definition's `drops`. |
-| [`on_step`](/ref/BlockSpec/on_step/) | A body is standing on it; `body` is `{ id, kind }`. |
-| [`on_tick`](/ref/BlockSpec/on_tick/) | A scheduled tick this block asked for came due. |
-| [`on_random_tick`](/ref/BlockSpec/on_random_tick/) | The random pass landed on it. Not the same thing as `on_tick`, which is why it has the longer name. |
-| [`on_place`](/ref/BlockSpec/on_place/) | A player put it down; `block.data` is empty then, ready to be filled. |
-| [`on_neighbour`](/ref/BlockSpec/on_neighbour/) | A neighbour changed; `from` is its position and `announced` the block name the notifier announced itself as. |
-| [`on_trigger`](/ref/BlockSpec/on_trigger/) | It was lit, blasted or burnt; `cause` is "ignite", "explosion" or "fire". |
-| [`on_power`](/ref/BlockSpec/on_power/) | A redstone signal started (`powered` is true) or stopped reaching it. Called once for each, not for every change beside it. |
-| [`on_added`](/ref/BlockSpec/on_added/) | It has just been stored, whatever stored it. |
-| [`on_removed`](/ref/BlockSpec/on_removed/) | It has just gone from the world. |
+| Call                                               | Purpose                                                                                                                     |
+| -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| [`on_use`](/ref/BlockSpec/on_use/)                 | The hooks. Writing one is what asks for it — there is no flag beside `on_random_tick` saying the random pass may land here. |
+| [`on_break`](/ref/BlockSpec/on_break/)             | Something broke it. Answers "none", "table" or a drops list; fails closed to the definition's `drops`.                      |
+| [`on_step`](/ref/BlockSpec/on_step/)               | A body is standing on it; `body` is `{ id, kind }`.                                                                         |
+| [`on_tick`](/ref/BlockSpec/on_tick/)               | A scheduled tick this block asked for came due.                                                                             |
+| [`on_random_tick`](/ref/BlockSpec/on_random_tick/) | The random pass landed on it. Not the same thing as `on_tick`, which is why it has the longer name.                         |
+| [`on_place`](/ref/BlockSpec/on_place/)             | A player put it down; `block.data` is empty then, ready to be filled.                                                       |
+| [`on_neighbour`](/ref/BlockSpec/on_neighbour/)     | A neighbour changed; `from` is its position and `announced` the block name the notifier announced itself as.                |
+| [`on_trigger`](/ref/BlockSpec/on_trigger/)         | It was lit, blasted or burnt; `cause` is "ignite", "explosion" or "fire".                                                   |
+| [`on_power`](/ref/BlockSpec/on_power/)             | A redstone signal started (`powered` is true) or stopped reaching it. Called once for each, not for every change beside it. |
+| [`on_added`](/ref/BlockSpec/on_added/)             | It has just been stored, whatever stored it.                                                                                |
+| [`on_removed`](/ref/BlockSpec/on_removed/)         | It has just gone from the world.                                                                                            |
 
 ## Fields
 
-| Field | Purpose |
-| --- | --- |
-| [`blockSpec.name: string`](/ref/BlockSpec/name/) | Without a namespace. The pack's own is put in front of it, and a colon here is refused: a pack cannot write another pack's name. |
-| [`blockSpec.looks: (string \| { string })?`](/ref/BlockSpec/looks/) | A block state the client already draws, because a client has never heard of this pack. One name, or one per state in state order. `\|` takes the first this version has: "crimson_planks\|nether_brick". |
-| [`blockSpec.hardness: number ?`](/ref/BlockSpec/hardness/) | Seconds-scale, as vanilla's hardness is; below zero is unbreakable. |
-| [`blockSpec.resistance: number ?`](/ref/BlockSpec/resistance/) | What an explosion has to chew through. |
-| [`blockSpec.material: { solid: boolean ?, covers: boolean ?, firm: boolean ?, liquid: boolean ?, burns: boolean ?, }?`](/ref/BlockSpec/material/) | The jar's Material as five questions: solid, covers (grass under it dies), firm (snow and ice need it), liquid, burns. |
-| [`blockSpec.opacity: number ?`](/ref/BlockSpec/opacity/) | What a step through it takes off the light; 15 is an opaque cube. |
-| [`blockSpec.light: number ?`](/ref/BlockSpec/light/) | What it gives off, 0 to 15. |
-| [`blockSpec.tick_every: number ?`](/ref/BlockSpec/tick_every/) | Seconds between `block:schedule()` and `on_tick`; 0.5 unless you say. |
-| [`blockSpec.drops: (Drops \| false)?`](/ref/BlockSpec/drops/) | What a break leaves — and, because `on_break` fails closed, what it leaves when this pack is too slow to answer. Never the looks block's. false is nothing, as "none" is. |
-| [`blockSpec.item: (ItemTable \| false)?`](/ref/BlockSpec/item/) | The block in a hand. Its `id` is set to the block's name, so placing it puts this block down, and a break leaves it unless `drops` says. false is no item, also for a block with a texture. |
-| [`blockSpec.texture: (Faces \| { Faces })?`](/ref/BlockSpec/texture/) | Its own picture on 1.21.4+: one for every state, or one per state. |
-| [`blockSpec.model: (Model \| { Model })?`](/ref/BlockSpec/model/) | Its own shape on 1.21.4+, in place of `texture`: a model that stays inside the block, one for every state or one per state. The block collides as its `looks` block does: "rail" is walked through. |
-| [`blockSpec.facing: boolean ?`](/ref/BlockSpec/facing/) | Turns its front to whoever places it; `block.facing` reads and turns it. |
-| [`blockSpec.power: (number \| { [string]: number } \| { number \| { [string]: number } })?`](/ref/BlockSpec/power/) | What it gives a redstone circuit, 0 or 15: one number for every face, a table keyed by face (the names `texture` takes), or a list of either with one entry per state. It is the power a block of redstone gives. |
-| [`blockSpec.label: Text ?`](/ref/BlockSpec/label/) | The name of the item a textured block comes with. |
-| [`blockSpec.extends: (BlockRef \| { [string]: any } \| { any })?`](/ref/BlockSpec/extends/) | A handle, a game block's name, a plain table of fields and hooks, or a list of those **innermost first**. There is no class and no metatable: fields merge and hooks wrap. |
+| Field                                                                                                                                             | Purpose                                                                                                                                                                                                           |
+| ------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`blockSpec.name: string`](/ref/BlockSpec/name/)                                                                                                  | Without a namespace. The pack's own is put in front of it, and a colon here is refused: a pack cannot write another pack's name.                                                                                  |
+| [`blockSpec.looks: (string \| { string })?`](/ref/BlockSpec/looks/)                                                                               | A block state the client already draws, because a client has never heard of this pack. One name, or one per state in state order. `\|` takes the first this version has: "crimson_planks\|nether_brick".          |
+| [`blockSpec.hardness: number ?`](/ref/BlockSpec/hardness/)                                                                                        | Seconds-scale, as vanilla's hardness is; below zero is unbreakable.                                                                                                                                               |
+| [`blockSpec.resistance: number ?`](/ref/BlockSpec/resistance/)                                                                                    | What an explosion has to chew through.                                                                                                                                                                            |
+| [`blockSpec.material: { solid: boolean ?, covers: boolean ?, firm: boolean ?, liquid: boolean ?, burns: boolean ?, }?`](/ref/BlockSpec/material/) | The jar's Material as five questions: solid, covers (grass under it dies), firm (snow and ice need it), liquid, burns.                                                                                            |
+| [`blockSpec.opacity: number ?`](/ref/BlockSpec/opacity/)                                                                                          | What a step through it takes off the light; 15 is an opaque cube.                                                                                                                                                 |
+| [`blockSpec.light: number ?`](/ref/BlockSpec/light/)                                                                                              | What it gives off, 0 to 15.                                                                                                                                                                                       |
+| [`blockSpec.tick_every: number ?`](/ref/BlockSpec/tick_every/)                                                                                    | Seconds between `block:schedule()` and `on_tick`; 0.5 unless you say.                                                                                                                                             |
+| [`blockSpec.drops: (Drops \| false)?`](/ref/BlockSpec/drops/)                                                                                     | What a break leaves — and, because `on_break` fails closed, what it leaves when this pack is too slow to answer. Never the looks block's. false is nothing, as "none" is.                                         |
+| [`blockSpec.item: (ItemTable \| false)?`](/ref/BlockSpec/item/)                                                                                   | The block in a hand. Its `id` is set to the block's name, so placing it puts this block down, and a break leaves it unless `drops` says. false is no item, also for a block with a texture.                       |
+| [`blockSpec.texture: (Faces \| { Faces })?`](/ref/BlockSpec/texture/)                                                                             | Its own picture on 1.21.4+: one for every state, or one per state.                                                                                                                                                |
+| [`blockSpec.model: (Model \| { Model })?`](/ref/BlockSpec/model/)                                                                                 | Its own shape on 1.21.4+, in place of `texture`: a model that stays inside the block, one for every state or one per state. The block collides as its `looks` block does: "rail" is walked through.               |
+| [`blockSpec.facing: boolean ?`](/ref/BlockSpec/facing/)                                                                                           | Turns its front to whoever places it; `block.facing` reads and turns it.                                                                                                                                          |
+| [`blockSpec.power: (number \| { [string]: number } \| { number \| { [string]: number } })?`](/ref/BlockSpec/power/)                               | What it gives a redstone circuit, 0 or 15: one number for every face, a table keyed by face (the names `texture` takes), or a list of either with one entry per state. It is the power a block of redstone gives. |
+| [`blockSpec.label: Text ?`](/ref/BlockSpec/label/)                                                                                                | The name of the item a textured block comes with.                                                                                                                                                                 |
+| [`blockSpec.extends: (BlockRef \| { [string]: any } \| { any })?`](/ref/BlockSpec/extends/)                                                       | A handle, a game block's name, a plain table of fields and hooks, or a list of those **innermost first**. There is no class and no metatable: fields merge and hooks wrap.                                        |

@@ -1,6 +1,6 @@
 ---
-title: 'entityHandle.paint'
-description: 'Every occupant by seat number, including NPCs; nil means empty'
+title: "entityHandle.paint"
+description: "Every occupant by seat number, including NPCs; nil means empty"
 ---
 
 Part of [`entityHandle`](/ref/EntityHandle/).

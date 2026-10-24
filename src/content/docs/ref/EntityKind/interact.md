@@ -1,6 +1,6 @@
 ---
-title: 'entityKind.interact'
-description: 'Whether a player''s right click on it has the game''s effect (milk, a saddle)'
+title: "entityKind.interact"
+description: "Whether a player's right click on it has the game's effect (milk, a saddle)"
 ---
 
 Part of [`entityKind`](/ref/EntityKind/).

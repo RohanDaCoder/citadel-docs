@@ -1,6 +1,6 @@
 ---
-title: 'player:can_see'
-description: 'True unless other is not visible or is hidden from this player.'
+title: "player:can_see"
+description: "True unless other is not visible or is hidden from this player."
 ---
 
 Part of [`Player`](/ref/Player/).
@@ -13,9 +13,9 @@ True unless `other` is not visible or is hidden from this player.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `other` | [`Player`](/ref/Player/) | yes |
+| Name    | Type                     | Required |
+| ------- | ------------------------ | -------- |
+| `other` | [`Player`](/ref/Player/) | yes      |
 
 ## Returns
 
@@ -23,4 +23,4 @@ True unless `other` is not visible or is hidden from this player.
 
 ## Used in
 
-> "player:can_see(other)     -- true unless `other` is not visible or is hidden from this player" — [Players](/players/player-lifecycle/)
+> "player:can_see(other) -- true unless `other` is not visible or is hidden from this player" — [Players](/players/player-lifecycle/)

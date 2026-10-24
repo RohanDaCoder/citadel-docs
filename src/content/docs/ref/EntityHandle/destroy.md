@@ -1,6 +1,6 @@
 ---
-title: 'entityHandle:destroy'
-description: 'entityHandle:destroy — method.'
+title: "entityHandle:destroy"
+description: "entityHandle:destroy — method."
 ---
 
 Part of [`EntityHandle`](/ref/EntityHandle/).

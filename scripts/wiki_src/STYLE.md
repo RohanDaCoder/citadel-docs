@@ -35,8 +35,8 @@ tags: [<topic slugs>]
    core concept steps, API tables, examples, edge cases/gotchas, see also.
 3. **Every H2 must have at least a 1-2 sentence lead** before code/bullets. You can
    compose these leads from the source's own statements.
-4. **Keep ALL code blocks** from the source. Ensure each has a ```luau (or
-   ```yaml / ```sh) fence. Preserve comments inside code — they carry API facts.
+4. **Keep ALL code blocks** from the source. Ensure each has a `luau (or
+`yaml / ```sh) fence. Preserve comments inside code — they carry API facts.
    If a code block is an incomplete fragment, keep it but make sure surrounding
    prose explains it.
 5. **Convert enumerations to tables** when the source lists variants/defaults/types.

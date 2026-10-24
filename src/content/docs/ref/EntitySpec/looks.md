@@ -1,6 +1,6 @@
 ---
-title: 'entitySpec.looks'
-description: 'A shape the client draws, or a model from models.new.'
+title: "entitySpec.looks"
+description: "A shape the client draws, or a model from models.new."
 ---
 
 Part of [`entitySpec`](/ref/EntitySpec/).

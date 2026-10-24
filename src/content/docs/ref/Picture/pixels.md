@@ -1,6 +1,6 @@
 ---
-title: 'picture:pixels'
-description: 'Writes raw RGB bytes (a buffer or a string), three a pixel, row by row, into a w by h box.'
+title: "picture:pixels"
+description: "Writes raw RGB bytes (a buffer or a string), three a pixel, row by row, into a w by h box."
 ---
 
 Part of [`Picture`](/ref/Picture/).
@@ -13,10 +13,10 @@ Writes raw RGB bytes (a buffer or a string), three a pixel, row by row, into a w
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `x` | `number` | yes |
-| `y` | `number` | yes |
-| `w` | `number` | yes |
-| `h` | `number` | yes |
-| `data` | `buffer \| string` | yes |
+| Name   | Type               | Required |
+| ------ | ------------------ | -------- |
+| `x`    | `number`           | yes      |
+| `y`    | `number`           | yes      |
+| `w`    | `number`           | yes      |
+| `h`    | `number`           | yes      |
+| `data` | `buffer \| string` | yes      |

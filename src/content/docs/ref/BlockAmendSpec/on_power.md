@@ -1,6 +1,6 @@
 ---
-title: 'blockAmendSpec.on_power'
-description: 'A redstone signal started (powered is true) or stopped reaching it'
+title: "blockAmendSpec.on_power"
+description: "A redstone signal started (powered is true) or stopped reaching it"
 ---
 
 Part of [`blockAmendSpec`](/ref/BlockAmendSpec/).
@@ -13,9 +13,9 @@ A redstone signal started (`powered` is true) or stopped reaching it. Called onc
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(block` | `BlockAt , powered: boolean , base: (... any ) -> any ) -> ()` | yes |
+| Name     | Type                                                           | Required |
+| -------- | -------------------------------------------------------------- | -------- |
+| `(block` | `BlockAt , powered: boolean , base: (... any ) -> any ) -> ()` | yes      |
 
 ## Returns
 

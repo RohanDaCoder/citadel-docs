@@ -1,6 +1,6 @@
 ---
-title: 'entityHandle.flying'
-description: 'Intent, a living body with can_fly only: true flies (no gravity; forward moves it along its look, pitch included), false falls and walks'
+title: "entityHandle.flying"
+description: "Intent, a living body with can_fly only: true flies (no gravity; forward moves it along its look, pitch included), false falls and walks"
 ---
 
 Part of [`entityHandle`](/ref/EntityHandle/).

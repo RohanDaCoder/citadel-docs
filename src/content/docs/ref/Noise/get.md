@@ -1,6 +1,6 @@
 ---
-title: 'noise:get'
-description: 'Returns about -1..1 at a point: get(x, z) for a height map, get(x, y, z) for caves and overhangs.'
+title: "noise:get"
+description: "Returns about -1..1 at a point: get(x, z) for a height map, get(x, y, z) for caves and overhangs."
 ---
 
 Part of [`Noise`](/ref/Noise/).
@@ -13,11 +13,11 @@ Returns about -1..1 at a point: `get(x, z)` for a height map, `get(x, y, z)` for
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `x` | `number` | yes |
-| `y_or_z` | `number` | yes |
-| `z` | `number` | no |
+| Name     | Type     | Required |
+| -------- | -------- | -------- |
+| `x`      | `number` | yes      |
+| `y_or_z` | `number` | yes      |
+| `z`      | `number` | no       |
 
 ## Returns
 

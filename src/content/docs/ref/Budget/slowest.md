@@ -1,6 +1,6 @@
 ---
-title: 'budget.slowest'
-description: 'The slowest single callback so far, by short hook name.'
+title: "budget.slowest"
+description: "The slowest single callback so far, by short hook name."
 ---
 
 Part of [`budget`](/ref/Budget/).

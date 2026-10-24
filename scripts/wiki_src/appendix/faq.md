@@ -5,6 +5,7 @@ order: 3
 description: The questions that come up when a pack misbehaves — load failures, silent reloads, mobs that do not spawn, commands that vanish, stores that error, and what the log is telling you.
 tags: [faq, troubleshooting, errors]
 ---
+
 # FAQ and troubleshooting
 
 > **In short:** almost every Citadel surprise is one of these: a budget was

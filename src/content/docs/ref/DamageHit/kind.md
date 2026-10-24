@@ -1,5 +1,5 @@
 ---
-title: 'damageHit.kind'
+title: "damageHit.kind"
 description: 'The kind''s name ("Skeleton") when a mob did it.'
 ---
 

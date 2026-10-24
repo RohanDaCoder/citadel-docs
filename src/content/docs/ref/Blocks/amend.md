@@ -1,6 +1,6 @@
 ---
-title: 'blocks.amend'
-description: 'Only the game''s own blocks, never another pack''s.'
+title: "blocks.amend"
+description: "Only the game's own blocks, never another pack's."
 ---
 
 Part of [`blocks`](/ref/Blocks/).
@@ -13,10 +13,10 @@ Only the game's own blocks, never another pack's.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `block` | `string` | yes |
-| `hooks` | [`BlockAmendSpec`](/ref/BlockAmendSpec/) | yes |
+| Name    | Type                                     | Required |
+| ------- | ---------------------------------------- | -------- |
+| `block` | `string`                                 | yes      |
+| `hooks` | [`BlockAmendSpec`](/ref/BlockAmendSpec/) | yes      |
 
 ## Used in
 

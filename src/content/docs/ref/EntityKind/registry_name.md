@@ -1,5 +1,5 @@
 ---
-title: 'entityKind.registry_name'
+title: "entityKind.registry_name"
 description: 'This version''s own registry spelling: "Cow"'
 ---
 

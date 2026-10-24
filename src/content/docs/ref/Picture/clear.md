@@ -1,6 +1,6 @@
 ---
-title: 'picture:clear'
-description: 'Its width in pixels: 128 for each map across'
+title: "picture:clear"
+description: "Its width in pixels: 128 for each map across"
 ---
 
 Part of [`Picture`](/ref/Picture/).
@@ -13,6 +13,6 @@ Its width in pixels: 128 for each map across. Its height in pixels: 128 for each
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `color` | [`Ink`](/ref/Ink/) | no |
+| Name    | Type               | Required |
+| ------- | ------------------ | -------- |
+| `color` | [`Ink`](/ref/Ink/) | no       |

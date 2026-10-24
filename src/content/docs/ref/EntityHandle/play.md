@@ -1,6 +1,6 @@
 ---
-title: 'entityHandle:play'
-description: 'Model size: reads vec3; write a positive number or equal-axis vec3'
+title: "entityHandle:play"
+description: "Model size: reads vec3; write a positive number or equal-axis vec3"
 ---
 
 Part of [`EntityHandle`](/ref/EntityHandle/).
@@ -13,7 +13,7 @@ Model size: reads vec3; write a positive number or equal-axis vec3. Nil without 
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `animation` | `string` | yes |
-| `opts` | `{ speed: number ? }` | no |
+| Name        | Type                  | Required |
+| ----------- | --------------------- | -------- |
+| `animation` | `string`              | yes      |
+| `opts`      | `{ speed: number ? }` | no       |

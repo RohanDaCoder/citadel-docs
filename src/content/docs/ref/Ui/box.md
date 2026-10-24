@@ -1,5 +1,5 @@
 ---
-title: 'ui.box'
+title: "ui.box"
 description: 'The pieces of a layout (see "Layouts")'
 ---
 
@@ -13,9 +13,9 @@ The pieces of a layout (see "Layouts"). Sizes are pixels of the game's own HUD; 
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `opts` | `{ id: string ?, width: number , height: number , color: Ink ?, radius: number ? }` | yes |
+| Name   | Type                                                                                | Required |
+| ------ | ----------------------------------------------------------------------------------- | -------- |
+| `opts` | `{ id: string ?, width: number , height: number , color: Ink ?, radius: number ? }` | yes      |
 
 ## Returns
 
@@ -23,5 +23,5 @@ The pieces of a layout (see "Layouts"). Sizes are pixels of the game's own HUD; 
 
 ## Used in
 
-> "ui.box{ width = 82, height = 9, color = "#1c1410", radius = 2 },   -- the frame" — [Layouts](/ui/screens/)
+> "ui.box{ width = 82, height = 9, color = "#1c1410", radius = 2 }, -- the frame" — [Layouts](/ui/screens/)
 > "ui.box{ id = "hp", width = 80, height = 7, color = "red", radius = 1 }," — [Layouts](/ui/screens/)

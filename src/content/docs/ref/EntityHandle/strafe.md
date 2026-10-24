@@ -1,6 +1,6 @@
 ---
-title: 'entityHandle.strafe'
-description: 'Intent: 1 left, -1 right'
+title: "entityHandle.strafe"
+description: "Intent: 1 left, -1 right"
 ---
 
 Part of [`entityHandle`](/ref/EntityHandle/).

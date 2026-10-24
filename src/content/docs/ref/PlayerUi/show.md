@@ -1,6 +1,6 @@
 ---
-title: 'playerUi.show'
-description: 'Puts a layout on this player''s screen'
+title: "playerUi.show"
+description: "Puts a layout on this player's screen"
 ---
 
 Part of [`playerUi`](/ref/PlayerUi/).
@@ -13,9 +13,9 @@ Puts a layout on this player's screen. A client older than 1.21.4 (`player:suppo
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `layout` | [`Layout`](/ref/Layout/) | yes |
+| Name     | Type                     | Required |
+| -------- | ------------------------ | -------- |
+| `layout` | [`Layout`](/ref/Layout/) | yes      |
 
 ## Returns
 

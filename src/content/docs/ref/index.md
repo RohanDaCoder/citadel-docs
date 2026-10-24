@@ -1,6 +1,6 @@
 ---
-title: 'API reference'
-description: 'Every Citadel global, type and member — 29 globals in five domains, 141 types, 674 documented members, each with signature, parameters, returns and usage.'
+title: "API reference"
+description: "Every Citadel global, type and member — 29 globals in five domains, 141 types, 674 documented members, each with signature, parameters, returns and usage."
 ---
 
 Every global, type and call in Citadel, one page each: the signature,
@@ -9,57 +9,57 @@ or browse the types.
 
 ## World & game
 
-| Global | What it is |
-| --- | --- |
-| [`world`](/ref/World/) | A room's blocks, entities, displays, screens and time — the `world` global, or `room.world`. Start here for terrain, block writes, entities in the world, and world rules. |
-| [`game`](/ref/Game/) | The game version's own facts — blocks, items, entity kinds, terrain — and the pack's definitions of its own blocks and entities. |
-| [`models`](/ref/models/) | The models this pack makes, for `world.display{ kind = "model" }`. |
-| [`parts`](/ref/parts/) | Named parts of a stored world and the generators that build them. |
-| [`routes`](/ref/routes/) | How players get between the worlds of the group. |
-| [`noise`](/ref/noise/) | Smooth random numbers for a generator, made by the engine. |
-| [`fields`](/ref/fields/) | Recipes for numbers over the world, for `world.generate`. |
-| [`data`](/ref/data/) | Helpers for persistent data views — `data.copy`, `data.insert`, `data.remove`. |
+| Global                   | What it is                                                                                                                                                                 |
+| ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`world`](/ref/World/)   | A room's blocks, entities, displays, screens and time — the `world` global, or `room.world`. Start here for terrain, block writes, entities in the world, and world rules. |
+| [`game`](/ref/Game/)     | The game version's own facts — blocks, items, entity kinds, terrain — and the pack's definitions of its own blocks and entities.                                           |
+| [`models`](/ref/models/) | The models this pack makes, for `world.display{ kind = "model" }`.                                                                                                         |
+| [`parts`](/ref/parts/)   | Named parts of a stored world and the generators that build them.                                                                                                          |
+| [`routes`](/ref/routes/) | How players get between the worlds of the group.                                                                                                                           |
+| [`noise`](/ref/noise/)   | Smooth random numbers for a generator, made by the engine.                                                                                                                 |
+| [`fields`](/ref/fields/) | Recipes for numbers over the world, for `world.generate`.                                                                                                                  |
+| [`data`](/ref/data/)     | Helpers for persistent data views — `data.copy`, `data.insert`, `data.remove`.                                                                                             |
 
 ## Players
 
-| Global | What it is |
-| --- | --- |
+| Global                     | What it is                                                                                                                           |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
 | [`players`](/ref/Players/) | Everyone in the room: joins and leaves, clicks and chat, inventory, visibility and health — the `players` global, or `room.players`. |
-| [`camera`](/ref/camera/) | Camera paths and modes per player. |
+| [`camera`](/ref/camera/)   | Camera paths and modes per player.                                                                                                   |
 
 ## Interface & media
 
-| Global | What it is |
-| --- | --- |
-| [`ui`](/ref/Ui/) | What the players see: titles, chat lines, sidebars, boss bars, screens, menus and dialogs — the `ui` global, or `room.ui`. |
-| [`fx`](/ref/Fx/) | Particles: `fx.particle` with count, spread, velocity and dust colour. |
-| [`sound`](/ref/Sound/) | Sound by name from the resource pack, or streamed through Simple Voice Chat. |
-| [`message`](/ref/message/) | A chat line to everyone in the main room. |
-| [`tween`](/ref/tween/) | Any live field eased over time — numbers, vec3 and color values. |
-| [`color`](/ref/color/) | Colour helpers: hsv, gradients and nearest-map-colour. |
-| [`colors`](/ref/colors/) | The named colour table: Minecraft's sixteen and more. |
+| Global                     | What it is                                                                                                                 |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| [`ui`](/ref/Ui/)           | What the players see: titles, chat lines, sidebars, boss bars, screens, menus and dialogs — the `ui` global, or `room.ui`. |
+| [`fx`](/ref/Fx/)           | Particles: `fx.particle` with count, spread, velocity and dust colour.                                                     |
+| [`sound`](/ref/Sound/)     | Sound by name from the resource pack, or streamed through Simple Voice Chat.                                               |
+| [`message`](/ref/message/) | A chat line to everyone in the main room.                                                                                  |
+| [`tween`](/ref/tween/)     | Any live field eased over time — numbers, vec3 and color values.                                                           |
+| [`color`](/ref/color/)     | Colour helpers: hsv, gradients and nearest-map-colour.                                                                     |
+| [`colors`](/ref/colors/)   | The named colour table: Minecraft's sixteen and more.                                                                      |
 
 ## Systems
 
-| Global | What it is |
-| --- | --- |
-| [`commands`](/ref/Commands/) | `commands.add` with typed arguments, tab-completion, permissions and aliases. |
-| [`time`](/ref/time/) | Clocks for a pack: a callback every tick, one every few seconds, and the seconds since the pack started. |
-| [`task`](/ref/task/) | The scheduler: `spawn`, `delay`, `defer`, `wait` and `cancel`. |
-| [`rooms`](/ref/rooms/) | Making and destroying rooms — isolated worlds with their own tables. |
-| [`storage`](/ref/storage/) | A per-pack JSON file that survives a restart. |
-| [`stores`](/ref/stores/) | The experience's shared store: versioned facts, blobs and leases across every server. |
-| [`http`](/ref/http/) | HTTP requests from the pack, with caching. |
-| [`network`](/ref/network/) | WebSockets out and listening sockets, for multiplayer-scale IO. |
-| [`shop`](/ref/shop/) | Minefort's Gem shop: prompts, ownership and paid delivery. |
-| [`hub`](/ref/hub/) | The Minefort hub: servers, experiences and portals. |
+| Global                       | What it is                                                                                               |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------- |
+| [`commands`](/ref/Commands/) | `commands.add` with typed arguments, tab-completion, permissions and aliases.                            |
+| [`time`](/ref/time/)         | Clocks for a pack: a callback every tick, one every few seconds, and the seconds since the pack started. |
+| [`task`](/ref/task/)         | The scheduler: `spawn`, `delay`, `defer`, `wait` and `cancel`.                                           |
+| [`rooms`](/ref/rooms/)       | Making and destroying rooms — isolated worlds with their own tables.                                     |
+| [`storage`](/ref/storage/)   | A per-pack JSON file that survives a restart.                                                            |
+| [`stores`](/ref/stores/)     | The experience's shared store: versioned facts, blobs and leases across every server.                    |
+| [`http`](/ref/http/)         | HTTP requests from the pack, with caching.                                                               |
+| [`network`](/ref/network/)   | WebSockets out and listening sockets, for multiplayer-scale IO.                                          |
+| [`shop`](/ref/shop/)         | Minefort's Gem shop: prompts, ownership and paid delivery.                                               |
+| [`hub`](/ref/hub/)           | The Minefort hub: servers, experiences and portals.                                                      |
 
 ## Engine
 
-| Global | What it is |
-| --- | --- |
-| [`citadel`](/ref/citadel/) | The engine itself: the log, versions, environment and the tick budget. |
-| [`vec3`](/ref/vec3/) | Positions and directions with `x`, `y`, `z` — plus `lerp`, `distance` and friends. |
+| Global                     | What it is                                                                         |
+| -------------------------- | ---------------------------------------------------------------------------------- |
+| [`citadel`](/ref/citadel/) | The engine itself: the log, versions, environment and the tick budget.             |
+| [`vec3`](/ref/vec3/)       | Positions and directions with `x`, `y`, `z` — plus `lerp`, `distance` and friends. |
 
 ## Types A–Z
 

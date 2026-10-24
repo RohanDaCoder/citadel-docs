@@ -12,24 +12,28 @@ room.players.on_join(function(p) end)  -- fires after move_to as well
 print(player.room == room)    -- rooms compare by identity; `player.room` is nil while moving
 room:destroy()                -- when the last player left; players still in it keep the world
 ```
+
 - The global `players.on_join` fires on connect, in the main room. A room’s
-own fires on each move in. `players.on_leave` matches.
+  own fires on each move in. `players.on_leave` matches.
+
 ## Spawn points
+
 `spawn_point` is the position where a player arrives. `spawn` is never a
 position: it is the call `world.spawn` and the switch of an entity kind.
+
 - `citadel.yml` has `spawn_point: [x, y, z]` for the main room.
-`rooms.create { spawn_point = vec3(..) }` sets it for a new room.
+  `rooms.create { spawn_point = vec3(..) }` sets it for a new room.
 - A write to `world.spawn_point` or `room.spawn_point` changes where a player
-arrives: on a join, on a respawn, and on a move to the room. The clients in
-the room get the new compass target.
+  arrives: on a join, on a respawn, and on a move to the room. The clients in
+  the room get the new compass target.
 - The write is not stored. After a restart the room has the point of
-`citadel.yml` or of the stored world again.
+  `citadel.yml` or of the stored world again.
 - The write does not move the chunks that stay loaded, the spawn protection,
-or the area where no mob spawns by itself. Those stay at the first point.
+  or the area where no mob spawns by itself. Those stay at the first point.
 - `player.spawn_point` is the player’s own respawn point. A bed sets the same
-value where the game has beds. A point that a pack sets needs no bed. The
-engine keeps the block of the position: `vec3(20.2, 65, -7.9)` reads back as
-`vec3(20.5, 65, -7.5)`.
+  value where the game has beds. A point that a pack sets needs no bed. The
+  engine keeps the block of the position: `vec3(20.2, 65, -7.9)` reads back as
+  `vec3(20.5, 65, -7.5)`.
 - `player.spawn_point = nil` also removes a point that a bed set.
 - Manifest keys and `rooms.create` options are checked: an unknown key is
-an error naming the field and the accepted keys.
+  an error naming the field and the accepted keys.

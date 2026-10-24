@@ -1,6 +1,6 @@
 ---
-title: 'networkInstance.label'
-description: 'networkInstance.label — field.'
+title: "networkInstance.label"
+description: "networkInstance.label — field."
 ---
 
 Part of [`networkInstance`](/ref/NetworkInstance/).

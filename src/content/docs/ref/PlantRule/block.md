@@ -1,6 +1,6 @@
 ---
-title: 'plantRule.block'
-description: 'plantRule.block — field.'
+title: "plantRule.block"
+description: "plantRule.block — field."
 ---
 
 Part of [`plantRule`](/ref/PlantRule/).

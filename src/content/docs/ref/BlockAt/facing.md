@@ -1,5 +1,5 @@
 ---
-title: 'blockAt.facing'
+title: "blockAt.facing"
 description: 'A facing block''s front: "north", "south", "west", "east"; nil otherwise'
 ---
 

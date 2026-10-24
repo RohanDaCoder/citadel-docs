@@ -1,6 +1,6 @@
 ---
-title: 'entityHandle:settle'
-description: 'It stops being an entity and is a block again where it stands'
+title: "entityHandle:settle"
+description: "It stops being an entity and is a block again where it stands"
 ---
 
 Part of [`EntityHandle`](/ref/EntityHandle/).

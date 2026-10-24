@@ -1,5 +1,5 @@
 ---
-title: 'networkInstance.state'
+title: "networkInstance.state"
 description: '"starting", then "online", then "stopping".'
 ---
 

@@ -1,6 +1,6 @@
 ---
-title: 'players.on_join'
-description: 'Calls fn when a player arrives: on the globals when a client connects, on a room''s table each time a player moves into it.'
+title: "players.on_join"
+description: "Calls fn when a player arrives: on the globals when a client connects, on a room's table each time a player moves into it."
 ---
 
 Part of [`players`](/ref/Players/).
@@ -13,9 +13,9 @@ Calls `fn` when a player arrives: on the globals when a client connects, on a ro
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `fn` | `(player: Player ) -> ()` | yes |
+| Name | Type                      | Required |
+| ---- | ------------------------- | -------- |
+| `fn` | `(player: Player ) -> ()` | yes      |
 
 ## Returns
 

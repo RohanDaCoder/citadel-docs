@@ -1,6 +1,6 @@
 ---
-title: 'askCount.answered'
-description: 'Answers that arrived in time.'
+title: "askCount.answered"
+description: "Answers that arrived in time."
 ---
 
 Part of [`askCount`](/ref/AskCount/).

@@ -1,6 +1,6 @@
 ---
-title: 'picture:play'
-description: 'Plays a raw RGB video file from the pack at fps 0.5 to 20, the engine drawing each frame; returns the Video.'
+title: "picture:play"
+description: "Plays a raw RGB video file from the pack at fps 0.5 to 20, the engine drawing each frame; returns the Video."
 ---
 
 Part of [`Picture`](/ref/Picture/).
@@ -13,9 +13,9 @@ Plays a raw RGB video file from the pack at `fps` 0.5 to 20, the engine drawing 
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `opts` | `{ file: string , fps: number ?, loop: boolean ? }` | yes |
+| Name   | Type                                                | Required |
+| ------ | --------------------------------------------------- | -------- |
+| `opts` | `{ file: string , fps: number ?, loop: boolean ? }` | yes      |
 
 ## Returns
 

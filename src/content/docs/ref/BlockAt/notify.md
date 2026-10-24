@@ -1,6 +1,6 @@
 ---
-title: 'blockAt:notify'
-description: 'Tells the six neighbours this block changed.'
+title: "blockAt:notify"
+description: "Tells the six neighbours this block changed."
 ---
 
 Part of [`BlockAt`](/ref/BlockAt/).

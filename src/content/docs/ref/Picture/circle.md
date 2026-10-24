@@ -1,6 +1,6 @@
 ---
-title: 'picture:circle'
-description: 'Fills a circle of radius r pixels around (x, y).'
+title: "picture:circle"
+description: "Fills a circle of radius r pixels around (x, y)."
 ---
 
 Part of [`Picture`](/ref/Picture/).
@@ -13,9 +13,9 @@ Fills a circle of radius `r` pixels around (x, y).
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `x` | `number` | yes |
-| `y` | `number` | yes |
-| `r` | `number` | yes |
-| `color` | [`Ink`](/ref/Ink/) | yes |
+| Name    | Type               | Required |
+| ------- | ------------------ | -------- |
+| `x`     | `number`           | yes      |
+| `y`     | `number`           | yes      |
+| `r`     | `number`           | yes      |
+| `color` | [`Ink`](/ref/Ink/) | yes      |

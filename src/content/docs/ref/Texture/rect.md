@@ -1,6 +1,6 @@
 ---
-title: 'texture:rect'
-description: 'Fills a rectangle of pixels.'
+title: "texture:rect"
+description: "Fills a rectangle of pixels."
 ---
 
 Part of [`Texture`](/ref/Texture/).
@@ -13,10 +13,10 @@ Fills a rectangle of pixels.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `x` | `number` | yes |
-| `y` | `number` | yes |
-| `w` | `number` | yes |
-| `h` | `number` | yes |
-| `color` | [`Ink`](/ref/Ink/) | yes |
+| Name    | Type               | Required |
+| ------- | ------------------ | -------- |
+| `x`     | `number`           | yes      |
+| `y`     | `number`           | yes      |
+| `w`     | `number`           | yes      |
+| `h`     | `number`           | yes      |
+| `color` | [`Ink`](/ref/Ink/) | yes      |

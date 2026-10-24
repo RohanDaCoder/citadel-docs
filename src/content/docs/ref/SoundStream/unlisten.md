@@ -1,6 +1,6 @@
 ---
-title: 'soundStream:unlisten'
-description: 'soundStream:unlisten — method.'
+title: "soundStream:unlisten"
+description: "soundStream:unlisten — method."
 ---
 
 Part of [`SoundStream`](/ref/SoundStream/).
@@ -11,6 +11,6 @@ soundStream:unlisten(player: Player)
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `player` | [`Player`](/ref/Player/) | yes |
+| Name     | Type                     | Required |
+| -------- | ------------------------ | -------- |
+| `player` | [`Player`](/ref/Player/) | yes      |

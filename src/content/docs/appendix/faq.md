@@ -1,6 +1,6 @@
 ---
-title: 'FAQ and troubleshooting'
-description: 'The questions that come up when a pack misbehaves — load failures, silent reloads, mobs that do not spawn, commands that vanish, stores that error, and what the log is telling you.'
+title: "FAQ and troubleshooting"
+description: "The questions that come up when a pack misbehaves — load failures, silent reloads, mobs that do not spawn, commands that vanish, stores that error, and what the log is telling you."
 ---
 
 :::note[In short]

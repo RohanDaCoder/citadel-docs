@@ -1,6 +1,6 @@
 ---
-title: 'player:stop_sound'
-description: 'Where their view is from: the camera they look out of, or their eyes'
+title: "player:stop_sound"
+description: "Where their view is from: the camera they look out of, or their eyes"
 ---
 
 Part of [`Player`](/ref/Player/).
@@ -13,9 +13,9 @@ Where their view is from: the camera they look out of, or their eyes. One sound 
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `name` | `string` | no |
+| Name   | Type     | Required |
+| ------ | -------- | -------- |
+| `name` | `string` | no       |
 
 ## Used in
 

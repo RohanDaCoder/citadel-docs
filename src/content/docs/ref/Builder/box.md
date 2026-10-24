@@ -1,6 +1,6 @@
 ---
-title: 'builder:box'
-description: 'Inclusive corners, in any order, like chunk:fill.'
+title: "builder:box"
+description: "Inclusive corners, in any order, like chunk:fill."
 ---
 
 Part of [`Builder`](/ref/Builder/).
@@ -13,8 +13,8 @@ Inclusive corners, in any order, like `chunk:fill`.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `from` | [`Vec3`](/ref/Vec3/) | yes |
-| `to` | [`Vec3`](/ref/Vec3/) | yes |
-| `block` | `string` | yes |
+| Name    | Type                 | Required |
+| ------- | -------------------- | -------- |
+| `from`  | [`Vec3`](/ref/Vec3/) | yes      |
+| `to`    | [`Vec3`](/ref/Vec3/) | yes      |
+| `block` | `string`             | yes      |

@@ -1,6 +1,6 @@
 ---
-title: 'modelTexture:rect'
-description: 'Paints a rectangle w by h pixels from x, y.'
+title: "modelTexture:rect"
+description: "Paints a rectangle w by h pixels from x, y."
 ---
 
 Part of [`ModelTexture`](/ref/ModelTexture/).
@@ -13,10 +13,10 @@ Paints a rectangle `w` by `h` pixels from x, y.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `x` | `number` | yes |
-| `y` | `number` | yes |
-| `w` | `number` | yes |
-| `h` | `number` | yes |
-| `color` | [`Ink`](/ref/Ink/) | yes |
+| Name    | Type               | Required |
+| ------- | ------------------ | -------- |
+| `x`     | `number`           | yes      |
+| `y`     | `number`           | yes      |
+| `w`     | `number`           | yes      |
+| `h`     | `number`           | yes      |
+| `color` | [`Ink`](/ref/Ink/) | yes      |

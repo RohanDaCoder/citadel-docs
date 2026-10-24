@@ -3,8 +3,19 @@ title: World state
 section: world
 order: 6
 description: The room-level switches and clocks — world.rules with its seven boolean rules and read/write semantics, the time of day with world.time, weather, world.explode, and where players arrive with world.spawn_point.
-tags: [world-rules, rules, survival, anticheat, redstone, time-of-day, explode, spawn-point]
+tags:
+  [
+    world-rules,
+    rules,
+    survival,
+    anticheat,
+    redstone,
+    time-of-day,
+    explode,
+    spawn-point,
+  ]
 ---
+
 # World state
 
 > **In short:** the switches a pack flips on a room and the clocks it reads.
@@ -26,15 +37,15 @@ A rule left out or `nil` keeps its value, and **a number or a string is an
 error**: `world.rules{ fall = 0 }` and `world.rules{ fall = "off" }` stop the
 script. [`world.rules()`](/ref/World/rules) with no argument reads them.
 
-| Rule | What it runs |
-| --- | --- |
-| `survival` | the engine's survival — and it turns `fall`, `damage`, `hunger`, `anticheat` and `day_cycle` on |
-| `fall` | fall damage |
-| `damage` | hits and blasts hurt players |
-| `hunger` | the food bar |
-| `anticheat` | the movement and hit checks |
-| `day_cycle` | the sun moves |
-| `redstone` | signals move in the room |
+| Rule        | What it runs                                                                                    |
+| ----------- | ----------------------------------------------------------------------------------------------- |
+| `survival`  | the engine's survival — and it turns `fall`, `damage`, `hunger`, `anticheat` and `day_cycle` on |
+| `fall`      | fall damage                                                                                     |
+| `damage`    | hits and blasts hurt players                                                                    |
+| `hunger`    | the food bar                                                                                    |
+| `anticheat` | the movement and hit checks                                                                     |
+| `day_cycle` | the sun moves                                                                                   |
+| `redstone`  | signals move in the room                                                                        |
 
 A `mode: full` server has them all on; a pack can turn one off. On a pack
 server they are all off until the pack says — except `anticheat` and `redstone`,

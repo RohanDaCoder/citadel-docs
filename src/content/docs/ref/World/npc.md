@@ -1,6 +1,6 @@
 ---
-title: 'world.npc'
-description: 'Places a player-shaped entity every client from 1.8 sees; removed when the script ends or reloads.'
+title: "world.npc"
+description: "Places a player-shaped entity every client from 1.8 sees; removed when the script ends or reloads."
 ---
 
 Part of [`world`](/ref/World/).
@@ -13,9 +13,9 @@ Places a player-shaped entity every client from 1.8 sees; removed when the scrip
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `opts` | `{ name: string ?, at: Vec3 ?, rotation: BodyRotation ?, skin: ( string \| { value: string , signature: string } \| false )?, }` | yes |
+| Name   | Type                                                                                                                             | Required |
+| ------ | -------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `opts` | `{ name: string ?, at: Vec3 ?, rotation: BodyRotation ?, skin: ( string \| { value: string , signature: string } \| false )?, }` | yes      |
 
 ## Returns
 

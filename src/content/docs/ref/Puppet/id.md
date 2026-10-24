@@ -1,6 +1,6 @@
 ---
-title: 'puppet.id'
-description: 'The raw entity id.'
+title: "puppet.id"
+description: "The raw entity id."
 ---
 
 Part of [`puppet`](/ref/Puppet/).

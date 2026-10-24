@@ -1,6 +1,6 @@
 ---
-title: 'MountTarget type'
-description: 'Handles accepted by mounting and cameras; a Model is an asset, not a target.'
+title: "MountTarget type"
+description: "Handles accepted by mounting and cameras; a Model is an asset, not a target."
 ---
 
 Handles accepted by mounting and cameras; a Model is an asset, not a target.

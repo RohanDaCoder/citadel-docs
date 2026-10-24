@@ -1,6 +1,6 @@
 ---
-title: 'display.context'
-description: 'Item kind: how the item is posed, as in a frame, a hand or on the ground.'
+title: "display.context"
+description: "Item kind: how the item is posed, as in a frame, a hand or on the ground."
 ---
 
 Part of [`display`](/ref/Display/).

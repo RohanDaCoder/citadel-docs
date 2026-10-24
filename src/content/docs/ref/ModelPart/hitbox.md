@@ -1,6 +1,6 @@
 ---
-title: 'modelPart:hitbox'
-description: 'A box a player can hit on a living body that wears the model (clients from 1.19.4)'
+title: "modelPart:hitbox"
+description: "A box a player can hit on a living body that wears the model (clients from 1.19.4)"
 ---
 
 Part of [`ModelPart`](/ref/ModelPart/).
@@ -13,7 +13,7 @@ A box a player can hit on a living body that wears the model (clients from 1.19.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `from` | [`Vec3`](/ref/Vec3/) | yes |
-| `to` | [`Vec3`](/ref/Vec3/) | yes |
+| Name   | Type                 | Required |
+| ------ | -------------------- | -------- |
+| `from` | [`Vec3`](/ref/Vec3/) | yes      |
+| `to`   | [`Vec3`](/ref/Vec3/) | yes      |

@@ -1,6 +1,6 @@
 ---
-title: 'players.on_break'
-description: 'Cancellable'
+title: "players.on_break"
+description: "Cancellable"
 ---
 
 Part of [`players`](/ref/Players/).
@@ -9,13 +9,13 @@ Part of [`players`](/ref/Players/).
 players.on_break(fn: (player: Player ?, pos: Vec3, block: string) -> boolean ?) → Connection
 ```
 
-Cancellable. Return `false` to stop it; return nothing to let it through. These are asked *before* the world changes and the engine waits milliseconds for the answer, so they must be quick and must never `task.wait`. Timeout, error, overflow and disabled handlers deny the action. Across packs any `false` wins. See docs/luau-api.md, "saying no".
+Cancellable. Return `false` to stop it; return nothing to let it through. These are asked _before_ the world changes and the engine waits milliseconds for the answer, so they must be quick and must never `task.wait`. Timeout, error, overflow and disabled handlers deny the action. Across packs any `false` wins. See docs/luau-api.md, "saying no".
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `fn` | `(player: Player ?, pos: Vec3 , block: string ) -> boolean` | no |
+| Name | Type                                                        | Required |
+| ---- | ----------------------------------------------------------- | -------- |
+| `fn` | `(player: Player ?, pos: Vec3 , block: string ) -> boolean` | no       |
 
 ## Returns
 

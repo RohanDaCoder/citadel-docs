@@ -1,6 +1,6 @@
 ---
-title: 'players.on_pickup'
-description: 'A stack taken off the ground, and one that landed on it'
+title: "players.on_pickup"
+description: "A stack taken off the ground, and one that landed on it"
 ---
 
 Part of [`players`](/ref/Players/).
@@ -13,9 +13,9 @@ A stack taken off the ground, and one that landed on it. `player` is nil where t
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `fn` | `(player: Player ?, item: string , count: number ) -> ()` | yes |
+| Name | Type                                                      | Required |
+| ---- | --------------------------------------------------------- | -------- |
+| `fn` | `(player: Player ?, item: string , count: number ) -> ()` | yes      |
 
 ## Returns
 

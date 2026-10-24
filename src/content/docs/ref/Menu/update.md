@@ -1,6 +1,6 @@
 ---
-title: 'menu:update'
-description: 'New pictures in place, the menu left open: a bar that fills, a count that changes'
+title: "menu:update"
+description: "New pictures in place, the menu left open: a bar that fills, a count that changes"
 ---
 
 Part of [`Menu`](/ref/Menu/).
@@ -13,9 +13,9 @@ New pictures in place, the menu left open: a bar that fills, a count that change
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `items` | `{ ItemSpec }` | yes |
+| Name    | Type           | Required |
+| ------- | -------------- | -------- |
+| `items` | `{ ItemSpec }` | yes      |
 
 ## Returns
 

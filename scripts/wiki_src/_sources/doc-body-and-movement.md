@@ -9,8 +9,8 @@
   - It moves a Bedrock player, and a Java player on 1.7 or later. A Java player on an older version stays.
   - On a local run there is no proxy. A Java player stays. A Bedrock client reads the name as an address, and leaves the server.
 - On a pack server, only `damage` and `health` hurt a player. Creative and
-spectator players take no damage.
+  spectator players take no damage.
 - At zero health the player dies. `players.on_death` fires with cause
-`"other"`, and the client shows the respawn screen.
+  `"other"`, and the client shows the respawn screen.
 - On a pack server a death drops and clears nothing. The hotbar is a menu,
-not an inventory.
+  not an inventory.

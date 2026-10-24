@@ -1,6 +1,6 @@
 ---
-title: 'chunk:get'
-description: 'Chunk X coordinate (16 blocks each)'
+title: "chunk:get"
+description: "Chunk X coordinate (16 blocks each)"
 ---
 
 Part of [`Chunk`](/ref/Chunk/).
@@ -13,9 +13,9 @@ Chunk X coordinate (16 blocks each). Chunk Z coordinate (16 blocks each). The ch
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `pos` | [`Vec3`](/ref/Vec3/) | yes |
+| Name  | Type                 | Required |
+| ----- | -------------------- | -------- |
+| `pos` | [`Vec3`](/ref/Vec3/) | yes      |
 
 ## Returns
 
@@ -23,5 +23,5 @@ Chunk X coordinate (16 blocks each). Chunk Z coordinate (16 blocks each). The ch
 
 ## Used in
 
-> "--   chunk:get(pos)            what is there now, by name; air outside the chunk" — [Blocks and terrain](/world/terrain-generation/)
+> "-- chunk:get(pos) what is there now, by name; air outside the chunk" — [Blocks and terrain](/world/terrain-generation/)
 > "(not loaded), not `"air"`. Inside `on_generate`, `chunk:get` always works." — [Blocks and terrain](/world/terrain-generation/)

@@ -1,6 +1,6 @@
 ---
-title: 'display.id'
-description: 'The raw entity id'
+title: "display.id"
+description: "The raw entity id"
 ---
 
 Part of [`display`](/ref/Display/).

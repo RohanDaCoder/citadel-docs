@@ -1,6 +1,6 @@
 ---
-title: 'blockAt.powered'
-description: 'Whether a redstone signal reaches it: what a lamp asks'
+title: "blockAt.powered"
+description: "Whether a redstone signal reaches it: what a lamp asks"
 ---
 
 Part of [`blockAt`](/ref/BlockAt/).

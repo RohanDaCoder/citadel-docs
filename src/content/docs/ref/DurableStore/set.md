@@ -1,6 +1,6 @@
 ---
-title: 'durableStore:set'
-description: 'Writes a fact if its version is still if_version, and returns the new version'
+title: "durableStore:set"
+description: "Writes a fact if its version is still if_version, and returns the new version"
 ---
 
 Part of [`DurableStore`](/ref/DurableStore/).
@@ -13,12 +13,12 @@ Writes a fact if its version is still `if_version`, and returns the new version.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `key` | `string` | yes |
-| `value` | `any` | yes |
-| `if_version` | `number` | yes |
-| `lease` | `number` | no |
+| Name         | Type     | Required |
+| ------------ | -------- | -------- |
+| `key`        | `string` | yes      |
+| `value`      | `any`    | yes      |
+| `if_version` | `number` | yes      |
+| `lease`      | `number` | no       |
 
 ## Returns
 

@@ -1,6 +1,6 @@
 ---
-title: 'hitbox.id'
-description: 'Its entity id, what players.on_click reports in hit.entity_id.'
+title: "hitbox.id"
+description: "Its entity id, what players.on_click reports in hit.entity_id."
 ---
 
 Part of [`hitbox`](/ref/Hitbox/).

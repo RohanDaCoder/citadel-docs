@@ -1,6 +1,6 @@
 ---
-title: 'askCount.asks'
-description: 'Questions the engine put to this pack.'
+title: "askCount.asks"
+description: "Questions the engine put to this pack."
 ---
 
 Part of [`askCount`](/ref/AskCount/).

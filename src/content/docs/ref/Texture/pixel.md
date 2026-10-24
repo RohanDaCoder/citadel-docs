@@ -1,6 +1,6 @@
 ---
-title: 'texture:pixel'
-description: 'Sets one pixel; (0, 0) is the top left.'
+title: "texture:pixel"
+description: "Sets one pixel; (0, 0) is the top left."
 ---
 
 Part of [`Texture`](/ref/Texture/).
@@ -13,8 +13,8 @@ Sets one pixel; (0, 0) is the top left.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `x` | `number` | yes |
-| `y` | `number` | yes |
-| `color` | [`Ink`](/ref/Ink/) | yes |
+| Name    | Type               | Required |
+| ------- | ------------------ | -------- |
+| `x`     | `number`           | yes      |
+| `y`     | `number`           | yes      |
+| `color` | [`Ink`](/ref/Ink/) | yes      |

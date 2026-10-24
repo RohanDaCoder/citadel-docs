@@ -1,6 +1,6 @@
 ---
-title: 'blockAt.at'
-description: 'The block''s position; a live read.'
+title: "blockAt.at"
+description: "The block's position; a live read."
 ---
 
 Part of [`blockAt`](/ref/BlockAt/).

@@ -1,5 +1,5 @@
 ---
-title: 'entitySpec.max_health'
+title: "entitySpec.max_health"
 description: 'physics = "living" only: the most health it has, and what it starts with'
 ---
 

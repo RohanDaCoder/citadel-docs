@@ -1,6 +1,6 @@
 ---
-title: 'player:groups'
-description: 'Returns the player''s groups; default is not listed.'
+title: "player:groups"
+description: "Returns the player's groups; default is not listed."
 ---
 
 Part of [`Player`](/ref/Player/).
@@ -17,4 +17,4 @@ Returns the player's groups; `default` is not listed.
 
 ## Used in
 
-> "player:groups()                  -- { "vip" }; `default` is not listed" — [Permissions](/players/permissions/)
+> "player:groups() -- { "vip" }; `default` is not listed" — [Permissions](/players/permissions/)

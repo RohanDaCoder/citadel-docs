@@ -1,6 +1,6 @@
 ---
-title: 'durableStore:increment'
-description: 'Adds by to a number atomically, starting at zero, and returns the result'
+title: "durableStore:increment"
+description: "Adds by to a number atomically, starting at zero, and returns the result"
 ---
 
 Part of [`DurableStore`](/ref/DurableStore/).
@@ -13,10 +13,10 @@ Adds `by` to a number atomically, starting at zero, and returns the result. Neve
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `key` | `string` | yes |
-| `by` | `number` | yes |
+| Name  | Type     | Required |
+| ----- | -------- | -------- |
+| `key` | `string` | yes      |
+| `by`  | `number` | yes      |
 
 ## Returns
 

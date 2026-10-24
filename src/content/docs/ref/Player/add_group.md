@@ -1,6 +1,6 @@
 ---
-title: 'player:add_group'
-description: 'Puts the player in a group until they leave; errors on a group citadel.yml does not define.'
+title: "player:add_group"
+description: "Puts the player in a group until they leave; errors on a group citadel.yml does not define."
 ---
 
 Part of [`Player`](/ref/Player/).
@@ -13,10 +13,10 @@ Puts the player in a group until they leave; errors on a group citadel.yml does 
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `group` | `string` | yes |
+| Name    | Type     | Required |
+| ------- | -------- | -------- |
+| `group` | `string` | yes      |
 
 ## Used in
 
-> "player:add_group("vip")          -- errors on a group citadel.yml does not define" — [Permissions](/players/permissions/)
+> "player:add_group("vip") -- errors on a group citadel.yml does not define" — [Permissions](/players/permissions/)

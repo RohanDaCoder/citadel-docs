@@ -1,6 +1,6 @@
 ---
-title: 'blockAt:set'
-description: 'Puts another block at this position.'
+title: "blockAt:set"
+description: "Puts another block at this position."
 ---
 
 Part of [`BlockAt`](/ref/BlockAt/).
@@ -13,6 +13,6 @@ Puts another block at this position.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `block` | [`BlockRef`](/ref/BlockRef/) | yes |
+| Name    | Type                         | Required |
+| ------- | ---------------------------- | -------- |
+| `block` | [`BlockRef`](/ref/BlockRef/) | yes      |

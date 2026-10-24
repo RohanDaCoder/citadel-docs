@@ -1,6 +1,6 @@
 ---
-title: 'RayHit type'
-description: 'The first block a ray met, and the face it came in through.'
+title: "RayHit type"
+description: "The first block a ray met, and the face it came in through."
 ---
 
 The first block a ray met, and the face it came in through.

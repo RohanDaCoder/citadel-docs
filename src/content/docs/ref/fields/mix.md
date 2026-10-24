@@ -1,6 +1,6 @@
 ---
-title: 'fields.mix'
-description: 'a where t is 0, b where it is 1.'
+title: "fields.mix"
+description: "a where t is 0, b where it is 1."
 ---
 
 Part of [`fields`](/ref/fields/).
@@ -13,11 +13,11 @@ fields.mix(a: Field | number, b: Field | number, t: Field | number) → Field
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `a` | `Field \| number` | yes |
-| `b` | `Field \| number` | yes |
-| `t` | `Field \| number` | yes |
+| Name | Type              | Required |
+| ---- | ----------------- | -------- |
+| `a`  | `Field \| number` | yes      |
+| `b`  | `Field \| number` | yes      |
+| `t`  | `Field \| number` | yes      |
 
 ## Returns
 
@@ -25,4 +25,4 @@ fields.mix(a: Field | number, b: Field | number, t: Field | number) → Field
 
 ## Used in
 
-> "fields.mix(a, b, t)                         -- a where t is 0, b where t is 1" — [Blocks and terrain](/world/terrain-generation/)
+> "fields.mix(a, b, t) -- a where t is 0, b where t is 1" — [Blocks and terrain](/world/terrain-generation/)

@@ -1,6 +1,6 @@
 ---
-title: 'httpResponse:image'
-description: 'A PNG body: pixels is 4 bytes (RGBA) a pixel, row by row from the top.'
+title: "httpResponse:image"
+description: "A PNG body: pixels is 4 bytes (RGBA) a pixel, row by row from the top."
 ---
 
 Part of [`HttpResponse`](/ref/HttpResponse/).

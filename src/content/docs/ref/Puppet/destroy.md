@@ -1,6 +1,6 @@
 ---
-title: 'puppet:destroy'
-description: 'Removes the puppet.'
+title: "puppet:destroy"
+description: "Removes the puppet."
 ---
 
 Part of [`Puppet`](/ref/Puppet/).

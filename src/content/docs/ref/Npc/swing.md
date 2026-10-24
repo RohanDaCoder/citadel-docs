@@ -1,6 +1,6 @@
 ---
-title: 'npc:swing'
-description: 'Plays the arm swing animation.'
+title: "npc:swing"
+description: "Plays the arm swing animation."
 ---
 
 Part of [`Npc`](/ref/Npc/).

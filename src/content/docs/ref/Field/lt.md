@@ -1,6 +1,6 @@
 ---
-title: 'field:lt'
-description: '1 where this is the smaller, else 0.'
+title: "field:lt"
+description: "1 where this is the smaller, else 0."
 ---
 
 Part of [`Field`](/ref/Field/).
@@ -13,9 +13,9 @@ field:lt(other: Field | number) → Field
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `other` | `Field \| number` | yes |
+| Name    | Type              | Required |
+| ------- | ----------------- | -------- |
+| `other` | `Field \| number` | yes      |
 
 ## Returns
 

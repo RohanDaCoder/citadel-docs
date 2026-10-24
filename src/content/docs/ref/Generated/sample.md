@@ -1,6 +1,6 @@
 ---
-title: 'generated:sample'
-description: 'Returns a field''s value at a position; nil for a field made after world.generate, or for rules with no height.'
+title: "generated:sample"
+description: "Returns a field's value at a position; nil for a field made after world.generate, or for rules with no height."
 ---
 
 Part of [`Generated`](/ref/Generated/).
@@ -13,10 +13,10 @@ Returns a field's value at a position; `nil` for a field made after `world.gener
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `field` | `Field \| number` | yes |
-| `pos` | [`Vec3`](/ref/Vec3/) | yes |
+| Name    | Type                 | Required |
+| ------- | -------------------- | -------- |
+| `field` | `Field \| number`    | yes      |
+| `pos`   | [`Vec3`](/ref/Vec3/) | yes      |
 
 ## Returns
 

@@ -1,6 +1,6 @@
 ---
-title: 'Citadel Developer Wiki'
-description: 'The unofficial developer wiki for Minefort Citadel — the Luau scripting engine for Minecraft servers. Concepts, every API call, and working guides, restructured from the official docs into scannable reference form.'
+title: "Citadel Developer Wiki"
+description: "The unofficial developer wiki for Minefort Citadel — the Luau scripting engine for Minecraft servers. Concepts, every API call, and working guides, restructured from the official docs into scannable reference form."
 ---
 
 :::note[In short]
@@ -30,18 +30,18 @@ limits the engine enforces.
 
 ## How the wiki is organized
 
-| Section | What you find there |
-| --- | --- |
-| [Getting started](/getting-started/what-is-citadel/) | The platform, your first pack, tooling, the Luau primer. |
-| [Core concepts](/concepts/architecture/) | Architecture, pack anatomy, runtime, events, conventions, rooms and dimensions. |
-| [World & building](/world/terrain-generation/) | Terrain generation, block reference, building, custom blocks, game data, world state. |
-| [Entities](/entities/custom-entities/) | Custom entities, entity handles, mobs and drops, NPCs. |
-| [Players](/players/player-lifecycle/) | Lifecycle, movement and cameras, inventory, visibility, health, permissions. |
-| [Interface & media](/ui/ui-basics/) | Messages, titles and bars, screens, canvases, menus, dialogs, displays, fx, sound. |
-| [Server systems](/systems/commands/) | Commands, storage, shared stores, network, HTTP, shop, hub, server settings, limits. |
-| [Guides](/guides/guide-build-a-cottage/) | Five complete, step-by-step builds — cottage, coin rush, parkour, a dungeon dimension, a scoreboard. |
-| [Cookbook](/cookbook/cookbook-cooldowns/) | Drop-in patterns: cooldowns, leaderboards, teleport pads, kits, teams, a minigame loop, save/load. |
-| [Appendix](/appendix/event-catalog/) | The event catalog, client version matrix, the limits table, and the FAQ. |
+| Section                                              | What you find there                                                                                  |
+| ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| [Getting started](/getting-started/what-is-citadel/) | The platform, your first pack, tooling, the Luau primer.                                             |
+| [Core concepts](/concepts/architecture/)             | Architecture, pack anatomy, runtime, events, conventions, rooms and dimensions.                      |
+| [World & building](/world/terrain-generation/)       | Terrain generation, block reference, building, custom blocks, game data, world state.                |
+| [Entities](/entities/custom-entities/)               | Custom entities, entity handles, mobs and drops, NPCs.                                               |
+| [Players](/players/player-lifecycle/)                | Lifecycle, movement and cameras, inventory, visibility, health, permissions.                         |
+| [Interface & media](/ui/ui-basics/)                  | Messages, titles and bars, screens, canvases, menus, dialogs, displays, fx, sound.                   |
+| [Server systems](/systems/commands/)                 | Commands, storage, shared stores, network, HTTP, shop, hub, server settings, limits.                 |
+| [Guides](/guides/guide-build-a-cottage/)             | Five complete, step-by-step builds — cottage, coin rush, parkour, a dungeon dimension, a scoreboard. |
+| [Cookbook](/cookbook/cookbook-cooldowns/)            | Drop-in patterns: cooldowns, leaderboards, teleport pads, kits, teams, a minigame loop, save/load.   |
+| [Appendix](/appendix/event-catalog/)                 | The event catalog, client version matrix, the limits table, and the FAQ.                             |
 
 ## API reference
 

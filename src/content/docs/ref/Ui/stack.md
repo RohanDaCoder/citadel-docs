@@ -1,6 +1,6 @@
 ---
-title: 'ui.stack'
-description: 'ui.stack — function.'
+title: "ui.stack"
+description: "ui.stack — function."
 ---
 
 Part of [`ui`](/ref/Ui/).
@@ -11,9 +11,9 @@ ui.stack(opts: { align: LayoutAlign ?, [number]: LayoutNode }) → LayoutNode
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `opts` | `{ align: LayoutAlign ?, [ number ]: LayoutNode }` | yes |
+| Name   | Type                                               | Required |
+| ------ | -------------------------------------------------- | -------- |
+| `opts` | `{ align: LayoutAlign ?, [ number ]: LayoutNode }` | yes      |
 
 ## Returns
 

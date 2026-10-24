@@ -1,6 +1,6 @@
 ---
-title: 'Shared stores'
-description: 'The experience-wide durable store — stores.open and the DurableStore calls, versions and conflict errors, fencing-token leases, player blobs, every size limit, and the rules of calling a store that yields.'
+title: "Shared stores"
+description: "The experience-wide durable store — stores.open and the DurableStore calls, versions and conflict errors, fencing-token leases, player blobs, every size limit, and the rules of calling a store that yields."
 ---
 
 :::note[In short]
@@ -33,22 +33,22 @@ in a published world — see [Storage](/systems/storage/).
 
 ## The calls
 
-| Call | Returns | Purpose |
-| --- | --- | --- |
-| `stores.open()` | `DurableStore` | The experience's one store; no id. |
-| `handle:get(key)` | `(value, version)` | A fact's value; version zero means absent. |
-| `handle:set(key, value, if_version, lease?)` | new version | Writes a fact if its version is still `if_version`. |
-| `handle:delete(key, if_version, lease?)` | — | Removes a fact if its version is still `if_version`. |
-| `handle:increment(key, by)` | number | Atomically increments a number, starting at zero. |
-| `handle:list(prefix?, cursor?, limit?)` | `(keys, next_cursor)` | Fact keys with this prefix, a page at a time. |
-| `handle:blob_get(player_uuid, key)` | `(string?, version)` | One player's binary blob, or nil. |
-| `handle:blob_put(player_uuid, key, bytes, if_version, lease?)` | new version | Writes one player's binary blob. |
-| `handle:blob_delete(player_uuid, key, if_version, lease?)` | — | Deletes one player's blob. |
-| `stores.blob_list(player_uuid)` | entries | A player's blobs across all blob stores in this scope. |
-| `stores.lease(key, holder, ttl_ms)` | number | Takes a lease; returns a fencing token. |
-| `stores.renew(key, token)` | — | Extends the lease that `token` holds. |
-| `stores.release(key, token)` | — | Gives up the lease that `token` holds. |
-| `stores.request(query, bytes?)` | `(answer, blob_bytes?)` | Sends one raw query; yields until it answers. |
+| Call                                                           | Returns                 | Purpose                                                |
+| -------------------------------------------------------------- | ----------------------- | ------------------------------------------------------ |
+| `stores.open()`                                                | `DurableStore`          | The experience's one store; no id.                     |
+| `handle:get(key)`                                              | `(value, version)`      | A fact's value; version zero means absent.             |
+| `handle:set(key, value, if_version, lease?)`                   | new version             | Writes a fact if its version is still `if_version`.    |
+| `handle:delete(key, if_version, lease?)`                       | —                       | Removes a fact if its version is still `if_version`.   |
+| `handle:increment(key, by)`                                    | number                  | Atomically increments a number, starting at zero.      |
+| `handle:list(prefix?, cursor?, limit?)`                        | `(keys, next_cursor)`   | Fact keys with this prefix, a page at a time.          |
+| `handle:blob_get(player_uuid, key)`                            | `(string?, version)`    | One player's binary blob, or nil.                      |
+| `handle:blob_put(player_uuid, key, bytes, if_version, lease?)` | new version             | Writes one player's binary blob.                       |
+| `handle:blob_delete(player_uuid, key, if_version, lease?)`     | —                       | Deletes one player's blob.                             |
+| `stores.blob_list(player_uuid)`                                | entries                 | A player's blobs across all blob stores in this scope. |
+| `stores.lease(key, holder, ttl_ms)`                            | number                  | Takes a lease; returns a fencing token.                |
+| `stores.renew(key, token)`                                     | —                       | Extends the lease that `token` holds.                  |
+| `stores.release(key, token)`                                   | —                       | Gives up the lease that `token` holds.                 |
+| `stores.request(query, bytes?)`                                | `(answer, blob_bytes?)` | Sends one raw query; yields until it answers.          |
 
 `stores.blob_list` returns entries across all blob stores in this scope, each
 with its store, key, version and size. `handle:list` returns the cursor for
@@ -67,10 +67,10 @@ still the one you read. A mismatch is a conflict, not a silent overwrite.
 booleans; native binding errors remain readable strings. Store errors reach
 `pcall` as a table:
 
-| Error table | Meaning |
-| --- | --- |
-| `{err = "conflict", version = current_version}` | The version you read is stale — read again and retry. |
-| `{err = "held", by = current_holder}` | The fencing token is stale — the lease is held by someone else. |
+| Error table                                     | Meaning                                                         |
+| ----------------------------------------------- | --------------------------------------------------------------- |
+| `{err = "conflict", version = current_version}` | The version you read is stale — read again and retry.           |
+| `{err = "held", by = current_holder}`           | The fencing token is stale — the lease is held by someone else. |
 
 :::caution[Gotcha]
 after an I/O timeout, a write may have committed. Retry only
@@ -98,16 +98,16 @@ hosted blobs are not in world archive backups.
 
 ## Limits
 
-| Limit | Value |
-| --- | --- |
-| Keys | at most 256 bytes |
-| Facts | at most 1 MiB |
-| Blobs | at most 32 MiB |
+| Limit                         | Value                                                                |
+| ----------------------------- | -------------------------------------------------------------------- |
+| Keys                          | at most 256 bytes                                                    |
+| Facts                         | at most 1 MiB                                                        |
+| Blobs                         | at most 32 MiB                                                       |
 | Hosted storage per experience | 512 MiB, and 1 MiB more for every Java player who has ever joined it |
-| Number of values | no limit |
-| Blobs per player | at most 1,000 |
-| Lease tokens | at most 100,000 issued; leases last up to one hour |
-| Pending requests per pack | at most 32 |
+| Number of values              | no limit                                                             |
+| Blobs per player              | at most 1,000                                                        |
+| Lease tokens                  | at most 100,000 issued; leases last up to one hour                   |
+| Pending requests per pack     | at most 32                                                           |
 
 ## Where the data lives without a socket
 

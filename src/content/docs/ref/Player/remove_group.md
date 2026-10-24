@@ -1,6 +1,6 @@
 ---
-title: 'player:remove_group'
-description: 'Takes the player out of a group.'
+title: "player:remove_group"
+description: "Takes the player out of a group."
 ---
 
 Part of [`Player`](/ref/Player/).
@@ -13,9 +13,9 @@ Takes the player out of a group.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `group` | `string` | yes |
+| Name    | Type     | Required |
+| ------- | -------- | -------- |
+| `group` | `string` | yes      |
 
 ## Used in
 

@@ -1,6 +1,6 @@
 ---
-title: 'networkInstance.status'
-description: 'The instance''s own word.'
+title: "networkInstance.status"
+description: "The instance's own word."
 ---
 
 Part of [`networkInstance`](/ref/NetworkInstance/).

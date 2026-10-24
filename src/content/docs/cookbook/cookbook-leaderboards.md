@@ -1,6 +1,6 @@
 ---
-title: 'Leaderboards'
-description: 'Three leaderboard patterns — the live sidebar for a running game, the world.screen board that persists with storage, and the experience-wide best score with stores:increment.'
+title: "Leaderboards"
+description: "Three leaderboard patterns — the live sidebar for a running game, the world.screen board that persists with storage, and the experience-wide best score with stores:increment."
 ---
 
 :::note[In short]

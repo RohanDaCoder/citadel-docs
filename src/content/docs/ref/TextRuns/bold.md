@@ -1,6 +1,6 @@
 ---
-title: 'textRuns.bold'
-description: 'Bold for every run that does not say otherwise.'
+title: "textRuns.bold"
+description: "Bold for every run that does not say otherwise."
 ---
 
 Part of [`textRuns`](/ref/TextRuns/).

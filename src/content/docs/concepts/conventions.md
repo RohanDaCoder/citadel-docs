@@ -1,6 +1,6 @@
 ---
-title: 'Conventions'
-description: 'The rules every Citadel API call follows — namespaces, vec3 positions, colours and colour names, text runs, options tables with strict field checking, the nil/false/true tri-state, and the spelling invariants.'
+title: "Conventions"
+description: "The rules every Citadel API call follows — namespaces, vec3 positions, colours and colour names, text runs, options tables with strict field checking, the nil/false/true tri-state, and the spelling invariants."
 ---
 
 :::note[In short]
@@ -13,11 +13,11 @@ spelling serves each idea.
 
 ## Namespaces
 
-| Kind | Globals |
-| --- | --- |
-| The main room's tables | `world`, `players`, `ui`, `game`, `rooms`, `sound` — `rooms.create{}` gives another room the same six |
-| Server-wide | `fx`, `commands`, `time`, `task`, `storage`, `stores`, `http`, `network`, `shop`, `hub`, `models`, `parts`, `routes`, `data`, `fields`, `message` |
-| Values and helpers | `vec3`, `color`, `colors`, `noise`, `tween`, `camera`, `citadel` |
+| Kind                   | Globals                                                                                                                                           |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| The main room's tables | `world`, `players`, `ui`, `game`, `rooms`, `sound` — `rooms.create{}` gives another room the same six                                             |
+| Server-wide            | `fx`, `commands`, `time`, `task`, `storage`, `stores`, `http`, `network`, `shop`, `hub`, `models`, `parts`, `routes`, `data`, `fields`, `message` |
+| Values and helpers     | `vec3`, `color`, `colors`, `noise`, `tween`, `camera`, `citadel`                                                                                  |
 
 A pack is its files. `loadstring` is not there, so a pack cannot run text as
 code; `require` reads only files inside the pack; `getfenv` and `setfenv` are
@@ -58,7 +58,7 @@ default, and **the tables are strict**:
 :::caution[Gotcha]
 an unknown field is an error that names the nearest valid one.
 `world.display{ kind = "text", colour = "red" }` stops the script with
-*no option "colour"; did you mean "color"?* — and a field of the wrong type
+_no option "colour"; did you mean "color"?_ — and a field of the wrong type
 is also an error.
 :::
 
@@ -81,12 +81,12 @@ numeric settings such as `player.speed`, `player.scale` and
 
 ## One spelling per idea
 
-| Idea | Spelling |
-| --- | --- |
-| A position | `at` |
-| Removing a thing | `:destroy()` |
-| Stopping a timer or an event | `:cancel()` |
-| A box's corners | `from` and `to` |
+| Idea                         | Spelling        |
+| ---------------------------- | --------------- |
+| A position                   | `at`            |
+| Removing a thing             | `:destroy()`    |
+| Stopping a timer or an event | `:cancel()`     |
+| A box's corners              | `from` and `to` |
 
 ## Block names
 

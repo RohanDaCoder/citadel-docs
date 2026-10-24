@@ -1,6 +1,6 @@
 ---
-title: 'biomeDefinition.name'
-description: 'Lower case letters, digits and underscores'
+title: "biomeDefinition.name"
+description: "Lower case letters, digits and underscores"
 ---
 
 Part of [`biomeDefinition`](/ref/BiomeDefinition/).

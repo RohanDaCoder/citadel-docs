@@ -1,6 +1,6 @@
 ---
-title: 'http.socket'
-description: 'Opens a WebSocket (ws or wss) and keeps it open: when the connection ends, the engine dials again'
+title: "http.socket"
+description: "Opens a WebSocket (ws or wss) and keeps it open: when the connection ends, the engine dials again"
 ---
 
 Part of [`http`](/ref/http/).
@@ -13,10 +13,10 @@ Opens a WebSocket (`ws` or `wss`) and keeps it open: when the connection ends, t
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `url` | `string` | yes |
-| `options` | `{headers: {[ string ]: string }?, on_message: (message: SocketMessage ) -> ()}` | yes |
+| Name      | Type                                                                             | Required |
+| --------- | -------------------------------------------------------------------------------- | -------- |
+| `url`     | `string`                                                                         | yes      |
+| `options` | `{headers: {[ string ]: string }?, on_message: (message: SocketMessage ) -> ()}` | yes      |
 
 ## Returns
 

@@ -1,6 +1,6 @@
 ---
-title: 'block.opaque'
-description: 'Whether it is an opaque full cube, which is not the material''s question.'
+title: "block.opaque"
+description: "Whether it is an opaque full cube, which is not the material's question."
 ---
 
 Part of [`block`](/ref/Block/).

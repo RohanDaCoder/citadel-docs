@@ -1,6 +1,6 @@
 ---
-title: 'npc:look_at'
-description: 'Where it stands; live, so setting it moves the NPC'
+title: "npc:look_at"
+description: "Where it stands; live, so setting it moves the NPC"
 ---
 
 Part of [`Npc`](/ref/Npc/).
@@ -13,6 +13,6 @@ Where it stands; live, so setting it moves the NPC. A riding NPC reads the seat'
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `pos` | [`Vec3`](/ref/Vec3/) | yes |
+| Name  | Type                 | Required |
+| ----- | -------------------- | -------- |
+| `pos` | [`Vec3`](/ref/Vec3/) | yes      |

@@ -1,5 +1,5 @@
 ---
-title: 'entityAmendSpec.on_remove'
+title: "entityAmendSpec.on_remove"
 description: 'Called when it leaves the world; why is "removed", "settled", "killed" or "unloaded"'
 ---
 
@@ -13,9 +13,9 @@ Called when it leaves the world; `why` is "removed", "settled", "killed" or "unl
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(e` | `EntityHandle , why: string ?) -> ()` | yes |
+| Name | Type                                  | Required |
+| ---- | ------------------------------------- | -------- |
+| `(e` | `EntityHandle , why: string ?) -> ()` | yes      |
 
 ## Returns
 

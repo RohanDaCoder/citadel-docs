@@ -3,8 +3,19 @@ title: Custom blocks
 section: world
 order: 4
 description: game.blocks.define makes a pack's own blocks — the definition fields, states and block.data, the eleven hooks with their exact callbacks, extends and the base() protocol, missed-deadline behaviour, redstone power, and textures and models for 1.21.4+ clients.
-tags: [custom-blocks, game-blocks, hooks, block-data, power, redstone, textures, models]
+tags:
+  [
+    custom-blocks,
+    game-blocks,
+    hooks,
+    block-data,
+    power,
+    redstone,
+    textures,
+    models,
+  ]
 ---
+
 # Custom blocks
 
 > **In short:** `game.blocks.define` makes a block of your pack's own — a real
@@ -66,24 +77,24 @@ game.blocks.define {
 }
 ```
 
-| Field | Meaning |
-| --- | --- |
-| `name` | no namespace: yours is added |
-| `looks` | one block state, or a list with one per state |
-| `hardness` | seconds-scale; below zero is unbreakable |
-| `resistance` | what an explosion has to chew through |
-| `material` | `{ solid, covers, firm, liquid, burns }` |
-| `opacity` | what a step through it takes off the light |
-| `light` | what it gives off, 0..15 |
-| `tick_every` | seconds between `block:schedule()` and `on_tick` |
-| `drops` | a drops list, or `"table"`; `"none"` or `false` for nothing; a row may be a pack item |
-| `item` | the block in a hand; `false` for no item |
-| `texture` | its own picture on 1.21.4+, in place of the `looks` cube |
-| `model` | its own shape, in place of `texture` |
-| `facing` | turns its front to whoever places it |
-| `power` | what it gives a redstone circuit, 0 or 15 |
-| `label` | the name of the item a textured block comes with |
-| `extends` | a name, a handle, a plain table, or a list |
+| Field        | Meaning                                                                               |
+| ------------ | ------------------------------------------------------------------------------------- |
+| `name`       | no namespace: yours is added                                                          |
+| `looks`      | one block state, or a list with one per state                                         |
+| `hardness`   | seconds-scale; below zero is unbreakable                                              |
+| `resistance` | what an explosion has to chew through                                                 |
+| `material`   | `{ solid, covers, firm, liquid, burns }`                                              |
+| `opacity`    | what a step through it takes off the light                                            |
+| `light`      | what it gives off, 0..15                                                              |
+| `tick_every` | seconds between `block:schedule()` and `on_tick`                                      |
+| `drops`      | a drops list, or `"table"`; `"none"` or `false` for nothing; a row may be a pack item |
+| `item`       | the block in a hand; `false` for no item                                              |
+| `texture`    | its own picture on 1.21.4+, in place of the `looks` cube                              |
+| `model`      | its own shape, in place of `texture`                                                  |
+| `facing`     | turns its front to whoever places it                                                  |
+| `power`      | what it gives a redstone circuit, 0 or 15                                             |
+| `label`      | the name of the item a textured block comes with                                      |
+| `extends`    | a name, a handle, a plain table, or a list                                            |
 
 - Every field except `name` and `looks` has a default.
 - Call `define` only **while your pack loads**. Define blocks at the top of
@@ -102,22 +113,22 @@ and `on_removed` and `on_added` are not called.
 
 Every hook gets the block it is about. Fields read; methods act:
 
-| Member | Kind | Purpose |
-| --- | --- | --- |
-| `block.at` | field | The block's position; a live read |
-| `block.name` | field | The name with its namespace, such as `"rave:crate"` |
-| `block.room` | field | Which room the block is in |
-| `block.state` | field | Which of this definition's states it is in, counting from 1; writable, bounds-checked |
-| `block.facing` | field | A facing block's front: `"north"`, `"south"`, `"west"`, `"east"`; writable |
-| `block.powered` | field | Whether a redstone signal reaches it; nil where the chunk is not loaded |
-| `block.data` | field | What this block remembers beyond its state (see below) |
-| [`block:get(face)`](/ref/BlockAt/get) | method | The block one face away, by name |
-| [`block:set(block)`](/ref/BlockAt/set) | method | Puts another block at this position |
-| [`block:destroy()`](/ref/BlockAt/destroy) | method | Takes it out, leaving nothing |
-| `block:become(entity, data?)` | method | This block stops being a block, and that entity appears |
-| `block:drop(item, count?)` | method | A name, or an item table: a pack item keeps its id |
-| `block:schedule()` | method | Asks for this block's `on_tick`, `tick_every` seconds from now |
-| `block:notify()` | method | Tells the six neighbours this block changed |
+| Member                                    | Kind   | Purpose                                                                               |
+| ----------------------------------------- | ------ | ------------------------------------------------------------------------------------- |
+| `block.at`                                | field  | The block's position; a live read                                                     |
+| `block.name`                              | field  | The name with its namespace, such as `"rave:crate"`                                   |
+| `block.room`                              | field  | Which room the block is in                                                            |
+| `block.state`                             | field  | Which of this definition's states it is in, counting from 1; writable, bounds-checked |
+| `block.facing`                            | field  | A facing block's front: `"north"`, `"south"`, `"west"`, `"east"`; writable            |
+| `block.powered`                           | field  | Whether a redstone signal reaches it; nil where the chunk is not loaded               |
+| `block.data`                              | field  | What this block remembers beyond its state (see below)                                |
+| [`block:get(face)`](/ref/BlockAt/get)     | method | The block one face away, by name                                                      |
+| [`block:set(block)`](/ref/BlockAt/set)    | method | Puts another block at this position                                                   |
+| [`block:destroy()`](/ref/BlockAt/destroy) | method | Takes it out, leaving nothing                                                         |
+| `block:become(entity, data?)`             | method | This block stops being a block, and that entity appears                               |
+| `block:drop(item, count?)`                | method | A name, or an item table: a pack item keeps its id                                    |
+| `block:schedule()`                        | method | Asks for this block's `on_tick`, `tick_every` seconds from now                        |
+| `block:notify()`                          | method | Tells the six neighbours this block changed                                           |
 
 [`world.block(pos)`](/ref/World/block) is the same handle, for any block: reads
 are the world as it is now, and what it does lands on the next tick, like
@@ -201,25 +212,25 @@ snapshot.stats.wins = 99               -- does not change the entity
 
 Every hook gets the block first and `base` last:
 
-| hook | called when | arguments | answers |
-| --- | --- | --- | --- |
-| `on_use` | somebody right-clicked it | `block, player, held, base` | `"used"` or `"pass"` |
-| `on_break` | something broke it | `block, player, by, base` | `"none"`, `"table"`, or a drops list |
-| `on_step` | a body is standing on it | `block, body, base` | nothing |
-| `on_tick` | a scheduled tick came due | `block, base` | nothing |
-| `on_random_tick` | the random pass landed on it | `block, base` | nothing |
-| `on_place` | a player put it down | `block, player, base` | nothing |
-| `on_neighbour` | a neighbour changed | `block, from, announced, base` | nothing |
-| `on_trigger` | lit, blasted or burnt | `block, cause, base` | nothing |
-| `on_power` | a redstone signal started or stopped reaching it | `block, powered, base` | nothing |
-| `on_added` | it has just been stored, whatever stored it | `block, base` | nothing |
-| `on_removed` | it has just gone | `block, base` | nothing |
+| hook             | called when                                      | arguments                      | answers                              |
+| ---------------- | ------------------------------------------------ | ------------------------------ | ------------------------------------ |
+| `on_use`         | somebody right-clicked it                        | `block, player, held, base`    | `"used"` or `"pass"`                 |
+| `on_break`       | something broke it                               | `block, player, by, base`      | `"none"`, `"table"`, or a drops list |
+| `on_step`        | a body is standing on it                         | `block, body, base`            | nothing                              |
+| `on_tick`        | a scheduled tick came due                        | `block, base`                  | nothing                              |
+| `on_random_tick` | the random pass landed on it                     | `block, base`                  | nothing                              |
+| `on_place`       | a player put it down                             | `block, player, base`          | nothing                              |
+| `on_neighbour`   | a neighbour changed                              | `block, from, announced, base` | nothing                              |
+| `on_trigger`     | lit, blasted or burnt                            | `block, cause, base`           | nothing                              |
+| `on_power`       | a redstone signal started or stopped reaching it | `block, powered, base`         | nothing                              |
+| `on_added`       | it has just been stored, whatever stored it      | `block, base`                  | nothing                              |
+| `on_removed`     | it has just gone                                 | `block, base`                  | nothing                              |
 
 - `player` is a handle. It is `nil` for a break with no player, or once that
   player left.
 - `held` is the item in hand.
 - `by` is `{ cause = "player" | "fire" | "explosion" | "water" | "support",
-  tool, creative }`.
+tool, creative }`.
 - `body` is `{ id, kind = "player" | "mob" | "item" | "other" }`. `body.kind`
   is `"mob"` for a cow or a zombie.
 - `cause` is `"ignite"`, `"explosion"` or `"fire"`. A redstone signal is not a
@@ -237,7 +248,7 @@ normally leave. An answer nothing reads is an error that names it.
 ## Extends, and `base`
 
 `extends` takes a handle, a game block's name, a plain table, or a list of
-those, **innermost first**. Data fields merge; hooks *wrap*.
+those, **innermost first**. Data fields merge; hooks _wrap_.
 
 ```luau
 -- A mixin is only a table.
@@ -288,11 +299,11 @@ game.blocks.amend("tnt", {
 
 Each hook has a deadline. This is what a miss means:
 
-| hook | a missed deadline means | why |
-| --- | --- | --- |
-| `on_use` | **the click passes through** (`"pass"`) | fail-open. A busy pack must not stop people using the rest of the world, and a click that did nothing is visible where a click that was silently eaten is not. |
-| `on_break` | **the block leaves the drops its definition declared** — never the looks block's | fail-**closed**. `drops = "table"` on a crate that looks like TNT would drop TNT, and anything that makes items must never make them twice. A definition that declared nothing leaves nothing. |
-| `on_step`, `on_tick`, `on_random_tick`, `on_place`, `on_neighbour`, `on_trigger`, `on_power`, `on_added`, `on_removed` | **the block did not react this tick** | fail-open, and it costs nothing: the engine had already decided what it was doing. These are batched — five hundred crops taking their random tick are one message under one deadline — and answered at the end of the tick that asked. |
+| hook                                                                                                                   | a missed deadline means                                                          | why                                                                                                                                                                                                                                     |
+| ---------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `on_use`                                                                                                               | **the click passes through** (`"pass"`)                                          | fail-open. A busy pack must not stop people using the rest of the world, and a click that did nothing is visible where a click that was silently eaten is not.                                                                          |
+| `on_break`                                                                                                             | **the block leaves the drops its definition declared** — never the looks block's | fail-**closed**. `drops = "table"` on a crate that looks like TNT would drop TNT, and anything that makes items must never make them twice. A definition that declared nothing leaves nothing.                                          |
+| `on_step`, `on_tick`, `on_random_tick`, `on_place`, `on_neighbour`, `on_trigger`, `on_power`, `on_added`, `on_removed` | **the block did not react this tick**                                            | fail-open, and it costs nothing: the engine had already decided what it was doing. These are batched — five hundred crops taking their random tick are one message under one deadline — and answered at the end of the tick that asked. |
 
 `can_stay`, `can_place_at` and `power` are **not** pack hooks. A pack block
 answers them from its definition's data and what it extends: `power` is a

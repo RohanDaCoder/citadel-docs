@@ -1,6 +1,6 @@
 ---
-title: 'picture:part'
-description: 'One map of the picture, { id = .'
+title: "picture:part"
+description: "One map of the picture, { id = ."
 ---
 
 Part of [`Picture`](/ref/Picture/).
@@ -13,10 +13,10 @@ One map of the picture, `{ id = .. }`, by column and row from (0, 0) top- left; 
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `col` | `number` | yes |
-| `row` | `number` | yes |
+| Name  | Type     | Required |
+| ----- | -------- | -------- |
+| `col` | `number` | yes      |
+| `row` | `number` | yes      |
 
 ## Returns
 

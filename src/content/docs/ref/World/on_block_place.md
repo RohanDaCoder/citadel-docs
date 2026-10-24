@@ -1,6 +1,6 @@
 ---
-title: 'world.on_block_place'
-description: 'Tells after a block was placed, with its canonical name'
+title: "world.on_block_place"
+description: "Tells after a block was placed, with its canonical name"
 ---
 
 Part of [`world`](/ref/World/).
@@ -13,9 +13,9 @@ Tells after a block was placed, with its canonical name. Observe-only; `player` 
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `fn` | `(player: Player ?, pos: Vec3 , block: string ) -> ()` | yes |
+| Name | Type                                                   | Required |
+| ---- | ------------------------------------------------------ | -------- |
+| `fn` | `(player: Player ?, pos: Vec3 , block: string ) -> ()` | yes      |
 
 ## Returns
 

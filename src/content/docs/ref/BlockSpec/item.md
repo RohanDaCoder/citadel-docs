@@ -1,6 +1,6 @@
 ---
-title: 'blockSpec.item'
-description: 'The block in a hand'
+title: "blockSpec.item"
+description: "The block in a hand"
 ---
 
 Part of [`blockSpec`](/ref/BlockSpec/).

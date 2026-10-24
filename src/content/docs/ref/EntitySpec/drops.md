@@ -1,5 +1,5 @@
 ---
-title: 'entitySpec.drops'
+title: "entitySpec.drops"
 description: 'physics = "living" only: what it leaves when it dies'
 ---
 

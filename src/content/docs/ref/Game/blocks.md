@@ -1,6 +1,6 @@
 ---
-title: 'game.blocks'
-description: 'The one table that adds to a version rather than reading it.'
+title: "game.blocks"
+description: "The one table that adds to a version rather than reading it."
 ---
 
 Part of [`game`](/ref/Game/).
@@ -9,7 +9,7 @@ Part of [`game`](/ref/Game/).
 game.blocks: Blocks
 ```
 
-The one table that *adds* to a version rather than reading it.
+The one table that _adds_ to a version rather than reading it.
 
 ## Used in
 

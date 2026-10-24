@@ -1,6 +1,6 @@
 ---
-title: 'player:take'
-description: 'Up to count (1 unless you say) of what matches, the hand first; answers how many it took.'
+title: "player:take"
+description: "Up to count (1 unless you say) of what matches, the hand first; answers how many it took."
 ---
 
 Part of [`Player`](/ref/Player/).
@@ -13,10 +13,10 @@ Up to `count` (1 unless you say) of what matches, the hand first; answers how ma
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `item` | [`ItemMatch`](/ref/ItemMatch/) | yes |
-| `count` | `number` | no |
+| Name    | Type                           | Required |
+| ------- | ------------------------------ | -------- |
+| `item`  | [`ItemMatch`](/ref/ItemMatch/) | yes      |
+| `count` | `number`                       | no       |
 
 ## Returns
 
@@ -24,7 +24,7 @@ Up to `count` (1 unless you say) of what matches, the hand first; answers how ma
 
 ## Used in
 
-> "player:take("coal", 8)      -- takes up to 8, the hand first; answers how many it took" — [Players](/players/player-lifecycle/)
+> "player:take("coal", 8) -- takes up to 8, the hand first; answers how many it took" — [Players](/players/player-lifecycle/)
 > "`player:give`, `player:take`, `player:inventory` and `player:count` work on" — [Players](/players/player-lifecycle/)
-> "player:take({ id = "copper_ingot" }, 2)  -- up to 2 of them; answers how many it took" — [Items](/players/inventory/)
-> "player:take(COPPER, 2)                    -- an item table matches by its id" — [Items](/players/inventory/)
+> "player:take({ id = "copper_ingot" }, 2) -- up to 2 of them; answers how many it took" — [Items](/players/inventory/)
+> "player:take(COPPER, 2) -- an item table matches by its id" — [Items](/players/inventory/)

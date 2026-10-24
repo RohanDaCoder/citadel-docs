@@ -1,6 +1,6 @@
 ---
-title: 'block.flammability'
-description: 'Fire''s two numbers: how readily it catches and how fast it burns away'
+title: "block.flammability"
+description: "Fire's two numbers: how readily it catches and how fast it burns away"
 ---
 
 Part of [`block`](/ref/Block/).

@@ -1,6 +1,6 @@
 ---
-title: 'overlay.open'
-description: 'True until destroy or the player leaves.'
+title: "overlay.open"
+description: "True until destroy or the player leaves."
 ---
 
 Part of [`overlay`](/ref/Overlay/).

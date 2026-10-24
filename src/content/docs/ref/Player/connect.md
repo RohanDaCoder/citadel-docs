@@ -1,5 +1,5 @@
 ---
-title: 'player:connect'
+title: "player:connect"
 description: 'Asks Minefort to move the player to another server by name: an instance''s id, the network''s name (its default member) or "hub"'
 ---
 
@@ -13,13 +13,13 @@ Asks Minefort to move the player to another server by name: an instance's `id`, 
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `server` | `string` | yes |
+| Name     | Type     | Required |
+| -------- | -------- | -------- |
+| `server` | `string` | yes      |
 
 ## Used in
 
-> "player:connect("hub")          -- ask Minefort to move them to another server, by its name" — [Body and movement](/players/movement/)
+> "player:connect("hub") -- ask Minefort to move them to another server, by its name" — [Body and movement](/players/movement/)
 > "- `player:connect(server)` asks Minefort's proxy to move the player: a BungeeCord `Connect` for a Java player, a `Transfer` to that name for a Bedrock player. It returns nothing and does not yield." — [Body and movement](/players/movement/)
 > "player:connect(arena.id)" — [Network](/systems/network/)
 > "for _, player in waiting[instance.id] or {} do player:connect(instance.id) end" — [Network](/systems/network/)

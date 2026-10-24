@@ -5,6 +5,7 @@ order: 6
 description: The round-based minigame skeleton — a room per round with rooms.create, a countdown on time.every with a boss bar, scores in player.data, and cleanup when the last player leaves.
 tags: [minigame, rooms, round, bossbar, pattern]
 ---
+
 # A minigame loop
 
 > **In short:** a round-based game is a room, a timer, a scoreboard and a

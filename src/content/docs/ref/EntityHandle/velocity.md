@@ -1,6 +1,6 @@
 ---
-title: 'entityHandle.velocity'
-description: 'Where it is, live; writing it is a teleport'
+title: "entityHandle.velocity"
+description: "Where it is, live; writing it is a teleport"
 ---
 
 Part of [`entityHandle`](/ref/EntityHandle/).

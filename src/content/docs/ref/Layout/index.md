@@ -1,6 +1,6 @@
 ---
-title: 'Layout type'
-description: 'A layout the resource pack holds: what ui.define hands back.'
+title: "Layout type"
+description: "A layout the resource pack holds: what ui.define hands back."
 ---
 
 A layout the resource pack holds: what `ui.define` hands back.

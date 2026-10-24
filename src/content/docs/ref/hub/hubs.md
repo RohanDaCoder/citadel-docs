@@ -1,6 +1,6 @@
 ---
-title: 'hub.hubs'
-description: 'Every hub that is online, this one included'
+title: "hub.hubs"
+description: "Every hub that is online, this one included"
 ---
 
 Part of [`hub`](/ref/hub/).

@@ -1,6 +1,6 @@
 ---
-title: 'entityHandle:push'
-description: 'A shove, in blocks a tick, added to what it is already doing.'
+title: "entityHandle:push"
+description: "A shove, in blocks a tick, added to what it is already doing."
 ---
 
 Part of [`EntityHandle`](/ref/EntityHandle/).
@@ -13,9 +13,9 @@ A shove, in blocks a tick, added to what it is already doing.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `v` | [`Vec3`](/ref/Vec3/) | yes |
+| Name | Type                 | Required |
+| ---- | -------------------- | -------- |
+| `v`  | [`Vec3`](/ref/Vec3/) | yes      |
 
 ## Returns
 

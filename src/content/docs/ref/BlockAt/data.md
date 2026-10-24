@@ -1,6 +1,6 @@
 ---
-title: 'blockAt.data'
-description: 'What this block remembers beyond its state; kept with the position, saved with the chunk, and gone when the block goes'
+title: "blockAt.data"
+description: "What this block remembers beyond its state; kept with the position, saved with the chunk, and gone when the block goes"
 ---
 
 Part of [`blockAt`](/ref/BlockAt/).

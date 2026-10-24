@@ -1,6 +1,6 @@
 ---
-title: 'hud:set'
-description: 'A value per id: a number is a fill, a string a label''s words, true or false whether it shows'
+title: "hud:set"
+description: "A value per id: a number is a fill, a string a label's words, true or false whether it shows"
 ---
 
 Part of [`Hud`](/ref/Hud/).
@@ -13,9 +13,9 @@ A value per id: a number is a fill, a string a label's words, true or false whet
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `values` | `{ [ string ]: number \| string \| boolean }` | yes |
+| Name     | Type                                          | Required |
+| -------- | --------------------------------------------- | -------- |
+| `values` | `{ [ string ]: number \| string \| boolean }` | yes      |
 
 ## Used in
 

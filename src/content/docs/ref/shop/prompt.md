@@ -1,6 +1,6 @@
 ---
-title: 'shop.prompt'
-description: 'Asks Minefort to offer product to the player'
+title: "shop.prompt"
+description: "Asks Minefort to offer product to the player"
 ---
 
 Part of [`shop`](/ref/shop/).
@@ -13,10 +13,10 @@ Asks Minefort to offer `product` to the player. Returns the request id, or nil w
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `player` | `Player \| string` | yes |
-| `product` | `string` | yes |
+| Name      | Type               | Required |
+| --------- | ------------------ | -------- |
+| `player`  | `Player \| string` | yes      |
+| `product` | `string`           | yes      |
 
 ## Returns
 

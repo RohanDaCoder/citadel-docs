@@ -1,6 +1,6 @@
 ---
-title: 'field:smooth'
-description: '0 at from, 1 at to, smooth between'
+title: "field:smooth"
+description: "0 at from, 1 at to, smooth between"
 ---
 
 Part of [`Field`](/ref/Field/).
@@ -13,10 +13,10 @@ field:smooth(from: number, to: number) → Field
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `from` | `number` | yes |
-| `to` | `number` | yes |
+| Name   | Type     | Required |
+| ------ | -------- | -------- |
+| `from` | `number` | yes      |
+| `to`   | `number` | yes      |
 
 ## Returns
 

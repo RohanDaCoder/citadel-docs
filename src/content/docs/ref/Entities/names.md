@@ -1,6 +1,6 @@
 ---
-title: 'entities.names'
-description: 'Every kind by name: the pack''s own and the game''s, mob or not'
+title: "entities.names"
+description: "Every kind by name: the pack's own and the game's, mob or not"
 ---
 
 Part of [`entities`](/ref/Entities/).
@@ -13,9 +13,9 @@ Every kind by name: the pack's own and the game's, mob or not. `mob = true` give
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `query` | `{ mob: boolean ? }` | no |
+| Name    | Type                 | Required |
+| ------- | -------------------- | -------- |
+| `query` | `{ mob: boolean ? }` | no       |
 
 ## Returns
 
@@ -23,5 +23,5 @@ Every kind by name: the pack's own and the game's, mob or not. `mob = true` give
 
 ## Used in
 
-> "game.entities.names { mob = true }   -- {"pig", "sheep", "cow", ...}" — [Game data](/world/game-data/)
-> "game.entities.names()                    -- every kind: the pack's own and the game's, mob or not" — [Game data](/world/game-data/)
+> "game.entities.names { mob = true } -- {"pig", "sheep", "cow", ...}" — [Game data](/world/game-data/)
+> "game.entities.names() -- every kind: the pack's own and the game's, mob or not" — [Game data](/world/game-data/)

@@ -1,6 +1,6 @@
 ---
-title: 'generatorRules.fluid'
-description: 'generatorRules.fluid — field.'
+title: "generatorRules.fluid"
+description: "generatorRules.fluid — field."
 ---
 
 Part of [`generatorRules`](/ref/GeneratorRules/).

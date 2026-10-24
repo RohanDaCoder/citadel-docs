@@ -1,6 +1,6 @@
 ---
-title: 'texture:draw'
-description: 'Draws another texture over this one; its see-through pixels are skipped.'
+title: "texture:draw"
+description: "Draws another texture over this one; its see-through pixels are skipped."
 ---
 
 Part of [`Texture`](/ref/Texture/).
@@ -13,8 +13,8 @@ Draws another texture over this one; its see-through pixels are skipped.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `other` | [`Texture`](/ref/Texture/) | yes |
-| `x` | `number` | no |
-| `y` | `number` | no |
+| Name    | Type                       | Required |
+| ------- | -------------------------- | -------- |
+| `other` | [`Texture`](/ref/Texture/) | yes      |
+| `x`     | `number`                   | no       |
+| `y`     | `number`                   | no       |

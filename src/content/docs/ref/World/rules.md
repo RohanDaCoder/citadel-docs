@@ -1,6 +1,6 @@
 ---
-title: 'world.rules'
-description: 'world.rules{ fall = true } switches one on, false off; a rule left out or nil keeps its value, and a number or a string is an error'
+title: "world.rules"
+description: "world.rules{ fall = true } switches one on, false off; a rule left out or nil keeps its value, and a number or a string is an error"
 ---
 
 Part of [`world`](/ref/World/).
@@ -13,9 +13,9 @@ world.rules(opts: { survival: boolean ?, fall: boolean ?, damage: boolean ?, hun
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `opts` | `{ survival: boolean ?, fall: boolean ?, damage: boolean ?, hunger: boolean ?, anticheat: boolean ?, day_cycle: boolean ?, redstone: boolean ? }` | no |
+| Name   | Type                                                                                                                                              | Required |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `opts` | `{ survival: boolean ?, fall: boolean ?, damage: boolean ?, hunger: boolean ?, anticheat: boolean ?, day_cycle: boolean ?, redstone: boolean ? }` | no       |
 
 ## Returns
 

@@ -1,6 +1,6 @@
 ---
-title: 'soundStream:move'
-description: 'Speakers, for a sound made with at; on one with no place, an error.'
+title: "soundStream:move"
+description: "Speakers, for a sound made with at; on one with no place, an error."
 ---
 
 Part of [`SoundStream`](/ref/SoundStream/).
@@ -13,7 +13,7 @@ Speakers, for a sound made with `at`; on one with no place, an error.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `speaker` | `number` | yes |
-| `at` | [`SoundSpeaker`](/ref/SoundSpeaker/) | yes |
+| Name      | Type                                 | Required |
+| --------- | ------------------------------------ | -------- |
+| `speaker` | `number`                             | yes      |
+| `at`      | [`SoundSpeaker`](/ref/SoundSpeaker/) | yes      |

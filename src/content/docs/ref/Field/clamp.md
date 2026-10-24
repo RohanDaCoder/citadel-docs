@@ -1,6 +1,6 @@
 ---
-title: 'field:clamp'
-description: 'field:clamp — method.'
+title: "field:clamp"
+description: "field:clamp — method."
 ---
 
 Part of [`Field`](/ref/Field/).
@@ -11,10 +11,10 @@ field:clamp(low: number, high: number) → Field
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `low` | `number` | yes |
-| `high` | `number` | yes |
+| Name   | Type     | Required |
+| ------ | -------- | -------- |
+| `low`  | `number` | yes      |
+| `high` | `number` | yes      |
 
 ## Returns
 

@@ -1,6 +1,6 @@
 ---
-title: 'field:max'
-description: 'field:max — method.'
+title: "field:max"
+description: "field:max — method."
 ---
 
 Part of [`Field`](/ref/Field/).
@@ -11,9 +11,9 @@ field:max(other: Field | number) → Field
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `other` | `Field \| number` | yes |
+| Name    | Type              | Required |
+| ------- | ----------------- | -------- |
+| `other` | `Field \| number` | yes      |
 
 ## Returns
 

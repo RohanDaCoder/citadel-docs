@@ -1,6 +1,6 @@
 ---
-title: 'Screens and layouts'
-description: 'world.screen — a wall or floor of map frames drawn on pixel by pixel, with click hooks and per-player views — and the layout system that puts a HUD of boxes, images and labels on the client''s own screen.'
+title: "Screens and layouts"
+description: "world.screen — a wall or floor of map frames drawn on pixel by pixel, with click hooks and per-player views — and the layout system that puts a HUD of boxes, images and labels on the client's own screen."
 ---
 
 :::note[In short]
@@ -17,14 +17,14 @@ changes while it runs. Both belong to their room and end with the script.
 Put it in the air blocks in front of a wall. [`world.screen{}`](/ref/World/screen/)
 places it:
 
-| Option | What it is |
-| --- | --- |
-| `at` | The top-left frame as the viewer sees it |
-| `facing` | The side the viewer stands on; `"up"` lies the screen flat |
-| `up` | For `facing = "up"`: the way the top of the picture points, `"north"` by default |
-| `width`, `height` | The screen's size in frames |
-| `glow` | `true` makes glow frames on 1.17 and later, plain frames before |
-| `on_click` | A click hook, settable here or later |
+| Option            | What it is                                                                       |
+| ----------------- | -------------------------------------------------------------------------------- |
+| `at`              | The top-left frame as the viewer sees it                                         |
+| `facing`          | The side the viewer stands on; `"up"` lies the screen flat                       |
+| `up`              | For `facing = "up"`: the way the top of the picture points, `"north"` by default |
+| `width`, `height` | The screen's size in frames                                                      |
+| `glow`            | `true` makes glow frames on 1.17 and later, plain frames before                  |
+| `on_click`        | A click hook, settable here or later                                             |
 
 - Changes go out once per tick, as each frame's box of changed pixels.
 - Colours snap to the map palette (about 250 tones). Each client gets its
@@ -153,14 +153,14 @@ end)
 
 Three things to show, three ways to place them:
 
-| Call | What it is | Options |
-| --- | --- | --- |
-| [`ui.box{}`](/ref/Ui/box/) | A plain shape | `width`, `height` (1 to 256), `color`, `radius` |
-| [`ui.image{}`](/ref/Ui/image/) | A picture | `image` (a `game.texture`), `color` (a tint) |
-| [`ui.label{}`](/ref/Ui/label/) | Words | `text`, `color`, `width`, `align` |
-| [`ui.row{}`](/ref/Ui/row/) | Its children side by side | `gap`, `align`, then the children |
-| [`ui.column{}`](/ref/Ui/column/) | Its children under each other | `gap`, `align`, then the children |
-| [`ui.stack{}`](/ref/Ui/stack/) | Its children over each other, the last on top | `align`, then the children |
+| Call                             | What it is                                    | Options                                         |
+| -------------------------------- | --------------------------------------------- | ----------------------------------------------- |
+| [`ui.box{}`](/ref/Ui/box/)       | A plain shape                                 | `width`, `height` (1 to 256), `color`, `radius` |
+| [`ui.image{}`](/ref/Ui/image/)   | A picture                                     | `image` (a `game.texture`), `color` (a tint)    |
+| [`ui.label{}`](/ref/Ui/label/)   | Words                                         | `text`, `color`, `width`, `align`               |
+| [`ui.row{}`](/ref/Ui/row/)       | Its children side by side                     | `gap`, `align`, then the children               |
+| [`ui.column{}`](/ref/Ui/column/) | Its children under each other                 | `gap`, `align`, then the children               |
+| [`ui.stack{}`](/ref/Ui/stack/)   | Its children over each other, the last on top | `align`, then the children                      |
 
 - There are no coordinates. Rows, columns and stacks place everything. `gap` is
   the pixels between two children. `align` is `"start"`, `"center"` (the
@@ -181,12 +181,12 @@ Three things to show, three ways to place them:
 An item with an `id` is live. [`hud:set{}`](/ref/Hud/set/) takes a value per id,
 and `hud.<id>` has the same values as fields:
 
-| Field | In `hud:set{}` | What it is |
-| --- | --- | --- |
-| `fill` | a number | How much of a box or picture shows, from its left edge, 0 to 1 |
-| `text` | a string | A label's words |
-| `visible` | `true` or `false` | Whether it shows; `hud.<id>.visible = nil` shows it again |
-| `color` | (field only) | A box's colour, a picture's tint, a label's ink |
+| Field     | In `hud:set{}`    | What it is                                                     |
+| --------- | ----------------- | -------------------------------------------------------------- |
+| `fill`    | a number          | How much of a box or picture shows, from its left edge, 0 to 1 |
+| `text`    | a string          | A label's words                                                |
+| `visible` | `true` or `false` | Whether it shows; `hud.<id>.visible = nil` shows it again      |
+| `color`   | (field only)      | A box's colour, a picture's tint, a label's ink                |
 
 An unknown id is an error that lists the layout's ids. The values tween, as the
 `hud.hp` example above shows.

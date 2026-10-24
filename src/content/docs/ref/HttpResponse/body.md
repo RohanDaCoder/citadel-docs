@@ -1,6 +1,6 @@
 ---
-title: 'httpResponse.body'
-description: 'The answer as bytes.'
+title: "httpResponse.body"
+description: "The answer as bytes."
 ---
 
 Part of [`httpResponse`](/ref/HttpResponse/).

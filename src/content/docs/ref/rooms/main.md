@@ -1,6 +1,6 @@
 ---
-title: 'rooms.main'
-description: 'The main room, whose tables are the globals world, players, ui and the rest.'
+title: "rooms.main"
+description: "The main room, whose tables are the globals world, players, ui and the rest."
 ---
 
 Part of [`rooms`](/ref/rooms/).

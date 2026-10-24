@@ -1,6 +1,6 @@
 ---
-title: 'storage.status'
-description: 'Last persistence error and whether there are unsaved changes.'
+title: "storage.status"
+description: "Last persistence error and whether there are unsaved changes."
 ---
 
 Part of [`storage`](/ref/storage/).

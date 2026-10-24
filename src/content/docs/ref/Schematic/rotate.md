@@ -1,6 +1,6 @@
 ---
-title: 'schematic:rotate'
-description: 'The build''s width, height and length in blocks'
+title: "schematic:rotate"
+description: "The build's width, height and length in blocks"
 ---
 
 Part of [`Schematic`](/ref/Schematic/).
@@ -13,9 +13,9 @@ The build's width, height and length in blocks. The build's own lowest corner, w
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `degrees` | `number` | yes |
+| Name      | Type     | Required |
+| --------- | -------- | -------- |
+| `degrees` | `number` | yes      |
 
 ## Returns
 

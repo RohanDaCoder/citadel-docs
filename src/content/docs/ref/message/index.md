@@ -1,6 +1,6 @@
 ---
-title: 'message global'
-description: 'A chat line to everyone in the main room.'
+title: "message global"
+description: "A chat line to everyone in the main room."
 ---
 
 A chat line to everyone in the main room.

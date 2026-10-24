@@ -1,6 +1,6 @@
 ---
-title: 'socketMessage:json'
-description: 'The message as a table; an error when it is not JSON.'
+title: "socketMessage:json"
+description: "The message as a table; an error when it is not JSON."
 ---
 
 Part of [`SocketMessage`](/ref/SocketMessage/).

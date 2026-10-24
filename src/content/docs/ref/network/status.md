@@ -1,6 +1,6 @@
 ---
-title: 'network.status'
-description: 'Says where this instance is'
+title: "network.status"
+description: "Says where this instance is"
 ---
 
 Part of [`network`](/ref/network/).
@@ -13,9 +13,9 @@ Says where this instance is. At most one a second is sent: the first at once, th
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `options` | `{open: number , status: string ?, meta: any }` | yes |
+| Name      | Type                                            | Required |
+| --------- | ----------------------------------------------- | -------- |
+| `options` | `{open: number , status: string ?, meta: any }` | yes      |
 
 ## Used in
 

@@ -1,6 +1,6 @@
 ---
-title: 'hudPart.text'
-description: 'A label''s words.'
+title: "hudPart.text"
+description: "A label's words."
 ---
 
 Part of [`hudPart`](/ref/HudPart/).

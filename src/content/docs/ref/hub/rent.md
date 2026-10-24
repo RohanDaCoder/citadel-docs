@@ -1,6 +1,6 @@
 ---
-title: 'hub.rent'
-description: 'Offers portal slot for Gems, to lead to experience (what /play takes)'
+title: "hub.rent"
+description: "Offers portal slot for Gems, to lead to experience (what /play takes)"
 ---
 
 Part of [`hub`](/ref/hub/).
@@ -13,12 +13,12 @@ Offers portal `slot` for Gems, to lead to `experience` (what `/play` takes). Ret
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `player` | `Player \| string` | yes |
-| `slot` | `number` | yes |
-| `product` | `string` | yes |
-| `experience` | `string` | no |
+| Name         | Type               | Required |
+| ------------ | ------------------ | -------- |
+| `player`     | `Player \| string` | yes      |
+| `slot`       | `number`           | yes      |
+| `product`    | `string`           | yes      |
+| `experience` | `string`           | no       |
 
 ## Returns
 

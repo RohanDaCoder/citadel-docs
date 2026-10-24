@@ -1,6 +1,6 @@
 ---
-title: 'socketMessage.text'
-description: 'The message as text.'
+title: "socketMessage.text"
+description: "The message as text."
 ---
 
 Part of [`socketMessage`](/ref/SocketMessage/).

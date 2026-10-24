@@ -5,6 +5,7 @@ order: 7
 description: fx.particle — particles at points, one call or many, with count, spread, velocity, speed and dust colour and size — and the beam pattern: dust along a line, redrawn every other tick, tweenable into a laser.
 tags: [fx, particles, dust, beams, lasers]
 ---
+
 # Particles and lasers
 
 > **In short:** particles at points: a burst, a trail, or a laser drawn as a
@@ -22,14 +23,14 @@ Particles live on the `fx` global — Minecraft's particle packet, for a room
 fx.particle(name, pos, { count = 1, spread = 0, velocity = nil, speed = 0, color = nil, size = 1 })
 ```
 
-| Option | Default | What it is |
-| --- | --- | --- |
-| `count` | 1 | Particles at each point |
-| `spread` | 0 | A random box this many blocks out from each point; a number or a vec3 (one size per axis) |
-| `velocity` | nil | A vec3: one particle that moves along it |
-| `speed` | 0 | With `velocity`, scales it (1); without it, how fast the particles scatter — 0 is still |
-| `color` | nil | `dust` only |
-| `size` | 1 | `dust` only, 0.5 to 4 |
+| Option     | Default | What it is                                                                                |
+| ---------- | ------- | ----------------------------------------------------------------------------------------- |
+| `count`    | 1       | Particles at each point                                                                   |
+| `spread`   | 0       | A random box this many blocks out from each point; a number or a vec3 (one size per axis) |
+| `velocity` | nil     | A vec3: one particle that moves along it                                                  |
+| `speed`    | 0       | With `velocity`, scales it (1); without it, how fast the particles scatter — 0 is still   |
+| `color`    | nil     | `dust` only                                                                               |
+| `size`     | 1       | `dust` only, 0.5 to 4                                                                     |
 
 `name` is the particle: `dust`, `end_rod`, `explosion`, `firework`, `flame`,
 `note` or `totem_of_undying`. Any other name sends nothing.

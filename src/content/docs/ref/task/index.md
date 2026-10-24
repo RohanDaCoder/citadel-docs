@@ -1,6 +1,6 @@
 ---
-title: 'task global'
-description: 'The scheduler: spawn, delay, defer, wait and cancel.'
+title: "task global"
+description: "The scheduler: spawn, delay, defer, wait and cancel."
 ---
 
 The scheduler: `spawn`, `delay`, `defer`, `wait` and `cancel`.

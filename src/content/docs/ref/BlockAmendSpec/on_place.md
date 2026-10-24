@@ -1,6 +1,6 @@
 ---
-title: 'blockAmendSpec.on_place'
-description: 'A player put it down.'
+title: "blockAmendSpec.on_place"
+description: "A player put it down."
 ---
 
 Part of [`blockAmendSpec`](/ref/BlockAmendSpec/).
@@ -13,9 +13,9 @@ A player put it down.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(block` | `BlockAt , player: Player ?, base: (... any ) -> any ) -> ()` | yes |
+| Name     | Type                                                          | Required |
+| -------- | ------------------------------------------------------------- | -------- |
+| `(block` | `BlockAt , player: Player ?, base: (... any ) -> any ) -> ()` | yes      |
 
 ## Returns
 

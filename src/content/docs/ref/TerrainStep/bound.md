@@ -1,6 +1,6 @@
 ---
-title: 'terrainStep.bound'
-description: 'Springs: the y is picked below this bound before nesting pushes it deeper.'
+title: "terrainStep.bound"
+description: "Springs: the y is picked below this bound before nesting pushes it deeper."
 ---
 
 Part of [`terrainStep`](/ref/TerrainStep/).

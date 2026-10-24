@@ -1,6 +1,6 @@
 ---
-title: 'entitySpec.on_spawn'
-description: 'Told when one of this kind is spawned; nothing waits on it and its answer is not read.'
+title: "entitySpec.on_spawn"
+description: "Told when one of this kind is spawned; nothing waits on it and its answer is not read."
 ---
 
 Part of [`entitySpec`](/ref/EntitySpec/).
@@ -13,9 +13,9 @@ Told when one of this kind is spawned; nothing waits on it and its answer is not
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(e` | `EntityHandle ) -> ()` | yes |
+| Name | Type                   | Required |
+| ---- | ---------------------- | -------- |
+| `(e` | `EntityHandle ) -> ()` | yes      |
 
 ## Returns
 

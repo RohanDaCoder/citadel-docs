@@ -1,5 +1,5 @@
 ---
-title: 'Ink type'
+title: "Ink type"
 description: 'Anywhere a colour is asked for, every spelling works: a color value, a name, or hex ("#ff8800")'
 ---
 

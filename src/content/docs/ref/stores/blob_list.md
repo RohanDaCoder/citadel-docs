@@ -1,6 +1,6 @@
 ---
-title: 'stores.blob_list'
-description: 'Lists a player''s blobs across all blob stores in this scope, each with its store, key, version and size.'
+title: "stores.blob_list"
+description: "Lists a player's blobs across all blob stores in this scope, each with its store, key, version and size."
 ---
 
 Part of [`stores`](/ref/stores/).
@@ -13,9 +13,9 @@ Lists a player's blobs across all blob stores in this scope, each with its store
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `owner` | `string` | yes |
+| Name    | Type     | Required |
+| ------- | -------- | -------- |
+| `owner` | `string` | yes      |
 
 ## Returns
 

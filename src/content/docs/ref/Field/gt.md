@@ -1,6 +1,6 @@
 ---
-title: 'field:gt'
-description: '1 where this is the larger, else 0.'
+title: "field:gt"
+description: "1 where this is the larger, else 0."
 ---
 
 Part of [`Field`](/ref/Field/).
@@ -13,9 +13,9 @@ field:gt(other: Field | number) → Field
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `other` | `Field \| number` | yes |
+| Name    | Type              | Required |
+| ------- | ----------------- | -------- |
+| `other` | `Field \| number` | yes      |
 
 ## Returns
 

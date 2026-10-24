@@ -1,6 +1,6 @@
 ---
-title: 'storage.flush'
-description: 'Yields until saved; raises an error on failure'
+title: "storage.flush"
+description: "Yields until saved; raises an error on failure"
 ---
 
 Part of [`storage`](/ref/storage/).

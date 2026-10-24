@@ -1,6 +1,6 @@
 ---
-title: 'bar:destroy'
-description: 'Removes the bar.'
+title: "bar:destroy"
+description: "Removes the bar."
 ---
 
 Part of [`Bar`](/ref/Bar/).

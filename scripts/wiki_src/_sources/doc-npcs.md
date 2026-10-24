@@ -27,27 +27,27 @@ p.id, p.name           -- the name tag is always shown; errors when this game ha
 p.at, p.rotation   -- live
 p:destroy()
 ```
+
 - A name is at most 16 characters.
 - **Leave `name` out and the NPC has no name tag** from 1.8 on. A 1.7 client still shows a tag with an engine-made name.
 - An NPC stays in the tab list for two seconds after it appears, then leaves it.
 - A `skin` given as a player’s name costs two calls to Mojang. The NPC shows its own skin until the answer arrives. If no account has that name, the log says so.
 - The engine removes a script’s NPCs and puppets when the script ends or reloads.
-**Walking.** The engine moves a walking NPC along the path the script gives
-once. It faces its direction and moves its legs.
+  **Walking.** The engine moves a walking NPC along the path the script gives
+  once. It faces its direction and moves its legs.
 - It walks straight between points, at the points’ height. Put points up a stair and at each corner.
 - It walks through anything. The pack keeps the path clear.
-A **pose** stays during a walk or a ride. A client that cannot show a pose
-sees the NPC standing:
-| pose | shown from |
-| --- | --- |
-| `"crouching"` | 1.8 |
-| `"sleeping"` | 1.8: lying on its back, feet at `at`, head toward the yaw’s side (to a quarter turn before 1.14) |
-| `"swimming"` | 1.13 |
-For a client before 1.14, the engine puts a bed under a sleeping NPC, at
-height 0 in its column. Do not lay a sleeping NPC where the pack builds at
-height 0 in that column.
-**Riding.** `n:ride(thing, { seat = n })` takes what `player:ride` takes: a
-vehicle’s seat, a model display’s seat, a display, a hitbox, or another NPC.
+  A **pose** stays during a walk or a ride. A client that cannot show a pose
+  sees the NPC standing:
+  | pose | shown from | | --- | --- |
+  | `"crouching"` | 1.8 |
+  | `"sleeping"` | 1.8: lying on its back, feet at `at`, head toward the yaw’s side (to a quarter turn before 1.14) |
+  | `"swimming"` | 1.13 |
+  For a client before 1.14, the engine puts a bed under a sleeping NPC, at
+  height 0 in its column. Do not lay a sleeping NPC where the pack builds at
+  height 0 in that column.
+  **Riding.** `n:ride(thing, { seat = n })` takes what `player:ride` takes: a
+  vehicle’s seat, a model display’s seat, a display, a hitbox, or another NPC.
 - Every client, also a later one, sees the NPC seated and moving with the vehicle.
 - A client that cannot see the seat (a display needs 1.19.4) sees the NPC standing at the seat, moving with it.
 - `ride` stops a walk. `n.at` reads the seat’s position.

@@ -1,6 +1,6 @@
 ---
-title: 'texture:noise'
-description: 'Paints each pixel in the area one of the colours at random, as for stone, bark or grain.'
+title: "texture:noise"
+description: "Paints each pixel in the area one of the colours at random, as for stone, bark or grain."
 ---
 
 Part of [`Texture`](/ref/Texture/).
@@ -13,11 +13,11 @@ Paints each pixel in the area one of the colours at random, as for stone, bark o
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `x` | `number` | yes |
-| `y` | `number` | yes |
-| `w` | `number` | yes |
-| `h` | `number` | yes |
-| `colors` | `{ Ink }` | yes |
-| `seed` | `number` | no |
+| Name     | Type      | Required |
+| -------- | --------- | -------- |
+| `x`      | `number`  | yes      |
+| `y`      | `number`  | yes      |
+| `w`      | `number`  | yes      |
+| `h`      | `number`  | yes      |
+| `colors` | `{ Ink }` | yes      |
+| `seed`   | `number`  | no       |

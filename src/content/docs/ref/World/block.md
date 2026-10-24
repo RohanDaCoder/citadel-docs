@@ -1,6 +1,6 @@
 ---
-title: 'world.block'
-description: 'The block there as the handle a hook gets: reads are live, and what it does lands on the next tick'
+title: "world.block"
+description: "The block there as the handle a hook gets: reads are live, and what it does lands on the next tick"
 ---
 
 Part of [`world`](/ref/World/).
@@ -13,9 +13,9 @@ The block there as the handle a hook gets: reads are live, and what it does land
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `pos` | [`Vec3`](/ref/Vec3/) | yes |
+| Name  | Type                 | Required |
+| ----- | -------------------- | -------- |
+| `pos` | [`Vec3`](/ref/Vec3/) | yes      |
 
 ## Returns
 
@@ -23,6 +23,6 @@ The block there as the handle a hook gets: reads are live, and what it does land
 
 ## Used in
 
-> "world.block(pos)                          -- the block there as a handle: its state, its data, whether it is powered; see "power"" — [Blocks and terrain](/world/terrain-generation/)
+> "world.block(pos) -- the block there as a handle: its state, its data, whether it is powered; see "power"" — [Blocks and terrain](/world/terrain-generation/)
 > "it from anywhere with `world.block(pos)`:" — [Custom blocks](/world/custom-blocks/)
-> "local door = world.block(vec3(10, 65, 10))   -- the block there, or nil where the chunk is not loaded" — [Custom blocks](/world/custom-blocks/)
+> "local door = world.block(vec3(10, 65, 10)) -- the block there, or nil where the chunk is not loaded" — [Custom blocks](/world/custom-blocks/)

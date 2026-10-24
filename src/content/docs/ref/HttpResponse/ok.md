@@ -1,6 +1,6 @@
 ---
-title: 'httpResponse.ok'
-description: 'True for a 2xx status.'
+title: "httpResponse.ok"
+description: "True for a 2xx status."
 ---
 
 Part of [`httpResponse`](/ref/HttpResponse/).

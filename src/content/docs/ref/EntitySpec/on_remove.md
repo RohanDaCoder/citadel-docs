@@ -1,5 +1,5 @@
 ---
-title: 'entitySpec.on_remove'
+title: "entitySpec.on_remove"
 description: 'Told when it goes; why is "removed", "settled", "killed" or "unloaded"'
 ---
 
@@ -13,9 +13,9 @@ Told when it goes; `why` is "removed", "settled", "killed" or "unloaded". Not ca
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(e` | `EntityHandle , why: string ?) -> ()` | yes |
+| Name | Type                                  | Required |
+| ---- | ------------------------------------- | -------- |
+| `(e` | `EntityHandle , why: string ?) -> ()` | yes      |
 
 ## Returns
 

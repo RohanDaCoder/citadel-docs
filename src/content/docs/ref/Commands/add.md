@@ -1,5 +1,5 @@
 ---
-title: 'commands.add'
+title: "commands.add"
 description: 'usage: "bet <amount:integer 1..10000> [color:red|black]"'
 ---
 
@@ -13,11 +13,11 @@ usage: "bet <amount:integer 1..10000> [color:red|black]". Types: word, integer, 
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `usage` | `string` | yes |
-| `fn` | `(player: Player , args: { [ string ]: any }) -> string` | no |
-| `opts` | [`CommandOpts`](/ref/CommandOpts/) | no |
+| Name    | Type                                                     | Required |
+| ------- | -------------------------------------------------------- | -------- |
+| `usage` | `string`                                                 | yes      |
+| `fn`    | `(player: Player , args: { [ string ]: any }) -> string` | no       |
+| `opts`  | [`CommandOpts`](/ref/CommandOpts/)                       | no       |
 
 ## Returns
 

@@ -1,6 +1,6 @@
 ---
-title: 'vec3.zero'
-description: 'vec3(0, 0, 0).'
+title: "vec3.zero"
+description: "vec3(0, 0, 0)."
 ---
 
 Part of [`vec3`](/ref/vec3/).

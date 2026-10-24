@@ -1,6 +1,6 @@
 ---
-title: 'soundStream:stop'
-description: 'soundStream:stop — method.'
+title: "soundStream:stop"
+description: "soundStream:stop — method."
 ---
 
 Part of [`SoundStream`](/ref/SoundStream/).

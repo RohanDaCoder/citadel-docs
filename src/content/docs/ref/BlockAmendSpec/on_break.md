@@ -1,6 +1,6 @@
 ---
-title: 'blockAmendSpec.on_break'
-description: 'Something broke it; by says what'
+title: "blockAmendSpec.on_break"
+description: "Something broke it; by says what"
 ---
 
 Part of [`blockAmendSpec`](/ref/BlockAmendSpec/).
@@ -13,9 +13,9 @@ Something broke it; `by` says what. Answers "none", "table" or a drops list.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(block` | `BlockAt , player: Player ?, by: Breaker , base: (... any ) -> any ) -> Drops` | no |
+| Name     | Type                                                                           | Required |
+| -------- | ------------------------------------------------------------------------------ | -------- |
+| `(block` | `BlockAt , player: Player ?, by: Breaker , base: (... any ) -> any ) -> Drops` | no       |
 
 ## Returns
 

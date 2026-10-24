@@ -1,6 +1,6 @@
 ---
-title: 'askCount.missed'
-description: 'Deadlines that passed with no answer.'
+title: "askCount.missed"
+description: "Deadlines that passed with no answer."
 ---
 
 Part of [`askCount`](/ref/AskCount/).

@@ -1,6 +1,6 @@
 ---
-title: 'block.name'
-description: 'The block''s canonical name.'
+title: "block.name"
+description: "The block's canonical name."
 ---
 
 Part of [`block`](/ref/Block/).
@@ -13,4 +13,4 @@ The block's canonical name.
 
 ## Used in
 
-> "block.name       -- "rave:crate"" — [Custom blocks](/world/custom-blocks/)
+> "block.name -- "rave:crate"" — [Custom blocks](/world/custom-blocks/)

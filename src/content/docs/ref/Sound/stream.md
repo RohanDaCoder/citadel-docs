@@ -1,6 +1,6 @@
 ---
-title: 'sound.stream'
-description: 'A live stream (MP3, or an FLV''s sound) or a pack''s sound file (OGG, MP3, WAV), heard through the mod a screen''s stream uses'
+title: "sound.stream"
+description: "A live stream (MP3, or an FLV's sound) or a pack's sound file (OGG, MP3, WAV), heard through the mod a screen's stream uses"
 ---
 
 Part of [`sound`](/ref/Sound/).
@@ -13,9 +13,9 @@ A live stream (MP3, or an FLV's sound) or a pack's sound file (OGG, MP3, WAV), h
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `opts` | `{ url: string ?, file: string ?, at: ( SoundSpeaker \| { SoundSpeaker })?, to: ( Player \| { Player })?, distance: number ?, loop: boolean ?, name: string ?, }` | yes |
+| Name   | Type                                                                                                                                                              | Required |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
+| `opts` | `{ url: string ?, file: string ?, at: ( SoundSpeaker \| { SoundSpeaker })?, to: ( Player \| { Player })?, distance: number ?, loop: boolean ?, name: string ?, }` | yes      |
 
 ## Returns
 

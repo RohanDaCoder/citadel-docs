@@ -1,6 +1,6 @@
 ---
-title: 'blockAt:drop'
-description: 'A name, or an item table: a pack item keeps its id.'
+title: "blockAt:drop"
+description: "A name, or an item table: a pack item keeps its id."
 ---
 
 Part of [`BlockAt`](/ref/BlockAt/).
@@ -13,7 +13,7 @@ A name, or an item table: a pack item keeps its id.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `item` | [`ItemSpec`](/ref/ItemSpec/) | yes |
-| `count` | `number` | no |
+| Name    | Type                         | Required |
+| ------- | ---------------------------- | -------- |
+| `item`  | [`ItemSpec`](/ref/ItemSpec/) | yes      |
+| `count` | `number`                     | no       |

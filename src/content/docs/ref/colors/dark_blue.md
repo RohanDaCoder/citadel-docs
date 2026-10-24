@@ -1,6 +1,6 @@
 ---
-title: 'colors.dark_blue'
-description: 'colors.dark_blue — field.'
+title: "colors.dark_blue"
+description: "colors.dark_blue — field."
 ---
 
 Part of [`colors`](/ref/colors/).

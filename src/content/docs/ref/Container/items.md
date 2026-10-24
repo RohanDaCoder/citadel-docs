@@ -1,6 +1,6 @@
 ---
-title: 'container:items'
-description: 'The filled slots, in order.'
+title: "container:items"
+description: "The filled slots, in order."
 ---
 
 Part of [`Container`](/ref/Container/).

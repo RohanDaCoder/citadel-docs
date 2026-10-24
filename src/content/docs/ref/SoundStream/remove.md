@@ -1,6 +1,6 @@
 ---
-title: 'soundStream:remove'
-description: 'soundStream:remove — method.'
+title: "soundStream:remove"
+description: "soundStream:remove — method."
 ---
 
 Part of [`SoundStream`](/ref/SoundStream/).
@@ -11,6 +11,6 @@ soundStream:remove(speaker: number)
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `speaker` | `number` | yes |
+| Name      | Type     | Required |
+| --------- | -------- | -------- |
+| `speaker` | `number` | yes      |

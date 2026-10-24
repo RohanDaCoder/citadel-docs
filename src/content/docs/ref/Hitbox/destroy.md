@@ -1,6 +1,6 @@
 ---
-title: 'hitbox:destroy'
-description: 'Removes the hitbox, and its wall when solid.'
+title: "hitbox:destroy"
+description: "Removes the hitbox, and its wall when solid."
 ---
 
 Part of [`Hitbox`](/ref/Hitbox/).

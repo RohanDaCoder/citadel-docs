@@ -1,5 +1,5 @@
 ---
-title: 'ColorName type'
+title: "ColorName type"
 description: 'Every colour''s name: Minecraft''s sixteen, which every client has had since 1.7, six more, and "transparent"'
 ---
 

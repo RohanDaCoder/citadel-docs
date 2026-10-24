@@ -1,6 +1,6 @@
 ---
-title: 'modelBuild:animation'
-description: '{ length = seconds, loop = false, <part name> = { rotation = { [t] = is both named fields and part names, so this one is open.'
+title: "modelBuild:animation"
+description: "{ length = seconds, loop = false, <part name> = { rotation = { [t] = is both named fields and part names, so this one is open."
 ---
 
 Part of [`ModelBuild`](/ref/ModelBuild/).
@@ -13,7 +13,7 @@ modelBuild:animation(name: string, opts: { [string]: any })
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `name` | `string` | yes |
-| `opts` | `{ [ string ]: any }` | yes |
+| Name   | Type                  | Required |
+| ------ | --------------------- | -------- |
+| `name` | `string`              | yes      |
+| `opts` | `{ [ string ]: any }` | yes      |

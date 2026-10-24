@@ -1,6 +1,6 @@
 ---
-title: 'block.drops'
-description: 'The one field a pack writes'
+title: "block.drops"
+description: "The one field a pack writes"
 ---
 
 Part of [`block`](/ref/Block/).

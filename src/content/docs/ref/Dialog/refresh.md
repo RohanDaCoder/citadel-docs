@@ -1,6 +1,6 @@
 ---
-title: 'dialog:refresh'
-description: 'Whether the player still has it open'
+title: "dialog:refresh"
+description: "Whether the player still has it open"
 ---
 
 Part of [`Dialog`](/ref/Dialog/).

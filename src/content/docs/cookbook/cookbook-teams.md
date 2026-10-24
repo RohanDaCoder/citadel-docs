@@ -1,6 +1,6 @@
 ---
-title: 'Teams'
-description: 'Set up teams with player.data, make members visible only to their own team, and keep the assignments alive across joins and reloads.'
+title: "Teams"
+description: "Set up teams with player.data, make members visible only to their own team, and keep the assignments alive across joins and reloads."
 ---
 
 :::note[In short]

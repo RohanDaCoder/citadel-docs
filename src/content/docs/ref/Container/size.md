@@ -1,6 +1,6 @@
 ---
-title: 'container.size'
-description: 'How many slots the chest has, e.g'
+title: "container.size"
+description: "How many slots the chest has, e.g"
 ---
 
 Part of [`container`](/ref/Container/).

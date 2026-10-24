@@ -1,5 +1,5 @@
 ---
-title: 'world.on_entity_spawn'
+title: "world.on_entity_spawn"
 description: 'Tells after a mob appeared, with its handle and name; a natural spawn fires it on every game version that has one, and a pack''s own world.spawn("cow", pos) fires it too'
 ---
 
@@ -13,9 +13,9 @@ Tells after a mob appeared, with its handle and name; a natural spawn fires it o
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `fn` | `(entity: EntityHandle , name: string ) -> ()` | yes |
+| Name | Type                                           | Required |
+| ---- | ---------------------------------------------- | -------- |
+| `fn` | `(entity: EntityHandle , name: string ) -> ()` | yes      |
 
 ## Returns
 
@@ -23,5 +23,5 @@ Tells after a mob appeared, with its handle and name; a natural spawn fires it o
 
 ## Used in
 
-> "world.on_entity_spawn(function(entity, name) end) -> connection   -- a mob appeared; entity is the handle" — [Game events](/concepts/events/)
+> "world.on_entity_spawn(function(entity, name) end) -> connection -- a mob appeared; entity is the handle" — [Game events](/concepts/events/)
 > "`world.on_entity_spawn` fires for mob kinds only. `world.on_entity_death`" — [Game events](/concepts/events/)

@@ -1,6 +1,6 @@
 ---
-title: 'A minigame loop'
-description: 'The round-based minigame skeleton — a room per round with rooms.create, a countdown on time.every with a boss bar, scores in player.data, and cleanup when the last player leaves.'
+title: "A minigame loop"
+description: "The round-based minigame skeleton — a room per round with rooms.create, a countdown on time.every with a boss bar, scores in player.data, and cleanup when the last player leaves."
 ---
 
 :::note[In short]

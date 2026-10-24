@@ -1,6 +1,6 @@
 ---
-title: 'parts.define'
-description: 'Declares a named part and its generator; nothing runs on load'
+title: "parts.define"
+description: "Declares a named part and its generator; nothing runs on load"
 ---
 
 Part of [`parts`](/ref/parts/).
@@ -13,9 +13,9 @@ Declares a named part and its generator; nothing runs on load. A generator runs 
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `def` | [`PartDefinition`](/ref/PartDefinition/) | yes |
+| Name  | Type                                     | Required |
+| ----- | ---------------------------------------- | -------- |
+| `def` | [`PartDefinition`](/ref/PartDefinition/) | yes      |
 
 ## Used in
 

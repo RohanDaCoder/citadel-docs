@@ -1,6 +1,6 @@
 ---
-title: 'sound.play'
-description: 'Plays a sound by name to everyone in the room; volume above 1 carries further, pitch 0.5..2.0.'
+title: "sound.play"
+description: "Plays a sound by name to everyone in the room; volume above 1 carries further, pitch 0.5..2.0."
 ---
 
 Part of [`sound`](/ref/Sound/).
@@ -13,10 +13,10 @@ Plays a sound by name to everyone in the room; volume above 1 carries further, p
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `name` | `string` | yes |
-| `opts` | `{ at: Vec3 ?, volume: number ?, pitch: number ?, category: string ?, }` | no |
+| Name   | Type                                                                     | Required |
+| ------ | ------------------------------------------------------------------------ | -------- |
+| `name` | `string`                                                                 | yes      |
+| `opts` | `{ at: Vec3 ?, volume: number ?, pitch: number ?, category: string ?, }` | no       |
 
 ## Used in
 

@@ -1,6 +1,6 @@
 ---
-title: 'npc:wear'
-description: 'Puts armour on it, head first; each piece is an item.'
+title: "npc:wear"
+description: "Puts armour on it, head first; each piece is an item."
 ---
 
 Part of [`Npc`](/ref/Npc/).
@@ -13,9 +13,9 @@ Puts armour on it, head first; each piece is an item.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `pieces` | [`Worn`](/ref/Worn/) | yes |
+| Name     | Type                 | Required |
+| -------- | -------------------- | -------- |
+| `pieces` | [`Worn`](/ref/Worn/) | yes      |
 
 ## Used in
 

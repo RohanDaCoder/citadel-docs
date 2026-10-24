@@ -1,6 +1,6 @@
 ---
-title: 'network.list'
-description: 'The network''s instances, or only those with label.'
+title: "network.list"
+description: "The network's instances, or only those with label."
 ---
 
 Part of [`network`](/ref/network/).
@@ -13,9 +13,9 @@ The network's instances, or only those with `label`.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `label` | `string` | no |
+| Name    | Type     | Required |
+| ------- | -------- | -------- |
+| `label` | `string` | no       |
 
 ## Returns
 

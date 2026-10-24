@@ -1,6 +1,6 @@
 ---
-title: 'biomeDefinition.fog'
-description: 'The colour of the far distance.'
+title: "biomeDefinition.fog"
+description: "The colour of the far distance."
 ---
 
 Part of [`biomeDefinition`](/ref/BiomeDefinition/).

@@ -1,6 +1,6 @@
 ---
-title: 'builder:block'
-description: 'Sets one block of the build; later writes win.'
+title: "builder:block"
+description: "Sets one block of the build; later writes win."
 ---
 
 Part of [`Builder`](/ref/Builder/).
@@ -13,7 +13,7 @@ Sets one block of the build; later writes win.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `pos` | [`Vec3`](/ref/Vec3/) | yes |
-| `block` | `string` | yes |
+| Name    | Type                 | Required |
+| ------- | -------------------- | -------- |
+| `pos`   | [`Vec3`](/ref/Vec3/) | yes      |
+| `block` | `string`             | yes      |

@@ -1,6 +1,6 @@
 ---
-title: 'world.schematic'
-description: 'A file inside the pack; a path that leaves it, or one that is not there, is an error naming the file.'
+title: "world.schematic"
+description: "A file inside the pack; a path that leaves it, or one that is not there, is an error naming the file."
 ---
 
 Part of [`world`](/ref/World/).
@@ -13,9 +13,9 @@ A file inside the pack; a path that leaves it, or one that is not there, is an e
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `file` | `string` | yes |
+| Name   | Type     | Required |
+| ------ | -------- | -------- |
+| `file` | `string` | yes      |
 
 ## Returns
 
@@ -23,6 +23,6 @@ A file inside the pack; a path that leaves it, or one that is not there, is an e
 
 ## Used in
 
-> "world.schematic(file)                     -- a .schem file in the pack, read once" — [Blocks and terrain](/world/terrain-generation/)
-> "local town  = world.schematic("builds/town.schem")" — [Blocks and terrain](/world/terrain-generation/)
+> "world.schematic(file) -- a .schem file in the pack, read once" — [Blocks and terrain](/world/terrain-generation/)
+> "local town = world.schematic("builds/town.schem")" — [Blocks and terrain](/world/terrain-generation/)
 > "`world.schematic` reads. Generating a kept part pastes that file." — [Named parts](/world/building/)

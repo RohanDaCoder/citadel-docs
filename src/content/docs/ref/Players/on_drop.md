@@ -1,6 +1,6 @@
 ---
-title: 'players.on_drop'
-description: 'Calls fn when a stack lands on the ground; player is nil where the world dropped it or they have left.'
+title: "players.on_drop"
+description: "Calls fn when a stack lands on the ground; player is nil where the world dropped it or they have left."
 ---
 
 Part of [`players`](/ref/Players/).
@@ -13,9 +13,9 @@ Calls `fn` when a stack lands on the ground; `player` is nil where the world dro
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `fn` | `(player: Player ?, item: string , count: number ) -> ()` | yes |
+| Name | Type                                                      | Required |
+| ---- | --------------------------------------------------------- | -------- |
+| `fn` | `(player: Player ?, item: string , count: number ) -> ()` | yes      |
 
 ## Returns
 

@@ -1,6 +1,6 @@
 ---
-title: 'block.light'
-description: 'What it gives off, 0..15, and what a step through it takes away.'
+title: "block.light"
+description: "What it gives off, 0..15, and what a step through it takes away."
 ---
 
 Part of [`block`](/ref/Block/).

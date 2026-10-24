@@ -1,5 +1,5 @@
 ---
-title: 'world.dimension'
+title: "world.dimension"
 description: 'Another world of the server''s group, by dimension id or its last part ("dungeon", "minecraft:the_nether"): that world''s own world table.'
 ---
 
@@ -13,9 +13,9 @@ Another world of the server's group, by dimension id or its last part ("dungeon"
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `name` | `string` | yes |
+| Name   | Type     | Required |
+| ------ | -------- | -------- |
+| `name` | `string` | yes      |
 
 ## Returns
 
@@ -25,4 +25,4 @@ Another world of the server's group, by dimension id or its last part ("dungeon"
 
 > "`world.dimension(name)` is that world's own `world` table. Its" — [Guide: A dungeon dimension](/guides/guide-a-dungeon-dimension/)
 > "local dungeon = world.dimension("dungeon")" — [Guide: A dungeon dimension](/guides/guide-a-dungeon-dimension/)
-> "local dungeon = world.dimension("dungeon")    -- that world's `world` table; "minecraft:the_nether" works too" — [Dimensions](/concepts/rooms-and-dimensions/)
+> "local dungeon = world.dimension("dungeon") -- that world's `world` table; "minecraft:the_nether" works too" — [Dimensions](/concepts/rooms-and-dimensions/)

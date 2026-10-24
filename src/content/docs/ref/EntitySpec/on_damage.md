@@ -1,5 +1,5 @@
 ---
-title: 'entitySpec.on_damage'
+title: "entitySpec.on_damage"
 description: 'Asked when a player hits it: answer "take" or "ignore"'
 ---
 
@@ -13,9 +13,9 @@ Asked when a player hits it: answer "take" or "ignore". Nil or a missed deadline
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `(e` | `EntityHandle , amount: number , by: Player ?) -> ( "take" \| "ignore" )` | no |
+| Name | Type                                                                      | Required |
+| ---- | ------------------------------------------------------------------------- | -------- |
+| `(e` | `EntityHandle , amount: number , by: Player ?) -> ( "take" \| "ignore" )` | no       |
 
 ## Returns
 

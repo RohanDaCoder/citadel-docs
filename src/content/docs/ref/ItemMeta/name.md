@@ -1,6 +1,6 @@
 ---
-title: 'itemMeta.name'
-description: 'Never italic unless it says so.'
+title: "itemMeta.name"
+description: "Never italic unless it says so."
 ---
 
 Part of [`itemMeta`](/ref/ItemMeta/).

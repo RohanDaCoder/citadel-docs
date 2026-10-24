@@ -1,6 +1,6 @@
 ---
-title: 'itemMeta.glint'
-description: 'The enchanted shine, with no enchantment.'
+title: "itemMeta.glint"
+description: "The enchanted shine, with no enchantment."
 ---
 
 Part of [`itemMeta`](/ref/ItemMeta/).

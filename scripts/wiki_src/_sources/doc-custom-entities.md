@@ -2,7 +2,9 @@
 
 Every entity has an `on_steer` and an `on_tick` hook. Three calls reach them:
 **amend** the game’s own entity, **define** your own, and **spawn** it.
+
 ## Amending the game’s own
+
 ```luau
 game.entities.amend("pig", {
     on_steer = function(e, base)
@@ -11,13 +13,17 @@ game.entities.amend("pig", {
     end,
 })
 ```
+
 The amend also changes **pigs already in the world**, with no respawn.
+
 - `base` is the behaviour you wrap: vanilla’s, or the previous pack’s.
 - Wrapped behavior runs first by default. To replace it, pass `{ replace = true }` as the third argument and omit `base`.
-- `base` makes a *decision*. What you assign after it wins. Two calls act as one.
+- `base` makes a _decision_. What you assign after it wins. Two calls act as one.
 - An amend changes **hooks** only. It refuses the keys `size`, `looks`, `physics`, `max_health`, `speed` and `persist`. For an entity that looks different, use `define`.
 - You can amend only **the game’s own** content. A name with a colon is refused.
+
 ## Defining one of your own
+
 ```luau
 local rocket = game.entities.define {
     name = "rocket", looks = "tnt", physics = "falling", size = 0.98,
@@ -34,22 +40,27 @@ local rocket = game.entities.define {
 
 local it = world.spawn(rocket, vec3(8.5, 66, 8.5), { fuse = 40 })
 ```
-| field | what it is |
-| --- | --- |
-| `name` | your name for the kind. The engine adds the namespace: `"rocket"` becomes `"rave:rocket"`. You cannot use another pack’s namespace. Lower case letters, digits and underscores. |
-| `looks` | a shape the client **already draws**: `"pig"`, `"tnt"`, `"item"`, `"falling_block"`, `"none"`. Two forms take a payload: `{ entity = "falling_block", block = "sand" }` and `{ entity = "item", item = "diamond" }`. A name that this game’s oldest client does not know is refused, never replaced. |
-| `physics` | the movement order: `"living"`, `"falling"`, `"item"`, `"none"`. Not a table of numbers; the game version sets those. `"living"` is a body with health: see “a living body”. |
-| `size` | one number, or `{ width, height }`. Depth equals width, so a third number is an error. |
-| `persist` | `"save"`: it comes back with the chunk, `e.data` included. Or `"despawn"`, the default. |
-| `looks = models.x` | a model a pack made, with `seats`, `scale` and `fallback` next to it. See “vehicles”. |
-| `physics = "vehicle"` | the engine drives it by seat 1’s keys, with `speed`, `turn`, `accel`, `step`. See “vehicles”. |
+
+| field                 | what it is                                                                                                                                                                                                                                                                                           |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`                | your name for the kind. The engine adds the namespace: `"rocket"` becomes `"rave:rocket"`. You cannot use another pack’s namespace. Lower case letters, digits and underscores.                                                                                                                      |
+| `looks`               | a shape the client **already draws**: `"pig"`, `"tnt"`, `"item"`, `"falling_block"`, `"none"`. Two forms take a payload: `{ entity = "falling_block", block = "sand" }` and `{ entity = "item", item = "diamond" }`. A name that this game’s oldest client does not know is refused, never replaced. |
+| `physics`             | the movement order: `"living"`, `"falling"`, `"item"`, `"none"`. Not a table of numbers; the game version sets those. `"living"` is a body with health: see “a living body”.                                                                                                                         |
+| `size`                | one number, or `{ width, height }`. Depth equals width, so a third number is an error.                                                                                                                                                                                                               |
+| `persist`             | `"save"`: it comes back with the chunk, `e.data` included. Or `"despawn"`, the default.                                                                                                                                                                                                              |
+| `looks = models.x`    | a model a pack made, with `seats`, `scale` and `fallback` next to it. See “vehicles”.                                                                                                                                                                                                                |
+| `physics = "vehicle"` | the engine drives it by seat 1’s keys, with `speed`, `turn`, `accel`, `step`. See “vehicles”.                                                                                                                                                                                                        |
+
 - Call `define` and `amend` **while your pack loads**.
 - A world opened without your pack **quarantines** your entities: nothing ticks or shows them, and saves keep them unchanged. Install the pack again and they continue.
+
 ## A living body
+
 With `physics = "living"` the entity is a real living thing. It falls, walks,
 steps up half a block, swims, and takes fall damage, with the numbers of the
 game version. It has health, players can hit it, and it dies. It has no
 mind of its own: it moves only as your hooks say.
+
 ```luau
 local sheep = game.entities.define {
     name = "fluffy", looks = "sheep", physics = "living", size = { 0.9, 1.3 },
@@ -70,13 +81,15 @@ local sheep = game.entities.define {
 }
 world.spawn(sheep, vec3(8.5, 66, 8.5))
 ```
-| field | what it is |
-| --- | --- |
-| `max_health` | the most health it has, and what it starts with. A whole number from 1 to 1024. 20 by default. `e.max_health` reads it. |
-| `speed` | how fast it walks at `forward = 1`, in blocks a second. By default, the game’s own mob walk (about 3). |
-| `drops` | what it leaves when it dies. Each row is `{ item = "stick", count = 2 }`. `count = { 1, 3 }` gives a random count. `chance = 0.05` leaves the row after one death in twenty; without it, after every death. A row can be a pack item. `false` or nil: nothing. |
-| `sounds` | `{ hurt = ..., death = ..., ambient = ... }`, each a vanilla sound or `"<pack>.<file>"`. Each one is optional. |
-| `can_fly` | `true`: it may fly, and it takes no fall damage. Your pack sets `e.flying` to take off and to land. See “flying and swimming”. |
+
+| field        | what it is                                                                                                                                                                                                                                                     |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `max_health` | the most health it has, and what it starts with. A whole number from 1 to 1024. 20 by default. `e.max_health` reads it.                                                                                                                                        |
+| `speed`      | how fast it walks at `forward = 1`, in blocks a second. By default, the game’s own mob walk (about 3).                                                                                                                                                         |
+| `drops`      | what it leaves when it dies. Each row is `{ item = "stick", count = 2 }`. `count = { 1, 3 }` gives a random count. `chance = 0.05` leaves the row after one death in twenty; without it, after every death. A row can be a pack item. `false` or nil: nothing. |
+| `sounds`     | `{ hurt = ..., death = ..., ambient = ... }`, each a vanilla sound or `"<pack>.<file>"`. Each one is optional.                                                                                                                                                 |
+| `can_fly`    | `true`: it may fly, and it takes no fall damage. Your pack sets `e.flying` to take off and to land. See “flying and swimming”.                                                                                                                                 |
+
 - These five keys need `physics = "living"`. On another physics they are an error.
 - Steer with the intent fields: `e.forward`, `e.strafe` (-1 to 1), `e.jumping` and `e.rotation.yaw`. A body keeps its intent until you change it. For AI, write them from `on_think`: see “a brain: on_think”.
 - Writing `e.velocity` still works. It is a push by hand.
@@ -86,10 +99,13 @@ world.spawn(sheep, vec3(8.5, 66, 8.5))
 - `on_damage(e, amount, by)` is asked before a player’s hit lands. `by` is that player. Answer `"ignore"` to stop the hit. Other damage lands without the question.
 - At 0 health it dies as a mob: it falls over, leaves its `drops`, and is gone a second later. `on_remove` gets `"killed"`, and `world.on_entity_death` fires.
 - With `looks = models.x` clients from 1.19.4 can hit it: the engine gives it an invisible hitbox of its `size`. Older clients cannot hit a model. A long model needs hit volumes: see “hit volumes”.
+
 ### Hit volumes
+
 A body’s `size` is one square box. A long animal is much longer than that,
 so a player who swings at its head or tail hits nothing. Give the model
 hit volumes with `part:hitbox(from, to)`, in model units like a box:
+
 ```luau
 local rex = models.new("rex", function(m)
     local skin = m:material("skin", colors.green)
@@ -108,6 +124,7 @@ local t_rex = game.entities.define {
     name = "rex", looks = rex, scale = 4, physics = "living", size = { 3.2, 5.5 },
 }
 ```
+
 - A hit on any volume is a hit on the body: the same damage, `on_damage` and death.
 - The engine measures reach and aim to the volume a player hit, not to the body’s feet.
 - A volume turns with the body’s yaw and tips with its pitch. It does not move with an animation: it stays where the part is at rest.
@@ -115,9 +132,12 @@ local t_rex = game.entities.define {
 - A model with no volumes is hit on one box of the body’s `size`.
 - Each volume is an entity on the client. A body that stands still sends nothing; a body that moves or turns sends one move a tick for each volume that moved.
 - With `persist = "despawn"` (the default) it goes away when no player is near, as a mob does. With `"save"` it stays, with its health and `data`.
+
 ### Flying and swimming
+
 A body with `can_fly = true` walks like any body and flies when `e.flying` is
 true. This bird walks, takes off, flies to a perch and lands:
+
 ```luau
 local perch = vec3(20.5, 75, 8.5)
 local bird = game.entities.define {
@@ -143,6 +163,7 @@ local bird = game.entities.define {
     end,
 }
 ```
+
 - `e.flying = true`: no gravity. `forward` and `strafe` move it along its look, `rotation.pitch` included: a negative pitch climbs, a positive one dives. At `forward = 1` it flies at its `speed` (by default the game’s own air speed, about 4 blocks a second). With `forward = 0` it slows down and hovers.
 - On the ground and still flying, it walks at its walk speed; a pitch up lifts it off.
 - `e.flying = false`: it falls, lands, and walks again.
@@ -151,12 +172,15 @@ local bird = game.entities.define {
 - **In water** every body swims along its look. A pitch up rises as fast as a jump in water does, a pitch down dives. At pitch 0 it swims and sinks as a mob does. Its speed in water is the game’s swim speed, not `speed`. A flying body does not sink in water.
 - `e.in_water` is `true` while it is in water: a crocodile can walk on land and swim when it is in.
 - Clients see the pitch: a `looks = models.x` model tips with it (clients from 1.19.4); a vanilla look turns its head.
+
 ## A brain: on_think
+
 AI is pack code. The engine gives the numbers and applies the answers. It
 does not walk to a point or attack for you.
 Use `on_think` for AI, not `on_steer`. The engine waits for `on_steer` two
 milliseconds each tick, and a slow pack loses that decision. The engine never
 waits for `on_think`, and it never loses its answer.
+
 ```luau
 --!native
 local zombie = game.entities.define {
@@ -173,55 +197,58 @@ local zombie = game.entities.define {
     end,
 }
 ```
+
 - `b.n` is the number of bodies in this call. Each other field of `b` is a
-`buffer` with one number (an f64, 8 bytes) for each body. Body `i` is at
-byte `i * 8`, for `i` from 0 to `b.n - 1`. A yes or no is 1 or 0. An id of
-nothing is 0.
+  `buffer` with one number (an f64, 8 bytes) for each body. Body `i` is at
+  byte `i * 8`, for `i` from 0 to `b.n - 1`. A yes or no is 1 or 0. An id of
+  nothing is 0.
 - The engine sends the bodies after a tick. The answer goes on the bodies at
-the start of the next tick that has it: one tick later, or more for a slow
-pack. An answer is never dropped. A slow pack is never switched off.
+  the start of the next tick that has it: one tick later, or more for a slow
+  pack. An answer is never dropped. A slow pack is never switched off.
 - To change a value, write a new one. A value that you do not change stays
-as the body has it. A body keeps its intent until you change it.
+  as the body has it. A body keeps its intent until you change it.
 - `think_every` is seconds, above 0 and at most 60. Without it, each body
-thinks each tick. The engine spreads the bodies of a kind over the ticks.
+  thinks each tick. The engine spreads the bodies of a kind over the ticks.
 - An event makes a body think on the next tick, also when it is not due.
 - `b` and its buffers are the same table and buffers in each call. Their
-numbers change. Keep your own memory in a table by `id`.
+  numbers change. Keep your own memory in a table by `id`.
 - `on_think` cannot wait: `task.wait` in it is an error.
 - `on_think` is for `define`. `amend` refuses it. A kind without it costs
-nothing.
+  nothing.
 - `--!native` at the top of the file makes this loop fast where the server
-allows native code. The buffers are the form native code reads fastest.
-| column | what it is |
-| --- | --- |
-| `id` | the entity id, as `e.id` and `world.entities()` give it |
-| `x`, `y`, `z` | where its feet are |
-| `health`, `age` | its health, and the ticks it has lived |
-| `on_ground`, `in_water` | 1 or 0 |
-| `hurt` | the damage it took since its last think; 0 for none |
-| `hurt_by` | the id of the player whose hit it was; 0 for none |
-| `landed` | 1: it came down on the ground after it was in the air |
-| `blocked` | 1: it walked into a wall |
-| `water` | 1: it went into water; -1: it came out; 0: neither |
-| `touched` | the id of a player it began to touch; 0 for none |
-| `player` | the id of the nearest player in survival or adventure; 0 for none |
-| `player_x`, `player_y`, `player_z`, `player_dist` | where that player’s feet are, and how far |
-| `yaw`, `pitch` | where it looks. Write to turn it. |
-| `forward`, `strafe` | its intent, -1 to 1. Write to walk. |
-| `jumping`, `flying` | its intent, 1 or 0. `flying` is for a body with `can_fly`. |
-| `vx`, `vy`, `vz` | its velocity. Write to push it by hand. |
+  allows native code. The buffers are the form native code reads fastest.
+  | column | what it is | | --- | --- |
+  | `id` | the entity id, as `e.id` and `world.entities()` give it |
+  | `x`, `y`, `z` | where its feet are |
+  | `health`, `age` | its health, and the ticks it has lived |
+  | `on_ground`, `in_water` | 1 or 0 |
+  | `hurt` | the damage it took since its last think; 0 for none |
+  | `hurt_by` | the id of the player whose hit it was; 0 for none |
+  | `landed` | 1: it came down on the ground after it was in the air |
+  | `blocked` | 1: it walked into a wall |
+  | `water` | 1: it went into water; -1: it came out; 0: neither |
+  | `touched` | the id of a player it began to touch; 0 for none |
+  | `player` | the id of the nearest player in survival or adventure; 0 for none |
+  | `player_x`, `player_y`, `player_z`, `player_dist` | where that player’s feet are, and how far |
+  | `yaw`, `pitch` | where it looks. Write to turn it. |
+  | `forward`, `strafe` | its intent, -1 to 1. Write to walk. |
+  | `jumping`, `flying` | its intent, 1 or 0. `flying` is for a body with `can_fly`. |
+  | `vx`, `vy`, `vz` | its velocity. Write to push it by hand. |
 - Each event is in one think only. The next think has it at 0 again.
 - `citadel.budget().asks.kinds.think` counts the bodies: `asks` sent,
-`answered` applied, `late` applied more than one tick after they were
-sent. `missed` stays 0.
+  `answered` applied, `late` applied more than one tick after they were
+  sent. `missed` stays 0.
 - Use `on_steer` only for an answer in the same tick, such as a vehicle that
-turns on a key. It can miss.
+  turns on a key. It can miss.
 - Outside a hook, `e.forward`, `e.strafe`, `e.jumping` and `e.flying` on a
-world handle change the body at once.
+  world handle change the body at once.
+
 ### A small steering library
+
 The engine has no `move_to`. Copy this into your pack and change it as you
 need. It turns smoothly, follows the points of `world.path`, jumps when a
 wall blocks it, and aims a flier up or down.
+
 ```luau
 --!native
 -- steer.luau
@@ -278,7 +305,9 @@ end
 
 return steer
 ```
+
 A chaser with it. It asks for a new path each second, or when it has none:
+
 ```luau
 local steer = require("steer")
 local routes = {}                       -- by body id
@@ -303,7 +332,9 @@ local chaser = game.entities.define {
     on_remove = function(e) routes[e.id] = nil end,
 }
 ```
+
 ## The handle
+
 `world.spawn` returns a handle, `world.entities()` lists handles, and each
 hook gets one:
 `e.data` is a [data view](#data-views) for a **pack-defined entity**, including
@@ -313,9 +344,12 @@ Reading or assigning `.data` on a **built-in entity**, including an amended one,
 raises an error: its engine-owned state is not a pack data record. Keep temporary
 state for built-in entities in a pack table keyed by entity id; ids do not provide
 a persistent identity across server restarts.
+
 ## Selecting entities
+
 `world.entities()` with no argument returns all entities. For a local query,
 give a position and a radius. You can also filter by kind:
+
 ```luau
 local cows = world.entities {
     near = vec3(8, 65, 8),
@@ -328,34 +362,39 @@ end
 
 local allCows = world.entities { kind = "cow" }
 ```
+
 - `near` and `radius` go together. They select a sphere, boundary included.
 - Results are handles in ascending id order. Queued spawns are included; removed entities are not.
 - `kind` is the handle’s canonical name, with the pack namespace for a custom kind.
 - Invalid options, a negative radius and non-finite numbers raise an error. An unknown kind returns an empty list.
 - `entity:nearby(radius)` measures horizontal distance and excludes the entity itself.
-`game.entities` gives a mob’s native behaviour values:
+  `game.entities` gives a mob’s native behaviour values:
 - Profiles are read-only. A write raises an error.
 - A special behaviour without a shared profile returns `nil`.
 - Profiles run no callbacks. To change gameplay, use `game.entities.amend(name, hooks)` and `game.entities.define(spec)`.
+
 ## What a missed deadline means here
+
 Your hooks run outside the tick. Each tick, the engine sends your pack **one
 batch** with all your due entities. It waits two milliseconds, then applies
 the answers: `on_steer` before physics, `on_tick` after. The contract:
+
 - **a hook reads the entity as it was at the start of that tick**; and
 - **For custom kinds or `{ replace = true }`, a missed deadline keeps the last intent.** The entity keeps steering the
-same way. The miss is counted at
-`citadel.budget().asks.kinds["entity"].missed`.
-| hook | a missed deadline means |
-| --- | --- |
-| `on_steer`, `on_tick` | Default amendments continue wrapped behavior. Custom kinds and explicit replacements keep their last intent; physics runs anyway. |
-| `on_think` | nothing is missed: the engine does not wait. A slow answer lands on a later tick. See “a brain: on_think”. |
-| `on_damage` | **`"take"`**: the damage lands. A busy pack must not make its own entities invulnerable. |
-| `on_spawn`, `on_load`, `on_remove` | the engine never waits on these. They are notifications, and their return value is not read. |
-`on_remove` does **not** fire when your pack is removed.
-A reload is not a missed deadline. If the new script no longer amends a kind,
-the kind gets its wrapped behaviour back. Your own kinds, fuses included, keep
-moving through a reload.
+  same way. The miss is counted at
+  `citadel.budget().asks.kinds["entity"].missed`.
+  | hook | a missed deadline means | | --- | --- |
+  | `on_steer`, `on_tick` | Default amendments continue wrapped behavior. Custom kinds and explicit replacements keep their last intent; physics runs anyway. |
+  | `on_think` | nothing is missed: the engine does not wait. A slow answer lands on a later tick. See “a brain: on_think”. |
+  | `on_damage` | **`"take"`**: the damage lands. A busy pack must not make its own entities invulnerable. |
+  | `on_spawn`, `on_load`, `on_remove` | the engine never waits on these. They are notifications, and their return value is not read. |
+  `on_remove` does **not** fire when your pack is removed.
+  A reload is not a missed deadline. If the new script no longer amends a kind,
+  the kind gets its wrapped behaviour back. Your own kinds, fuses included, keep
+  moving through a reload.
+
 ## Two packs on one kind
+
 Use `game.entities.amend(name, hooks, { priority = 10, replace = false })`.
 Amendments run from lower to higher integer priority, regardless of pack name
 or load order. Priority defaults to `0`. Two packs amending the same kind at

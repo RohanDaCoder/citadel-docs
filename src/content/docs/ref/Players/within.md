@@ -1,6 +1,6 @@
 ---
-title: 'players.within'
-description: 'Returns every player inside a box of blocks, corners included.'
+title: "players.within"
+description: "Returns every player inside a box of blocks, corners included."
 ---
 
 Part of [`players`](/ref/Players/).
@@ -13,10 +13,10 @@ Returns every player inside a box of blocks, corners included.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `from` | [`Vec3`](/ref/Vec3/) | yes |
-| `to` | [`Vec3`](/ref/Vec3/) | yes |
+| Name   | Type                 | Required |
+| ------ | -------------------- | -------- |
+| `from` | [`Vec3`](/ref/Vec3/) | yes      |
+| `to`   | [`Vec3`](/ref/Vec3/) | yes      |
 
 ## Returns
 
@@ -24,4 +24,4 @@ Returns every player inside a box of blocks, corners included.
 
 ## Used in
 
-> "players.within(from, to)             -- every player inside a box of blocks, corners included" — [Zones and raycasts](/world/spatial-queries/)
+> "players.within(from, to) -- every player inside a box of blocks, corners included" — [Zones and raycasts](/world/spatial-queries/)

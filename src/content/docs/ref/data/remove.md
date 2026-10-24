@@ -1,6 +1,6 @@
 ---
-title: 'data.remove'
-description: 'Remove and return a detached value; omitted index removes the last element.'
+title: "data.remove"
+description: "Remove and return a detached value; omitted index removes the last element."
 ---
 
 Part of [`data`](/ref/data/).
@@ -13,10 +13,10 @@ Remove and return a detached value; omitted index removes the last element.
 
 ## Parameters
 
-| Name | Type | Required |
-| --- | --- | --- |
-| `list` | [`DataView`](/ref/DataView/) | yes |
-| `index` | `number` | no |
+| Name    | Type                         | Required |
+| ------- | ---------------------------- | -------- |
+| `list`  | [`DataView`](/ref/DataView/) | yes      |
+| `index` | `number`                     | no       |
 
 ## Returns
 

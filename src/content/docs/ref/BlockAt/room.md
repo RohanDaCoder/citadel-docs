@@ -1,6 +1,6 @@
 ---
-title: 'blockAt.room'
-description: 'Which room the block is in.'
+title: "blockAt.room"
+description: "Which room the block is in."
 ---
 
 Part of [`blockAt`](/ref/BlockAt/).

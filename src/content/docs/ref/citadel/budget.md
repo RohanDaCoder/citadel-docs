@@ -1,6 +1,6 @@
 ---
-title: 'citadel.budget'
-description: 'This pack''s slice of a tick, and what it did with it.'
+title: "citadel.budget"
+description: "This pack's slice of a tick, and what it did with it."
 ---
 
 Part of [`citadel`](/ref/citadel/).
@@ -17,7 +17,7 @@ This pack's slice of a tick, and what it did with it.
 
 ## Used in
 
-> "citadel.budget()                     -- this pack's slice of a tick, and what it did with it" — [Version info](/getting-started/tooling/)
+> "citadel.budget() -- this pack's slice of a tick, and what it did with it" — [Version info](/getting-started/tooling/)
 > "- `citadel.budget().asks.kinds.think` counts the bodies: `asks` sent," — [Custom entities](/entities/custom-entities/)
 > "`citadel.budget().asks.kinds["entity"].missed`." — [Custom entities](/entities/custom-entities/)
 > "The engine counts misses at `citadel.budget().asks.kinds["break"].missed`." — [Cancelling events](/concepts/events/)
