@@ -1,0 +1,904 @@
+     1→#!/usr/bin/env python3
+     2→"""Generate the Starlight (Astro) content tree from wiki_src/ + dataset.json.
+     3→
+     4→Outputs:
+     5→  src/content/docs/                     - all markdown pages
+     6→    <section>/<slug>.md                 - wiki pages (10 sections)
+     7→    appendix/event-catalog.md           - generated appendix (all on_* events)
+     8→    appendix/limits-table.md            - generated appendix (all numeric limits)
+     9→    ref/<Name>/index.md                 - API reference: global/type pages
+    10→    ref/<Name>/<member>.md              - API reference: member pages
+    11→  scripts/generated/starlight-manifest.json
+    12→    .sidebar                            - full Starlight sidebar (wiki + reference)
+    13→    .redirects                          - original minefort docs URLs -> new routes
+    14→
+    15→Run:  python3 scripts/gen_starlight.py     (then: npm run build)
+    16→"""
+    17→import json
+    18→import os
+    19→import re
+    20→import shutil
+    21→from collections import OrderedDict
+    22→
+    23→ROOT = "/home/z/my-project"
+    24→SRC = f"{ROOT}/scripts/wiki_src"
+    25→OUT = f"{ROOT}/src/content/docs"
+    26→GEN = f"{ROOT}/scripts/generated"
+    27→DATASET = json.load(open(f"{ROOT}/scripts/dataset.json"))
+    28→
+    29→SECTIONS = [
+    30→    ("getting-started", "Getting started"),
+    31→    ("concepts", "Core concepts"),
+    32→    ("world", "World & building"),
+    33→    ("entities", "Entities"),
+    34→    ("players", "Players"),
+    35→    ("ui", "Interface & media"),
+    36→    ("systems", "Server systems"),
+    37→    ("guides", "Guides"),
+    38→    ("cookbook", "Cookbook"),
+    39→    ("appendix", "Appendix"),
+    40→]
+    41→
+    42→REF_DOMAINS = [
+    43→    ("World & game", ["world", "game", "models", "parts", "routes", "noise", "fields", "data"]),
+    44→    ("Players", ["players", "camera"]),
+    45→    ("Interface & media", ["ui", "fx", "sound", "message", "tween", "color", "colors"]),
+    46→    ("Systems", ["commands", "time", "task", "rooms", "storage", "stores", "http", "network", "shop", "hub"]),
+    47→    ("Engine", ["citadel", "vec3"]),
+    48→]
+    49→
+    50→# enriched module leads (hand-written; fall back to dataset lead)
+    51→MODULE_LEADS = {
+    52→    "world": "A room's blocks, entities, displays, screens and time — the `world` global, or `room.world`. Start here for terrain, block writes, entities in the world, and world rules.",
+    53→    "players": "Everyone in the room: joins and leaves, clicks and chat, inventory, visibility and health — the `players` global, or `room.players`.",
+    54→    "ui": "What the players see: titles, chat lines, sidebars, boss bars, screens, menus and dialogs — the `ui` global, or `room.ui`.",
+    55→    "game": "The game version's own facts — blocks, items, entity kinds, terrain — and the pack's definitions of its own blocks and entities.",
+    56→    "commands": "`commands.add` with typed arguments, tab-completion, permissions and aliases.",
+    57→    "time": "Clocks for a pack: a callback every tick, one every few seconds, and the seconds since the pack started.",
+    58→    "task": "The scheduler: `spawn`, `delay`, `defer`, `wait` and `cancel`.",
+    59→    "storage": "A per-pack JSON file that survives a restart.",
+    60→    "stores": "The experience's shared store: versioned facts, blobs and leases across every server.",
+    61→    "http": "HTTP requests from the pack, with caching.",
+    62→    "network": "WebSockets out and listening sockets, for multiplayer-scale IO.",
+    63→    "shop": "Minefort's Gem shop: prompts, ownership and paid delivery.",
+    64→    "hub": "The Minefort hub: servers, experiences and portals.",
+    65→    "rooms": "Making and destroying rooms — isolated worlds with their own tables.",
+    66→    "fx": "Particles: `fx.particle` with count, spread, velocity and dust colour.",
+    67→    "sound": "Sound by name from the resource pack, or streamed through Simple Voice Chat.",
+    68→    "message": "A chat line to everyone in the main room.",
+    69→    "tween": "Any live field eased over time — numbers, vec3 and color values.",
+    70→    "camera": "Camera paths and modes per player.",
+    71→    "color": "Colour helpers: hsv, gradients and nearest-map-colour.",
+    72→    "colors": "The named colour table: Minecraft's sixteen and more.",
+    73→    "noise": "Smooth random numbers for a generator, made by the engine.",
+    74→    "models": "The models this pack makes, for `world.display{ kind = \"model\" }`.",
+    75→    "parts": "Named parts of a stored world and the generators that build them.",
+    76→    "routes": "How players get between the worlds of the group.",
+    77→    "data": "Helpers for persistent data views — `data.copy`, `data.insert`, `data.remove`.",
+    78→    "fields": "Recipes for numbers over the world, for `world.generate`.",
+    79→    "citadel": "The engine itself: the log, versions, environment and the tick budget.",
+    80→    "vec3": "Positions and directions with `x`, `y`, `z` — plus `lerp`, `distance` and friends.",
+    81→}
+    82→
+    83→# original doc slug -> wiki slug (from the corpus analysis; "" = reference index)
+    84→DOC_TO_WIKI = {
+    85→    "your-first-pack": "quick-start",
+    86→    "api-basics": "conventions",
+    87→    "packs": "pack-anatomy",
+    88→    "modules-and-tasks": "runtime",
+    89→    "limits-and-reload": "limits",
+    90→    "game-events": "events",
+    91→    "cancelling-events": "events",
+    92→    "rooms": "rooms-and-dimensions",
+    93→    "dimensions": "rooms-and-dimensions",
+    94→    "a-world-per-player": "rooms-and-dimensions",
+    95→    "blocks-and-terrain": "terrain-generation",
+    96→    "building-well": "building",
+    97→    "named-parts": "building",
+    98→    "custom-blocks": "custom-blocks",
+    99→    "game-data": "game-data",
+   100→    "custom-entities": "custom-entities",
+   101→    "mobs-and-drops": "mobs",
+   102→    "npcs": "npcs",
+   103→    "players": "player-lifecycle",
+   104→    "body-and-movement": "movement",
+   105→    "cameras": "movement",
+   106→    "input": "movement",
+   107→    "items": "inventory",
+   108→    "armour": "inventory",
+   109→    "permissions": "permissions",
+   110→    "hud": "ui-basics",
+   111→    "titles-and-bars": "ui-basics",
+   112→    "text-formatting": "ui-basics",
+   113→    "screens": "screens",
+   114→    "layouts": "screens",
+   115→    "canvases": "canvases",
+   116→    "map-pictures": "canvases",
+   117→    "menus": "menus",
+   118→    "hotbar-menus": "menus",
+   119→    "dialogs": "dialogs",
+   120→    "displays": "displays",
+   121→    "3d-models": "displays",
+   122→    "particles-and-lasers": "fx",
+   123→    "sound": "sound",
+   124→    "commands": "commands",
+   125→    "storage": "storage",
+   126→    "shared-stores": "shared-stores",
+   127→    "network": "network",
+   128→    "http": "http",
+   129→    "shop": "shop",
+   130→    "hub": "hub",
+   131→    "server-settings": "server-settings",
+   132→    "client-versions": "client-versions",
+   133→    "version-info": "tooling",
+   134→    "scoreboard-with-a-button": "guide-scoreboard-with-a-button",
+   135→    "room-rules": "world-state",
+   136→    "time-and-tweens": "world-state",
+   137→    "vectors-and-colours": "conventions",
+   138→    "lighting": "displays",
+   139→    "zones-and-raycasts": "spatial-queries",
+   140→    "reference": "",
+   141→}
+   142→
+   143→# ---------------------------------------------------------------- frontmatter
+   144→FM_RE = re.compile(r"^---\n(.*?)\n---\n", re.S)
+   145→
+   146→
+   147→def parse_page(path):
+   148→    raw = open(path).read()
+   149→    m = FM_RE.match(raw)
+   150→    if not m:
+   151→        raise SystemExit(f"no frontmatter: {path}")
+   152→    fm = {}
+   153→    for line in m.group(1).split("\n"):
+   154→        if ":" in line:
+   155→            k, v = line.split(":", 1)
+   156→            v = v.strip()
+   157→            if v.startswith("[") and v.endswith("]"):
+   158→                v = [x.strip().strip('"') for x in v[1:-1].split(",") if x.strip()]
+   159→            fm[k.strip()] = v
+   160→    body = raw[m.end():].lstrip("\n")
+   161→    return fm, body
+   162→
+   163→
+   164→def yaml_str(value):
+   165→    """Single-quoted YAML scalar."""
+   166→    return "'" + str(value).replace("'", "''").replace("\n", " ").strip() + "'"
+   167→
+   168→
+   169→def frontmatter(pairs):
+   170→    lines = ["---"]
+   171→    for k, v in pairs:
+   172→        lines.append(f"{k}: {yaml_str(v)}")
+   173→    lines.append("---")
+   174→    return "\n".join(lines) + "\n\n"
+   175→
+   176→
+   177→# ------------------------------------------------------- case-twin analysis
+   178→def members_sig(pdata):
+   179→    return json.dumps([
+   180→        pdata.get("lead", ""), pdata.get("typedef", ""),
+   181→        [(m["name"], m.get("section"), m.get("signature"))
+   182→         for m in pdata.get("members", [])],
+   183→    ], sort_keys=True)
+   184→
+   185→
+   186→PARENTS = DATASET["reference_parents"]
+   187→MEMBERS = DATASET["reference_members"]
+   188→
+   189→# lowercase globals whose PascalCase twin is an identical page: emit only one
+   190→CANON = {}          # lowercase name -> canonical page name (kept)
+   191→for name in list(PARENTS):
+   192→    if name[0].islower():
+   193→        for cand in (name.capitalize(), name[:1].upper() + name[1:]):
+   194→            if cand in PARENTS and cand != name and \
+   195→                    members_sig(PARENTS[cand]) == members_sig(PARENTS[name]):
+   196→                CANON[name] = cand
+   197→                break
+   198→
+   199→def canon(name):
+   200→    return CANON.get(name, name)
+   201→
+   202→KEPT = [n for n in PARENTS if n not in CANON]          # pages we emit
+   203→KEPT_SET = set(KEPT)
+   204→MEMBER_PARENTS = {p: m for p, m in MEMBERS.items() if canon(p) == p}
+   205→
+   206→
+   207→# ------------------------------------------------------------- link targets
+   208→SLUG2SECTION = {}    # wiki slug -> section id
+   209→WIKI_TITLES = {}     # wiki slug -> title
+   210→for sec_id, _ in SECTIONS:
+   211→    secdir = f"{SRC}/{sec_id}"
+   212→    if not os.path.isdir(secdir):
+   213→        continue
+   214→    for fname in os.listdir(secdir):
+   215→        if fname.endswith(".md"):
+   216→            slug = fname[:-3]
+   217→            SLUG2SECTION[slug] = sec_id
+   218→            fm, _ = parse_page(f"{secdir}/{fname}")
+   219→            WIKI_TITLES[slug] = fm.get("title", slug)
+   220→for extra in ("event-catalog", "limits-table"):        # generated appendix pages
+   221→    SLUG2SECTION[extra] = "appendix"
+   222→
+   223→
+   224→def wiki_route(slug):
+   225→    if slug in SLUG2SECTION:
+   226→        return f"/{SLUG2SECTION[slug]}/{slug}/"
+   227→    return None
+   228→
+   229→
+   230→def ref_route(parent, member=None):
+   231→    p = canon(parent)
+   232→    if p not in KEPT_SET:
+   233→        return None
+   234→    if member is None:
+   235→        return f"/ref/{p}/"
+   236→    if p in MEMBER_PARENTS and member in MEMBER_PARENTS[p]:
+   237→        return f"/ref/{p}/{member}/"
+   238→    return None
+   239→
+   240→
+   241→def original_url_to_route(href):
+   242→    """Map an original minefort docs URL to a new Starlight route."""
+   243→    if not href or not href.startswith("/docs/citadel"):
+   244→        return None
+   245→    rest = href[len("/docs/citadel"):].strip("/")
+   246→    if not rest:
+   247→        return "/"
+   248→    parts = rest.split("/")
+   249→    if parts[0] == "guides" and len(parts) > 1:
+   250→        g = parts[1]
+   251→        return wiki_route("quick-start" if g == "your-first-pack" else f"guide-{g}")
+   252→    if parts[0] == "reference":
+   253→        if len(parts) == 1:
+   254→            return "/ref/"
+   255→        if len(parts) == 2:
+   256→            return ref_route(parts[1])
+   257→        return ref_route(parts[1], parts[2])
+   258→    if parts[0] in DOC_TO_WIKI:
+   259→        w = DOC_TO_WIKI[parts[0]]
+   260→        return "/ref/" if w == "" else wiki_route(w)
+   261→    return None
+   262→
+   263→
+   264→# --------------------------------------------------------- body conversion
+   265→WIKI_LINK_RE = re.compile(r"\]\((/wiki/([^)#/]+?)(#[^)]*)?)\)")
+   266→APP_LINK_RE = re.compile(r"\]\((/appendix/([^)#/]+?)(#[^)]*)?)\)")
+   267→REF_LINK_RE = re.compile(r"\]\((/ref/([^)#/]+)(?:/([^)#/]+))?(#[^)]*)?)\)")
+   268→
+   269→WARNINGS = []
+   270→
+   271→
+   272→def rewrite_links(body, ctx):
+   273→    def wiki_sub(m):
+   274→        slug, anchor = m.group(2), m.group(3) or ""
+   275→        route = wiki_route(slug)
+   276→        if route is None:
+   277→            WARNINGS.append(f"{ctx}: /wiki/{slug} has no target page")
+   278→            return m.group(0)
+   279→        return f"]({route}{anchor})"
+   280→
+   281→    def app_sub(m):
+   282→        slug, anchor = m.group(2), m.group(3) or ""
+   283→        route = wiki_route(slug) if SLUG2SECTION.get(slug) == "appendix" else None
+   284→        if route is None:
+   285→            WARNINGS.append(f"{ctx}: /appendix/{slug} has no target page")
+   286→            return m.group(0)
+   287→        return f"]({route}{anchor})"
+   288→
+   289→    def ref_sub(m):
+   290→        parent, member, anchor = m.group(2), m.group(3), m.group(4) or ""
+   291→        route = ref_route(parent, member)
+   292→        if route is None:
+   293→            WARNINGS.append(f"{ctx}: /ref/{parent}/{member or ''} has no target page")
+   294→            return m.group(0)
+   295→        return f"]({route}{anchor})"
+   296→
+   297→    body = WIKI_LINK_RE.sub(wiki_sub, body)
+   298→    body = APP_LINK_RE.sub(app_sub, body)
+   299→    body = REF_LINK_RE.sub(ref_sub, body)
+   300→    body = body.replace("](/ref)", "](/ref/)")
+   301→    return body
+   302→
+   303→
+   304→CALLOUT_TYPES = {"In short": "note", "Note": "note", "Tip": "tip",
+   305→                 "Gotcha": "caution", "Warning": "danger"}
+   306→CALLOUT_RE = re.compile(r"^> \*\*(In short|Note|Gotcha|Tip|Warning):\*\*(.*)$")
+   307→
+   308→
+   309→def convert_callouts(body):
+   310→    """Convert `> **Type:** ...` blockquotes to Starlight ::: admonitions."""
+   311→    lines = body.split("\n")
+   312→    out = []
+   313→    i = 0
+   314→    while i < len(lines):
+   315→        m = CALLOUT_RE.match(lines[i])
+   316→        if not m:
+   317→            out.append(lines[i])
+   318→            i += 1
+   319→            continue
+   320→        ctype = CALLOUT_TYPES[m.group(1)]
+   321→        title = m.group(1) if m.group(1) in ("In short", "Gotcha") else None
+   322→        opener = f":::{ctype}" + (f"[{title}]" if title else "")
+   323→        block = [m.group(2).strip()]
+   324→        i += 1
+   325→        while i < len(lines) and lines[i].startswith(">"):
+   326→            block.append(re.sub(r"^> ?", "", lines[i]))
+   327→            i += 1
+   328→        # trim trailing blank lines inside the block
+   329→        while block and not block[-1].strip():
+   330→            block.pop()
+   331→        out.append(opener)
+   332→        out.extend(block)
+   333→        out.append(":::")
+   334→        if i < len(lines) and lines[i].strip():
+   335→            out.append("")
+   336→    return "\n".join(out)
+   337→
+   338→
+   339→def strip_h1(body, title):
+   340→    m = re.match(r"^# (.+)$", body, re.M)
+   341→    if m and m.group(1).strip() == title.strip():
+   342→        body = body[m.end():].lstrip("\n")
+   343→    return body
+   344→
+   345→
+   346→def convert_body(body, title, ctx):
+   347→    body = strip_h1(body, title)
+   348→    body = rewrite_links(body, ctx)
+   349→    body = convert_callouts(body)
+   350→    return body.strip() + "\n"
+   351→
+   352→
+   353→def esc_cell(text):
+   354→    """Escape pipes for use in a GFM table cell."""
+   355→    return (text or "").replace("|", "\\|").replace("\n", " ").strip()
+   356→
+   357→
+   358→# ================================================================ wiki pages
+   359→shutil.rmtree(OUT, ignore_errors=True)
+   360→shutil.rmtree(GEN, ignore_errors=True)
+   361→os.makedirs(OUT, exist_ok=True)
+   362→os.makedirs(GEN, exist_ok=True)
+   363→
+   364→# root landing page (authored at wiki_src/index.md, links rewritten)
+   365→if os.path.isfile(f"{SRC}/index.md"):
+   366→    fm, body = parse_page(f"{SRC}/index.md")
+   367→    out_body = convert_body(body, fm.get("title", "Citadel Developer Wiki"), "wiki:index")
+   368→    with open(f"{OUT}/index.md", "w") as f:
+   369→        f.write(frontmatter([("title", fm.get("title", "Citadel Developer Wiki")),
+   370→                             ("description", fm.get("description", ""))]))
+   371→        f.write(out_body)
+   372→
+   373→wiki_manifest = OrderedDict()   # (section) -> ordered [(slug, title)]
+   374→counts = {"wiki": 0, "appendix_gen": 0, "ref": 0, "refmember": 0}
+   375→
+   376→for sec_id, _ in SECTIONS:
+   377→    secdir = f"{SRC}/{sec_id}"
+   378→    if not os.path.isdir(secdir):
+   379→        continue
+   380→    entries = []
+   381→    for fname in sorted(os.listdir(secdir)):
+   382→        if not fname.endswith(".md"):
+   383→            continue
+   384→        fm, body = parse_page(f"{secdir}/{fname}")
+   385→        slug = fname[:-3]
+   386→        entries.append((int(fm.get("order", 99)), slug, fm, body))
+   387→    entries.sort(key=lambda e: e[0])
+   388→    pages = []
+   389→    for order, slug, fm, body in entries:
+   390→        out_body = convert_body(body, fm.get("title", slug), f"wiki:{slug}")
+   391→        os.makedirs(f"{OUT}/{sec_id}", exist_ok=True)
+   392→        with open(f"{OUT}/{sec_id}/{slug}.md", "w") as f:
+   393→            f.write(frontmatter([
+   394→                ("title", fm.get("title", slug)),
+   395→                ("description", fm.get("description", "")),
+   396→            ]))
+   397→            f.write(out_body)
+   398→        pages.append({"slug": slug, "title": fm.get("title", slug)})
+   399→        counts["wiki"] += 1
+   400→    wiki_manifest[sec_id] = pages
+   401→
+   402→# ====================================================== generated appendices
+   403→def gen_event_catalog():
+   404→    rows = []
+   405→    seen = set()
+   406→    for parent, mems in MEMBERS.items():
+   407→        for name, m in mems.items():
+   408→            if not name.startswith("on_"):
+   409→                continue
+   410→            key = f"{parent}.{name}"
+   411→            if key in seen:
+   412→                continue
+   413→            seen.add(key)
+   414→            lead = (m.get("lead", "") or "").strip()
+   415→            if not lead:
+   416→                p = PARENTS.get(parent)
+   417→                if p:
+   418→                    for mm in p.get("members", []):
+   419→                        if mm["name"] == name:
+   420→                            lead = mm.get("description", "")
+   421→                            break
+   422→            rows.append({"parent": canon(parent), "name": name,
+   423→                         "signature": m.get("signature", ""), "description": lead})
+   424→    rows.sort(key=lambda r: (r["parent"].lower(), r["name"]))
+   425→    lines = [
+   426→        "# Event catalog",
+   427→        "",
+   428→        "> **In short:** every `on_*` subscription in the API, one row each.",
+   429→        "> Subscribe with the call, keep the connection, cancel to stop. The",
+   430→        "> model itself — deadlines, asks, ordering — is in",
+   431→        "> [The event model](/wiki/events).",
+   432→        "",
+   433→        f"{len(rows)} events across {len(set(r['parent'] for r in rows))} types.",
+   434→        "",
+   435→    ]
+   436→    byp = OrderedDict()
+   437→    for r in rows:
+   438→        byp.setdefault(r["parent"], []).append(r)
+   439→    for parent in sorted(byp, key=str.lower):
+   440→        lines.append(f"## `{parent}`")
+   441→        lines.append("")
+   442→        lines.append("| Event | Signature | Fires when |")
+   443→        lines.append("| --- | --- | --- |")
+   444→        for r in byp[parent]:
+   445→            desc = esc_cell(r["description"])
+   446→            if len(desc) > 160:
+   447→                desc = desc[:157] + "..."
+   448→            sig = esc_cell(r["signature"])
+   449→            lines.append(
+   450→                f"| [`{r['name']}`](/ref/{parent}/{r['name']}) | `{sig}` | {desc} |")
+   451→        lines.append("")
+   452→    lines += [
+   453→        "## See also",
+   454→        "",
+   455→        "- [The event model](/wiki/events) — subscriptions, asks, deadlines.",
+   456→        "- [Runtime](/wiki/runtime) — the event queue and its 4096 cap.",
+   457→        "",
+   458→    ]
+   459→    return ("\n".join(lines),
+   460→            "Every on_* event in the Citadel API in one table — what fires it, "
+   461→            "what the handler receives, and where the full treatment lives.")
+   462→
+   463→
+   464→def gen_limits_table():
+   465→    body = """# Limits
+   466→
+   467→> **In short:** every number the engine enforces, in one place. Each row
+   468→> links to the page that explains what happens at the edge.
+   469→
+   470→| Limit | Value | What it bounds | Details |
+   471→| --- | --- | --- | --- |
+   472→| Tick budget | 2 ms default (`budget_ms`) | A pack's tick and event callbacks per tick | [Limits](/wiki/limits) |
+   473→| Runaway limit | 100 ms | Joins, input events, commands, task threads | [Limits](/wiki/limits) |
+   474→| Chunk callback | 2 s | `on_generate` / `on_populate` per chunk | [Terrain generation](/wiki/terrain-generation) |
+   475→| Chunk wait | 60 s | The engine's wait for a chunk to be made; then it is air | [Terrain generation](/wiki/terrain-generation) |
+   476→| Entry script | 5 s between waits, 30 s total | Pack load; past it the load fails | [Runtime](/wiki/runtime) |
+   477→| Event queue | 4096 ordinary events per pack | Overflow drops the oldest and logs | [Limits](/wiki/limits) |
+   478→| Ask deadline | 2 ms | `on_break` / `on_place` / `on_damage` answers; miss and the action is denied | [The event model](/wiki/events) |
+   479→| `on_slow` | at most once a second | Budget warnings to the script | [Limits](/wiki/limits) |
+   480→| Slow-pack log | at most once every 5 s | Server log lines about budget | [Limits](/wiki/limits) |
+   481→| Zone re-trigger | 0.5 s | A route trigger block, after a trip | [Rooms and dimensions](/wiki/rooms-and-dimensions) |
+   482→| Store facts | 1 MiB each, keys 256 B | `stores` values | [Shared stores](/wiki/shared-stores) |
+   483→| Store blobs | 32 MiB each, 1,000 per player | `stores` blobs | [Shared stores](/wiki/shared-stores) |
+   484→| Hosted storage | 512 MiB + 1 MiB per Java player ever joined | Per experience | [Shared stores](/wiki/shared-stores) |
+   485→| Pending store requests | 32 per pack | Concurrent yielding store calls | [Shared stores](/wiki/shared-stores) |
+   486→| Lease tokens | 100,000 issued; leases last up to 1 hour | `stores.lease` | [Shared stores](/wiki/shared-stores) |
+   487→| Build size | 4,096 16-block cubes (32 MB) in a 256-million-block box | One `world.build` | [Building](/wiki/building) |
+   488→| `max_health` | 1 to 1024 | `player.max_health` writes | [Health](/wiki/health) |
+   489→| Player name to `player:connect` | 1 to 128 chars | Server addresses | [Player lifecycle](/wiki/player-lifecycle) |
+   490→| Camera moves | 20 per second | Camera positioning | [Movement](/wiki/movement) |
+   491→| Client versions | 1.8 to 26.x join every server | Java clients | [Client versions](/appendix/client-versions) |
+   492→
+   493→## See also
+   494→
+   495→- [Limits](/wiki/limits) — the budget system in depth.
+   496→- [FAQ](/appendix/faq) — when a limit is why.
+   497→"""
+   498→    return (body,
+   499→            "Every numeric limit in Citadel in one table — tick budgets, load "
+   500→            "times, event queues, stores, blobs, leases, builds and generation.")
+   501→
+   502→
+   503→GEN_APPENDIX = [
+   504→    ("event-catalog", "Event catalog", gen_event_catalog),
+   505→    ("limits-table", "Limits", gen_limits_table),
+   506→]
+   507→gen_pages = []
+   508→for slug, title, genfn in GEN_APPENDIX:
+   509→    body, desc = genfn()
+   510→    out_body = convert_body(body, title, f"appendix:{slug}")
+   511→    with open(f"{OUT}/appendix/{slug}.md", "w") as f:
+   512→        f.write(frontmatter([("title", title), ("description", desc)]))
+   513→        f.write(out_body)
+   514→    gen_pages.append({"slug": slug, "title": title})
+   515→    counts["appendix_gen"] += 1
+   516→
+   517→# appendix section order: event-catalog, client-versions, faq, limits-table
+   518→app_pages = wiki_manifest["appendix"][:]
+   519→app_pages += [g for g in gen_pages]
+   520→app_pages.sort(key=lambda p: {"event-catalog": 1, "client-versions": 2,
+   521→                              "faq": 3, "limits-table": 4}.get(p["slug"], 9))
+   522→wiki_manifest["appendix"] = app_pages
+   523→
+   524→# ============================================================== ref pages
+   525→def link_type(text):
+   526→    """Link a type name if it is exactly a kept reference parent."""
+   527→    t = (text or "").strip().rstrip("?").strip()
+   528→    if t in KEPT_SET:
+   529→        return f"[`{t}`]({ref_route(t)})"
+   530→    return f"`{text}`"
+   531→
+   532→
+   533→def linked_typedef(typedef):
+   534→    """Render a union typedef with each alternative linked when known."""
+   535→    parts = [p.strip() for p in typedef.split("|")]
+   536→    rendered = []
+   537→    for p in parts:
+   538→        p_clean = p.rstrip("?").strip()
+   539→        if p_clean in KEPT_SET:
+   540→            rendered.append(f"[`{p}`]({ref_route(p_clean)})")
+   541→        else:
+   542→            rendered.append(f"`{p}`")
+   543→    return " | ".join(rendered)
+   544→
+   545→
+   546→def member_exists(parent, member):
+   547→    return parent in MEMBER_PARENTS and member in MEMBER_PARENTS[parent]
+   548→
+   549→
+   550→for name in sorted(KEPT, key=str.lower):
+   551→    pdata = PARENTS[name]
+   552→    is_global = name[0].islower()
+   553→    label = name
+   554→    if not is_global:
+   555→        # if this PascalCase page is the canonical twin of a lowercase global,
+   556→        # present it under the global's lowercase name
+   557→        for low, can in CANON.items():
+   558→            if can == name:
+   559→                label = low
+   560→                break
+   561→    lead = MODULE_LEADS.get(name, "") if is_global else ""
+   562→    if not lead:
+   563→        lead = pdata.get("lead", "") or ""
+   564→    lead = lead.strip()
+   565→
+   566→    lines = []
+   567→    if lead:
+   568→        lines.append(lead)
+   569→        lines.append("")
+   570→
+   571→    typedef = (pdata.get("typedef") or "").strip()
+   572→    if typedef:
+   573→        lines.append(linked_typedef(typedef))
+   574→        lines.append("")
+   575→
+   576→    dl = pdata.get("docs_link")
+   577→    if dl:
+   578→        target = original_url_to_route(dl.get("href", ""))
+   579→        if target and target != "/ref/":
+   580→            target_slug = target.rstrip("/").split("/")[-1]
+   581→            target_title = WIKI_TITLES.get(target_slug, dl.get("title", "docs"))
+   582→            lines.append(f"Part of the [{target_title}]({target}) article.")
+   583→            lines.append("")
+   584→
+   585→    members = pdata.get("members", [])
+   586→    funcs = [m for m in members if m.get("section") == "functions"]
+   587→    fields = [m for m in members if m.get("section") == "fields"]
+   588→    others = [m for m in members if m.get("section") not in ("functions", "fields")]
+   589→
+   590→    def member_table(mem_list, call_header):
+   591→        out = [f"| {call_header} | Purpose |", "| --- | --- |"]
+   592→        for m in mem_list:
+   593→            sig = m.get("signature", m["name"])
+   594→            # shorten function signatures to the call name for the index table
+   595→            call = m["name"] if m.get("section") == "functions" else sig
+   596→            if member_exists(name, m["name"]):
+   597→                cell = f"[`{esc_cell(call)}`]({ref_route(name, m['name'])})"
+   598→            else:
+   599→                cell = f"`{esc_cell(call)}`"
+   600→            out.append(f"| {cell} | {esc_cell(m.get('description', ''))} |")
+   601→        return out
+   602→
+   603→    if funcs:
+   604→        lines.append("## Functions")
+   605→        lines.append("")
+   606→        lines.extend(member_table(funcs, "Call"))
+   607→        lines.append("")
+   608→    if fields:
+   609→        lines.append("## Fields")
+   610→        lines.append("")
+   611→        lines.extend(member_table(fields, "Field"))
+   612→        lines.append("")
+   613→    if others:
+   614→        lines.append("## Members")
+   615→        lines.append("")
+   616→        lines.extend(member_table(others, "Member"))
+   617→        lines.append("")
+   618→
+   619→    if not members and not typedef and not lead:
+   620→        lines.append(f"`{name}` — see the members of this type.")
+   621→
+   622→    body = rewrite_links("\n".join(lines).strip() + "\n", f"ref:{name}")
+   623→    desc = re.sub(r"[`*]", "", lead.split(". ")[0])[:200] if lead else \
+   624→        f"{name} reference — every call, field and type in one place."
+   625→    os.makedirs(f"{OUT}/ref/{name}", exist_ok=True)
+   626→    with open(f"{OUT}/ref/{name}/index.md", "w") as f:
+   627→        f.write(frontmatter([("title", pdata.get("title", name)),
+   628→                             ("description", desc)]))
+   629→        f.write(body)
+   630→    counts["ref"] += 1
+   631→
+   632→# member pages
+   633→for parent in sorted(MEMBER_PARENTS, key=str.lower):
+   634→    for mname in sorted(MEMBER_PARENTS[parent]):
+   635→        m = MEMBER_PARENTS[parent][mname]
+   636→        lead = (m.get("lead", "") or "").strip()
+   637→        sig = (m.get("signature", "") or "").strip()
+   638→        kind = m.get("kind", "")
+   639→        lines = []
+   640→
+   641→        display_parent = m.get("title", mname).split(".")[0] if "." in m.get("title", "") else parent
+   642→        lines.append(f"Part of [`{display_parent}`]({ref_route(parent)}).")
+   643→        lines.append("")
+   644→
+   645→        if sig:
+   646→            lines.append("```luau")
+   647→            lines.append(sig)
+   648→            lines.append("```")
+   649→            lines.append("")
+   650→
+   651→        if lead:
+   652→            lines.append(rewrite_links(lead, f"refmember:{parent}.{mname}"))
+   653→            lines.append("")
+   654→
+   655→        params = m.get("params", [])
+   656→        if params:
+   657→            lines.append("## Parameters")
+   658→            lines.append("")
+   659→            lines.append("| Name | Type | Required |")
+   660→            lines.append("| --- | --- | --- |")
+   661→            for p in params:
+   662→                req = "yes" if p.get("required") else "no"
+   663→                lines.append(f"| `{esc_cell(p.get('name', ''))}` | "
+   664→                             f"{esc_cell(link_type(p.get('type', '')))} | {req} |")
+   665→            lines.append("")
+   666→
+   667→        returns = m.get("returns", [])
+   668→        if returns:
+   669→            lines.append("## Returns")
+   670→            lines.append("")
+   671→            for r in returns:
+   672→                lines.append(f"- {link_type(r)}")
+   673→            lines.append("")
+   674→
+   675→        used = m.get("used_in", [])[:6]
+   676→        if used:
+   677→            lines.append("## Used in")
+   678→            lines.append("")
+   679→            for u in used:
+   680→                quote = (u.get("quote", "") or "").strip()
+   681→                source = (u.get("source", "") or "").strip()
+   682→                route = original_url_to_route(u.get("href", ""))
+   683→                if route:
+   684→                    src = f"[{source}]({route})"
+   685→                else:
+   686→                    src = source
+   687→                if quote and src:
+   688→                    lines.append(f'> "{esc_cell(quote)}" — {src}')
+   689→                elif src:
+   690→                    lines.append(f"- {src}")
+   691→            lines.append("")
+   692→
+   693→        body = "\n".join(lines).strip() + "\n"
+   694→        first_sentence = re.sub(r"[`*]", "", lead.split(". ")[0])[:200] if lead else \
+   695→            f"{m.get('title', mname)} — {kind}."
+   696→        with open(f"{OUT}/ref/{parent}/{mname}.md", "w") as f:
+   697→            f.write(frontmatter([("title", m.get("title", mname)),
+   698→                                 ("description", first_sentence)]))
+   699→            f.write(body)
+   700→        counts["refmember"] += 1
+   701→
+   702→# reference domain groups (used by /ref/ overview page and the sidebar)
+   703→ref_domain_groups = []
+   704→domain_links = set()
+   705→for dom_title, globals_ in REF_DOMAINS:
+   706→    items = []
+   707→    for g in globals_:
+   708→        c = canon(g)
+   709→        if c not in KEPT_SET:
+   710→            continue
+   711→        link = f"/ref/{c}/"
+   712→        domain_links.add(link)
+   713→        items.append({"label": g, "link": link})
+   714→    if items:
+   715→        ref_domain_groups.append({"label": dom_title, "collapsed": True,
+   716→                                  "items": items})
+   717→
+   718→type_names = sorted([n for n in KEPT if n[0].isupper()
+   719→                     and f"/ref/{n}/" not in domain_links], key=str.lower)
+   720→type_items = [{"label": t, "link": f"/ref/{t}/"} for t in type_names]
+   721→ref_domain_groups.append({"label": "Types A–Z", "collapsed": True,
+   722→                          "items": type_items})
+   723→
+   724→# reference overview page (/ref/)
+   725→ref_lines = [
+   726→    "Every global, type and call in Citadel, one page each: the signature,",
+   727→    "the parameters, the returns, and the guides that use it. Pick a domain,",
+   728→    "or browse the types.",
+   729→    "",
+   730→]
+   731→for dom_title, globals_ in REF_DOMAINS:
+   732→    items = [(g, canon(g)) for g in globals_ if canon(g) in KEPT_SET]
+   733→    if not items:
+   734→        continue
+   735→    ref_lines.append(f"## {dom_title}")
+   736→    ref_lines.append("")
+   737→    ref_lines.append("| Global | What it is |")
+   738→    ref_lines.append("| --- | --- |")
+   739→    for g, c in items:
+   740→        lead = MODULE_LEADS.get(g, "") or PARENTS[c].get("lead", "") or PARENTS[g].get("lead", "")
+   741→        ref_lines.append(f"| [`{g}`](/ref/{c}/) | {esc_cell(lead)} |")
+   742→    ref_lines.append("")
+   743→ref_lines.append("## Types A–Z")
+   744→ref_lines.append("")
+   745→ref_lines.append(" · ".join(f"[`{t}`](/ref/{t}/)" for t in type_names))
+   746→ref_lines.append("")
+   747→ref_body = rewrite_links("\n".join(ref_lines).strip() + "\n", "ref:index")
+   748→with open(f"{OUT}/ref/index.md", "w") as f:
+   749→    f.write(frontmatter([
+   750→        ("title", "API reference"),
+   751→        ("description", "Every Citadel global, type and member — 29 globals in "
+   752→                        "five domains, 141 types, 674 documented members, each "
+   753→                        "with signature, parameters, returns and usage."),
+   754→    ]))
+   755→    f.write(ref_body)
+   756→
+   757→# ============================================================ manifest: sidebar
+   758→sidebar = []
+   759→for sec_id, sec_title in SECTIONS:
+   760→    pages = wiki_manifest.get(sec_id, [])
+   761→    if not pages:
+   762→        continue
+   763→    sidebar.append({
+   764→        "label": sec_title,
+   765→        "items": [{"label": p["title"], "link": f"/{sec_id}/{p['slug']}/"}
+   766→                  for p in pages],
+   767→    })
+   768→
+   769→sidebar.append({"label": "API reference", "items": [
+   770→    {"label": "Overview", "link": "/ref/"},
+   771→    *ref_domain_groups,
+   772→]})
+   773→
+   774→# ============================================================ manifest: redirects
+   775→redirects = {
+   776→    "/docs/citadel": "/",
+   777→    "/docs/citadel/reference": "/ref/",
+   778→}
+   779→for doc, wiki_slug in DOC_TO_WIKI.items():
+   780→    if wiki_slug == "":
+   781→        continue
+   782→    route = wiki_route(wiki_slug)
+   783→    if route:
+   784→        redirects[f"/docs/citadel/{doc}"] = route
+   785→for g in DATASET.get("guides", {}):
+   786→    route = wiki_route("quick-start" if g == "your-first-pack" else f"guide-{g}")
+   787→    if route:
+   788→        redirects[f"/docs/citadel/guides/{g}"] = route
+   789→
+   790→# Original reference URLs: emit redirects for every parent page and member page.
+   791→# A lowercase global whose PascalCase sibling also has a page (world/World,
+   792→# camera/Camera, ...) redirects only from the PascalCase URL — Astro's router
+   793→# treats case-variant redirect routes as collisions, and the PascalCase form
+   794→# is the canonical URL the original site linked with.
+   795→def has_pascal_sibling(name):
+   796→    return name[0].islower() and name.capitalize() in PARENTS and name.capitalize() != name
+   797→
+   798→for name in PARENTS:
+   799→    if has_pascal_sibling(name):
+   800→        continue
+   801→    route = ref_route(name)
+   802→    if route:
+   803→        redirects[f"/docs/citadel/reference/{name}"] = route
+   804→for parent, mems in MEMBERS.items():
+   805→    if has_pascal_sibling(parent):
+   806→        continue
+   807→    for mname in mems:
+   808→        route = ref_route(parent, mname)
+   809→        if route:
+   810→            redirects[f"/docs/citadel/reference/{parent}/{mname}"] = route
+   811→
+   812→with open(f"{GEN}/starlight-manifest.json", "w") as f:
+   813→    json.dump({"sidebar": sidebar, "redirects": redirects}, f, indent=1)
+   814→
+   815→# ================================================================= validation
+   816→SLUGGER_STRIP = re.compile(r"[^\w\s-]", re.U)
+   817→
+   818→
+   819→def github_slug(text):
+   820→    """Match github-slugger: strip punctuation, each space/underscore -> one hyphen."""
+   821→    text = re.sub(r"[*`]", "", text).strip().lower()
+   822→    text = SLUGGER_STRIP.sub("", text)
+   823→    return re.sub(r"[\s_]", "-", text).strip("-")
+   824→
+   825→
+   826→def page_headings(path):
+   827→    heads = set()
+   828→    in_code = False
+   829→    for line in open(path):
+   830→        if line.startswith("```"):
+   831→            in_code = not in_code
+   832→            continue
+   833→        if in_code:
+   834→            continue
+   835→        m = re.match(r"^(#{1,6})\s+(.*)$", line)
+   836→        if m:
+   837→            heads.add(github_slug(m.group(2)))
+   838→    return heads
+   839→
+   840→
+   841→md_files = []
+   842→for root, _, files in os.walk(OUT):
+   843→    for fn in files:
+   844→        if fn.endswith(".md"):
+   845→            md_files.append(os.path.join(root, fn))
+   846→
+   847→link_re = re.compile(r"\]\((/[^)#]*)(#[^)]*)?\)")
+   848→errors, anchor_warns, checked = [], [], 0
+   849→cache = {}
+   850→
+   851→
+   852→def resolve(route):
+   853→    route = route.rstrip("/") or "/"
+   854→    rel = route.lstrip("/")
+   855→    if not rel:
+   856→        return f"{OUT}/index.md"
+   857→    if os.path.isfile(f"{OUT}/{rel}.md"):
+   858→        return f"{OUT}/{rel}.md"
+   859→    if os.path.isfile(f"{OUT}/{rel}/index.md"):
+   860→        return f"{OUT}/{rel}/index.md"
+   861→    return None
+   862→
+   863→
+   864→for path in md_files:
+   865→    content = open(path).read()
+   866→    # strip code fences so links inside code are not checked
+   867→    content_nf = re.sub(r"```.*?```", "", content, flags=re.S)
+   868→    for m in link_re.finditer(content_nf):
+   869→        route, anchor = m.group(1), m.group(2)
+   870→        checked += 1
+   871→        target = resolve(route)
+   872→        if target is None:
+   873→            errors.append(f"{path.replace(OUT, '')}: {route}")
+   874→            continue
+   875→        if anchor:
+   876→            a = anchor[1:]
+   877→            if target not in cache:
+   878→                cache[target] = page_headings(target)
+   879→            if a and a not in cache[target]:
+   880→                anchor_warns.append(f"{path.replace(OUT, '')}: {route}{anchor}")
+   881→
+   882→# ---------------------------------------------------------------- report
+   883→print(f"wiki pages:        {counts['wiki']}")
+   884→print(f"generated appendix:{counts['appendix_gen']}")
+   885→print(f"ref type pages:    {counts['ref']}")
+   886→print(f"ref member pages:  {counts['refmember']}")
+   887→print(f"total md files:    {len(md_files)} (+ index.md static)")
+   888→print(f"sidebar entries:   wiki groups={len(sidebar) - 1}, "
+   889→      f"ref groups={len(ref_domain_groups)}, types={len(type_items)}")
+   890→print(f"redirects:         {len(redirects)}")
+   891→print(f"links checked:     {checked}")
+   892→print(f"broken links:      {len(errors)}")
+   893→for e in errors[:20]:
+   894→    print("  ERROR", e)
+   895→print(f"anchor misses:     {len(anchor_warns)}")
+   896→for w in anchor_warns[:20]:
+   897→    print("  anchor", w)
+   898→print(f"conversion warnings: {len(WARNINGS)}")
+   899→for w in WARNINGS[:20]:
+   900→    print("  warn", w)
+   901→
+   902→if errors:
+   903→    raise SystemExit("BROKEN LINKS — fix before building")
+   904→

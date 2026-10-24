@@ -215,3 +215,25 @@ Work Log:
 Stage Summary:
 - Deliverable: download/citadel-wiki-starlight.zip — clean, runnable-anywhere Astro Starlight project (npm install -> npm run dev / build / preview; regenerate content with python3 scripts/gen_starlight.py).
 - Dev server now reachable through proxied hosts (vite allowedHosts: true).
+
+---
+Task ID: 5
+Agent: main (Z.ai)
+Task: Generate an all-in-one llms-full.txt (plus llms.txt index) for AI agents
+
+Work Log:
+- Wrote scripts/gen_llms_full.py — a regenerable pipeline stage (runs after gen_starlight.py):
+  - Collects all 906 pages from src/content/docs, orders them landing-first then by the Starlight sidebar (wiki sections, then API reference domains + Types A–Z, each parent followed by its member pages A–Z).
+  - Emits each page as one `## <title>` section opened by an HTML anchor `<a id="...">` and a `<!-- /route/ -->` comment (route = live-site path).
+  - Two-pass link conversion: pass A records every referenced (route, #anchor); pass B rewrites all 3,476 internal links to in-file anchors — page-level (`#ref-World-spawn`) and heading-level (`#entities-custom-entities--a-brain`, 39 emitted, github-slugger-compatible dedup incl. the em-dash `half-blocks-detail--2` case).
+  - Converts 127 Starlight `:::` admonitions to labelled blockquotes (`> **In short:** ...`) for plain-text readability; leaves code fences untouched.
+  - Self-validates: 0 unconverted routes, 0 dangling link targets (every `](#id)` has a matching `<a id>`), hard-fails otherwise.
+- Added "For AI agents" section to wiki_src/index.md (landing page) pointing at both files; regenerated content (gen_starlight: 3,225 links, 0 broken).
+- Outputs: public/llms.txt (28 KB lean index: description + every page with route and one-line summary) and public/llms-full.txt (946 KB, 30,189 lines, ~240K tokens: all 61 wiki docs + 170 ref parents + 674 members inline), both copied to download/ and served at the site root.
+- package.json: added `npm run generate:llms`.
+- Verified: npm run build (907 pages), dist link sweep 217,327 links / 0 broken / 0 anchor misses, astro preview serves /llms.txt + /llms-full.txt with HTTP 200.
+- Re-zipped download/citadel-wiki-starlight.zip (1.7 MB) to include the generator, the landing note, and both llms files.
+
+Stage Summary:
+- Deliverables: download/llms-full.txt (the all-in-one agent file), download/llms.txt (lean index), updated citadel-wiki-starlight.zip; both also live at the site root (/llms.txt, /llms-full.txt).
+- Regenerate everything with: python3 scripts/gen_starlight.py && python3 scripts/gen_llms_full.py && npm run build.

@@ -57,3 +57,12 @@ guides that use it — lives in the [API reference](/ref/).
   enforces.
 - [FAQ](/appendix/faq/) — reload rules, load failures, mode conflicts and
   other troubleshooting.
+
+## For AI agents
+
+- `llms.txt` at the site root — the lean index of this wiki: every page with
+  its route and a one-line description.
+- `llms-full.txt` at the site root — the whole wiki in one plain markdown
+  file: every page inline, with in-file anchors instead of URLs.
+
+Both regenerate with `python3 scripts/gen_llms_full.py`.
