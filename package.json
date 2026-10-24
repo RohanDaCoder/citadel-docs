@@ -7,7 +7,6 @@
     "dev": "astro dev --port 3000",
     "build": "astro build",
     "preview": "astro preview --port 3000",
-    "start": "astro preview --port 3000",
     "astro": "astro",
     "generate": "python3 scripts/gen_starlight.py",
     "generate:llms": "python3 scripts/gen_llms_full.py",
