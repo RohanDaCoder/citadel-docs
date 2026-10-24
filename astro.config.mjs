@@ -11,6 +11,11 @@ const manifest = JSON.parse(
 );
 
 export default defineConfig({
+        // Allow the dev server to be reached through proxied/tunnelled hosts
+        // (fixes Vite's "Blocked request ... not allowed" behind gateway hosts).
+        vite: {
+                server: { allowedHosts: true },
+        },
         redirects: manifest.redirects,
         integrations: [
                 starlight({

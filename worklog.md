@@ -198,3 +198,20 @@ Stage Summary:
 - Structure: 906 markdown pages — landing + 58 wiki articles in 10 sections + 2 generated appendices + 170 API type/global pages + 674 API member pages, all cross-linked, searchable (Pagefind), with sidebar navigation, breadcrumbs, prev/next, dark/light themes, mobile drawer.
 - Content source of truth: scripts/wiki_src/ + scripts/dataset.json; regenerate with `python3 scripts/gen_starlight.py && npm run build`.
 - Old minefort docs URLs keep working via 913 redirects from /docs/citadel/*.
+
+---
+Task ID: 4
+Agent: main (Z.ai)
+Task: Fix blocked dev-server host; package the Starlight project as a downloadable zip
+
+Work Log:
+- Fixed the user's "Blocked request ... not allowed" Vite error by adding vite.server.allowedHosts: true to astro.config.mjs (dev server now accepts proxied/tunnelled hosts like ws-bcc-*.fcapp.run).
+- Deleted remaining unused leftovers from the Starlight conversion: orphaned .env (stale Prisma DATABASE_URL, referenced nowhere — build.sh only uses process.env.PORT/HOSTNAME) and examples/websocket (unreferenced Next.js-era scaffold; verified zero references in src/, scripts/, astro.config, .zscripts).
+- Validated with npm run build: 907 pages built in 13.25 s, Pagefind indexed 906 pages / 6484 words.
+- Packaged the clean project into download/citadel-wiki-starlight.zip (1.4 MB, 1246 files, ~3.5 MB raw) with top-level folder citadel-wiki/: astro.config.mjs, package.json + package-lock.json + bun.lock, tsconfig.json, .gitignore, src/ (906 content pages), public/, scripts/ (wiki_src authoring sources, dataset.json, gen_starlight.py, check_dist_links.py, generated/starlight-manifest.json).
+- Excluded from zip: node_modules (265 MB), dist (75 MB), .git (81 MB), .astro, skills/, upload/, .zscripts/, tests/, mini-services/, Caddyfile, worklog.md (platform/environment artifacts).
+- Verified zip integrity with unzip -t (OK).
+
+Stage Summary:
+- Deliverable: download/citadel-wiki-starlight.zip — clean, runnable-anywhere Astro Starlight project (npm install -> npm run dev / build / preview; regenerate content with python3 scripts/gen_starlight.py).
+- Dev server now reachable through proxied hosts (vite allowedHosts: true).
