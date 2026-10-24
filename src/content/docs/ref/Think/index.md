@@ -1,0 +1,6 @@
+---
+title: 'Think type'
+description: 'What on_think gets: n bodies, and one buffer for each column with one f64 per body (entry i at byte i  8)'
+---
+
+What `on_think` gets: `n` bodies, and one buffer for each column with one f64 per body (entry i at byte i * 8). A yes or no is 1 or 0, an id of nothing is 0. Write the last nine to change them; a value left as it was changes nothing.

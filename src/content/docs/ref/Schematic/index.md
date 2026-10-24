@@ -1,0 +1,13 @@
+---
+title: 'Schematic type'
+description: 'A box of blocks: a .schem file from the pack, read once by world.schematic, or one a script wrote with world.build'
+---
+
+A box of blocks: a `.schem` file from the pack, read once by `world.schematic`, or one a script wrote with `world.build`. `min` is the build's own lowest corner, which is the corner `origin` puts down; a file has no coordinates of its own, so its `min` is zero.
+
+## Functions
+
+| Call | Purpose |
+| --- | --- |
+| [`rotate`](/ref/Schematic/rotate/) | The build's width, height and length in blocks. The build's own lowest corner, which `origin` puts down; zero for a file. A new build turned clockwise seen from above (90, 180 or 270), states and all. |
+| [`mirror`](/ref/Schematic/mirror/) | A new build flipped: "x" swaps east and west, "z" north and south. |

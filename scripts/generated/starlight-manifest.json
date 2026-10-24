@@ -1,0 +1,1916 @@
+{
+ "sidebar": [
+  {
+   "label": "Getting started",
+   "items": [
+    {
+     "label": "What is Citadel",
+     "link": "/getting-started/what-is-citadel/"
+    },
+    {
+     "label": "Quick start",
+     "link": "/getting-started/quick-start/"
+    },
+    {
+     "label": "Tooling",
+     "link": "/getting-started/tooling/"
+    },
+    {
+     "label": "Luau primer",
+     "link": "/getting-started/luau-primer/"
+    }
+   ]
+  },
+  {
+   "label": "Core concepts",
+   "items": [
+    {
+     "label": "Architecture",
+     "link": "/concepts/architecture/"
+    },
+    {
+     "label": "Pack anatomy",
+     "link": "/concepts/pack-anatomy/"
+    },
+    {
+     "label": "Runtime",
+     "link": "/concepts/runtime/"
+    },
+    {
+     "label": "The event model",
+     "link": "/concepts/events/"
+    },
+    {
+     "label": "Conventions",
+     "link": "/concepts/conventions/"
+    },
+    {
+     "label": "Rooms and dimensions",
+     "link": "/concepts/rooms-and-dimensions/"
+    }
+   ]
+  },
+  {
+   "label": "World & building",
+   "items": [
+    {
+     "label": "Terrain generation",
+     "link": "/world/terrain-generation/"
+    },
+    {
+     "label": "Block reference",
+     "link": "/world/block-reference/"
+    },
+    {
+     "label": "Building",
+     "link": "/world/building/"
+    },
+    {
+     "label": "Custom blocks",
+     "link": "/world/custom-blocks/"
+    },
+    {
+     "label": "Game data",
+     "link": "/world/game-data/"
+    },
+    {
+     "label": "World state",
+     "link": "/world/world-state/"
+    },
+    {
+     "label": "Zones, raycasts and paths",
+     "link": "/world/spatial-queries/"
+    }
+   ]
+  },
+  {
+   "label": "Entities",
+   "items": [
+    {
+     "label": "Custom entities",
+     "link": "/entities/custom-entities/"
+    },
+    {
+     "label": "Entity handles",
+     "link": "/entities/entity-handles/"
+    },
+    {
+     "label": "Mobs and spawning",
+     "link": "/entities/mobs/"
+    },
+    {
+     "label": "NPCs",
+     "link": "/entities/npcs/"
+    }
+   ]
+  },
+  {
+   "label": "Players",
+   "items": [
+    {
+     "label": "Player lifecycle",
+     "link": "/players/player-lifecycle/"
+    },
+    {
+     "label": "Movement and cameras",
+     "link": "/players/movement/"
+    },
+    {
+     "label": "Inventory and items",
+     "link": "/players/inventory/"
+    },
+    {
+     "label": "Visibility and teams",
+     "link": "/players/visibility/"
+    },
+    {
+     "label": "Health and damage",
+     "link": "/players/health/"
+    },
+    {
+     "label": "Permissions",
+     "link": "/players/permissions/"
+    }
+   ]
+  },
+  {
+   "label": "Interface & media",
+   "items": [
+    {
+     "label": "UI basics",
+     "link": "/ui/ui-basics/"
+    },
+    {
+     "label": "Screens and layouts",
+     "link": "/ui/screens/"
+    },
+    {
+     "label": "Canvases and pictures",
+     "link": "/ui/canvases/"
+    },
+    {
+     "label": "Menus",
+     "link": "/ui/menus/"
+    },
+    {
+     "label": "Dialogs",
+     "link": "/ui/dialogs/"
+    },
+    {
+     "label": "Displays and models",
+     "link": "/ui/displays/"
+    },
+    {
+     "label": "Particles and lasers",
+     "link": "/ui/fx/"
+    },
+    {
+     "label": "Sound",
+     "link": "/ui/sound/"
+    }
+   ]
+  },
+  {
+   "label": "Server systems",
+   "items": [
+    {
+     "label": "Commands",
+     "link": "/systems/commands/"
+    },
+    {
+     "label": "Storage",
+     "link": "/systems/storage/"
+    },
+    {
+     "label": "Shared stores",
+     "link": "/systems/shared-stores/"
+    },
+    {
+     "label": "Network",
+     "link": "/systems/network/"
+    },
+    {
+     "label": "HTTP",
+     "link": "/systems/http/"
+    },
+    {
+     "label": "Shop",
+     "link": "/systems/shop/"
+    },
+    {
+     "label": "Hub",
+     "link": "/systems/hub/"
+    },
+    {
+     "label": "Server settings",
+     "link": "/systems/server-settings/"
+    },
+    {
+     "label": "Limits",
+     "link": "/systems/limits/"
+    }
+   ]
+  },
+  {
+   "label": "Guides",
+   "items": [
+    {
+     "label": "Build a cottage",
+     "link": "/guides/guide-build-a-cottage/"
+    },
+    {
+     "label": "Coin rush",
+     "link": "/guides/guide-coin-rush/"
+    },
+    {
+     "label": "Parkour, a room each",
+     "link": "/guides/guide-parkour-a-room-each/"
+    },
+    {
+     "label": "A dungeon dimension",
+     "link": "/guides/guide-a-dungeon-dimension/"
+    },
+    {
+     "label": "Scoreboard with a button",
+     "link": "/guides/guide-scoreboard-with-a-button/"
+    }
+   ]
+  },
+  {
+   "label": "Cookbook",
+   "items": [
+    {
+     "label": "Cooldowns",
+     "link": "/cookbook/cookbook-cooldowns/"
+    },
+    {
+     "label": "Leaderboards",
+     "link": "/cookbook/cookbook-leaderboards/"
+    },
+    {
+     "label": "Teleport pads",
+     "link": "/cookbook/cookbook-teleport-pads/"
+    },
+    {
+     "label": "Kits",
+     "link": "/cookbook/cookbook-kits/"
+    },
+    {
+     "label": "Teams",
+     "link": "/cookbook/cookbook-teams/"
+    },
+    {
+     "label": "A minigame loop",
+     "link": "/cookbook/cookbook-minigame-loop/"
+    },
+    {
+     "label": "Save and load",
+     "link": "/cookbook/cookbook-save-load/"
+    }
+   ]
+  },
+  {
+   "label": "Appendix",
+   "items": [
+    {
+     "label": "Event catalog",
+     "link": "/appendix/event-catalog/"
+    },
+    {
+     "label": "Client versions",
+     "link": "/appendix/client-versions/"
+    },
+    {
+     "label": "FAQ and troubleshooting",
+     "link": "/appendix/faq/"
+    },
+    {
+     "label": "Limits",
+     "link": "/appendix/limits-table/"
+    }
+   ]
+  },
+  {
+   "label": "API reference",
+   "items": [
+    {
+     "label": "Overview",
+     "link": "/ref/"
+    },
+    {
+     "label": "World & game",
+     "collapsed": true,
+     "items": [
+      {
+       "label": "world",
+       "link": "/ref/World/"
+      },
+      {
+       "label": "game",
+       "link": "/ref/Game/"
+      },
+      {
+       "label": "models",
+       "link": "/ref/models/"
+      },
+      {
+       "label": "parts",
+       "link": "/ref/parts/"
+      },
+      {
+       "label": "routes",
+       "link": "/ref/routes/"
+      },
+      {
+       "label": "noise",
+       "link": "/ref/noise/"
+      },
+      {
+       "label": "fields",
+       "link": "/ref/fields/"
+      },
+      {
+       "label": "data",
+       "link": "/ref/data/"
+      }
+     ]
+    },
+    {
+     "label": "Players",
+     "collapsed": true,
+     "items": [
+      {
+       "label": "players",
+       "link": "/ref/Players/"
+      },
+      {
+       "label": "camera",
+       "link": "/ref/camera/"
+      }
+     ]
+    },
+    {
+     "label": "Interface & media",
+     "collapsed": true,
+     "items": [
+      {
+       "label": "ui",
+       "link": "/ref/Ui/"
+      },
+      {
+       "label": "fx",
+       "link": "/ref/Fx/"
+      },
+      {
+       "label": "sound",
+       "link": "/ref/Sound/"
+      },
+      {
+       "label": "message",
+       "link": "/ref/message/"
+      },
+      {
+       "label": "tween",
+       "link": "/ref/tween/"
+      },
+      {
+       "label": "color",
+       "link": "/ref/color/"
+      },
+      {
+       "label": "colors",
+       "link": "/ref/colors/"
+      }
+     ]
+    },
+    {
+     "label": "Systems",
+     "collapsed": true,
+     "items": [
+      {
+       "label": "commands",
+       "link": "/ref/Commands/"
+      },
+      {
+       "label": "time",
+       "link": "/ref/time/"
+      },
+      {
+       "label": "task",
+       "link": "/ref/task/"
+      },
+      {
+       "label": "rooms",
+       "link": "/ref/rooms/"
+      },
+      {
+       "label": "storage",
+       "link": "/ref/storage/"
+      },
+      {
+       "label": "stores",
+       "link": "/ref/stores/"
+      },
+      {
+       "label": "http",
+       "link": "/ref/http/"
+      },
+      {
+       "label": "network",
+       "link": "/ref/network/"
+      },
+      {
+       "label": "shop",
+       "link": "/ref/shop/"
+      },
+      {
+       "label": "hub",
+       "link": "/ref/hub/"
+      }
+     ]
+    },
+    {
+     "label": "Engine",
+     "collapsed": true,
+     "items": [
+      {
+       "label": "citadel",
+       "link": "/ref/citadel/"
+      },
+      {
+       "label": "vec3",
+       "link": "/ref/vec3/"
+      }
+     ]
+    },
+    {
+     "label": "Types A\u2013Z",
+     "collapsed": true,
+     "items": [
+      {
+       "label": "AskCount",
+       "link": "/ref/AskCount/"
+      },
+      {
+       "label": "Asks",
+       "link": "/ref/Asks/"
+      },
+      {
+       "label": "Bar",
+       "link": "/ref/Bar/"
+      },
+      {
+       "label": "BarColor",
+       "link": "/ref/BarColor/"
+      },
+      {
+       "label": "Billboard",
+       "link": "/ref/Billboard/"
+      },
+      {
+       "label": "BiomeDefinition",
+       "link": "/ref/BiomeDefinition/"
+      },
+      {
+       "label": "Biomes",
+       "link": "/ref/Biomes/"
+      },
+      {
+       "label": "Block",
+       "link": "/ref/Block/"
+      },
+      {
+       "label": "BlockAmendSpec",
+       "link": "/ref/BlockAmendSpec/"
+      },
+      {
+       "label": "BlockAt",
+       "link": "/ref/BlockAt/"
+      },
+      {
+       "label": "BlockDef",
+       "link": "/ref/BlockDef/"
+      },
+      {
+       "label": "BlockPick",
+       "link": "/ref/BlockPick/"
+      },
+      {
+       "label": "BlockRef",
+       "link": "/ref/BlockRef/"
+      },
+      {
+       "label": "Blocks",
+       "link": "/ref/Blocks/"
+      },
+      {
+       "label": "BlockSpec",
+       "link": "/ref/BlockSpec/"
+      },
+      {
+       "label": "Body",
+       "link": "/ref/Body/"
+      },
+      {
+       "label": "BodyRotation",
+       "link": "/ref/BodyRotation/"
+      },
+      {
+       "label": "Breaker",
+       "link": "/ref/Breaker/"
+      },
+      {
+       "label": "Budget",
+       "link": "/ref/Budget/"
+      },
+      {
+       "label": "Builder",
+       "link": "/ref/Builder/"
+      },
+      {
+       "label": "Camera",
+       "link": "/ref/Camera/"
+      },
+      {
+       "label": "Canvas",
+       "link": "/ref/Canvas/"
+      },
+      {
+       "label": "ChaseCamera",
+       "link": "/ref/ChaseCamera/"
+      },
+      {
+       "label": "Chunk",
+       "link": "/ref/Chunk/"
+      },
+      {
+       "label": "Color",
+       "link": "/ref/Color/"
+      },
+      {
+       "label": "ColorName",
+       "link": "/ref/ColorName/"
+      },
+      {
+       "label": "Command",
+       "link": "/ref/Command/"
+      },
+      {
+       "label": "CommandOpts",
+       "link": "/ref/CommandOpts/"
+      },
+      {
+       "label": "Connection",
+       "link": "/ref/Connection/"
+      },
+      {
+       "label": "Container",
+       "link": "/ref/Container/"
+      },
+      {
+       "label": "Context",
+       "link": "/ref/Context/"
+      },
+      {
+       "label": "DamageHit",
+       "link": "/ref/DamageHit/"
+      },
+      {
+       "label": "DataView",
+       "link": "/ref/DataView/"
+      },
+      {
+       "label": "Dialog",
+       "link": "/ref/Dialog/"
+      },
+      {
+       "label": "DialogNode",
+       "link": "/ref/DialogNode/"
+      },
+      {
+       "label": "Display",
+       "link": "/ref/Display/"
+      },
+      {
+       "label": "Drops",
+       "link": "/ref/Drops/"
+      },
+      {
+       "label": "DurableStore",
+       "link": "/ref/DurableStore/"
+      },
+      {
+       "label": "Easing",
+       "link": "/ref/Easing/"
+      },
+      {
+       "label": "Effect",
+       "link": "/ref/Effect/"
+      },
+      {
+       "label": "Entities",
+       "link": "/ref/Entities/"
+      },
+      {
+       "label": "EntityAmendOptions",
+       "link": "/ref/EntityAmendOptions/"
+      },
+      {
+       "label": "EntityAmendSpec",
+       "link": "/ref/EntityAmendSpec/"
+      },
+      {
+       "label": "EntityCamera",
+       "link": "/ref/EntityCamera/"
+      },
+      {
+       "label": "EntityDef",
+       "link": "/ref/EntityDef/"
+      },
+      {
+       "label": "EntityHandle",
+       "link": "/ref/EntityHandle/"
+      },
+      {
+       "label": "EntityKind",
+       "link": "/ref/EntityKind/"
+      },
+      {
+       "label": "EntitySpec",
+       "link": "/ref/EntitySpec/"
+      },
+      {
+       "label": "Face",
+       "link": "/ref/Face/"
+      },
+      {
+       "label": "Faces",
+       "link": "/ref/Faces/"
+      },
+      {
+       "label": "Facing",
+       "link": "/ref/Facing/"
+      },
+      {
+       "label": "Feature",
+       "link": "/ref/Feature/"
+      },
+      {
+       "label": "Field",
+       "link": "/ref/Field/"
+      },
+      {
+       "label": "FixedCamera",
+       "link": "/ref/FixedCamera/"
+      },
+      {
+       "label": "FluidRule",
+       "link": "/ref/FluidRule/"
+      },
+      {
+       "label": "FreeCamera",
+       "link": "/ref/FreeCamera/"
+      },
+      {
+       "label": "Generated",
+       "link": "/ref/Generated/"
+      },
+      {
+       "label": "GeneratorRules",
+       "link": "/ref/GeneratorRules/"
+      },
+      {
+       "label": "GroundItem",
+       "link": "/ref/GroundItem/"
+      },
+      {
+       "label": "GroundRule",
+       "link": "/ref/GroundRule/"
+      },
+      {
+       "label": "HeadSkin",
+       "link": "/ref/HeadSkin/"
+      },
+      {
+       "label": "Hit",
+       "link": "/ref/Hit/"
+      },
+      {
+       "label": "Hitbox",
+       "link": "/ref/Hitbox/"
+      },
+      {
+       "label": "HttpResponse",
+       "link": "/ref/HttpResponse/"
+      },
+      {
+       "label": "Hud",
+       "link": "/ref/Hud/"
+      },
+      {
+       "label": "HudPart",
+       "link": "/ref/HudPart/"
+      },
+      {
+       "label": "Ink",
+       "link": "/ref/Ink/"
+      },
+      {
+       "label": "InventorySlot",
+       "link": "/ref/InventorySlot/"
+      },
+      {
+       "label": "Item",
+       "link": "/ref/Item/"
+      },
+      {
+       "label": "ItemMatch",
+       "link": "/ref/ItemMatch/"
+      },
+      {
+       "label": "ItemMeta",
+       "link": "/ref/ItemMeta/"
+      },
+      {
+       "label": "Items",
+       "link": "/ref/Items/"
+      },
+      {
+       "label": "ItemSpec",
+       "link": "/ref/ItemSpec/"
+      },
+      {
+       "label": "ItemTable",
+       "link": "/ref/ItemTable/"
+      },
+      {
+       "label": "Layout",
+       "link": "/ref/Layout/"
+      },
+      {
+       "label": "LayoutAlign",
+       "link": "/ref/LayoutAlign/"
+      },
+      {
+       "label": "LayoutNode",
+       "link": "/ref/LayoutNode/"
+      },
+      {
+       "label": "LetterStyle",
+       "link": "/ref/LetterStyle/"
+      },
+      {
+       "label": "LightSource",
+       "link": "/ref/LightSource/"
+      },
+      {
+       "label": "Looks",
+       "link": "/ref/Looks/"
+      },
+      {
+       "label": "Material",
+       "link": "/ref/Material/"
+      },
+      {
+       "label": "Menu",
+       "link": "/ref/Menu/"
+      },
+      {
+       "label": "Model",
+       "link": "/ref/Model/"
+      },
+      {
+       "label": "ModelBuild",
+       "link": "/ref/ModelBuild/"
+      },
+      {
+       "label": "ModelDisplay",
+       "link": "/ref/ModelDisplay/"
+      },
+      {
+       "label": "ModelMaterial",
+       "link": "/ref/ModelMaterial/"
+      },
+      {
+       "label": "ModelPart",
+       "link": "/ref/ModelPart/"
+      },
+      {
+       "label": "ModelSkin",
+       "link": "/ref/ModelSkin/"
+      },
+      {
+       "label": "ModelTexture",
+       "link": "/ref/ModelTexture/"
+      },
+      {
+       "label": "MountTarget",
+       "link": "/ref/MountTarget/"
+      },
+      {
+       "label": "NetworkInstance",
+       "link": "/ref/NetworkInstance/"
+      },
+      {
+       "label": "NetworkStarted",
+       "link": "/ref/NetworkStarted/"
+      },
+      {
+       "label": "Noise",
+       "link": "/ref/Noise/"
+      },
+      {
+       "label": "Npc",
+       "link": "/ref/Npc/"
+      },
+      {
+       "label": "NpcPose",
+       "link": "/ref/NpcPose/"
+      },
+      {
+       "label": "Occupant",
+       "link": "/ref/Occupant/"
+      },
+      {
+       "label": "OrbitCamera",
+       "link": "/ref/OrbitCamera/"
+      },
+      {
+       "label": "Orientation",
+       "link": "/ref/Orientation/"
+      },
+      {
+       "label": "Overlay",
+       "link": "/ref/Overlay/"
+      },
+      {
+       "label": "PartDefinition",
+       "link": "/ref/PartDefinition/"
+      },
+      {
+       "label": "Persist",
+       "link": "/ref/Persist/"
+      },
+      {
+       "label": "Physics",
+       "link": "/ref/Physics/"
+      },
+      {
+       "label": "Picture",
+       "link": "/ref/Picture/"
+      },
+      {
+       "label": "PlantRule",
+       "link": "/ref/PlantRule/"
+      },
+      {
+       "label": "Player",
+       "link": "/ref/Player/"
+      },
+      {
+       "label": "PlayerUi",
+       "link": "/ref/PlayerUi/"
+      },
+      {
+       "label": "Puppet",
+       "link": "/ref/Puppet/"
+      },
+      {
+       "label": "RayHit",
+       "link": "/ref/RayHit/"
+      },
+      {
+       "label": "Recipes",
+       "link": "/ref/Recipes/"
+      },
+      {
+       "label": "Room",
+       "link": "/ref/Room/"
+      },
+      {
+       "label": "Rotation",
+       "link": "/ref/Rotation/"
+      },
+      {
+       "label": "Rules",
+       "link": "/ref/Rules/"
+      },
+      {
+       "label": "Schematic",
+       "link": "/ref/Schematic/"
+      },
+      {
+       "label": "Screen",
+       "link": "/ref/Screen/"
+      },
+      {
+       "label": "ScreenFacing",
+       "link": "/ref/ScreenFacing/"
+      },
+      {
+       "label": "ShopPurchase",
+       "link": "/ref/ShopPurchase/"
+      },
+      {
+       "label": "Slow",
+       "link": "/ref/Slow/"
+      },
+      {
+       "label": "Socket",
+       "link": "/ref/Socket/"
+      },
+      {
+       "label": "SocketMessage",
+       "link": "/ref/SocketMessage/"
+      },
+      {
+       "label": "SoundSpeaker",
+       "link": "/ref/SoundSpeaker/"
+      },
+      {
+       "label": "SoundStream",
+       "link": "/ref/SoundStream/"
+      },
+      {
+       "label": "Suggester",
+       "link": "/ref/Suggester/"
+      },
+      {
+       "label": "Suggestion",
+       "link": "/ref/Suggestion/"
+      },
+      {
+       "label": "TerrainStep",
+       "link": "/ref/TerrainStep/"
+      },
+      {
+       "label": "Text",
+       "link": "/ref/Text/"
+      },
+      {
+       "label": "TextRuns",
+       "link": "/ref/TextRuns/"
+      },
+      {
+       "label": "Texture",
+       "link": "/ref/Texture/"
+      },
+      {
+       "label": "TextureRef",
+       "link": "/ref/TextureRef/"
+      },
+      {
+       "label": "ThingGrid",
+       "link": "/ref/ThingGrid/"
+      },
+      {
+       "label": "ThingRule",
+       "link": "/ref/ThingRule/"
+      },
+      {
+       "label": "Think",
+       "link": "/ref/Think/"
+      },
+      {
+       "label": "TimeName",
+       "link": "/ref/TimeName/"
+      },
+      {
+       "label": "Trigger",
+       "link": "/ref/Trigger/"
+      },
+      {
+       "label": "Tween",
+       "link": "/ref/Tween/"
+      },
+      {
+       "label": "Used",
+       "link": "/ref/Used/"
+      },
+      {
+       "label": "Vec3",
+       "link": "/ref/Vec3/"
+      },
+      {
+       "label": "Video",
+       "link": "/ref/Video/"
+      },
+      {
+       "label": "View",
+       "link": "/ref/View/"
+      },
+      {
+       "label": "WorldTarget",
+       "link": "/ref/WorldTarget/"
+      },
+      {
+       "label": "Worn",
+       "link": "/ref/Worn/"
+      },
+      {
+       "label": "Zone",
+       "link": "/ref/Zone/"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "redirects": {
+  "/docs/citadel": "/",
+  "/docs/citadel/reference": "/ref/",
+  "/docs/citadel/your-first-pack": "/getting-started/quick-start/",
+  "/docs/citadel/api-basics": "/concepts/conventions/",
+  "/docs/citadel/packs": "/concepts/pack-anatomy/",
+  "/docs/citadel/modules-and-tasks": "/concepts/runtime/",
+  "/docs/citadel/limits-and-reload": "/systems/limits/",
+  "/docs/citadel/game-events": "/concepts/events/",
+  "/docs/citadel/cancelling-events": "/concepts/events/",
+  "/docs/citadel/rooms": "/concepts/rooms-and-dimensions/",
+  "/docs/citadel/dimensions": "/concepts/rooms-and-dimensions/",
+  "/docs/citadel/a-world-per-player": "/concepts/rooms-and-dimensions/",
+  "/docs/citadel/blocks-and-terrain": "/world/terrain-generation/",
+  "/docs/citadel/building-well": "/world/building/",
+  "/docs/citadel/named-parts": "/world/building/",
+  "/docs/citadel/custom-blocks": "/world/custom-blocks/",
+  "/docs/citadel/game-data": "/world/game-data/",
+  "/docs/citadel/custom-entities": "/entities/custom-entities/",
+  "/docs/citadel/mobs-and-drops": "/entities/mobs/",
+  "/docs/citadel/npcs": "/entities/npcs/",
+  "/docs/citadel/players": "/players/player-lifecycle/",
+  "/docs/citadel/body-and-movement": "/players/movement/",
+  "/docs/citadel/cameras": "/players/movement/",
+  "/docs/citadel/input": "/players/movement/",
+  "/docs/citadel/items": "/players/inventory/",
+  "/docs/citadel/armour": "/players/inventory/",
+  "/docs/citadel/permissions": "/players/permissions/",
+  "/docs/citadel/hud": "/ui/ui-basics/",
+  "/docs/citadel/titles-and-bars": "/ui/ui-basics/",
+  "/docs/citadel/text-formatting": "/ui/ui-basics/",
+  "/docs/citadel/screens": "/ui/screens/",
+  "/docs/citadel/layouts": "/ui/screens/",
+  "/docs/citadel/canvases": "/ui/canvases/",
+  "/docs/citadel/map-pictures": "/ui/canvases/",
+  "/docs/citadel/menus": "/ui/menus/",
+  "/docs/citadel/hotbar-menus": "/ui/menus/",
+  "/docs/citadel/dialogs": "/ui/dialogs/",
+  "/docs/citadel/displays": "/ui/displays/",
+  "/docs/citadel/3d-models": "/ui/displays/",
+  "/docs/citadel/particles-and-lasers": "/ui/fx/",
+  "/docs/citadel/sound": "/ui/sound/",
+  "/docs/citadel/commands": "/systems/commands/",
+  "/docs/citadel/storage": "/systems/storage/",
+  "/docs/citadel/shared-stores": "/systems/shared-stores/",
+  "/docs/citadel/network": "/systems/network/",
+  "/docs/citadel/http": "/systems/http/",
+  "/docs/citadel/shop": "/systems/shop/",
+  "/docs/citadel/hub": "/systems/hub/",
+  "/docs/citadel/server-settings": "/systems/server-settings/",
+  "/docs/citadel/client-versions": "/appendix/client-versions/",
+  "/docs/citadel/version-info": "/getting-started/tooling/",
+  "/docs/citadel/scoreboard-with-a-button": "/guides/guide-scoreboard-with-a-button/",
+  "/docs/citadel/room-rules": "/world/world-state/",
+  "/docs/citadel/time-and-tweens": "/world/world-state/",
+  "/docs/citadel/vectors-and-colours": "/concepts/conventions/",
+  "/docs/citadel/lighting": "/ui/displays/",
+  "/docs/citadel/zones-and-raycasts": "/world/spatial-queries/",
+  "/docs/citadel/guides/a-dungeon-dimension": "/guides/guide-a-dungeon-dimension/",
+  "/docs/citadel/guides/build-a-cottage": "/guides/guide-build-a-cottage/",
+  "/docs/citadel/guides/coin-rush": "/guides/guide-coin-rush/",
+  "/docs/citadel/guides/parkour-a-room-each": "/guides/guide-parkour-a-room-each/",
+  "/docs/citadel/guides/your-first-pack": "/getting-started/quick-start/",
+  "/docs/citadel/reference/AskCount": "/ref/AskCount/",
+  "/docs/citadel/reference/Asks": "/ref/Asks/",
+  "/docs/citadel/reference/Bar": "/ref/Bar/",
+  "/docs/citadel/reference/BarColor": "/ref/BarColor/",
+  "/docs/citadel/reference/Billboard": "/ref/Billboard/",
+  "/docs/citadel/reference/BiomeDefinition": "/ref/BiomeDefinition/",
+  "/docs/citadel/reference/Biomes": "/ref/Biomes/",
+  "/docs/citadel/reference/Block": "/ref/Block/",
+  "/docs/citadel/reference/BlockAmendSpec": "/ref/BlockAmendSpec/",
+  "/docs/citadel/reference/BlockAt": "/ref/BlockAt/",
+  "/docs/citadel/reference/BlockDef": "/ref/BlockDef/",
+  "/docs/citadel/reference/BlockPick": "/ref/BlockPick/",
+  "/docs/citadel/reference/BlockRef": "/ref/BlockRef/",
+  "/docs/citadel/reference/BlockSpec": "/ref/BlockSpec/",
+  "/docs/citadel/reference/Blocks": "/ref/Blocks/",
+  "/docs/citadel/reference/Body": "/ref/Body/",
+  "/docs/citadel/reference/BodyRotation": "/ref/BodyRotation/",
+  "/docs/citadel/reference/Breaker": "/ref/Breaker/",
+  "/docs/citadel/reference/Budget": "/ref/Budget/",
+  "/docs/citadel/reference/Builder": "/ref/Builder/",
+  "/docs/citadel/reference/Camera": "/ref/Camera/",
+  "/docs/citadel/reference/Canvas": "/ref/Canvas/",
+  "/docs/citadel/reference/ChaseCamera": "/ref/ChaseCamera/",
+  "/docs/citadel/reference/Chunk": "/ref/Chunk/",
+  "/docs/citadel/reference/Color": "/ref/Color/",
+  "/docs/citadel/reference/ColorName": "/ref/ColorName/",
+  "/docs/citadel/reference/Command": "/ref/Command/",
+  "/docs/citadel/reference/CommandOpts": "/ref/CommandOpts/",
+  "/docs/citadel/reference/Commands": "/ref/Commands/",
+  "/docs/citadel/reference/Connection": "/ref/Connection/",
+  "/docs/citadel/reference/Container": "/ref/Container/",
+  "/docs/citadel/reference/Context": "/ref/Context/",
+  "/docs/citadel/reference/DamageHit": "/ref/DamageHit/",
+  "/docs/citadel/reference/DataView": "/ref/DataView/",
+  "/docs/citadel/reference/Dialog": "/ref/Dialog/",
+  "/docs/citadel/reference/DialogNode": "/ref/DialogNode/",
+  "/docs/citadel/reference/Display": "/ref/Display/",
+  "/docs/citadel/reference/Drops": "/ref/Drops/",
+  "/docs/citadel/reference/DurableStore": "/ref/DurableStore/",
+  "/docs/citadel/reference/Easing": "/ref/Easing/",
+  "/docs/citadel/reference/Effect": "/ref/Effect/",
+  "/docs/citadel/reference/Entities": "/ref/Entities/",
+  "/docs/citadel/reference/EntityAmendOptions": "/ref/EntityAmendOptions/",
+  "/docs/citadel/reference/EntityAmendSpec": "/ref/EntityAmendSpec/",
+  "/docs/citadel/reference/EntityCamera": "/ref/EntityCamera/",
+  "/docs/citadel/reference/EntityDef": "/ref/EntityDef/",
+  "/docs/citadel/reference/EntityHandle": "/ref/EntityHandle/",
+  "/docs/citadel/reference/EntityKind": "/ref/EntityKind/",
+  "/docs/citadel/reference/EntitySpec": "/ref/EntitySpec/",
+  "/docs/citadel/reference/Face": "/ref/Face/",
+  "/docs/citadel/reference/Faces": "/ref/Faces/",
+  "/docs/citadel/reference/Facing": "/ref/Facing/",
+  "/docs/citadel/reference/Feature": "/ref/Feature/",
+  "/docs/citadel/reference/Field": "/ref/Field/",
+  "/docs/citadel/reference/FixedCamera": "/ref/FixedCamera/",
+  "/docs/citadel/reference/FluidRule": "/ref/FluidRule/",
+  "/docs/citadel/reference/FreeCamera": "/ref/FreeCamera/",
+  "/docs/citadel/reference/Fx": "/ref/Fx/",
+  "/docs/citadel/reference/Game": "/ref/Game/",
+  "/docs/citadel/reference/Generated": "/ref/Generated/",
+  "/docs/citadel/reference/GeneratorRules": "/ref/GeneratorRules/",
+  "/docs/citadel/reference/GroundItem": "/ref/GroundItem/",
+  "/docs/citadel/reference/GroundRule": "/ref/GroundRule/",
+  "/docs/citadel/reference/HeadSkin": "/ref/HeadSkin/",
+  "/docs/citadel/reference/Hit": "/ref/Hit/",
+  "/docs/citadel/reference/Hitbox": "/ref/Hitbox/",
+  "/docs/citadel/reference/HttpResponse": "/ref/HttpResponse/",
+  "/docs/citadel/reference/Hud": "/ref/Hud/",
+  "/docs/citadel/reference/HudPart": "/ref/HudPart/",
+  "/docs/citadel/reference/Ink": "/ref/Ink/",
+  "/docs/citadel/reference/InventorySlot": "/ref/InventorySlot/",
+  "/docs/citadel/reference/Item": "/ref/Item/",
+  "/docs/citadel/reference/ItemMatch": "/ref/ItemMatch/",
+  "/docs/citadel/reference/ItemMeta": "/ref/ItemMeta/",
+  "/docs/citadel/reference/ItemSpec": "/ref/ItemSpec/",
+  "/docs/citadel/reference/ItemTable": "/ref/ItemTable/",
+  "/docs/citadel/reference/Items": "/ref/Items/",
+  "/docs/citadel/reference/Layout": "/ref/Layout/",
+  "/docs/citadel/reference/LayoutAlign": "/ref/LayoutAlign/",
+  "/docs/citadel/reference/LayoutNode": "/ref/LayoutNode/",
+  "/docs/citadel/reference/LetterStyle": "/ref/LetterStyle/",
+  "/docs/citadel/reference/LightSource": "/ref/LightSource/",
+  "/docs/citadel/reference/Looks": "/ref/Looks/",
+  "/docs/citadel/reference/Material": "/ref/Material/",
+  "/docs/citadel/reference/Menu": "/ref/Menu/",
+  "/docs/citadel/reference/Model": "/ref/Model/",
+  "/docs/citadel/reference/ModelBuild": "/ref/ModelBuild/",
+  "/docs/citadel/reference/ModelDisplay": "/ref/ModelDisplay/",
+  "/docs/citadel/reference/ModelMaterial": "/ref/ModelMaterial/",
+  "/docs/citadel/reference/ModelPart": "/ref/ModelPart/",
+  "/docs/citadel/reference/ModelSkin": "/ref/ModelSkin/",
+  "/docs/citadel/reference/ModelTexture": "/ref/ModelTexture/",
+  "/docs/citadel/reference/MountTarget": "/ref/MountTarget/",
+  "/docs/citadel/reference/NetworkInstance": "/ref/NetworkInstance/",
+  "/docs/citadel/reference/NetworkStarted": "/ref/NetworkStarted/",
+  "/docs/citadel/reference/Noise": "/ref/Noise/",
+  "/docs/citadel/reference/Npc": "/ref/Npc/",
+  "/docs/citadel/reference/NpcPose": "/ref/NpcPose/",
+  "/docs/citadel/reference/Occupant": "/ref/Occupant/",
+  "/docs/citadel/reference/OrbitCamera": "/ref/OrbitCamera/",
+  "/docs/citadel/reference/Orientation": "/ref/Orientation/",
+  "/docs/citadel/reference/Overlay": "/ref/Overlay/",
+  "/docs/citadel/reference/PartDefinition": "/ref/PartDefinition/",
+  "/docs/citadel/reference/Persist": "/ref/Persist/",
+  "/docs/citadel/reference/Physics": "/ref/Physics/",
+  "/docs/citadel/reference/Picture": "/ref/Picture/",
+  "/docs/citadel/reference/PlantRule": "/ref/PlantRule/",
+  "/docs/citadel/reference/Player": "/ref/Player/",
+  "/docs/citadel/reference/PlayerUi": "/ref/PlayerUi/",
+  "/docs/citadel/reference/Players": "/ref/Players/",
+  "/docs/citadel/reference/Puppet": "/ref/Puppet/",
+  "/docs/citadel/reference/RayHit": "/ref/RayHit/",
+  "/docs/citadel/reference/Recipes": "/ref/Recipes/",
+  "/docs/citadel/reference/Room": "/ref/Room/",
+  "/docs/citadel/reference/Rotation": "/ref/Rotation/",
+  "/docs/citadel/reference/Rules": "/ref/Rules/",
+  "/docs/citadel/reference/Schematic": "/ref/Schematic/",
+  "/docs/citadel/reference/Screen": "/ref/Screen/",
+  "/docs/citadel/reference/ScreenFacing": "/ref/ScreenFacing/",
+  "/docs/citadel/reference/ShopPurchase": "/ref/ShopPurchase/",
+  "/docs/citadel/reference/Slow": "/ref/Slow/",
+  "/docs/citadel/reference/Socket": "/ref/Socket/",
+  "/docs/citadel/reference/SocketMessage": "/ref/SocketMessage/",
+  "/docs/citadel/reference/Sound": "/ref/Sound/",
+  "/docs/citadel/reference/SoundSpeaker": "/ref/SoundSpeaker/",
+  "/docs/citadel/reference/SoundStream": "/ref/SoundStream/",
+  "/docs/citadel/reference/Suggester": "/ref/Suggester/",
+  "/docs/citadel/reference/Suggestion": "/ref/Suggestion/",
+  "/docs/citadel/reference/TerrainStep": "/ref/TerrainStep/",
+  "/docs/citadel/reference/Text": "/ref/Text/",
+  "/docs/citadel/reference/TextRuns": "/ref/TextRuns/",
+  "/docs/citadel/reference/Texture": "/ref/Texture/",
+  "/docs/citadel/reference/TextureRef": "/ref/TextureRef/",
+  "/docs/citadel/reference/ThingGrid": "/ref/ThingGrid/",
+  "/docs/citadel/reference/ThingRule": "/ref/ThingRule/",
+  "/docs/citadel/reference/Think": "/ref/Think/",
+  "/docs/citadel/reference/TimeName": "/ref/TimeName/",
+  "/docs/citadel/reference/Trigger": "/ref/Trigger/",
+  "/docs/citadel/reference/Tween": "/ref/Tween/",
+  "/docs/citadel/reference/Ui": "/ref/Ui/",
+  "/docs/citadel/reference/Used": "/ref/Used/",
+  "/docs/citadel/reference/Vec3": "/ref/Vec3/",
+  "/docs/citadel/reference/Video": "/ref/Video/",
+  "/docs/citadel/reference/View": "/ref/View/",
+  "/docs/citadel/reference/World": "/ref/World/",
+  "/docs/citadel/reference/WorldTarget": "/ref/WorldTarget/",
+  "/docs/citadel/reference/Worn": "/ref/Worn/",
+  "/docs/citadel/reference/Zone": "/ref/Zone/",
+  "/docs/citadel/reference/citadel": "/ref/citadel/",
+  "/docs/citadel/reference/colors": "/ref/colors/",
+  "/docs/citadel/reference/data": "/ref/data/",
+  "/docs/citadel/reference/fields": "/ref/fields/",
+  "/docs/citadel/reference/http": "/ref/http/",
+  "/docs/citadel/reference/hub": "/ref/hub/",
+  "/docs/citadel/reference/message": "/ref/message/",
+  "/docs/citadel/reference/models": "/ref/models/",
+  "/docs/citadel/reference/network": "/ref/network/",
+  "/docs/citadel/reference/parts": "/ref/parts/",
+  "/docs/citadel/reference/rooms": "/ref/rooms/",
+  "/docs/citadel/reference/routes": "/ref/routes/",
+  "/docs/citadel/reference/shop": "/ref/shop/",
+  "/docs/citadel/reference/storage": "/ref/storage/",
+  "/docs/citadel/reference/stores": "/ref/stores/",
+  "/docs/citadel/reference/task": "/ref/task/",
+  "/docs/citadel/reference/time": "/ref/time/",
+  "/docs/citadel/reference/AskCount/answered": "/ref/AskCount/answered/",
+  "/docs/citadel/reference/AskCount/asks": "/ref/AskCount/asks/",
+  "/docs/citadel/reference/AskCount/disabled": "/ref/AskCount/disabled/",
+  "/docs/citadel/reference/AskCount/late": "/ref/AskCount/late/",
+  "/docs/citadel/reference/AskCount/missed": "/ref/AskCount/missed/",
+  "/docs/citadel/reference/AskCount/skipped": "/ref/AskCount/skipped/",
+  "/docs/citadel/reference/Asks/kinds": "/ref/Asks/kinds/",
+  "/docs/citadel/reference/Bar/color": "/ref/Bar/color/",
+  "/docs/citadel/reference/Bar/destroy": "/ref/Bar/destroy/",
+  "/docs/citadel/reference/Bar/progress": "/ref/Bar/progress/",
+  "/docs/citadel/reference/Bar/title": "/ref/Bar/title/",
+  "/docs/citadel/reference/Bar/visible": "/ref/Bar/visible/",
+  "/docs/citadel/reference/BiomeDefinition/fog": "/ref/BiomeDefinition/fog/",
+  "/docs/citadel/reference/BiomeDefinition/grass": "/ref/BiomeDefinition/grass/",
+  "/docs/citadel/reference/BiomeDefinition/leaves": "/ref/BiomeDefinition/leaves/",
+  "/docs/citadel/reference/BiomeDefinition/like": "/ref/BiomeDefinition/like/",
+  "/docs/citadel/reference/BiomeDefinition/name": "/ref/BiomeDefinition/name/",
+  "/docs/citadel/reference/BiomeDefinition/sky": "/ref/BiomeDefinition/sky/",
+  "/docs/citadel/reference/BiomeDefinition/water": "/ref/BiomeDefinition/water/",
+  "/docs/citadel/reference/BiomeDefinition/water_fog": "/ref/BiomeDefinition/water_fog/",
+  "/docs/citadel/reference/BiomeDefinition/weather": "/ref/BiomeDefinition/weather/",
+  "/docs/citadel/reference/Biomes/define": "/ref/Biomes/define/",
+  "/docs/citadel/reference/Block/behaviour": "/ref/Block/behaviour/",
+  "/docs/citadel/reference/Block/drops": "/ref/Block/drops/",
+  "/docs/citadel/reference/Block/flammability": "/ref/Block/flammability/",
+  "/docs/citadel/reference/Block/hardness": "/ref/Block/hardness/",
+  "/docs/citadel/reference/Block/light": "/ref/Block/light/",
+  "/docs/citadel/reference/Block/light_filter": "/ref/Block/light_filter/",
+  "/docs/citadel/reference/Block/material": "/ref/Block/material/",
+  "/docs/citadel/reference/Block/name": "/ref/Block/name/",
+  "/docs/citadel/reference/Block/opaque": "/ref/Block/opaque/",
+  "/docs/citadel/reference/Block/random_ticks": "/ref/Block/random_ticks/",
+  "/docs/citadel/reference/Block/resistance": "/ref/Block/resistance/",
+  "/docs/citadel/reference/BlockAmendSpec/on_added": "/ref/BlockAmendSpec/on_added/",
+  "/docs/citadel/reference/BlockAmendSpec/on_break": "/ref/BlockAmendSpec/on_break/",
+  "/docs/citadel/reference/BlockAmendSpec/on_neighbour": "/ref/BlockAmendSpec/on_neighbour/",
+  "/docs/citadel/reference/BlockAmendSpec/on_place": "/ref/BlockAmendSpec/on_place/",
+  "/docs/citadel/reference/BlockAmendSpec/on_power": "/ref/BlockAmendSpec/on_power/",
+  "/docs/citadel/reference/BlockAmendSpec/on_random_tick": "/ref/BlockAmendSpec/on_random_tick/",
+  "/docs/citadel/reference/BlockAmendSpec/on_removed": "/ref/BlockAmendSpec/on_removed/",
+  "/docs/citadel/reference/BlockAmendSpec/on_step": "/ref/BlockAmendSpec/on_step/",
+  "/docs/citadel/reference/BlockAmendSpec/on_tick": "/ref/BlockAmendSpec/on_tick/",
+  "/docs/citadel/reference/BlockAmendSpec/on_trigger": "/ref/BlockAmendSpec/on_trigger/",
+  "/docs/citadel/reference/BlockAmendSpec/on_use": "/ref/BlockAmendSpec/on_use/",
+  "/docs/citadel/reference/BlockAt/at": "/ref/BlockAt/at/",
+  "/docs/citadel/reference/BlockAt/become": "/ref/BlockAt/become/",
+  "/docs/citadel/reference/BlockAt/data": "/ref/BlockAt/data/",
+  "/docs/citadel/reference/BlockAt/destroy": "/ref/BlockAt/destroy/",
+  "/docs/citadel/reference/BlockAt/drop": "/ref/BlockAt/drop/",
+  "/docs/citadel/reference/BlockAt/facing": "/ref/BlockAt/facing/",
+  "/docs/citadel/reference/BlockAt/get": "/ref/BlockAt/get/",
+  "/docs/citadel/reference/BlockAt/name": "/ref/BlockAt/name/",
+  "/docs/citadel/reference/BlockAt/notify": "/ref/BlockAt/notify/",
+  "/docs/citadel/reference/BlockAt/powered": "/ref/BlockAt/powered/",
+  "/docs/citadel/reference/BlockAt/room": "/ref/BlockAt/room/",
+  "/docs/citadel/reference/BlockAt/schedule": "/ref/BlockAt/schedule/",
+  "/docs/citadel/reference/BlockAt/set": "/ref/BlockAt/set/",
+  "/docs/citadel/reference/BlockAt/state": "/ref/BlockAt/state/",
+  "/docs/citadel/reference/BlockDef/item": "/ref/BlockDef/item/",
+  "/docs/citadel/reference/BlockDef/name": "/ref/BlockDef/name/",
+  "/docs/citadel/reference/BlockDef/states": "/ref/BlockDef/states/",
+  "/docs/citadel/reference/BlockSpec/drops": "/ref/BlockSpec/drops/",
+  "/docs/citadel/reference/BlockSpec/extends": "/ref/BlockSpec/extends/",
+  "/docs/citadel/reference/BlockSpec/facing": "/ref/BlockSpec/facing/",
+  "/docs/citadel/reference/BlockSpec/hardness": "/ref/BlockSpec/hardness/",
+  "/docs/citadel/reference/BlockSpec/item": "/ref/BlockSpec/item/",
+  "/docs/citadel/reference/BlockSpec/label": "/ref/BlockSpec/label/",
+  "/docs/citadel/reference/BlockSpec/light": "/ref/BlockSpec/light/",
+  "/docs/citadel/reference/BlockSpec/looks": "/ref/BlockSpec/looks/",
+  "/docs/citadel/reference/BlockSpec/material": "/ref/BlockSpec/material/",
+  "/docs/citadel/reference/BlockSpec/model": "/ref/BlockSpec/model/",
+  "/docs/citadel/reference/BlockSpec/name": "/ref/BlockSpec/name/",
+  "/docs/citadel/reference/BlockSpec/on_added": "/ref/BlockSpec/on_added/",
+  "/docs/citadel/reference/BlockSpec/on_break": "/ref/BlockSpec/on_break/",
+  "/docs/citadel/reference/BlockSpec/on_neighbour": "/ref/BlockSpec/on_neighbour/",
+  "/docs/citadel/reference/BlockSpec/on_place": "/ref/BlockSpec/on_place/",
+  "/docs/citadel/reference/BlockSpec/on_power": "/ref/BlockSpec/on_power/",
+  "/docs/citadel/reference/BlockSpec/on_random_tick": "/ref/BlockSpec/on_random_tick/",
+  "/docs/citadel/reference/BlockSpec/on_removed": "/ref/BlockSpec/on_removed/",
+  "/docs/citadel/reference/BlockSpec/on_step": "/ref/BlockSpec/on_step/",
+  "/docs/citadel/reference/BlockSpec/on_tick": "/ref/BlockSpec/on_tick/",
+  "/docs/citadel/reference/BlockSpec/on_trigger": "/ref/BlockSpec/on_trigger/",
+  "/docs/citadel/reference/BlockSpec/on_use": "/ref/BlockSpec/on_use/",
+  "/docs/citadel/reference/BlockSpec/opacity": "/ref/BlockSpec/opacity/",
+  "/docs/citadel/reference/BlockSpec/power": "/ref/BlockSpec/power/",
+  "/docs/citadel/reference/BlockSpec/resistance": "/ref/BlockSpec/resistance/",
+  "/docs/citadel/reference/BlockSpec/texture": "/ref/BlockSpec/texture/",
+  "/docs/citadel/reference/BlockSpec/tick_every": "/ref/BlockSpec/tick_every/",
+  "/docs/citadel/reference/Blocks/amend": "/ref/Blocks/amend/",
+  "/docs/citadel/reference/Blocks/define": "/ref/Blocks/define/",
+  "/docs/citadel/reference/Breaker/cause": "/ref/Breaker/cause/",
+  "/docs/citadel/reference/Breaker/creative": "/ref/Breaker/creative/",
+  "/docs/citadel/reference/Breaker/tool": "/ref/Breaker/tool/",
+  "/docs/citadel/reference/Budget/asks": "/ref/Budget/asks/",
+  "/docs/citadel/reference/Budget/dropped": "/ref/Budget/dropped/",
+  "/docs/citadel/reference/Budget/of": "/ref/Budget/of/",
+  "/docs/citadel/reference/Budget/peak": "/ref/Budget/peak/",
+  "/docs/citadel/reference/Budget/skipped": "/ref/Budget/skipped/",
+  "/docs/citadel/reference/Budget/slowest": "/ref/Budget/slowest/",
+  "/docs/citadel/reference/Budget/used": "/ref/Budget/used/",
+  "/docs/citadel/reference/Builder/block": "/ref/Builder/block/",
+  "/docs/citadel/reference/Builder/box": "/ref/Builder/box/",
+  "/docs/citadel/reference/Builder/line": "/ref/Builder/line/",
+  "/docs/citadel/reference/Builder/part": "/ref/Builder/part/",
+  "/docs/citadel/reference/Canvas/destroy": "/ref/Canvas/destroy/",
+  "/docs/citadel/reference/Canvas/view": "/ref/Canvas/view/",
+  "/docs/citadel/reference/Chunk/fill": "/ref/Chunk/fill/",
+  "/docs/citadel/reference/Chunk/fill_biome": "/ref/Chunk/fill_biome/",
+  "/docs/citadel/reference/Chunk/get": "/ref/Chunk/get/",
+  "/docs/citadel/reference/Chunk/get_biome": "/ref/Chunk/get_biome/",
+  "/docs/citadel/reference/Chunk/paste": "/ref/Chunk/paste/",
+  "/docs/citadel/reference/Chunk/set": "/ref/Chunk/set/",
+  "/docs/citadel/reference/Chunk/set_biome": "/ref/Chunk/set_biome/",
+  "/docs/citadel/reference/Command/cancel": "/ref/Command/cancel/",
+  "/docs/citadel/reference/Command/suggest": "/ref/Command/suggest/",
+  "/docs/citadel/reference/CommandOpts/aliases": "/ref/CommandOpts/aliases/",
+  "/docs/citadel/reference/CommandOpts/help": "/ref/CommandOpts/help/",
+  "/docs/citadel/reference/CommandOpts/permission": "/ref/CommandOpts/permission/",
+  "/docs/citadel/reference/CommandOpts/suggest": "/ref/CommandOpts/suggest/",
+  "/docs/citadel/reference/Commands/add": "/ref/Commands/add/",
+  "/docs/citadel/reference/Connection/cancel": "/ref/Connection/cancel/",
+  "/docs/citadel/reference/Container/at": "/ref/Container/at/",
+  "/docs/citadel/reference/Container/items": "/ref/Container/items/",
+  "/docs/citadel/reference/Container/put": "/ref/Container/put/",
+  "/docs/citadel/reference/Container/size": "/ref/Container/size/",
+  "/docs/citadel/reference/Container/take": "/ref/Container/take/",
+  "/docs/citadel/reference/DamageHit/amount": "/ref/DamageHit/amount/",
+  "/docs/citadel/reference/DamageHit/by": "/ref/DamageHit/by/",
+  "/docs/citadel/reference/DamageHit/cause": "/ref/DamageHit/cause/",
+  "/docs/citadel/reference/DamageHit/kind": "/ref/DamageHit/kind/",
+  "/docs/citadel/reference/Dialog/destroy": "/ref/Dialog/destroy/",
+  "/docs/citadel/reference/Dialog/refresh": "/ref/Dialog/refresh/",
+  "/docs/citadel/reference/Dialog/update": "/ref/Dialog/update/",
+  "/docs/citadel/reference/Display/animate": "/ref/Display/animate/",
+  "/docs/citadel/reference/Display/background": "/ref/Display/background/",
+  "/docs/citadel/reference/Display/billboard": "/ref/Display/billboard/",
+  "/docs/citadel/reference/Display/block": "/ref/Display/block/",
+  "/docs/citadel/reference/Display/canvas": "/ref/Display/canvas/",
+  "/docs/citadel/reference/Display/color": "/ref/Display/color/",
+  "/docs/citadel/reference/Display/context": "/ref/Display/context/",
+  "/docs/citadel/reference/Display/destroy": "/ref/Display/destroy/",
+  "/docs/citadel/reference/Display/duration": "/ref/Display/duration/",
+  "/docs/citadel/reference/Display/glide": "/ref/Display/glide/",
+  "/docs/citadel/reference/Display/glow": "/ref/Display/glow/",
+  "/docs/citadel/reference/Display/id": "/ref/Display/id/",
+  "/docs/citadel/reference/Display/item": "/ref/Display/item/",
+  "/docs/citadel/reference/Display/lead": "/ref/Display/lead/",
+  "/docs/citadel/reference/Display/line_width": "/ref/Display/line_width/",
+  "/docs/citadel/reference/Display/move": "/ref/Display/move/",
+  "/docs/citadel/reference/Display/shadow": "/ref/Display/shadow/",
+  "/docs/citadel/reference/Display/text": "/ref/Display/text/",
+  "/docs/citadel/reference/DurableStore/blob_delete": "/ref/DurableStore/blob_delete/",
+  "/docs/citadel/reference/DurableStore/blob_get": "/ref/DurableStore/blob_get/",
+  "/docs/citadel/reference/DurableStore/blob_put": "/ref/DurableStore/blob_put/",
+  "/docs/citadel/reference/DurableStore/delete": "/ref/DurableStore/delete/",
+  "/docs/citadel/reference/DurableStore/get": "/ref/DurableStore/get/",
+  "/docs/citadel/reference/DurableStore/increment": "/ref/DurableStore/increment/",
+  "/docs/citadel/reference/DurableStore/list": "/ref/DurableStore/list/",
+  "/docs/citadel/reference/DurableStore/set": "/ref/DurableStore/set/",
+  "/docs/citadel/reference/Entities/amend": "/ref/Entities/amend/",
+  "/docs/citadel/reference/Entities/define": "/ref/Entities/define/",
+  "/docs/citadel/reference/Entities/names": "/ref/Entities/names/",
+  "/docs/citadel/reference/EntityAmendSpec/on_damage": "/ref/EntityAmendSpec/on_damage/",
+  "/docs/citadel/reference/EntityAmendSpec/on_load": "/ref/EntityAmendSpec/on_load/",
+  "/docs/citadel/reference/EntityAmendSpec/on_remove": "/ref/EntityAmendSpec/on_remove/",
+  "/docs/citadel/reference/EntityAmendSpec/on_spawn": "/ref/EntityAmendSpec/on_spawn/",
+  "/docs/citadel/reference/EntityAmendSpec/on_steer": "/ref/EntityAmendSpec/on_steer/",
+  "/docs/citadel/reference/EntityAmendSpec/on_tick": "/ref/EntityAmendSpec/on_tick/",
+  "/docs/citadel/reference/EntityHandle/age": "/ref/EntityHandle/age/",
+  "/docs/citadel/reference/EntityHandle/alive": "/ref/EntityHandle/alive/",
+  "/docs/citadel/reference/EntityHandle/data": "/ref/EntityHandle/data/",
+  "/docs/citadel/reference/EntityHandle/destroy": "/ref/EntityHandle/destroy/",
+  "/docs/citadel/reference/EntityHandle/driver": "/ref/EntityHandle/driver/",
+  "/docs/citadel/reference/EntityHandle/flying": "/ref/EntityHandle/flying/",
+  "/docs/citadel/reference/EntityHandle/forward": "/ref/EntityHandle/forward/",
+  "/docs/citadel/reference/EntityHandle/health": "/ref/EntityHandle/health/",
+  "/docs/citadel/reference/EntityHandle/hostile": "/ref/EntityHandle/hostile/",
+  "/docs/citadel/reference/EntityHandle/id": "/ref/EntityHandle/id/",
+  "/docs/citadel/reference/EntityHandle/jumping": "/ref/EntityHandle/jumping/",
+  "/docs/citadel/reference/EntityHandle/max_health": "/ref/EntityHandle/max_health/",
+  "/docs/citadel/reference/EntityHandle/move": "/ref/EntityHandle/move/",
+  "/docs/citadel/reference/EntityHandle/name": "/ref/EntityHandle/name/",
+  "/docs/citadel/reference/EntityHandle/nearby": "/ref/EntityHandle/nearby/",
+  "/docs/citadel/reference/EntityHandle/on_ground": "/ref/EntityHandle/on_ground/",
+  "/docs/citadel/reference/EntityHandle/origin": "/ref/EntityHandle/origin/",
+  "/docs/citadel/reference/EntityHandle/paint": "/ref/EntityHandle/paint/",
+  "/docs/citadel/reference/EntityHandle/physics": "/ref/EntityHandle/physics/",
+  "/docs/citadel/reference/EntityHandle/play": "/ref/EntityHandle/play/",
+  "/docs/citadel/reference/EntityHandle/push": "/ref/EntityHandle/push/",
+  "/docs/citadel/reference/EntityHandle/settle": "/ref/EntityHandle/settle/",
+  "/docs/citadel/reference/EntityHandle/stop": "/ref/EntityHandle/stop/",
+  "/docs/citadel/reference/EntityHandle/strafe": "/ref/EntityHandle/strafe/",
+  "/docs/citadel/reference/EntityHandle/velocity": "/ref/EntityHandle/velocity/",
+  "/docs/citadel/reference/EntityKind/amend": "/ref/EntityKind/amend/",
+  "/docs/citadel/reference/EntityKind/attacks": "/ref/EntityKind/attacks/",
+  "/docs/citadel/reference/EntityKind/behaviour": "/ref/EntityKind/behaviour/",
+  "/docs/citadel/reference/EntityKind/drop": "/ref/EntityKind/drop/",
+  "/docs/citadel/reference/EntityKind/height": "/ref/EntityKind/height/",
+  "/docs/citadel/reference/EntityKind/hostile": "/ref/EntityKind/hostile/",
+  "/docs/citadel/reference/EntityKind/interact": "/ref/EntityKind/interact/",
+  "/docs/citadel/reference/EntityKind/max_health": "/ref/EntityKind/max_health/",
+  "/docs/citadel/reference/EntityKind/mob": "/ref/EntityKind/mob/",
+  "/docs/citadel/reference/EntityKind/name": "/ref/EntityKind/name/",
+  "/docs/citadel/reference/EntityKind/physics": "/ref/EntityKind/physics/",
+  "/docs/citadel/reference/EntityKind/profile": "/ref/EntityKind/profile/",
+  "/docs/citadel/reference/EntityKind/registry_name": "/ref/EntityKind/registry_name/",
+  "/docs/citadel/reference/EntityKind/spawn": "/ref/EntityKind/spawn/",
+  "/docs/citadel/reference/EntityKind/speed": "/ref/EntityKind/speed/",
+  "/docs/citadel/reference/EntityKind/width": "/ref/EntityKind/width/",
+  "/docs/citadel/reference/EntitySpec/accel": "/ref/EntitySpec/accel/",
+  "/docs/citadel/reference/EntitySpec/can_fly": "/ref/EntitySpec/can_fly/",
+  "/docs/citadel/reference/EntitySpec/drops": "/ref/EntitySpec/drops/",
+  "/docs/citadel/reference/EntitySpec/fallback": "/ref/EntitySpec/fallback/",
+  "/docs/citadel/reference/EntitySpec/looks": "/ref/EntitySpec/looks/",
+  "/docs/citadel/reference/EntitySpec/max_health": "/ref/EntitySpec/max_health/",
+  "/docs/citadel/reference/EntitySpec/name": "/ref/EntitySpec/name/",
+  "/docs/citadel/reference/EntitySpec/on_damage": "/ref/EntitySpec/on_damage/",
+  "/docs/citadel/reference/EntitySpec/on_load": "/ref/EntitySpec/on_load/",
+  "/docs/citadel/reference/EntitySpec/on_remove": "/ref/EntitySpec/on_remove/",
+  "/docs/citadel/reference/EntitySpec/on_spawn": "/ref/EntitySpec/on_spawn/",
+  "/docs/citadel/reference/EntitySpec/on_steer": "/ref/EntitySpec/on_steer/",
+  "/docs/citadel/reference/EntitySpec/on_think": "/ref/EntitySpec/on_think/",
+  "/docs/citadel/reference/EntitySpec/on_tick": "/ref/EntitySpec/on_tick/",
+  "/docs/citadel/reference/EntitySpec/persist": "/ref/EntitySpec/persist/",
+  "/docs/citadel/reference/EntitySpec/physics": "/ref/EntitySpec/physics/",
+  "/docs/citadel/reference/EntitySpec/scale": "/ref/EntitySpec/scale/",
+  "/docs/citadel/reference/EntitySpec/seats": "/ref/EntitySpec/seats/",
+  "/docs/citadel/reference/EntitySpec/size": "/ref/EntitySpec/size/",
+  "/docs/citadel/reference/EntitySpec/sounds": "/ref/EntitySpec/sounds/",
+  "/docs/citadel/reference/EntitySpec/speed": "/ref/EntitySpec/speed/",
+  "/docs/citadel/reference/EntitySpec/step": "/ref/EntitySpec/step/",
+  "/docs/citadel/reference/EntitySpec/think_every": "/ref/EntitySpec/think_every/",
+  "/docs/citadel/reference/EntitySpec/turn": "/ref/EntitySpec/turn/",
+  "/docs/citadel/reference/Faces/all": "/ref/Faces/all/",
+  "/docs/citadel/reference/Faces/down": "/ref/Faces/down/",
+  "/docs/citadel/reference/Faces/front": "/ref/Faces/front/",
+  "/docs/citadel/reference/Field/abs": "/ref/Field/abs/",
+  "/docs/citadel/reference/Field/at": "/ref/Field/at/",
+  "/docs/citadel/reference/Field/clamp": "/ref/Field/clamp/",
+  "/docs/citadel/reference/Field/curve": "/ref/Field/curve/",
+  "/docs/citadel/reference/Field/floor": "/ref/Field/floor/",
+  "/docs/citadel/reference/Field/gt": "/ref/Field/gt/",
+  "/docs/citadel/reference/Field/lt": "/ref/Field/lt/",
+  "/docs/citadel/reference/Field/max": "/ref/Field/max/",
+  "/docs/citadel/reference/Field/min": "/ref/Field/min/",
+  "/docs/citadel/reference/Field/smooth": "/ref/Field/smooth/",
+  "/docs/citadel/reference/Field/sqrt": "/ref/Field/sqrt/",
+  "/docs/citadel/reference/Fx/particle": "/ref/Fx/particle/",
+  "/docs/citadel/reference/Game/biomes": "/ref/Game/biomes/",
+  "/docs/citadel/reference/Game/block": "/ref/Game/block/",
+  "/docs/citadel/reference/Game/blocks": "/ref/Game/blocks/",
+  "/docs/citadel/reference/Game/entities": "/ref/Game/entities/",
+  "/docs/citadel/reference/Game/item": "/ref/Game/item/",
+  "/docs/citadel/reference/Game/items": "/ref/Game/items/",
+  "/docs/citadel/reference/Game/recipes": "/ref/Game/recipes/",
+  "/docs/citadel/reference/Game/sea_level": "/ref/Game/sea_level/",
+  "/docs/citadel/reference/Game/terrain": "/ref/Game/terrain/",
+  "/docs/citadel/reference/Game/texture": "/ref/Game/texture/",
+  "/docs/citadel/reference/Game/version": "/ref/Game/version/",
+  "/docs/citadel/reference/Game/world_height": "/ref/Game/world_height/",
+  "/docs/citadel/reference/Generated/biome_at": "/ref/Generated/biome_at/",
+  "/docs/citadel/reference/Generated/sample": "/ref/Generated/sample/",
+  "/docs/citadel/reference/GeneratorRules/biomes": "/ref/GeneratorRules/biomes/",
+  "/docs/citadel/reference/GeneratorRules/carvers": "/ref/GeneratorRules/carvers/",
+  "/docs/citadel/reference/GeneratorRules/density": "/ref/GeneratorRules/density/",
+  "/docs/citadel/reference/GeneratorRules/floor": "/ref/GeneratorRules/floor/",
+  "/docs/citadel/reference/GeneratorRules/fluid": "/ref/GeneratorRules/fluid/",
+  "/docs/citadel/reference/GeneratorRules/fluids": "/ref/GeneratorRules/fluids/",
+  "/docs/citadel/reference/GeneratorRules/height": "/ref/GeneratorRules/height/",
+  "/docs/citadel/reference/GeneratorRules/plants": "/ref/GeneratorRules/plants/",
+  "/docs/citadel/reference/GeneratorRules/rock": "/ref/GeneratorRules/rock/",
+  "/docs/citadel/reference/GeneratorRules/sea": "/ref/GeneratorRules/sea/",
+  "/docs/citadel/reference/GeneratorRules/structures": "/ref/GeneratorRules/structures/",
+  "/docs/citadel/reference/GeneratorRules/surface": "/ref/GeneratorRules/surface/",
+  "/docs/citadel/reference/GeneratorRules/things": "/ref/GeneratorRules/things/",
+  "/docs/citadel/reference/Hit/block": "/ref/Hit/block/",
+  "/docs/citadel/reference/Hit/button": "/ref/Hit/button/",
+  "/docs/citadel/reference/Hit/entity": "/ref/Hit/entity/",
+  "/docs/citadel/reference/Hit/entity_id": "/ref/Hit/entity_id/",
+  "/docs/citadel/reference/Hit/face": "/ref/Hit/face/",
+  "/docs/citadel/reference/Hit/player": "/ref/Hit/player/",
+  "/docs/citadel/reference/Hit/slot": "/ref/Hit/slot/",
+  "/docs/citadel/reference/Hitbox/at": "/ref/Hitbox/at/",
+  "/docs/citadel/reference/Hitbox/destroy": "/ref/Hitbox/destroy/",
+  "/docs/citadel/reference/Hitbox/id": "/ref/Hitbox/id/",
+  "/docs/citadel/reference/HttpResponse/body": "/ref/HttpResponse/body/",
+  "/docs/citadel/reference/HttpResponse/error": "/ref/HttpResponse/error/",
+  "/docs/citadel/reference/HttpResponse/headers": "/ref/HttpResponse/headers/",
+  "/docs/citadel/reference/HttpResponse/image": "/ref/HttpResponse/image/",
+  "/docs/citadel/reference/HttpResponse/json": "/ref/HttpResponse/json/",
+  "/docs/citadel/reference/HttpResponse/ok": "/ref/HttpResponse/ok/",
+  "/docs/citadel/reference/HttpResponse/status": "/ref/HttpResponse/status/",
+  "/docs/citadel/reference/Hud/destroy": "/ref/Hud/destroy/",
+  "/docs/citadel/reference/Hud/set": "/ref/Hud/set/",
+  "/docs/citadel/reference/HudPart/color": "/ref/HudPart/color/",
+  "/docs/citadel/reference/HudPart/fill": "/ref/HudPart/fill/",
+  "/docs/citadel/reference/HudPart/text": "/ref/HudPart/text/",
+  "/docs/citadel/reference/HudPart/visible": "/ref/HudPart/visible/",
+  "/docs/citadel/reference/ItemMeta/canvas": "/ref/ItemMeta/canvas/",
+  "/docs/citadel/reference/ItemMeta/color": "/ref/ItemMeta/color/",
+  "/docs/citadel/reference/ItemMeta/count": "/ref/ItemMeta/count/",
+  "/docs/citadel/reference/ItemMeta/damage": "/ref/ItemMeta/damage/",
+  "/docs/citadel/reference/ItemMeta/dye": "/ref/ItemMeta/dye/",
+  "/docs/citadel/reference/ItemMeta/glint": "/ref/ItemMeta/glint/",
+  "/docs/citadel/reference/ItemMeta/id": "/ref/ItemMeta/id/",
+  "/docs/citadel/reference/ItemMeta/lore": "/ref/ItemMeta/lore/",
+  "/docs/citadel/reference/ItemMeta/model": "/ref/ItemMeta/model/",
+  "/docs/citadel/reference/ItemMeta/name": "/ref/ItemMeta/name/",
+  "/docs/citadel/reference/ItemMeta/skin": "/ref/ItemMeta/skin/",
+  "/docs/citadel/reference/Items/define": "/ref/Items/define/",
+  "/docs/citadel/reference/Material/burns": "/ref/Material/burns/",
+  "/docs/citadel/reference/Material/covers": "/ref/Material/covers/",
+  "/docs/citadel/reference/Material/firm": "/ref/Material/firm/",
+  "/docs/citadel/reference/Material/liquid": "/ref/Material/liquid/",
+  "/docs/citadel/reference/Material/solid": "/ref/Material/solid/",
+  "/docs/citadel/reference/Menu/destroy": "/ref/Menu/destroy/",
+  "/docs/citadel/reference/Menu/update": "/ref/Menu/update/",
+  "/docs/citadel/reference/Model/name": "/ref/Model/name/",
+  "/docs/citadel/reference/ModelBuild/animation": "/ref/ModelBuild/animation/",
+  "/docs/citadel/reference/ModelBuild/material": "/ref/ModelBuild/material/",
+  "/docs/citadel/reference/ModelBuild/part": "/ref/ModelBuild/part/",
+  "/docs/citadel/reference/ModelBuild/texture": "/ref/ModelBuild/texture/",
+  "/docs/citadel/reference/ModelDisplay/destroy": "/ref/ModelDisplay/destroy/",
+  "/docs/citadel/reference/ModelDisplay/id": "/ref/ModelDisplay/id/",
+  "/docs/citadel/reference/ModelDisplay/move": "/ref/ModelDisplay/move/",
+  "/docs/citadel/reference/ModelDisplay/paint": "/ref/ModelDisplay/paint/",
+  "/docs/citadel/reference/ModelDisplay/play": "/ref/ModelDisplay/play/",
+  "/docs/citadel/reference/ModelDisplay/stop": "/ref/ModelDisplay/stop/",
+  "/docs/citadel/reference/ModelMaterial/name": "/ref/ModelMaterial/name/",
+  "/docs/citadel/reference/ModelPart/box": "/ref/ModelPart/box/",
+  "/docs/citadel/reference/ModelPart/hitbox": "/ref/ModelPart/hitbox/",
+  "/docs/citadel/reference/ModelPart/mirror": "/ref/ModelPart/mirror/",
+  "/docs/citadel/reference/ModelPart/part": "/ref/ModelPart/part/",
+  "/docs/citadel/reference/ModelTexture/fill": "/ref/ModelTexture/fill/",
+  "/docs/citadel/reference/ModelTexture/pixel": "/ref/ModelTexture/pixel/",
+  "/docs/citadel/reference/ModelTexture/rect": "/ref/ModelTexture/rect/",
+  "/docs/citadel/reference/NetworkInstance/id": "/ref/NetworkInstance/id/",
+  "/docs/citadel/reference/NetworkInstance/label": "/ref/NetworkInstance/label/",
+  "/docs/citadel/reference/NetworkInstance/member": "/ref/NetworkInstance/member/",
+  "/docs/citadel/reference/NetworkInstance/meta": "/ref/NetworkInstance/meta/",
+  "/docs/citadel/reference/NetworkInstance/open": "/ref/NetworkInstance/open/",
+  "/docs/citadel/reference/NetworkInstance/players": "/ref/NetworkInstance/players/",
+  "/docs/citadel/reference/NetworkInstance/state": "/ref/NetworkInstance/state/",
+  "/docs/citadel/reference/NetworkInstance/status": "/ref/NetworkInstance/status/",
+  "/docs/citadel/reference/NetworkStarted/id": "/ref/NetworkStarted/id/",
+  "/docs/citadel/reference/NetworkStarted/state": "/ref/NetworkStarted/state/",
+  "/docs/citadel/reference/Noise/get": "/ref/Noise/get/",
+  "/docs/citadel/reference/Noise/grid": "/ref/Noise/grid/",
+  "/docs/citadel/reference/Npc/destroy": "/ref/Npc/destroy/",
+  "/docs/citadel/reference/Npc/dismount": "/ref/Npc/dismount/",
+  "/docs/citadel/reference/Npc/hold": "/ref/Npc/hold/",
+  "/docs/citadel/reference/Npc/id": "/ref/Npc/id/",
+  "/docs/citadel/reference/Npc/look_at": "/ref/Npc/look_at/",
+  "/docs/citadel/reference/Npc/move": "/ref/Npc/move/",
+  "/docs/citadel/reference/Npc/name": "/ref/Npc/name/",
+  "/docs/citadel/reference/Npc/pose": "/ref/Npc/pose/",
+  "/docs/citadel/reference/Npc/ride": "/ref/Npc/ride/",
+  "/docs/citadel/reference/Npc/riding": "/ref/Npc/riding/",
+  "/docs/citadel/reference/Npc/say": "/ref/Npc/say/",
+  "/docs/citadel/reference/Npc/swing": "/ref/Npc/swing/",
+  "/docs/citadel/reference/Npc/walk": "/ref/Npc/walk/",
+  "/docs/citadel/reference/Npc/walking": "/ref/Npc/walking/",
+  "/docs/citadel/reference/Npc/wear": "/ref/Npc/wear/",
+  "/docs/citadel/reference/Overlay/destroy": "/ref/Overlay/destroy/",
+  "/docs/citadel/reference/Overlay/open": "/ref/Overlay/open/",
+  "/docs/citadel/reference/PartDefinition/at": "/ref/PartDefinition/at/",
+  "/docs/citadel/reference/PartDefinition/build": "/ref/PartDefinition/build/",
+  "/docs/citadel/reference/PartDefinition/detail": "/ref/PartDefinition/detail/",
+  "/docs/citadel/reference/PartDefinition/name": "/ref/PartDefinition/name/",
+  "/docs/citadel/reference/Picture/circle": "/ref/Picture/circle/",
+  "/docs/citadel/reference/Picture/clear": "/ref/Picture/clear/",
+  "/docs/citadel/reference/Picture/draw": "/ref/Picture/draw/",
+  "/docs/citadel/reference/Picture/fill": "/ref/Picture/fill/",
+  "/docs/citadel/reference/Picture/gradient": "/ref/Picture/gradient/",
+  "/docs/citadel/reference/Picture/line": "/ref/Picture/line/",
+  "/docs/citadel/reference/Picture/measure": "/ref/Picture/measure/",
+  "/docs/citadel/reference/Picture/part": "/ref/Picture/part/",
+  "/docs/citadel/reference/Picture/pixels": "/ref/Picture/pixels/",
+  "/docs/citadel/reference/Picture/play": "/ref/Picture/play/",
+  "/docs/citadel/reference/Picture/polygon": "/ref/Picture/polygon/",
+  "/docs/citadel/reference/Picture/rect": "/ref/Picture/rect/",
+  "/docs/citadel/reference/Picture/ring": "/ref/Picture/ring/",
+  "/docs/citadel/reference/Picture/set": "/ref/Picture/set/",
+  "/docs/citadel/reference/Picture/sprite": "/ref/Picture/sprite/",
+  "/docs/citadel/reference/Picture/text": "/ref/Picture/text/",
+  "/docs/citadel/reference/PlantRule/afloat": "/ref/PlantRule/afloat/",
+  "/docs/citadel/reference/PlantRule/biome": "/ref/PlantRule/biome/",
+  "/docs/citadel/reference/PlantRule/block": "/ref/PlantRule/block/",
+  "/docs/citadel/reference/PlantRule/blocks": "/ref/PlantRule/blocks/",
+  "/docs/citadel/reference/PlantRule/chance": "/ref/PlantRule/chance/",
+  "/docs/citadel/reference/PlantRule/clear": "/ref/PlantRule/clear/",
+  "/docs/citadel/reference/PlantRule/height": "/ref/PlantRule/height/",
+  "/docs/citadel/reference/PlantRule/place": "/ref/PlantRule/place/",
+  "/docs/citadel/reference/PlantRule/sink": "/ref/PlantRule/sink/",
+  "/docs/citadel/reference/PlantRule/tip": "/ref/PlantRule/tip/",
+  "/docs/citadel/reference/PlantRule/when": "/ref/PlantRule/when/",
+  "/docs/citadel/reference/PlantRule/y": "/ref/PlantRule/y/",
+  "/docs/citadel/reference/Player/add_group": "/ref/Player/add_group/",
+  "/docs/citadel/reference/Player/camera": "/ref/Player/camera/",
+  "/docs/citadel/reference/Player/can_fly": "/ref/Player/can_fly/",
+  "/docs/citadel/reference/Player/can_see": "/ref/Player/can_see/",
+  "/docs/citadel/reference/Player/clear_effect": "/ref/Player/clear_effect/",
+  "/docs/citadel/reference/Player/connect": "/ref/Player/connect/",
+  "/docs/citadel/reference/Player/count": "/ref/Player/count/",
+  "/docs/citadel/reference/Player/damage": "/ref/Player/damage/",
+  "/docs/citadel/reference/Player/dismount": "/ref/Player/dismount/",
+  "/docs/citadel/reference/Player/effect": "/ref/Player/effect/",
+  "/docs/citadel/reference/Player/gamemode": "/ref/Player/gamemode/",
+  "/docs/citadel/reference/Player/give": "/ref/Player/give/",
+  "/docs/citadel/reference/Player/groups": "/ref/Player/groups/",
+  "/docs/citadel/reference/Player/has": "/ref/Player/has/",
+  "/docs/citadel/reference/Player/held": "/ref/Player/held/",
+  "/docs/citadel/reference/Player/hide": "/ref/Player/hide/",
+  "/docs/citadel/reference/Player/hotbar": "/ref/Player/hotbar/",
+  "/docs/citadel/reference/Player/inventory": "/ref/Player/inventory/",
+  "/docs/citadel/reference/Player/kick": "/ref/Player/kick/",
+  "/docs/citadel/reference/Player/kill": "/ref/Player/kill/",
+  "/docs/citadel/reference/Player/level": "/ref/Player/level/",
+  "/docs/citadel/reference/Player/look": "/ref/Player/look/",
+  "/docs/citadel/reference/Player/look_at": "/ref/Player/look_at/",
+  "/docs/citadel/reference/Player/max_health": "/ref/Player/max_health/",
+  "/docs/citadel/reference/Player/message": "/ref/Player/message/",
+  "/docs/citadel/reference/Player/move_to": "/ref/Player/move_to/",
+  "/docs/citadel/reference/Player/push": "/ref/Player/push/",
+  "/docs/citadel/reference/Player/reach": "/ref/Player/reach/",
+  "/docs/citadel/reference/Player/remove_group": "/ref/Player/remove_group/",
+  "/docs/citadel/reference/Player/ride": "/ref/Player/ride/",
+  "/docs/citadel/reference/Player/scale": "/ref/Player/scale/",
+  "/docs/citadel/reference/Player/set_held": "/ref/Player/set_held/",
+  "/docs/citadel/reference/Player/set_slot": "/ref/Player/set_slot/",
+  "/docs/citadel/reference/Player/show": "/ref/Player/show/",
+  "/docs/citadel/reference/Player/sound": "/ref/Player/sound/",
+  "/docs/citadel/reference/Player/spawn_point": "/ref/Player/spawn_point/",
+  "/docs/citadel/reference/Player/speed": "/ref/Player/speed/",
+  "/docs/citadel/reference/Player/stop_sound": "/ref/Player/stop_sound/",
+  "/docs/citadel/reference/Player/supports": "/ref/Player/supports/",
+  "/docs/citadel/reference/Player/take": "/ref/Player/take/",
+  "/docs/citadel/reference/Player/teleport": "/ref/Player/teleport/",
+  "/docs/citadel/reference/Player/travel": "/ref/Player/travel/",
+  "/docs/citadel/reference/Player/visible": "/ref/Player/visible/",
+  "/docs/citadel/reference/Player/wear": "/ref/Player/wear/",
+  "/docs/citadel/reference/Player/xp": "/ref/Player/xp/",
+  "/docs/citadel/reference/PlayerUi/dialog": "/ref/PlayerUi/dialog/",
+  "/docs/citadel/reference/PlayerUi/menu": "/ref/PlayerUi/menu/",
+  "/docs/citadel/reference/PlayerUi/overlay": "/ref/PlayerUi/overlay/",
+  "/docs/citadel/reference/PlayerUi/show": "/ref/PlayerUi/show/",
+  "/docs/citadel/reference/Players/count": "/ref/Players/count/",
+  "/docs/citadel/reference/Players/get": "/ref/Players/get/",
+  "/docs/citadel/reference/Players/list": "/ref/Players/list/",
+  "/docs/citadel/reference/Players/near": "/ref/Players/near/",
+  "/docs/citadel/reference/Players/on_break": "/ref/Players/on_break/",
+  "/docs/citadel/reference/Players/on_chat": "/ref/Players/on_chat/",
+  "/docs/citadel/reference/Players/on_click": "/ref/Players/on_click/",
+  "/docs/citadel/reference/Players/on_damage": "/ref/Players/on_damage/",
+  "/docs/citadel/reference/Players/on_death": "/ref/Players/on_death/",
+  "/docs/citadel/reference/Players/on_drop": "/ref/Players/on_drop/",
+  "/docs/citadel/reference/Players/on_join": "/ref/Players/on_join/",
+  "/docs/citadel/reference/Players/on_leave": "/ref/Players/on_leave/",
+  "/docs/citadel/reference/Players/on_pickup": "/ref/Players/on_pickup/",
+  "/docs/citadel/reference/Players/on_place": "/ref/Players/on_place/",
+  "/docs/citadel/reference/Players/on_respawn": "/ref/Players/on_respawn/",
+  "/docs/citadel/reference/Players/on_slot": "/ref/Players/on_slot/",
+  "/docs/citadel/reference/Players/on_sneak": "/ref/Players/on_sneak/",
+  "/docs/citadel/reference/Players/within": "/ref/Players/within/",
+  "/docs/citadel/reference/Puppet/destroy": "/ref/Puppet/destroy/",
+  "/docs/citadel/reference/Puppet/id": "/ref/Puppet/id/",
+  "/docs/citadel/reference/Puppet/move": "/ref/Puppet/move/",
+  "/docs/citadel/reference/Puppet/name": "/ref/Puppet/name/",
+  "/docs/citadel/reference/Recipes/shaped": "/ref/Recipes/shaped/",
+  "/docs/citadel/reference/Recipes/shapeless": "/ref/Recipes/shapeless/",
+  "/docs/citadel/reference/Recipes/smelt": "/ref/Recipes/smelt/",
+  "/docs/citadel/reference/Room/destroy": "/ref/Room/destroy/",
+  "/docs/citadel/reference/Room/message": "/ref/Room/message/",
+  "/docs/citadel/reference/Room/spawn_point": "/ref/Room/spawn_point/",
+  "/docs/citadel/reference/Schematic/mirror": "/ref/Schematic/mirror/",
+  "/docs/citadel/reference/Schematic/rotate": "/ref/Schematic/rotate/",
+  "/docs/citadel/reference/Screen/destroy": "/ref/Screen/destroy/",
+  "/docs/citadel/reference/Screen/on_click": "/ref/Screen/on_click/",
+  "/docs/citadel/reference/Screen/view": "/ref/Screen/view/",
+  "/docs/citadel/reference/ShopPurchase/player": "/ref/ShopPurchase/player/",
+  "/docs/citadel/reference/ShopPurchase/product": "/ref/ShopPurchase/product/",
+  "/docs/citadel/reference/ShopPurchase/request": "/ref/ShopPurchase/request/",
+  "/docs/citadel/reference/Slow/hook": "/ref/Slow/hook/",
+  "/docs/citadel/reference/Slow/of": "/ref/Slow/of/",
+  "/docs/citadel/reference/Slow/skipped": "/ref/Slow/skipped/",
+  "/docs/citadel/reference/Slow/used": "/ref/Slow/used/",
+  "/docs/citadel/reference/Socket/cancel": "/ref/Socket/cancel/",
+  "/docs/citadel/reference/Socket/send": "/ref/Socket/send/",
+  "/docs/citadel/reference/SocketMessage/json": "/ref/SocketMessage/json/",
+  "/docs/citadel/reference/SocketMessage/text": "/ref/SocketMessage/text/",
+  "/docs/citadel/reference/Sound/play": "/ref/Sound/play/",
+  "/docs/citadel/reference/Sound/stop": "/ref/Sound/stop/",
+  "/docs/citadel/reference/Sound/stream": "/ref/Sound/stream/",
+  "/docs/citadel/reference/SoundStream/add": "/ref/SoundStream/add/",
+  "/docs/citadel/reference/SoundStream/listen": "/ref/SoundStream/listen/",
+  "/docs/citadel/reference/SoundStream/move": "/ref/SoundStream/move/",
+  "/docs/citadel/reference/SoundStream/playing": "/ref/SoundStream/playing/",
+  "/docs/citadel/reference/SoundStream/remove": "/ref/SoundStream/remove/",
+  "/docs/citadel/reference/SoundStream/stop": "/ref/SoundStream/stop/",
+  "/docs/citadel/reference/SoundStream/unlisten": "/ref/SoundStream/unlisten/",
+  "/docs/citadel/reference/TerrainStep/below": "/ref/TerrainStep/below/",
+  "/docs/citadel/reference/TerrainStep/big": "/ref/TerrainStep/big/",
+  "/docs/citadel/reference/TerrainStep/block": "/ref/TerrainStep/block/",
+  "/docs/citadel/reference/TerrainStep/bonus": "/ref/TerrainStep/bonus/",
+  "/docs/citadel/reference/TerrainStep/bound": "/ref/TerrainStep/bound/",
+  "/docs/citadel/reference/TerrainStep/chance": "/ref/TerrainStep/chance/",
+  "/docs/citadel/reference/TerrainStep/count": "/ref/TerrainStep/count/",
+  "/docs/citadel/reference/TerrainStep/fluid": "/ref/TerrainStep/fluid/",
+  "/docs/citadel/reference/TerrainStep/nesting": "/ref/TerrainStep/nesting/",
+  "/docs/citadel/reference/TerrainStep/size": "/ref/TerrainStep/size/",
+  "/docs/citadel/reference/TerrainStep/step": "/ref/TerrainStep/step/",
+  "/docs/citadel/reference/TextRuns/bold": "/ref/TextRuns/bold/",
+  "/docs/citadel/reference/TextRuns/color": "/ref/TextRuns/color/",
+  "/docs/citadel/reference/TextRuns/effect": "/ref/TextRuns/effect/",
+  "/docs/citadel/reference/TextRuns/italic": "/ref/TextRuns/italic/",
+  "/docs/citadel/reference/TextRuns/strike": "/ref/TextRuns/strike/",
+  "/docs/citadel/reference/TextRuns/underline": "/ref/TextRuns/underline/",
+  "/docs/citadel/reference/Texture/copy": "/ref/Texture/copy/",
+  "/docs/citadel/reference/Texture/draw": "/ref/Texture/draw/",
+  "/docs/citadel/reference/Texture/fill": "/ref/Texture/fill/",
+  "/docs/citadel/reference/Texture/frame": "/ref/Texture/frame/",
+  "/docs/citadel/reference/Texture/height": "/ref/Texture/height/",
+  "/docs/citadel/reference/Texture/noise": "/ref/Texture/noise/",
+  "/docs/citadel/reference/Texture/pixel": "/ref/Texture/pixel/",
+  "/docs/citadel/reference/Texture/rect": "/ref/Texture/rect/",
+  "/docs/citadel/reference/Texture/sprite": "/ref/Texture/sprite/",
+  "/docs/citadel/reference/Texture/width": "/ref/Texture/width/",
+  "/docs/citadel/reference/Ui/actionbar": "/ref/Ui/actionbar/",
+  "/docs/citadel/reference/Ui/bossbar": "/ref/Ui/bossbar/",
+  "/docs/citadel/reference/Ui/box": "/ref/Ui/box/",
+  "/docs/citadel/reference/Ui/column": "/ref/Ui/column/",
+  "/docs/citadel/reference/Ui/define": "/ref/Ui/define/",
+  "/docs/citadel/reference/Ui/image": "/ref/Ui/image/",
+  "/docs/citadel/reference/Ui/kit": "/ref/Ui/kit/",
+  "/docs/citadel/reference/Ui/label": "/ref/Ui/label/",
+  "/docs/citadel/reference/Ui/row": "/ref/Ui/row/",
+  "/docs/citadel/reference/Ui/sidebar": "/ref/Ui/sidebar/",
+  "/docs/citadel/reference/Ui/stack": "/ref/Ui/stack/",
+  "/docs/citadel/reference/Ui/tab": "/ref/Ui/tab/",
+  "/docs/citadel/reference/Ui/title": "/ref/Ui/title/",
+  "/docs/citadel/reference/Video/stop": "/ref/Video/stop/",
+  "/docs/citadel/reference/View/destroy": "/ref/View/destroy/",
+  "/docs/citadel/reference/World/block": "/ref/World/block/",
+  "/docs/citadel/reference/World/build": "/ref/World/build/",
+  "/docs/citadel/reference/World/canvas": "/ref/World/canvas/",
+  "/docs/citadel/reference/World/container": "/ref/World/container/",
+  "/docs/citadel/reference/World/dimension": "/ref/World/dimension/",
+  "/docs/citadel/reference/World/display": "/ref/World/display/",
+  "/docs/citadel/reference/World/drop": "/ref/World/drop/",
+  "/docs/citadel/reference/World/entities": "/ref/World/entities/",
+  "/docs/citadel/reference/World/explode": "/ref/World/explode/",
+  "/docs/citadel/reference/World/fill": "/ref/World/fill/",
+  "/docs/citadel/reference/World/generate": "/ref/World/generate/",
+  "/docs/citadel/reference/World/get_biome": "/ref/World/get_biome/",
+  "/docs/citadel/reference/World/get_block": "/ref/World/get_block/",
+  "/docs/citadel/reference/World/get_blocks": "/ref/World/get_blocks/",
+  "/docs/citadel/reference/World/hitbox": "/ref/World/hitbox/",
+  "/docs/citadel/reference/World/items": "/ref/World/items/",
+  "/docs/citadel/reference/World/light": "/ref/World/light/",
+  "/docs/citadel/reference/World/light_at": "/ref/World/light_at/",
+  "/docs/citadel/reference/World/npc": "/ref/World/npc/",
+  "/docs/citadel/reference/World/on_block_break": "/ref/World/on_block_break/",
+  "/docs/citadel/reference/World/on_block_place": "/ref/World/on_block_place/",
+  "/docs/citadel/reference/World/on_entity_death": "/ref/World/on_entity_death/",
+  "/docs/citadel/reference/World/on_entity_spawn": "/ref/World/on_entity_spawn/",
+  "/docs/citadel/reference/World/on_generate": "/ref/World/on_generate/",
+  "/docs/citadel/reference/World/on_populate": "/ref/World/on_populate/",
+  "/docs/citadel/reference/World/paste": "/ref/World/paste/",
+  "/docs/citadel/reference/World/path": "/ref/World/path/",
+  "/docs/citadel/reference/World/puppet": "/ref/World/puppet/",
+  "/docs/citadel/reference/World/raycast": "/ref/World/raycast/",
+  "/docs/citadel/reference/World/raycasts": "/ref/World/raycasts/",
+  "/docs/citadel/reference/World/rules": "/ref/World/rules/",
+  "/docs/citadel/reference/World/schematic": "/ref/World/schematic/",
+  "/docs/citadel/reference/World/screen": "/ref/World/screen/",
+  "/docs/citadel/reference/World/sees": "/ref/World/sees/",
+  "/docs/citadel/reference/World/set_block": "/ref/World/set_block/",
+  "/docs/citadel/reference/World/set_blocks": "/ref/World/set_blocks/",
+  "/docs/citadel/reference/World/spawn": "/ref/World/spawn/",
+  "/docs/citadel/reference/World/spawn_point": "/ref/World/spawn_point/",
+  "/docs/citadel/reference/World/time": "/ref/World/time/",
+  "/docs/citadel/reference/World/zone": "/ref/World/zone/",
+  "/docs/citadel/reference/Zone/contains": "/ref/Zone/contains/",
+  "/docs/citadel/reference/Zone/destroy": "/ref/Zone/destroy/",
+  "/docs/citadel/reference/Zone/players": "/ref/Zone/players/",
+  "/docs/citadel/reference/citadel/budget": "/ref/citadel/budget/",
+  "/docs/citadel/reference/citadel/env": "/ref/citadel/env/",
+  "/docs/citadel/reference/citadel/game": "/ref/citadel/game/",
+  "/docs/citadel/reference/citadel/log": "/ref/citadel/log/",
+  "/docs/citadel/reference/citadel/on_slow": "/ref/citadel/on_slow/",
+  "/docs/citadel/reference/citadel/version": "/ref/citadel/version/",
+  "/docs/citadel/reference/colors/aqua": "/ref/colors/aqua/",
+  "/docs/citadel/reference/colors/black": "/ref/colors/black/",
+  "/docs/citadel/reference/colors/blue": "/ref/colors/blue/",
+  "/docs/citadel/reference/colors/cyan": "/ref/colors/cyan/",
+  "/docs/citadel/reference/colors/dark_aqua": "/ref/colors/dark_aqua/",
+  "/docs/citadel/reference/colors/dark_blue": "/ref/colors/dark_blue/",
+  "/docs/citadel/reference/colors/dark_gray": "/ref/colors/dark_gray/",
+  "/docs/citadel/reference/colors/dark_green": "/ref/colors/dark_green/",
+  "/docs/citadel/reference/colors/dark_purple": "/ref/colors/dark_purple/",
+  "/docs/citadel/reference/colors/dark_red": "/ref/colors/dark_red/",
+  "/docs/citadel/reference/colors/gold": "/ref/colors/gold/",
+  "/docs/citadel/reference/colors/gray": "/ref/colors/gray/",
+  "/docs/citadel/reference/colors/green": "/ref/colors/green/",
+  "/docs/citadel/reference/colors/light_purple": "/ref/colors/light_purple/",
+  "/docs/citadel/reference/colors/lime": "/ref/colors/lime/",
+  "/docs/citadel/reference/colors/magenta": "/ref/colors/magenta/",
+  "/docs/citadel/reference/colors/orange": "/ref/colors/orange/",
+  "/docs/citadel/reference/colors/pink": "/ref/colors/pink/",
+  "/docs/citadel/reference/colors/purple": "/ref/colors/purple/",
+  "/docs/citadel/reference/colors/red": "/ref/colors/red/",
+  "/docs/citadel/reference/colors/transparent": "/ref/colors/transparent/",
+  "/docs/citadel/reference/colors/white": "/ref/colors/white/",
+  "/docs/citadel/reference/colors/yellow": "/ref/colors/yellow/",
+  "/docs/citadel/reference/data/copy": "/ref/data/copy/",
+  "/docs/citadel/reference/data/insert": "/ref/data/insert/",
+  "/docs/citadel/reference/data/remove": "/ref/data/remove/",
+  "/docs/citadel/reference/fields/cells": "/ref/fields/cells/",
+  "/docs/citadel/reference/fields/depth": "/ref/fields/depth/",
+  "/docs/citadel/reference/fields/hash": "/ref/fields/hash/",
+  "/docs/citadel/reference/fields/height": "/ref/fields/height/",
+  "/docs/citadel/reference/fields/mix": "/ref/fields/mix/",
+  "/docs/citadel/reference/fields/noise": "/ref/fields/noise/",
+  "/docs/citadel/reference/fields/room": "/ref/fields/room/",
+  "/docs/citadel/reference/fields/shore": "/ref/fields/shore/",
+  "/docs/citadel/reference/fields/slope": "/ref/fields/slope/",
+  "/docs/citadel/reference/fields/water": "/ref/fields/water/",
+  "/docs/citadel/reference/fields/x": "/ref/fields/x/",
+  "/docs/citadel/reference/fields/y": "/ref/fields/y/",
+  "/docs/citadel/reference/fields/z": "/ref/fields/z/",
+  "/docs/citadel/reference/http/get": "/ref/http/get/",
+  "/docs/citadel/reference/http/socket": "/ref/http/socket/",
+  "/docs/citadel/reference/hub/experiences": "/ref/hub/experiences/",
+  "/docs/citadel/reference/hub/hubs": "/ref/hub/hubs/",
+  "/docs/citadel/reference/hub/point": "/ref/hub/point/",
+  "/docs/citadel/reference/hub/rent": "/ref/hub/rent/",
+  "/docs/citadel/reference/hub/servers": "/ref/hub/servers/",
+  "/docs/citadel/reference/models/new": "/ref/models/new/",
+  "/docs/citadel/reference/network/find": "/ref/network/find/",
+  "/docs/citadel/reference/network/info": "/ref/network/info/",
+  "/docs/citadel/reference/network/list": "/ref/network/list/",
+  "/docs/citadel/reference/network/on_gone": "/ref/network/on_gone/",
+  "/docs/citadel/reference/network/on_instance": "/ref/network/on_instance/",
+  "/docs/citadel/reference/network/start": "/ref/network/start/",
+  "/docs/citadel/reference/network/status": "/ref/network/status/",
+  "/docs/citadel/reference/network/stop": "/ref/network/stop/",
+  "/docs/citadel/reference/parts/define": "/ref/parts/define/",
+  "/docs/citadel/reference/rooms/create": "/ref/rooms/create/",
+  "/docs/citadel/reference/rooms/main": "/ref/rooms/main/",
+  "/docs/citadel/reference/routes/add": "/ref/routes/add/",
+  "/docs/citadel/reference/shop/on_declined": "/ref/shop/on_declined/",
+  "/docs/citadel/reference/shop/on_paid": "/ref/shop/on_paid/",
+  "/docs/citadel/reference/shop/owns": "/ref/shop/owns/",
+  "/docs/citadel/reference/shop/prompt": "/ref/shop/prompt/",
+  "/docs/citadel/reference/storage/flush": "/ref/storage/flush/",
+  "/docs/citadel/reference/storage/get": "/ref/storage/get/",
+  "/docs/citadel/reference/storage/keys": "/ref/storage/keys/",
+  "/docs/citadel/reference/storage/set": "/ref/storage/set/",
+  "/docs/citadel/reference/storage/status": "/ref/storage/status/",
+  "/docs/citadel/reference/stores/blob_list": "/ref/stores/blob_list/",
+  "/docs/citadel/reference/stores/lease": "/ref/stores/lease/",
+  "/docs/citadel/reference/stores/open": "/ref/stores/open/",
+  "/docs/citadel/reference/stores/release": "/ref/stores/release/",
+  "/docs/citadel/reference/stores/renew": "/ref/stores/renew/",
+  "/docs/citadel/reference/stores/request": "/ref/stores/request/",
+  "/docs/citadel/reference/time/every": "/ref/time/every/",
+  "/docs/citadel/reference/time/now": "/ref/time/now/",
+  "/docs/citadel/reference/time/on_tick": "/ref/time/on_tick/"
+ }
+}
