@@ -24,7 +24,6 @@ export default defineConfig({
       title: "Citadel Developer Wiki",
       description:
         "A restructured, developer-facing reference for Minefort Citadel — the Luau scripting engine for Minecraft servers. Concepts, every API call, and working guides.",
-      tagline: "Minefort Citadel, restructured for developers",
       sidebar: manifest.sidebar,
       customCss: ["./src/styles/custom.css"],
       tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 3 },
