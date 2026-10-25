@@ -237,3 +237,27 @@ Work Log:
 Stage Summary:
 - Deliverables: download/llms-full.txt (the all-in-one agent file), download/llms.txt (lean index), updated citadel-wiki-starlight.zip; both also live at the site root (/llms.txt, /llms-full.txt).
 - Regenerate everything with: python3 scripts/gen_starlight.py && python3 scripts/gen_llms_full.py && npm run build.
+
+---
+Task ID: 6
+Agent: main (Z.ai)
+Task: TypeScript -> Luau transpiling setup (typescript-to-lua) + a verified citadel.d.ts
+
+Work Log:
+- Researched TSTL via its official docs (web): config (luaTarget "Luau", extension, luaLibImport), the-self-parameter (this: void / @noSelf — dot vs colon conventions), writing-declarations (ambient d.ts patterns: declare const + interfaces, callable tables via constructor interfaces, keyword members need object types / quoting), LuaMultiReturn. Note: the npm package is `typescript-to-lua` (1.37.1); "typescript-to-luau" 404s.
+- Wrote scripts/gen_citadel_dts.py — generates citadel-ts/types/citadel.d.ts STRICTLY from scripts/dataset.json (the crawled official docs):
+  - Luau-type-string -> TS converter (unions, intersections, arrays {T}, maps, records with optionals, fn types, literal unions, Luau `?`, flattened comments, crawler artifacts).
+  - Member classification from the documented signatures: kind=method -> colon interface method; kind=function on globals -> `this: void` dot call; spec types (BlockSpec/BlockAmendSpec/EntitySpec/EntityAmendSpec/PartDefinition) -> optional callback PROPERTIES (verified: specs are authored as table literals); fields -> properties, optionality from the `?` markers in the raw signatures.
+  - 3 overloaded members (world.time, world.display, data.insert — rendered as `-> &` by the crawl) -> TS overloads.
+  - Callable-table globals via constructor interfaces (vec3, color); callable function globals (message, tween) from their typedefs; 22 table globals as declare const; blocks/entities/biomes/items/recipes kept as game.* sub-table types (verified from the conventions namespace table + Game members).
+  - VERIFIED gap-fills with source citations: task.* (wiki Runtime semantics table), camera.path (wiki Movement), Vec3/Color shapes (Conventions + Vectors-and-colours doc), player.ui (official HUD doc), TimeName + Faces unions (recovered verbatim from documented leads — their typedef strings are extract-damaged).
+  - Strict no-guess policy: 7 types with no documented members stay opaque (ChaseCamera, EntityCamera, FixedCamera, FreeCamera, OrbitCamera, Think, Tween); unspecified things are `unknown`.
+  - Report: 674 members converted, 0 conversion notes, 27 globals, 80 type interfaces, 57 typedef aliases.
+- Scaffolded citadel-ts/: package.json (build/dev/dts/check scripts), tsconfig.json (luaTarget Luau, extension .luau, luaLibImport require-minimal, noImplicitGlobalVariables, types: @typescript-to-lua/language-extensions), src/main.ts example pack exercising every calling convention.
+- Fixed during iteration: fn types in unions need parens (TS1385); LuaMultiReturn resolution via types entry; DataView name collision with lib esnext (merged interface + explanatory comment); `new`-named members quoted ("new"); literal-union keys -> mapped types ({ [K in Face]: V }); mid-list optional params folded to `T | undefined` (TS1016); spec/record optionality from raw `?` markers.
+- Verification: `npm run build` (tstl 1.37.1 + TS 6.0.2) -> 0 errors; emitted dist/main.luau checked against the documented forms: world.fill/world.time/task.spawn/message/citadel.log dot calls; player:message/player:give/clickConn:cancel/block:notify colon calls; game.blocks.define spec literal with plain-function on_tick; local multi-returns (`local a, b = world.light_at(pos)`, camera.path); callable tables (vec3/color); locals everywhere (noImplicitGlobalVariables). dist/ IS the pack folder.
+- Re-zipped download/citadel-wiki-starlight.zip (1.7 MB, 1258 files) with citadel-ts/ (node_modules/dist excluded) and the generator; download/citadel.d.ts holds the declarations for direct use.
+
+Stage Summary:
+- Deliverables: citadel-ts/ (TSTL project: npm i && npm run build -> dist/ = the Citadel pack), citadel-ts/types/citadel.d.ts (GENERATED, 112 KB, sourced only from the crawled official docs + cited wiki gap-fills), scripts/gen_citadel_dts.py (regenerate: npm run dts), download/citadel.d.ts, refreshed zip.
+- Verified end-to-end: TS -> tstl -> Luau emitted with the documented dot/colon conventions, multi-returns, spec literals and callable tables.

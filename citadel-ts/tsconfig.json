@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["esnext"],
+    "strict": true,
+    "types": ["@typescript-to-lua/language-extensions"],
+    "rootDir": "src",
+    "outDir": "dist",
+    "moduleResolution": "bundler"
+  },
+  "include": ["src/**/*.ts", "types/**/*.d.ts"],
+  "tstl": {
+    "luaTarget": "Luau",
+    "extension": ".luau",
+    "luaLibImport": "require-minimal",
+    "noImplicitGlobalVariables": true,
+    "noHeader": false
+  }
+}

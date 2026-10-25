@@ -1,0 +1,17 @@
+{
+  "name": "citadel-ts",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "TypeScript -> Luau toolchain for Minefort Citadel packs. `npm run build` transpiles src/ to dist/ (dist IS the pack folder: upload it). Types in types/citadel.d.ts are GENERATED from the official Citadel docs — regenerate with `npm run dts`. Conventions: members with this: void are dot calls, others are colon calls; callbacks take arrow functions.",
+  "scripts": {
+    "build": "tstl",
+    "dev": "tstl --watch",
+    "dts": "python3 ../scripts/gen_citadel_dts.py",
+    "check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "6.0.2",
+    "typescript-to-lua": "^1.37.1"
+  }
+}
