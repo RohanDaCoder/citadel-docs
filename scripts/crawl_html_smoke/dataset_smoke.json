@@ -1,0 +1,863 @@
+{
+ "guides": {
+  "your-first-pack": {
+   "title": "Your first pack",
+   "markdown": "## Before you start\nYou need Minecraft Java Edition, a text editor, and a Citadel server you\ncan run or edit. On your own machine, the commands below assume the\n`citadel` executable is on your `PATH`. If you built it from source, use\nthe path to `target/release/citadel` instead.\nA **pack** is a folder containing configuration and Luau scripts. Citadel\nruns those scripts on the server; players join with their normal Minecraft\nclient. You do not need to compile the scripts or install a client mod.\nThis guide uses **lite mode**, where your pack supplies the world and the\ngame\u2019s behaviour. By the end, a player will spawn on a gold block, see a\nwelcome, and be able to walk away and return with `/spawn`.\n## 1. Create the two files\nMake a folder named `first`. Inside it, create these two files:\n```text\nfirst/\n  citadel.yml\n  main.luau\n```\nPut this in `citadel.yml`:\n```yaml\n# citadel.yml\nname: first\nentry: main.luau\nmotd: My first Citadel pack\nspawn_point: [0.5, 65.0, 0.5]\ngamemode: 2\nmode: lite\nworld: script\n```\n| Setting | What it does here |\n| --- | --- |\n| `name` | Names this pack `first`. |\n| `entry` | Tells Citadel to run `main.luau` when the pack loads. |\n| `motd` | Sets the description shown in Minecraft\u2019s server list. |\n| `spawn_point` | Places a joining player\u2019s feet at x = 0.5, y = 65, z = 0.5. |\n| `gamemode: 2` | Uses adventure mode, so players can explore without breaking the floor. |\n| `mode: lite` | Selects a game controlled by your scripts. |\n| `world: script` | Asks your script to generate the terrain. |\nThis is the **pack\u2019s** `citadel.yml`. A separate `citadel.yml` in the\ndirectory where you start the server configures things such as its port.\nKeep the pack inside `first`, and run the local commands below from the\ndirectory containing `first`.\nStart `main.luau` with `--!strict`. This enables strict checking in an\neditor configured with Citadel\u2019s `citadel.d.luau` type definitions. The\npack can run without that editor setup.\n## 2. Give players ground to stand on\nAdd this below `--!strict` in `main.luau`:\n```luau\n-- main.luau\nworld.on_generate(function(chunk)\n    chunk:fill(\n        vec3(chunk.min.x, 64, chunk.min.z),\n        vec3(chunk.max.x, 64, chunk.max.z),\n        \"stone\"\n    )\n    chunk:set(vec3(0, 64, 0), \"gold_block\")\nend)\n```\nMinecraft divides the world into **chunks**, each 16 blocks wide and 16\nblocks deep. `world.on_generate` registers a function that Citadel calls\nwhen it needs a chunk\u2019s terrain. The `chunk` argument is the chunk being\nbuilt.\n`vec3(x, y, z)` describes a position: x and z are horizontal; y is height.\n`chunk:fill` fills the box between two corners, including both corners.\nUsing the chunk\u2019s x and z bounds and y = 64 for both corners makes a stone\nfloor one block thick. Every generated chunk gets that floor.\n`chunk:set` replaces one floor block with gold. It ignores coordinates\noutside the current chunk, so only the chunk containing `(0, 64, 0)` gets\nthe marker. The spawn point is one block above it; the `.5` coordinates\nplace the player in the centre of the block.\nKeep terrain generation repeatable: the same chunk should receive the same\nblocks each time the function is called.\n## 3. Run the pack and join\nFrom the directory containing `first`, run:\n```sh\ncitadel --lite --pack ./first\n```\nLeave that terminal open. In Minecraft, choose **Multiplayer \u2192 Direct\nConnection**, enter `localhost:25565`, and join. If your server uses a\ndifferent port, use that port instead.\nOn a hosted Minefort server, put the `first` folder in the server\u2019s `packs`\ndirectory, select lite mode, and start the server. Join using the address\nshown for that server.\n**Check:** you should stand on a gold block surrounded by a flat stone\nfloor. Walk a few blocks and look back at the marker. There is no welcome\nmessage or `/spawn` command yet; you will add those next.\n## 4. Welcome each player\nAppend this after the terrain code:\n```luau\n-- main.luau\nplayers.on_join(function(player)\n    player.ui.title{\n        title = \"Welcome\",\n        subtitle = player.name,\n        color = \"aqua\",\n    }\n    player:message(\"Walk around, then type /spawn to return to the gold block.\", \"aqua\")\nend)\n```\n`players.on_join` registers another function, this time for a player joining.\nCitadel passes that player into the function as `player`. `player.name`\nreads their name; `player.ui.title` shows them a title; `player:message`\nsends them a chat message. These calls address that one player.\nThe code inside the function runs when the event happens. Register the\nfunction once at the top level of the script; you do not need a loop that\nkeeps checking for new players.\nSave `main.luau` while connected. Citadel reloads the script and runs its\njoin callbacks for players already online too.\n**Check:** a \u201cWelcome\u201d title should appear with your name underneath it,\nand chat should explain `/spawn`. That command is the next step.\n## 5. Add a command that does something\nAppend this below the welcome code:\n```luau\n-- main.luau\ncommands.add(\"spawn\", function(player)\n    player:teleport(world.spawn_point)\n    player:message(\"You are back at spawn.\", \"green\")\nend, { help = \"Return to the lobby spawn\" })\n```\n`commands.add` registers the name `\"spawn\"` without the slash. When a player\ntypes `/spawn`, Citadel calls the function with the player who used it.\nThe `help` text describes the command.\n`world.spawn_point` reads the spawn configured in `citadel.yml`, so you do\nnot need to repeat its coordinates in the script. `player:teleport` moves\nthe player there, and the message confirms the action.\nNotice the colon in `player:teleport(...)` and `chunk:fill(...)`: these are\nmethods acting on a particular player or chunk. Namespace functions such\nas `commands.add(...)` and `player.ui.title(...)` use a dot. Follow the\nsignature shown in the reference when using a new API.\n**Check:** save, walk away from the gold block, and type `/spawn`. You\nshould return to the marker and see \u201cYou are back at spawn.\u201d in chat.\n## 6. Make a change and check it\nChange `title = \"Welcome\"` to `title = \"My lobby\"`, then save. The new title\nshould appear without disconnecting you. Try `/spawn` again to confirm the\nrest of the pack still works.\nA script reload keeps the existing world. Changing the floor in\n`world.on_generate` affects newly generated chunks; it does not repaint the\nstone already around you. Restart after changing the pack manifest.\nIf a step does not work, check the server log first:\n| What you see | What to check |\n| --- | --- |\n| The server cannot find the pack | Run from the directory containing `first`, or pass the full folder path to `--pack`. |\n| You cannot connect | Keep the server running and use its configured address and port. |\n| There is no floor | Check `world: script`, the `entry` filename, and any error reported while loading `main.luau`. |\n| `/spawn` is unknown | Check that you saved the command block in the loaded pack and that the script reloaded successfully. |\n| An edit does not take effect | Look for a filename and line number in the log. If loading the new script fails, Citadel keeps the previous working script. |\n## The complete script\nYour final `main.luau` should look like this. Use it to compare with your\nfile, or replace the file with it; do not append a second copy.\n```luau\n-- main.luau\n--!strict\n-- A small lobby: solid ground, a welcome, and a way back to spawn.\n\nworld.on_generate(function(chunk)\n    chunk:fill(\n        vec3(chunk.min.x, 64, chunk.min.z),\n        vec3(chunk.max.x, 64, chunk.max.z),\n        \"stone\"\n    )\n    chunk:set(vec3(0, 64, 0), \"gold_block\")\nend)\n\nplayers.on_join(function(player)\n    player.ui.title{\n        title = \"Welcome\",\n        subtitle = player.name,\n        color = \"aqua\",\n    }\n    player:message(\"Walk around, then type /spawn to return to the gold block.\", \"aqua\")\nend)\n\ncommands.add(\"spawn\", function(player)\n    player:teleport(world.spawn_point)\n    player:message(\"You are back at spawn.\", \"green\")\nend, { help = \"Return to the lobby spawn\" })\n```\nYou have used three entry points: terrain generation for the world,\n`players.on_join` for a player\u2019s arrival, and `commands.add` for an action\nthe player chooses.\n## Try this next\n- Change the welcome text and its colour, save, and check the result.\n- Add a `/hello` command that sends a message to the player who uses it.\n- Add another gold marker in the terrain function, then look for it in a\nnewly generated chunk.\nContinue with **Coin rush** to add an objective, a score, and repeating\nrounds. It builds on the pack structure and event callbacks you used here.\n"
+  }
+ },
+ "docs": {
+  "client-versions": {
+   "title": "Client versions",
+   "markdown": "```luau\nif player:supports(\"display\") then\n    world.display{ kind = \"text\", text = \"Bet 50\", at = pad }\nelse\n    board:text(8, 8, \"Bet 50\", colors.white, 24)   -- a screen works from 1.8\nend\n```\n| feature | what needs it | from |\n| --- | --- | --- |\n| `bossbar` | `ui.bossbar`, `player.ui.bossbar` | 1.9 |\n| `potion_color` | an item\u2019s `color` | 1.11 |\n| `floor_frame` | a screen or frame with `facing = \"up\"` | 1.13 |\n| `light` | `world.light` | 1.14 |\n| `hex_color` | a colour outside Minecraft\u2019s sixteen names | 1.16 |\n| `glow_frame` | `glow = true` on a screen | 1.17 |\n| `display` | `world.display`, any kind | 1.19.4 |\n| `hitbox` | `world.hitbox` | 1.19.4 |\n| `model` | `world.display{ kind = \"model\" }` | 1.21.4 |\n| `layout` | `player.ui.show` | 1.21.4 |\n| `dialog` | `player.ui.dialog` | 1.21.6 |\n| `overlay` | `player.ui.overlay` | 26.3 only |\n| `resource_pack` | the pack\u2019s textures, models and sounds | a client that did not turn the pack down |\n- A name not in this table is an error.\n- A client that turns the resource pack down answers false to\n`resource_pack`, `model`, `layout`, `dialog` and `overlay`, from the\nmoment it answers. It is sent no layout and no dialog: they are drawn in\nthe pack\u2019s fonts. An open dialog closes.\n- A Bedrock client answers false to every feature in this table.\n- Unguarded calls are safe: a client that cannot show a feature is not\nsent it. Guard only to show something else.\n- Or set `min_client` in `citadel.yml` to refuse old clients.\n"
+  },
+  "packs": {
+   "title": "Packs",
+   "markdown": "The script runs on every Java client from 1.8 to 26.2 and never sees a\nclient version. To check a feature, ask `player:supports` (see \u201cClient\nversions\u201d).\n`packs/citadel.d.luau` types this whole API. Start a script with `--!strict`\nand point a language server at that file to catch misspelt fields.\nUse the standard platform and Luau\u2019s new type solver (luau-lsp 1.70.1 or\nlater). For a command-line check:\n```sh\nluau-lsp analyze --platform=standard --flag:LuauSolverV2=true --definitions=packs/citadel.d.luau main.luau\n```\nIn VS Code, set `luau-lsp.platform.type` to `standard`, add the definitions\nfile to `luau-lsp.types.definitionFiles`, and set\n`luau-lsp.fflags.override` to `{ \"LuauSolverV2\": \"true\" }`.\ncitadel.yml\nRun it: `citadel --lite --pack ./rave`.\n## Loading\n- The entry script has **5 s** of work between two waits (`task.wait`), and\n30 s in all. Past that, the load fails and the log says why.\n- Build big scenery once at load and copy it, for example one tree variant\npasted per chunk. Do not loop over every block of every level at load.\n## Textures of your own\nOn Java 1.21.4 and later, a pack\u2019s own items and blocks can have textures.\nSet `texture` in `game.items.define` and `game.blocks.define` (below). The\nengine adds them to its resource pack. Older clients see the vanilla item or\nblock. A client that turns the resource pack down sees them too from then on\n(`player:supports(\"resource_pack\")` is false). A pack that needs the textures\nsays so:\nEvery other folder in `<pack>/assets/` (not `sounds`) goes into the resource\npack unchanged (`assets/<pack>/textures/...`).\n## Mode\n`mode` says **who owns the game**. In a pack manifest, it names the kind of\nserver the pack is *for*.\n- `mode: lite`: your scripts are the game.\n- `mode: full`: **Citadel plays survival** (terrain, health, hunger, mining,\ninventory, mobs, world rules). A pack cannot ship survival; it *adds* to\nit (a shop, a scoreboard, a custom drop).\n- **no `mode` key**: the pack runs on either kind of server, like a plugin.\n`citadel` with no flags (or `--full`) runs survival with `gamemode: 0` and\nthe overworld. `--lite` makes the packs own the game. Add packs to either\nwith `--pack ./shop` or `--packs-dir ./packs`.\n- A `--lite` server with no packs does not start survival. It runs with an\nempty world and no game, and the log says so. Add a pack and restart.\n- With no flag and no server file, the packs\u2019 manifests decide. Packs that\nname different modes, or that all name none, stop the server. The message\nsays how to set one.\n- A flag or the server file overrules a pack that names the other mode. The\nlog names that pack.\n"
+  },
+  "reference": {
+   "title": "Reference",
+   "markdown": "## Types 148"
+  }
+ },
+ "reference_parents": {
+  "BarColor": {
+   "title": "BarColor type",
+   "url": "/docs/citadel/reference/BarColor",
+   "lead": "A boss bar's colour is its own closed set \u2014 six the client draws, and anything else is white. It is not an `Ink`: the bar has no hex form.",
+   "typedef": "\"pink\" | \"blue\" | \"red\" | \"green\" | \"yellow\" | \"purple\" | \"white\"",
+   "docs_link": null,
+   "members": [],
+   "sections": []
+  },
+  "World": {
+   "title": "world global \u00b7 type World",
+   "url": "/docs/citadel/reference/World",
+   "lead": "A room's blocks, entities, displays, screens and time: the `world` global, or `room.world`.",
+   "typedef": "",
+   "docs_link": {
+    "title": "World",
+    "href": "/docs/citadel/blocks-and-terrain"
+   },
+   "members": [
+    {
+     "name": "on_generate",
+     "section": "functions",
+     "signature": "world.on_generate(fn: (chunk: Chunk) -> ())",
+     "description": "Called for a chunk each time it comes into memory, in a script world; it must make the same blocks every time.",
+     "href": "/docs/citadel/reference/World/on_generate"
+    },
+    {
+     "name": "on_populate",
+     "section": "functions",
+     "signature": "world.on_populate(fn: (chunk: Chunk) -> ())",
+     "description": "Each chunk the overworld terrain made, once, after it made it.",
+     "href": "/docs/citadel/reference/World/on_populate"
+    },
+    {
+     "name": "dimension",
+     "section": "functions",
+     "signature": "world.dimension(name: string) \u2192 World",
+     "description": "Another world of the server's group, by dimension id or its last part (\"dungeon\", \"minecraft:the_nether\"): that world's own `world` table.",
+     "href": "/docs/citadel/reference/World/dimension"
+    },
+    {
+     "name": "drop",
+     "section": "functions",
+     "signature": "world.drop(pos: Vec3, item: ItemSpec)",
+     "description": "A stack on the ground at a block, as a broken block leaves one.",
+     "href": "/docs/citadel/reference/World/drop"
+    },
+    {
+     "name": "container",
+     "section": "functions",
+     "signature": "world.container(pos: Vec3) \u2192 Container ?",
+     "description": "A chest's stacks, or nil where the block keeps none.",
+     "href": "/docs/citadel/reference/World/container"
+    },
+    {
+     "name": "rules",
+     "section": "functions",
+     "signature": "world.rules(opts: { survival: boolean ?, fall: boolean ?, damage: boolean ?, hunger: boolean ?, anticheat: boolean ?, day_cycle: boolean ?, redstone: boolean ? }?) \u2192 Rules",
+     "description": "`world.rules{ fall = true }` switches one on, false off; a rule left out or nil keeps its value, and a number or a string is an error. `world.rules()` reads them.",
+     "href": "/docs/citadel/reference/World/rules"
+    },
+    {
+     "name": "raycast",
+     "section": "functions",
+     "signature": "world.raycast(from: Vec3, direction: Vec3, max: number ?) \u2192 RayHit ?",
+     "description": "The first block a ray from `from` along `direction` meets within `max` blocks, and the face it came in through; nil for none.",
+     "href": "/docs/citadel/reference/World/raycast"
+    },
+    {
+     "name": "sees",
+     "section": "functions",
+     "signature": "world.sees(from: Vec3, to: Vec3) \u2192 boolean",
+     "description": "True when no block stops the line from `from` to `to`: a block with a collision box does (glass, leaves), water and grass do not.",
+     "href": "/docs/citadel/reference/World/sees"
+    },
+    {
+     "name": "raycasts",
+     "section": "functions",
+     "signature": "world.raycasts(rays: buffer, out: buffer, n: number)",
+     "description": "`n` lines at once. `rays` holds six f64 a line (from x, y, z, to x, y, z); `out` gets one f64 a line: how far along it the first block is that stops it, or -1 for a clear line.",
+     "href": "/docs/citadel/reference/World/raycasts"
+    },
+    {
+     "name": "light_at",
+     "section": "functions",
+     "signature": "world.light_at(pos: Vec3) \u2192 (number, number, boolean)",
+     "description": "Block light and sky light, 0 to 15, and whether nothing above holds off the sky.",
+     "href": "/docs/citadel/reference/World/light_at"
+    },
+    {
+     "name": "path",
+     "section": "functions",
+     "signature": "world.path(from: Vec3, to: Vec3, opts: { size: (number | { number })?, swim: boolean ?, fall: number ?, range: number ?, budget: number ? }?) \u2192 { Vec3 }?",
+     "description": "The points a body walks from `from` to the block at `to`, or nil. The game's own search: a step up of one block, falls of `fall` (3). `size` is { width, height } (0.6, 1.8); `swim` goes through water; `range` (the distance + 16) and `budget` (2000 nodes) stop a long search, which then gives the part that came closest.",
+     "href": "/docs/citadel/reference/World/path"
+    },
+    {
+     "name": "zone",
+     "section": "functions",
+     "signature": "world.zone(opts: { from: Vec3, to: Vec3, on_enter: ((player: Player) -> ())?, on_leave: ((player: Player) -> ())? }) \u2192 Zone",
+     "description": "Makes a box of blocks, both corners included, that knows who is in it; checked once a tick by feet position. Ends with the script.",
+     "href": "/docs/citadel/reference/World/zone"
+    },
+    {
+     "name": "set_block",
+     "section": "functions",
+     "signature": "world.set_block(pos: Vec3, block: BlockRef, opts: { skin: HeadSkin ? }?)",
+     "description": "`skin` is for \"player_head\" and \"player_wall_head\" only: an account's name, or the raw `textures` property.",
+     "href": "/docs/citadel/reference/World/set_block"
+    },
+    {
+     "name": "set_blocks",
+     "section": "functions",
+     "signature": "world.set_blocks(changes: { { at: Vec3, block: BlockRef, skin: HeadSkin ? } })",
+     "description": "Sets many blocks at once, live, stored and sent; the cheapest way. A row takes `skin` too, for a player head.",
+     "href": "/docs/citadel/reference/World/set_blocks"
+    },
+    {
+     "name": "fill",
+     "section": "functions",
+     "signature": "world.fill(from: Vec3, to: Vec3, block: BlockRef)",
+     "description": "Fills a box of blocks between two corners, live, stored and sent to everyone.",
+     "href": "/docs/citadel/reference/World/fill"
+    },
+    {
+     "name": "schematic",
+     "section": "functions",
+     "signature": "world.schematic(file: string) \u2192 Schematic",
+     "description": "A file inside the pack; a path that leaves it, or one that is not there, is an error naming the file.",
+     "href": "/docs/citadel/reference/World/schematic"
+    },
+    {
+     "name": "build",
+     "section": "functions",
+     "signature": "world.build(fn: (b: Builder) -> (), opts: { detail: number ? }?) \u2192 Schematic",
+     "description": "The same value, written in code instead of read from a file. `{ detail = 2 }`: coordinates are half blocks, fitted to slabs and stairs.",
+     "href": "/docs/citadel/reference/World/build"
+    },
+    {
+     "name": "paste",
+     "section": "functions",
+     "signature": "world.paste(schem: Schematic, origin: Vec3, opts: { air: boolean ?, part: string ? }?)",
+     "description": "Live, stored and sent; air is skipped unless `air` is true.",
+     "href": "/docs/citadel/reference/World/paste"
+    },
+    {
+     "name": "get_block",
+     "section": "functions",
+     "signature": "world.get_block(pos: Vec3) \u2192 string ?",
+     "description": "`nil` where that chunk is not in memory: a read never generates.",
+     "href": "/docs/citadel/reference/World/get_block"
+    },
+    {
+     "name": "block",
+     "section": "functions",
+     "signature": "world.block(pos: Vec3) \u2192 BlockAt ?",
+     "description": "The block there as the handle a hook gets: reads are live, and what it does lands on the next tick. `state` and `data` are for this pack's own blocks. `nil` where that chunk is not in memory.",
+     "href": "/docs/citadel/reference/World/block"
+    },
+    {
+     "name": "get_biome",
+     "section": "functions",
+     "signature": "world.get_biome(pos: Vec3) \u2192 string ?",
+     "description": "Returns the biome name of the column at `pos`; `nil` where that chunk is not in memory.",
+     "href": "/docs/citadel/reference/World/get_biome"
+    },
+    {
+     "name": "generate",
+     "section": "functions",
+     "signature": "world.generate(rules: GeneratorRules) \u2192 Generated",
+     "description": "Declares this world: the engine makes each chunk from the rules, on every core, and no script runs for a chunk.",
+     "href": "/docs/citadel/reference/World/generate"
+    },
+    {
+     "name": "get_blocks",
+     "section": "functions",
+     "signature": "world.get_blocks(from: Vec3, to: Vec3) \u2192 { string ? }",
+     "description": "A box, in x, then z, then y order.",
+     "href": "/docs/citadel/reference/World/get_blocks"
+    },
+    {
+     "name": "items",
+     "section": "functions",
+     "signature": "world.items() \u2192 { GroundItem }",
+     "description": "The stacks on the ground: `{ id, item, count, at }` rows.",
+     "href": "/docs/citadel/reference/World/items"
+    },
+    {
+     "name": "spawn",
+     "section": "functions",
+     "signature": "world.spawn(def: EntityDef | string, pos: Vec3, data: { [string]: any }?) \u2192 EntityHandle ?",
+     "description": "Puts an entity at a point and returns its handle. A mob kind of the game by name (`world.spawn(\"cow\", pos)`) is the game's own entity, and takes no `data`. A pack's own kind takes the data it starts life holding. `nil` for a kind nothing defined and this game does not have.",
+     "href": "/docs/citadel/reference/World/spawn"
+    },
+    {
+     "name": "entities",
+     "section": "functions",
+     "signature": "world.entities(query: { near: Vec3 ?, radius: number ?, kind: string ?, mob: boolean ? }?) \u2192 { EntityHandle }",
+     "description": "Live and queued entities, in ascending id. Optional near/radius select a sphere; kind filters by canonical name. near and radius go together. `mob = true` gives the mobs only, `mob = false` the rest.",
+     "href": "/docs/citadel/reference/World/entities"
+    },
+    {
+     "name": "explode",
+     "section": "functions",
+     "signature": "world.explode(pos: Vec3, power: number ?)",
+     "description": "A blast at a point. The power is clamped by this game's own column and the tick's explosion budget decides when it goes off, never whether.",
+     "href": "/docs/citadel/reference/World/explode"
+    },
+    {
+     "name": "on_block_break",
+     "section": "functions",
+     "signature": "world.on_block_break(fn: (player: Player ?, pos: Vec3, block: string) -> ()) \u2192 Connection",
+     "description": "What the survival tick did. Observe-only: the world has already changed, and what the callback returns is not read.",
+     "href": "/docs/citadel/reference/World/on_block_break"
+    },
+    {
+     "name": "on_block_place",
+     "section": "functions",
+     "signature": "world.on_block_place(fn: (player: Player ?, pos: Vec3, block: string) -> ()) \u2192 Connection",
+     "description": "Tells after a block was placed, with its canonical name. Observe-only; `player` is nil when nobody placed it or they left.",
+     "href": "/docs/citadel/reference/World/on_block_place"
+    },
+    {
+     "name": "on_entity_spawn",
+     "section": "functions",
+     "signature": "world.on_entity_spawn(fn: (entity: EntityHandle, name: string) -> ()) \u2192 Connection",
+     "description": "Tells after a mob appeared, with its handle and name; a natural spawn fires it on every game version that has one, and a pack's own `world.spawn(\"cow\", pos)` fires it too. Mob kinds only.",
+     "href": "/docs/citadel/reference/World/on_entity_spawn"
+    },
+    {
+     "name": "on_entity_death",
+     "section": "functions",
+     "signature": "world.on_entity_death(fn: (id: number, name: string) -> ()) \u2192 Connection",
+     "description": "Tells after a mob died; it is gone, so its id and name is all there is. Mob kinds only.",
+     "href": "/docs/citadel/reference/World/on_entity_death"
+    },
+    {
+     "name": "time",
+     "section": "functions",
+     "signature": "world.time((at: number | TimeName | (s: number) -> number | TimeName) -> ()) \u2192 & (() -> number)",
+     "description": "Holds the sky at a time (ticks, or \"sunrise\", \"day\", \"noon\", \"sunset\", \"night\", \"midnight\"), or asks a function each tick, `s` seconds after the call. With no argument: the time of day now, 0 to 23999.",
+     "href": "/docs/citadel/reference/World/time"
+    },
+    {
+     "name": "light",
+     "section": "functions",
+     "signature": "world.light(sources: { LightSource })",
+     "description": "Sends players light no block makes, 1 to 15 a source; each call replaces the last, `{}` ends it. 1.14 and later.",
+     "href": "/docs/citadel/reference/World/light"
+    },
+    {
+     "name": "screen",
+     "section": "functions",
+     "signature": "world.screen(opts: { at: Vec3, facing: Facing | \"up\", up: Facing ?, width: number ?, height: number ?, glow: boolean ?, on_click: ((player: Player, x: number, y: number, button: \"left\" | \"right\") -> ())?, }) \u2192 Screen",
+     "description": "Puts a wall of map frames, `width` by `height` frames (128 pixels each), in front of a wall; `at` is the top-left frame. Returns a Screen.",
+     "href": "/docs/citadel/reference/World/screen"
+    },
+    {
+     "name": "canvas",
+     "section": "functions",
+     "signature": "world.canvas(opts: { width: number ?, height: number ? }?) \u2192 Canvas",
+     "description": "Makes a picture of `width` by `height` maps (1 by 1 by default, 16 at most a side) with no frame of its own, for a frame, a hand or a screen.",
+     "href": "/docs/citadel/reference/World/canvas"
+    },
+    {
+     "name": "display",
+     "section": "functions",
+     "signature": "world.display((opts: { kind: \"model\", model: Model, at: Vec3 ?, rotation: Orientation ?, scale: (number | Vec3)?, -- models require equal positive axes paint: { [string]: Ink }?, fallback: string ?, seats: { Vec3 }?, lead: boolean ?, }) -> ModelDisplay) \u2192 & ((opts: { kind: \"item\" | \"text\" | \"block\" | \"frame\", at: Vec3 ?, rotation: Orientation ?, scale: (Vec3 | number)?, billboard: Billboard ?, glow: (Ink | false)?, item: ItemSpec ?, canvas: Canvas ?, context: Context ?, text: Text ?, color: Ink ?, background: (Ink | false)?, line_width: number ?, shadow: boolean ?, block: string ?, facing: ScreenFacing ?, invisible: boolean ?, glide: number ?, lead: boolean ?, }) -> Display)",
+     "description": "A model stands in the world through the same call as everything else, and is the one kind that hands back something other than a Display.",
+     "href": "/docs/citadel/reference/World/display"
+    },
+    {
+     "name": "hitbox",
+     "section": "functions",
+     "signature": "world.hitbox(opts: { at: Vec3, width: number ?, height: number ?, depth: number ?, solid: boolean ?, on_click: ((player: Player, button: \"left\" | \"right\") -> ())?, }) \u2192 Hitbox",
+     "description": "Makes an invisible box a player can click; `solid` also makes it a wall. `depth` is the width unless given. 1.19.4 and later.",
+     "href": "/docs/citadel/reference/World/hitbox"
+    },
+    {
+     "name": "npc",
+     "section": "functions",
+     "signature": "world.npc(opts: { name: string ?, at: Vec3 ?, rotation: BodyRotation ?, skin: (string | { value: string, signature: string } | false)?, }) \u2192 Npc",
+     "description": "Places a player-shaped entity every client from 1.8 sees; removed when the script ends or reloads.",
+     "href": "/docs/citadel/reference/World/npc"
+    },
+    {
+     "name": "puppet",
+     "section": "functions",
+     "signature": "world.puppet(opts: { kind: string, at: Vec3 ?, rotation: BodyRotation ?, name: Text ? }) \u2192 Puppet",
+     "description": "Places a mob's body with no mind of its own that the script moves; its name tag always shows. An error when this game has no such mob kind.",
+     "href": "/docs/citadel/reference/World/puppet"
+    },
+    {
+     "name": "spawn_point",
+     "section": "fields",
+     "signature": "world.spawn_point: Vec3",
+     "description": "Where players arrive in this room; writable. The same value as the room's `spawn_point`.",
+     "href": "/docs/citadel/reference/World/spawn_point"
+    }
+   ],
+   "sections": [
+    {
+     "title": "Functions 39",
+     "type": "functions"
+    },
+    {
+     "title": "Fields 1",
+     "type": "fields"
+    }
+   ]
+  },
+  "world": {
+   "title": "world global \u00b7 type World",
+   "url": "/docs/citadel/reference/world",
+   "lead": "A room's blocks, entities, displays, screens and time: the `world` global, or `room.world`.",
+   "typedef": "",
+   "docs_link": {
+    "title": "World",
+    "href": "/docs/citadel/blocks-and-terrain"
+   },
+   "members": [
+    {
+     "name": "on_generate",
+     "section": "functions",
+     "signature": "world.on_generate(fn: (chunk: Chunk) -> ())",
+     "description": "Called for a chunk each time it comes into memory, in a script world; it must make the same blocks every time.",
+     "href": "/docs/citadel/reference/World/on_generate"
+    },
+    {
+     "name": "on_populate",
+     "section": "functions",
+     "signature": "world.on_populate(fn: (chunk: Chunk) -> ())",
+     "description": "Each chunk the overworld terrain made, once, after it made it.",
+     "href": "/docs/citadel/reference/World/on_populate"
+    },
+    {
+     "name": "dimension",
+     "section": "functions",
+     "signature": "world.dimension(name: string) \u2192 World",
+     "description": "Another world of the server's group, by dimension id or its last part (\"dungeon\", \"minecraft:the_nether\"): that world's own `world` table.",
+     "href": "/docs/citadel/reference/World/dimension"
+    },
+    {
+     "name": "drop",
+     "section": "functions",
+     "signature": "world.drop(pos: Vec3, item: ItemSpec)",
+     "description": "A stack on the ground at a block, as a broken block leaves one.",
+     "href": "/docs/citadel/reference/World/drop"
+    },
+    {
+     "name": "container",
+     "section": "functions",
+     "signature": "world.container(pos: Vec3) \u2192 Container ?",
+     "description": "A chest's stacks, or nil where the block keeps none.",
+     "href": "/docs/citadel/reference/World/container"
+    },
+    {
+     "name": "rules",
+     "section": "functions",
+     "signature": "world.rules(opts: { survival: boolean ?, fall: boolean ?, damage: boolean ?, hunger: boolean ?, anticheat: boolean ?, day_cycle: boolean ?, redstone: boolean ? }?) \u2192 Rules",
+     "description": "`world.rules{ fall = true }` switches one on, false off; a rule left out or nil keeps its value, and a number or a string is an error. `world.rules()` reads them.",
+     "href": "/docs/citadel/reference/World/rules"
+    },
+    {
+     "name": "raycast",
+     "section": "functions",
+     "signature": "world.raycast(from: Vec3, direction: Vec3, max: number ?) \u2192 RayHit ?",
+     "description": "The first block a ray from `from` along `direction` meets within `max` blocks, and the face it came in through; nil for none.",
+     "href": "/docs/citadel/reference/World/raycast"
+    },
+    {
+     "name": "sees",
+     "section": "functions",
+     "signature": "world.sees(from: Vec3, to: Vec3) \u2192 boolean",
+     "description": "True when no block stops the line from `from` to `to`: a block with a collision box does (glass, leaves), water and grass do not.",
+     "href": "/docs/citadel/reference/World/sees"
+    },
+    {
+     "name": "raycasts",
+     "section": "functions",
+     "signature": "world.raycasts(rays: buffer, out: buffer, n: number)",
+     "description": "`n` lines at once. `rays` holds six f64 a line (from x, y, z, to x, y, z); `out` gets one f64 a line: how far along it the first block is that stops it, or -1 for a clear line.",
+     "href": "/docs/citadel/reference/World/raycasts"
+    },
+    {
+     "name": "light_at",
+     "section": "functions",
+     "signature": "world.light_at(pos: Vec3) \u2192 (number, number, boolean)",
+     "description": "Block light and sky light, 0 to 15, and whether nothing above holds off the sky.",
+     "href": "/docs/citadel/reference/World/light_at"
+    },
+    {
+     "name": "path",
+     "section": "functions",
+     "signature": "world.path(from: Vec3, to: Vec3, opts: { size: (number | { number })?, swim: boolean ?, fall: number ?, range: number ?, budget: number ? }?) \u2192 { Vec3 }?",
+     "description": "The points a body walks from `from` to the block at `to`, or nil. The game's own search: a step up of one block, falls of `fall` (3). `size` is { width, height } (0.6, 1.8); `swim` goes through water; `range` (the distance + 16) and `budget` (2000 nodes) stop a long search, which then gives the part that came closest.",
+     "href": "/docs/citadel/reference/World/path"
+    },
+    {
+     "name": "zone",
+     "section": "functions",
+     "signature": "world.zone(opts: { from: Vec3, to: Vec3, on_enter: ((player: Player) -> ())?, on_leave: ((player: Player) -> ())? }) \u2192 Zone",
+     "description": "Makes a box of blocks, both corners included, that knows who is in it; checked once a tick by feet position. Ends with the script.",
+     "href": "/docs/citadel/reference/World/zone"
+    },
+    {
+     "name": "set_block",
+     "section": "functions",
+     "signature": "world.set_block(pos: Vec3, block: BlockRef, opts: { skin: HeadSkin ? }?)",
+     "description": "`skin` is for \"player_head\" and \"player_wall_head\" only: an account's name, or the raw `textures` property.",
+     "href": "/docs/citadel/reference/World/set_block"
+    },
+    {
+     "name": "set_blocks",
+     "section": "functions",
+     "signature": "world.set_blocks(changes: { { at: Vec3, block: BlockRef, skin: HeadSkin ? } })",
+     "description": "Sets many blocks at once, live, stored and sent; the cheapest way. A row takes `skin` too, for a player head.",
+     "href": "/docs/citadel/reference/World/set_blocks"
+    },
+    {
+     "name": "fill",
+     "section": "functions",
+     "signature": "world.fill(from: Vec3, to: Vec3, block: BlockRef)",
+     "description": "Fills a box of blocks between two corners, live, stored and sent to everyone.",
+     "href": "/docs/citadel/reference/World/fill"
+    },
+    {
+     "name": "schematic",
+     "section": "functions",
+     "signature": "world.schematic(file: string) \u2192 Schematic",
+     "description": "A file inside the pack; a path that leaves it, or one that is not there, is an error naming the file.",
+     "href": "/docs/citadel/reference/World/schematic"
+    },
+    {
+     "name": "build",
+     "section": "functions",
+     "signature": "world.build(fn: (b: Builder) -> (), opts: { detail: number ? }?) \u2192 Schematic",
+     "description": "The same value, written in code instead of read from a file. `{ detail = 2 }`: coordinates are half blocks, fitted to slabs and stairs.",
+     "href": "/docs/citadel/reference/World/build"
+    },
+    {
+     "name": "paste",
+     "section": "functions",
+     "signature": "world.paste(schem: Schematic, origin: Vec3, opts: { air: boolean ?, part: string ? }?)",
+     "description": "Live, stored and sent; air is skipped unless `air` is true.",
+     "href": "/docs/citadel/reference/World/paste"
+    },
+    {
+     "name": "get_block",
+     "section": "functions",
+     "signature": "world.get_block(pos: Vec3) \u2192 string ?",
+     "description": "`nil` where that chunk is not in memory: a read never generates.",
+     "href": "/docs/citadel/reference/World/get_block"
+    },
+    {
+     "name": "block",
+     "section": "functions",
+     "signature": "world.block(pos: Vec3) \u2192 BlockAt ?",
+     "description": "The block there as the handle a hook gets: reads are live, and what it does lands on the next tick. `state` and `data` are for this pack's own blocks. `nil` where that chunk is not in memory.",
+     "href": "/docs/citadel/reference/World/block"
+    },
+    {
+     "name": "get_biome",
+     "section": "functions",
+     "signature": "world.get_biome(pos: Vec3) \u2192 string ?",
+     "description": "Returns the biome name of the column at `pos`; `nil` where that chunk is not in memory.",
+     "href": "/docs/citadel/reference/World/get_biome"
+    },
+    {
+     "name": "generate",
+     "section": "functions",
+     "signature": "world.generate(rules: GeneratorRules) \u2192 Generated",
+     "description": "Declares this world: the engine makes each chunk from the rules, on every core, and no script runs for a chunk.",
+     "href": "/docs/citadel/reference/World/generate"
+    },
+    {
+     "name": "get_blocks",
+     "section": "functions",
+     "signature": "world.get_blocks(from: Vec3, to: Vec3) \u2192 { string ? }",
+     "description": "A box, in x, then z, then y order.",
+     "href": "/docs/citadel/reference/World/get_blocks"
+    },
+    {
+     "name": "items",
+     "section": "functions",
+     "signature": "world.items() \u2192 { GroundItem }",
+     "description": "The stacks on the ground: `{ id, item, count, at }` rows.",
+     "href": "/docs/citadel/reference/World/items"
+    },
+    {
+     "name": "spawn",
+     "section": "functions",
+     "signature": "world.spawn(def: EntityDef | string, pos: Vec3, data: { [string]: any }?) \u2192 EntityHandle ?",
+     "description": "Puts an entity at a point and returns its handle. A mob kind of the game by name (`world.spawn(\"cow\", pos)`) is the game's own entity, and takes no `data`. A pack's own kind takes the data it starts life holding. `nil` for a kind nothing defined and this game does not have.",
+     "href": "/docs/citadel/reference/World/spawn"
+    },
+    {
+     "name": "entities",
+     "section": "functions",
+     "signature": "world.entities(query: { near: Vec3 ?, radius: number ?, kind: string ?, mob: boolean ? }?) \u2192 { EntityHandle }",
+     "description": "Live and queued entities, in ascending id. Optional near/radius select a sphere; kind filters by canonical name. near and radius go together. `mob = true` gives the mobs only, `mob = false` the rest.",
+     "href": "/docs/citadel/reference/World/entities"
+    },
+    {
+     "name": "explode",
+     "section": "functions",
+     "signature": "world.explode(pos: Vec3, power: number ?)",
+     "description": "A blast at a point. The power is clamped by this game's own column and the tick's explosion budget decides when it goes off, never whether.",
+     "href": "/docs/citadel/reference/World/explode"
+    },
+    {
+     "name": "on_block_break",
+     "section": "functions",
+     "signature": "world.on_block_break(fn: (player: Player ?, pos: Vec3, block: string) -> ()) \u2192 Connection",
+     "description": "What the survival tick did. Observe-only: the world has already changed, and what the callback returns is not read.",
+     "href": "/docs/citadel/reference/World/on_block_break"
+    },
+    {
+     "name": "on_block_place",
+     "section": "functions",
+     "signature": "world.on_block_place(fn: (player: Player ?, pos: Vec3, block: string) -> ()) \u2192 Connection",
+     "description": "Tells after a block was placed, with its canonical name. Observe-only; `player` is nil when nobody placed it or they left.",
+     "href": "/docs/citadel/reference/World/on_block_place"
+    },
+    {
+     "name": "on_entity_spawn",
+     "section": "functions",
+     "signature": "world.on_entity_spawn(fn: (entity: EntityHandle, name: string) -> ()) \u2192 Connection",
+     "description": "Tells after a mob appeared, with its handle and name; a natural spawn fires it on every game version that has one, and a pack's own `world.spawn(\"cow\", pos)` fires it too. Mob kinds only.",
+     "href": "/docs/citadel/reference/World/on_entity_spawn"
+    },
+    {
+     "name": "on_entity_death",
+     "section": "functions",
+     "signature": "world.on_entity_death(fn: (id: number, name: string) -> ()) \u2192 Connection",
+     "description": "Tells after a mob died; it is gone, so its id and name is all there is. Mob kinds only.",
+     "href": "/docs/citadel/reference/World/on_entity_death"
+    },
+    {
+     "name": "time",
+     "section": "functions",
+     "signature": "world.time((at: number | TimeName | (s: number) -> number | TimeName) -> ()) \u2192 & (() -> number)",
+     "description": "Holds the sky at a time (ticks, or \"sunrise\", \"day\", \"noon\", \"sunset\", \"night\", \"midnight\"), or asks a function each tick, `s` seconds after the call. With no argument: the time of day now, 0 to 23999.",
+     "href": "/docs/citadel/reference/World/time"
+    },
+    {
+     "name": "light",
+     "section": "functions",
+     "signature": "world.light(sources: { LightSource })",
+     "description": "Sends players light no block makes, 1 to 15 a source; each call replaces the last, `{}` ends it. 1.14 and later.",
+     "href": "/docs/citadel/reference/World/light"
+    },
+    {
+     "name": "screen",
+     "section": "functions",
+     "signature": "world.screen(opts: { at: Vec3, facing: Facing | \"up\", up: Facing ?, width: number ?, height: number ?, glow: boolean ?, on_click: ((player: Player, x: number, y: number, button: \"left\" | \"right\") -> ())?, }) \u2192 Screen",
+     "description": "Puts a wall of map frames, `width` by `height` frames (128 pixels each), in front of a wall; `at` is the top-left frame. Returns a Screen.",
+     "href": "/docs/citadel/reference/World/screen"
+    },
+    {
+     "name": "canvas",
+     "section": "functions",
+     "signature": "world.canvas(opts: { width: number ?, height: number ? }?) \u2192 Canvas",
+     "description": "Makes a picture of `width` by `height` maps (1 by 1 by default, 16 at most a side) with no frame of its own, for a frame, a hand or a screen.",
+     "href": "/docs/citadel/reference/World/canvas"
+    },
+    {
+     "name": "display",
+     "section": "functions",
+     "signature": "world.display((opts: { kind: \"model\", model: Model, at: Vec3 ?, rotation: Orientation ?, scale: (number | Vec3)?, -- models require equal positive axes paint: { [string]: Ink }?, fallback: string ?, seats: { Vec3 }?, lead: boolean ?, }) -> ModelDisplay) \u2192 & ((opts: { kind: \"item\" | \"text\" | \"block\" | \"frame\", at: Vec3 ?, rotation: Orientation ?, scale: (Vec3 | number)?, billboard: Billboard ?, glow: (Ink | false)?, item: ItemSpec ?, canvas: Canvas ?, context: Context ?, text: Text ?, color: Ink ?, background: (Ink | false)?, line_width: number ?, shadow: boolean ?, block: string ?, facing: ScreenFacing ?, invisible: boolean ?, glide: number ?, lead: boolean ?, }) -> Display)",
+     "description": "A model stands in the world through the same call as everything else, and is the one kind that hands back something other than a Display.",
+     "href": "/docs/citadel/reference/World/display"
+    },
+    {
+     "name": "hitbox",
+     "section": "functions",
+     "signature": "world.hitbox(opts: { at: Vec3, width: number ?, height: number ?, depth: number ?, solid: boolean ?, on_click: ((player: Player, button: \"left\" | \"right\") -> ())?, }) \u2192 Hitbox",
+     "description": "Makes an invisible box a player can click; `solid` also makes it a wall. `depth` is the width unless given. 1.19.4 and later.",
+     "href": "/docs/citadel/reference/World/hitbox"
+    },
+    {
+     "name": "npc",
+     "section": "functions",
+     "signature": "world.npc(opts: { name: string ?, at: Vec3 ?, rotation: BodyRotation ?, skin: (string | { value: string, signature: string } | false)?, }) \u2192 Npc",
+     "description": "Places a player-shaped entity every client from 1.8 sees; removed when the script ends or reloads.",
+     "href": "/docs/citadel/reference/World/npc"
+    },
+    {
+     "name": "puppet",
+     "section": "functions",
+     "signature": "world.puppet(opts: { kind: string, at: Vec3 ?, rotation: BodyRotation ?, name: Text ? }) \u2192 Puppet",
+     "description": "Places a mob's body with no mind of its own that the script moves; its name tag always shows. An error when this game has no such mob kind.",
+     "href": "/docs/citadel/reference/World/puppet"
+    },
+    {
+     "name": "spawn_point",
+     "section": "fields",
+     "signature": "world.spawn_point: Vec3",
+     "description": "Where players arrive in this room; writable. The same value as the room's `spawn_point`.",
+     "href": "/docs/citadel/reference/World/spawn_point"
+    }
+   ],
+   "sections": [
+    {
+     "title": "Functions 39",
+     "type": "functions"
+    },
+    {
+     "title": "Fields 1",
+     "type": "fields"
+    }
+   ]
+  }
+ },
+ "reference_members": {
+  "Biomes": {
+   "define": {
+    "title": "biomes.define",
+    "url": "/docs/citadel/reference/Biomes/define",
+    "kind": "function",
+    "lead": "Defines a biome, or changes the one of that name, and returns its full name (\"mypack:crystal\"). Call it at the top of the script: a player learns the biomes when they join.",
+    "signature": "biomes.define(def: BiomeDefinition) \u2192 string",
+    "params": [
+     {
+      "name": "def",
+      "type": "BiomeDefinition",
+      "required": true
+     }
+    ],
+    "returns": [
+     "string"
+    ],
+    "used_in": [
+     {
+      "quote": "local crystal = game.biomes.define {",
+      "source": "Blocks and terrain",
+      "href": "/docs/citadel/blocks-and-terrain"
+     }
+    ]
+   }
+  },
+  "Player": {
+   "max_health": {
+    "title": "player.max_health",
+    "url": "/docs/citadel/reference/Player/max_health",
+    "kind": "field",
+    "lead": "Their health now, 0 to `max_health`; nil where the game version has no damage rules. Writable: set outright, no flash; 0 is a death; a number above `max_health` stops there. The most health they can have: 20 unless a pack set it; nil where the game version has no damage rules. Writable, 1 to 1024; nil gives the game's own back. A lower maximum takes `health` down to it. It lasts for the session. Every Java client draws its hearts; Bedrock draws none.",
+    "signature": "player.max_health: number ?",
+    "params": [],
+    "returns": [],
+    "used_in": [
+     {
+      "quote": "player.health          -- their health now, 0 to player.max_health; nil where the version has no damage rules",
+      "source": "Players",
+      "href": "/docs/citadel/players"
+     },
+     {
+      "quote": "player.max_health      -- the most health they can have: 20 unless a pack set it; nil for the same reason",
+      "source": "Players",
+      "href": "/docs/citadel/players"
+     },
+     {
+      "quote": "player.health = 20             -- set outright, no flash; 0 is a death; above player.max_health it stops there",
+      "source": "Body and movement",
+      "href": "/docs/citadel/body-and-movement"
+     }
+    ]
+   },
+   "message": {
+    "title": "player:message",
+    "url": "/docs/citadel/reference/Player/message",
+    "kind": "method",
+    "lead": "What shows on this player's screen: the calls `ui` has, for them alone, plus their own menu and overlay. Sends a chat line to this player alone; `color` is for the words that did not pick one. Chat is not part of the screen, so it is not in `ui`.",
+    "signature": "player:message(text: Text, color: Ink ?)",
+    "params": [
+     {
+      "name": "text",
+      "type": "Text",
+      "required": true
+     },
+     {
+      "name": "color",
+      "type": "Ink",
+      "required": false
+     }
+    ],
+    "returns": [],
+    "used_in": [
+     {
+      "quote": "player:message(\"Walk around, then type /spawn to return to the gold block.\", \"aqua\")",
+      "source": "Guide: Your first pack",
+      "href": "/docs/citadel/guides/your-first-pack"
+     },
+     {
+      "quote": "reads their name; `player.ui.title` shows them a title; `player:message`",
+      "source": "Guide: Your first pack",
+      "href": "/docs/citadel/guides/your-first-pack"
+     },
+     {
+      "quote": "player:message(`Walk onto the gold plates! Your best is {best}.`, \"gold\")",
+      "source": "Guide: Coin rush",
+      "href": "/docs/citadel/guides/coin-rush"
+     },
+     {
+      "quote": "player:message(`Walk onto the gold plates! Your best is {best}.`, \"gold\")",
+      "source": "Guide: Coin rush",
+      "href": "/docs/citadel/guides/coin-rush"
+     },
+     {
+      "quote": "player:message(`Your best time is {string.format(\"%.1f s\", best)}.`, \"green\")",
+      "source": "Guide: Parkour, a room each",
+      "href": "/docs/citadel/guides/parkour-a-room-each"
+     },
+     {
+      "quote": "player:message(`Your best time is {string.format(\"%.1f s\", best)}.`, \"green\")",
+      "source": "Guide: Parkour, a room each",
+      "href": "/docs/citadel/guides/parkour-a-room-each"
+     },
+     {
+      "quote": "player:message(\"Walk around, then type /spawn to return to the gold block.\", \"aqua\")",
+      "source": "Your first pack",
+      "href": "/docs/citadel/your-first-pack"
+     },
+     {
+      "quote": "player:message(\"You are back at spawn.\", \"green\")",
+      "source": "Your first pack",
+      "href": "/docs/citadel/your-first-pack"
+     }
+    ]
+   }
+  },
+  "World": {
+   "get_block": {
+    "title": "world.get_block",
+    "url": "/docs/citadel/reference/World/get_block",
+    "kind": "function",
+    "lead": "`nil` where that chunk is not in memory: a read never generates.",
+    "signature": "world.get_block(pos: Vec3) \u2192 string ?",
+    "params": [
+     {
+      "name": "pos",
+      "type": "Vec3",
+      "required": true
+     }
+    ],
+    "returns": [
+     "string ?"
+    ],
+    "used_in": [
+     {
+      "quote": "while world.get_block(at) ~= \"air\" do",
+      "source": "Guide: Coin rush",
+      "href": "/docs/citadel/guides/coin-rush"
+     },
+     {
+      "quote": "while world.get_block(at) ~= \"air\" do",
+      "source": "Guide: Coin rush",
+      "href": "/docs/citadel/guides/coin-rush"
+     },
+     {
+      "quote": "world.get_block(pos)                      -- the block name there, or nil (see below)",
+      "source": "Blocks and terrain",
+      "href": "/docs/citadel/blocks-and-terrain"
+     },
+     {
+      "quote": "local here = world.get_block(player.at - vec3(0, 1, 0))   -- \"grass_block\"",
+      "source": "Blocks and terrain",
+      "href": "/docs/citadel/blocks-and-terrain"
+     }
+    ]
+   },
+   "set_block": {
+    "title": "world.set_block",
+    "url": "/docs/citadel/reference/World/set_block",
+    "kind": "function",
+    "lead": "`skin` is for \"player_head\" and \"player_wall_head\" only: an account's name, or the raw `textures` property.",
+    "signature": "world.set_block(pos: Vec3, block: BlockRef, opts: { skin: HeadSkin ? }?)",
+    "params": [
+     {
+      "name": "pos",
+      "type": "Vec3",
+      "required": true
+     },
+     {
+      "name": "block",
+      "type": "BlockRef",
+      "required": true
+     },
+     {
+      "name": "opts",
+      "type": "{ skin: HeadSkin ? }",
+      "required": false
+     }
+    ],
+    "returns": [],
+    "used_in": [
+     {
+      "quote": "world.set_block(at, \"light_weighted_pressure_plate\")",
+      "source": "Guide: Coin rush",
+      "href": "/docs/citadel/guides/coin-rush"
+     },
+     {
+      "quote": "world.set_block(coin.at, \"air\")",
+      "source": "Guide: Coin rush",
+      "href": "/docs/citadel/guides/coin-rush"
+     },
+     {
+      "quote": "(`world.set_block`, `world.fill`) stays in memory.",
+      "source": "Server settings",
+      "href": "/docs/citadel/server-settings"
+     },
+     {
+      "quote": "world.set_block(pos, block)               -- live change, stored and sent to everyone",
+      "source": "Blocks and terrain",
+      "href": "/docs/citadel/blocks-and-terrain"
+     },
+     {
+      "quote": "world.set_block(pos, \"player_head[rotation=8]\", { skin = \"Notch\" })   -- a head with a face; see \"player heads\"",
+      "source": "Blocks and terrain",
+      "href": "/docs/citadel/blocks-and-terrain"
+     },
+     {
+      "quote": "- Blocks your script writes are not edits: `world.set_block` from a callback,",
+      "source": "Named parts",
+      "href": "/docs/citadel/named-parts"
+     },
+     {
+      "quote": "world.set_block(vec3(10, 65, 10), crate)   -- the handle, or \"rave:crate\"",
+      "source": "Custom blocks",
+      "href": "/docs/citadel/custom-blocks"
+     },
+     {
+      "quote": "like `world.set_block`.",
+      "source": "Custom blocks",
+      "href": "/docs/citadel/custom-blocks"
+     }
+    ]
+   }
+  }
+ }
+}

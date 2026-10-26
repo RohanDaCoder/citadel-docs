@@ -261,3 +261,22 @@ Work Log:
 Stage Summary:
 - Deliverables: citadel-ts/ (TSTL project: npm i && npm run build -> dist/ = the Citadel pack), citadel-ts/types/citadel.d.ts (GENERATED, 112 KB, sourced only from the crawled official docs + cited wiki gap-fills), scripts/gen_citadel_dts.py (regenerate: npm run dts), download/citadel.d.ts, refreshed zip.
 - Verified end-to-end: TS -> tstl -> Luau emitted with the documented dot/colon conventions, multi-returns, spec literals and callable tables.
+
+---
+Task ID: 7
+Agent: main (Z.ai)
+Task: Document + reconstruct the full crawl/extract pipeline and hand over every script used
+
+Work Log:
+- Explained-pipeline request: user asked for all scripts used to crawl/extract the docs, build the dataset, and generate the Starlight site + d.ts.
+- The original crawler/extractor (crawl_citadel.py, discover_all.py, extract_final.py) had been deleted in the Starlight cleanup (Task 3); reconstructed all three from the worklog + live-site DOM analysis.
+- Verified the live DOM rules the extractor relies on: SSR <a href> discovery (reference index lists all 177 parents), div.prose content root, pre>code.language-* fences (language-lua -> luau), t-lead exclusion, member cards (a[id]+code+p.t-body), member-page sections (Parameters rows with span.t-meta required flags, Returns code lines, Used-in li>a cards with code quote + span source), h1 raw titles ('world global · type World'), Docs: X chip, and clean_sig spacing rules (string? -> string ?, ' ,' -> ',').
+- Verified the reconstructions against ground truth: crawled 14 fresh pages into scripts/crawl_html_smoke/ (all 4 page kinds + world/World case twin), built a manifest, ran extract_final.py --dir crawl_html_smoke, and diffed with new scripts/diff_smoke.py: 12/12 entries byte-identical with scripts/dataset.json (fixes found via diff: lua->luau fence mapping, trailing newline on prose pages).
+- End-to-end test: discover_all.py --limit 6 found 173 URLs from 6 fetches; crawl_citadel.py downloaded a 3-URL test list; extract reproduced the packs/World/get_block entries identically.
+- Wrote scripts/inspect_dataset.py (prints the dataset schema) and scripts/PIPELINE.md (full data-flow documentation: 7 stages, DOM rules, regeneration cookbook, script provenance table).
+- Rebuilt download/citadel-wiki-starlight.zip (2.6 MB, 1281 files) with all pipeline scripts, PIPELINE.md, and the crawl_html_smoke verification fixture.
+- py_compile clean on all 9 scripts.
+
+Stage Summary:
+- Deliverables: scripts/{discover_all,crawl_citadel,extract_final,inspect_dataset,diff_smoke}.py (new), scripts/PIPELINE.md (new), refreshed download/citadel-wiki-starlight.zip; full pipeline now reproducible: discover -> crawl -> extract -> dataset.json -> gen_starlight/gen_citadel_dts/gen_llms_full -> build.
+- Reconstruction is verified, not approximate: byte-identical dataset entries for every page type.

@@ -1,0 +1,16 @@
+{
+ "/docs/citadel": "index.html",
+ "/docs/citadel/packs": "packs.html",
+ "/docs/citadel/guides": "guides_index.html",
+ "/docs/citadel/guides/your-first-pack": "guides_your-first-pack.html",
+ "/docs/citadel/client-versions": "client-versions.html",
+ "/docs/citadel/reference": "reference_index.html",
+ "/docs/citadel/reference/World": "reference_World.html",
+ "/docs/citadel/reference/world": "reference_world.html",
+ "/docs/citadel/reference/BarColor": "reference_BarColor.html",
+ "/docs/citadel/reference/World/set_block": "reference_World_set_block.html",
+ "/docs/citadel/reference/World/get_block": "reference_World_get_block.html",
+ "/docs/citadel/reference/Player/message": "reference_Player_message.html",
+ "/docs/citadel/reference/Player/max_health": "reference_Player_max_health.html",
+ "/docs/citadel/reference/Biomes/define": "reference_Biomes_define.html"
+}
