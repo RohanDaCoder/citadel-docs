@@ -1,0 +1,1 @@
+{"type": "ref", "name": "Occupant", "kind": "type", "assocType": "", "lead": "", "typedef": "Player | Npc | EntityHandle", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "Occupant type"}

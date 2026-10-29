@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "TerrainStep", "name": "size", "title": "terrainStep.size", "kind": "field", "lead": "How long each clay blob or ore vein is.", "signature": "terrainStep.size: number ?", "params": [], "returns": [], "usedIn": []}

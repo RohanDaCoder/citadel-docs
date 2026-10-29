@@ -1,0 +1,1 @@
+{"type": "ref", "name": "Worn", "kind": "type", "assocType": "", "lead": "Armour, head first; each piece is an item like any other.", "typedef": "{ head: ItemSpec ?, chest: ItemSpec ?, legs: ItemSpec ?, feet: ItemSpec ? }", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "Worn type"}

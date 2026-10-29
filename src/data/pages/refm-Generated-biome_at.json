@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Generated", "name": "biome_at", "title": "generated:biome_at", "kind": "method", "lead": "Returns the biome name a column gets.", "signature": "generated:biome_at(pos: Vec3) → string ?", "params": [{"name": "pos", "type": "Vec3", "required": true}], "returns": ["string ?"], "usedIn": []}

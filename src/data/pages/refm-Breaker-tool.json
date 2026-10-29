@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Breaker", "name": "tool", "title": "breaker.tool", "kind": "field", "lead": "The item in hand, or nil for a bare hand and for the four causes that have none.", "signature": "breaker.tool: string ?", "params": [], "returns": [], "usedIn": []}

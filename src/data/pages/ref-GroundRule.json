@@ -1,0 +1,1 @@
+{"type": "ref", "name": "GroundRule", "kind": "type", "assocType": "", "lead": "A layer of ground: `block` for the top `depth` blocks (1) of a surface. The first rule that holds wins.", "typedef": "{ block: BlockPick, biome: string ?, when: (Field | number)?, depth: number ? }", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "GroundRule type"}

@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Screen", "name": "destroy", "title": "screen:destroy", "kind": "method", "lead": "Removes the screen.", "signature": "screen:destroy()", "params": [], "returns": [], "usedIn": []}

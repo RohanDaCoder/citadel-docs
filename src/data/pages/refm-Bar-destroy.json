@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Bar", "name": "destroy", "title": "bar:destroy", "kind": "method", "lead": "Removes the bar.", "signature": "bar:destroy()", "params": [], "returns": [], "usedIn": [{"quote": "bar:destroy()", "source": "HUD", "href": "#/wiki/ui-basics"}]}

@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Budget", "name": "peak", "title": "budget.peak", "kind": "field", "lead": "The most any tick has spent.", "signature": "budget.peak: number", "params": [], "returns": [], "usedIn": []}

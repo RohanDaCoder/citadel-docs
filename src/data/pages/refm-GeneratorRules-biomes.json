@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "GeneratorRules", "name": "biomes", "title": "generatorRules.biomes", "kind": "field", "lead": "`{ \"desert\", when = field }`: the first that holds names the column's biome; one with no `when` is for the rest.", "signature": "generatorRules.biomes: { { [number]: string, when: (Field | number)? } }?", "params": [], "returns": [], "usedIn": []}

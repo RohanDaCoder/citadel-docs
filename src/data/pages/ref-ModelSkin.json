@@ -1,0 +1,1 @@
+{"type": "ref", "name": "ModelSkin", "kind": "type", "assocType": "", "lead": "What a box wears: one for all six faces, or one per face.", "typedef": "ModelMaterial | ModelTexture", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "ModelSkin type"}

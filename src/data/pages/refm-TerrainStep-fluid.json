@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "TerrainStep", "name": "fluid", "title": "terrainStep.fluid", "kind": "field", "lead": "The fluid a springs step places: \"water\" or \"lava\".", "signature": "terrainStep.fluid: string ?", "params": [], "returns": [], "usedIn": []}

@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "ItemMeta", "name": "count", "title": "itemMeta.count", "kind": "field", "lead": "How many in the stack; 1 by default.", "signature": "itemMeta.count: number ?", "params": [], "returns": [], "usedIn": []}

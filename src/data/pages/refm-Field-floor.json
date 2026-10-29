@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Field", "name": "floor", "title": "field:floor", "kind": "method", "lead": "", "signature": "field:floor() → Field", "params": [], "returns": ["Field"], "usedIn": []}

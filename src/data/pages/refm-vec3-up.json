@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "vec3", "name": "up", "title": "vec3.up", "kind": "field", "lead": "vec3(0, 1, 0).", "signature": "vec3.up: Vec3", "params": [], "returns": [], "usedIn": [{"quote": "vec3.zero, vec3.up", "source": "Vectors and colours", "href": "#/wiki/conventions"}]}

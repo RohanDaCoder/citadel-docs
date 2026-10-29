@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "NetworkInstance", "name": "state", "title": "networkInstance.state", "kind": "field", "lead": "\"starting\", then \"online\", then \"stopping\".", "signature": "networkInstance.state: string", "params": [], "returns": [], "usedIn": []}

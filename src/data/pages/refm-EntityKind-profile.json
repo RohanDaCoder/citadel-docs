@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntityKind", "name": "profile", "title": "entityKind.profile", "kind": "field", "lead": "Read-only copy; nil for a specialized behavior without a shared profile.", "signature": "entityKind.profile: { [string]: string | number | boolean }?", "params": [], "returns": [], "usedIn": []}

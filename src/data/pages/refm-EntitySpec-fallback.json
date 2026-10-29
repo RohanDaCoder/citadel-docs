@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntitySpec", "name": "fallback", "title": "entitySpec.fallback", "kind": "field", "lead": "What a client older than 1.21.4 sees in place of the model, such as \"minecart\".", "signature": "entitySpec.fallback: string ?", "params": [], "returns": [], "usedIn": []}

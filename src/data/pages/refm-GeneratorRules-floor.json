@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "GeneratorRules", "name": "floor", "title": "generatorRules.floor", "kind": "field", "lead": "The block at y 0; \"bedrock\" for a land of its own.", "signature": "generatorRules.floor: string ?", "params": [], "returns": [], "usedIn": []}

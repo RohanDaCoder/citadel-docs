@@ -1,0 +1,1 @@
+{"type": "ref", "name": "Item", "kind": "type", "assocType": "", "lead": "An item the game version has, from `game.item(name)`: its name and stack size.", "typedef": "{ name: string, stack_size: number }", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "Item type"}

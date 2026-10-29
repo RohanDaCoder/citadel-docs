@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntityHandle", "name": "driver", "title": "entityHandle.driver", "kind": "field", "lead": "Whether it is in water now. False for an entity that is not alive. The player supplying driving input from seat 1; nil for an NPC or empty seat.", "signature": "entityHandle.driver: Player ?", "params": [], "returns": [], "usedIn": []}

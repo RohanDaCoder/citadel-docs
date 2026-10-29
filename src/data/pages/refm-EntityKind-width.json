@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntityKind", "name": "width", "title": "entityKind.width", "kind": "field", "lead": "Its width in blocks, in this version's numbers.", "signature": "entityKind.width: number", "params": [], "returns": [], "usedIn": []}

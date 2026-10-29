@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Puppet", "name": "name", "title": "puppet.name", "kind": "field", "lead": "The text of its name tag, which is always shown.", "signature": "puppet.name: string ?", "params": [], "returns": [], "usedIn": []}

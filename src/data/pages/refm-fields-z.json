@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "fields", "name": "z", "title": "fields.z", "kind": "field", "lead": "", "signature": "fields.z: Field", "params": [], "returns": [], "usedIn": [{"quote": "fields.x, fields.y, fields.z                -- the block's own coordinates", "source": "Blocks and terrain", "href": "#/wiki/terrain-generation"}]}

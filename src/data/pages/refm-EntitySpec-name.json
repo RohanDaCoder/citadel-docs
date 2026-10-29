@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntitySpec", "name": "name", "title": "entitySpec.name", "kind": "field", "lead": "Your own word for the kind, lower case, digits and underscores; the pack's namespace is added for you (\"rocket\" is \"rave:rocket\").", "signature": "entitySpec.name: string", "params": [], "returns": [], "usedIn": []}

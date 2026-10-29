@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Material", "name": "burns", "title": "material.burns", "kind": "field", "lead": "Whether the jar's Material burns.", "signature": "material.burns: boolean", "params": [], "returns": [], "usedIn": []}

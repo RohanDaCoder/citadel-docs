@@ -1,0 +1,1 @@
+{"type": "ref", "name": "Layout", "kind": "type", "assocType": "", "lead": "A layout the resource pack holds: what `ui.define` hands back.", "typedef": "{ read _layout: true }", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "Layout type"}

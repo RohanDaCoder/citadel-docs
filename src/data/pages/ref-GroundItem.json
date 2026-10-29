@@ -1,0 +1,1 @@
+{"type": "ref", "name": "GroundItem", "kind": "type", "assocType": "", "lead": "One stack lying on the ground.", "typedef": "{ id: number, item: string, count: number, at: Vec3 }", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "GroundItem type"}

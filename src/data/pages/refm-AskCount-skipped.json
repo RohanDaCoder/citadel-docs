@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "AskCount", "name": "skipped", "title": "askCount.skipped", "kind": "field", "lead": "Asks never sent, because this kind is switched off for this pack.", "signature": "askCount.skipped: number", "params": [], "returns": [], "usedIn": []}

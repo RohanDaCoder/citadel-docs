@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "GeneratorRules", "name": "fluids", "title": "generatorRules.fluids", "kind": "field", "lead": "What fills the caves: needs `density` or `carvers`.", "signature": "generatorRules.fluids: { FluidRule }?", "params": [], "returns": [], "usedIn": []}

@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntitySpec", "name": "accel", "title": "entitySpec.accel", "kind": "field", "lead": "physics = \"vehicle\" only: seconds from standing to top speed; 1 by default.", "signature": "entitySpec.accel: number ?", "params": [], "returns": [], "usedIn": []}

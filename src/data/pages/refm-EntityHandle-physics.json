@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntityHandle", "name": "physics", "title": "entityHandle.physics", "kind": "field", "lead": "Which order of operations moves it: \"vehicle\", \"living\", \"falling\", \"item\" or \"none\".", "signature": "entityHandle.physics: Physics ?", "params": [], "returns": [], "usedIn": []}

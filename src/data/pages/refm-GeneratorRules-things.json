@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "GeneratorRules", "name": "things", "title": "generatorRules.things", "kind": "field", "lead": "", "signature": "generatorRules.things: { ThingGrid }?", "params": [], "returns": [], "usedIn": []}

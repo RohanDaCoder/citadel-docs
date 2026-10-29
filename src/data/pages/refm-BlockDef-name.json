@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "BlockDef", "name": "name", "title": "blockDef.name", "kind": "field", "lead": "Canonical, with the pack's namespace already on it: \"rave:crate\".", "signature": "blockDef.name: string", "params": [], "returns": [], "usedIn": []}

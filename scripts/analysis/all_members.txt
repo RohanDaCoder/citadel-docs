@@ -1,0 +1,3507 @@
+
+
+########## AskCount ##########
+
+--- answered (field) ---
+SIG: askCount.answered: number
+LEAD: Answers that arrived in time.
+
+--- asks (field) ---
+SIG: askCount.asks: number
+LEAD: Questions the engine put to this pack.
+
+--- disabled (field) ---
+SIG: askCount.disabled: boolean
+LEAD: True once the engine has stopped asking this pack this kind at all.
+
+--- late (field) ---
+SIG: askCount.late: number
+LEAD: Answers that arrived after the engine had acted, and were dropped.
+
+--- missed (field) ---
+SIG: askCount.missed: number
+LEAD: Deadlines that passed with no answer.
+
+--- skipped (field) ---
+SIG: askCount.skipped: number
+LEAD: Asks never sent, because this kind is switched off for this pack.
+
+
+########## Asks ##########
+
+--- kinds (field) ---
+SIG: asks.kinds: { [string]: AskCount }
+LEAD: The same counters per kind of question, e.g. `kinds["break"].missed`.
+
+
+########## Bar ##########
+
+--- color (field) ---
+SIG: bar.color: BarColor
+LEAD: The bar's colour, from its own closed set; anything else is white. Live.
+
+--- destroy (method) ---
+SIG: bar:destroy()
+LEAD: Removes the bar.
+
+--- progress (field) ---
+SIG: bar.progress: number
+LEAD: How full the bar is, 0 to 1; live.
+
+--- title (field) ---
+SIG: bar.title: Text
+LEAD: Reads back the words; takes any text.
+
+--- visible (field) ---
+SIG: bar.visible: boolean ?
+LEAD: Whether players see the bar; false takes it off their screens, true or nil shows it again.
+
+
+########## BiomeDefinition ##########
+
+--- fog (field) ---
+SIG: biomeDefinition.fog: (Color | string)?
+LEAD: The colour of the far distance.
+
+--- grass (field) ---
+SIG: biomeDefinition.grass: (Color | string)?
+LEAD: 
+
+--- leaves (field) ---
+SIG: biomeDefinition.leaves: (Color | string)?
+LEAD: 
+
+--- like (field) ---
+SIG: biomeDefinition.like: string ?
+LEAD: The vanilla biome to copy; "plains" when left out.
+
+--- name (field) ---
+SIG: biomeDefinition.name: string
+LEAD: Lower case letters, digits and underscores. The pack's name goes in front: "crystal" becomes "mypack:crystal".
+
+--- sky (field) ---
+SIG: biomeDefinition.sky: (Color | string)?
+LEAD: 
+
+--- water (field) ---
+SIG: biomeDefinition.water: (Color | string)?
+LEAD: 
+
+--- water_fog (field) ---
+SIG: biomeDefinition.water_fog: (Color | string)?
+LEAD: The colour of the view under water.
+
+--- weather (field) ---
+SIG: biomeDefinition.weather: ("rain" | "snow" | "none" | false)?
+LEAD: 
+
+
+########## Biomes ##########
+
+--- define (function) ---
+SIG: biomes.define(def: BiomeDefinition) → string
+LEAD: Defines a biome, or changes the one of that name, and returns its full name ("mypack:crystal"). Call it at the top of the script: a player learns the biomes when they join.
+PARAMS: def:BiomeDefinition*
+RETURNS: string
+
+
+########## Block ##########
+
+--- behaviour (field) ---
+SIG: block.behaviour: string ?
+LEAD: The rule Citadel runs for it, such as "grass", "flowing", "torch" or "falling"; nil for a block that does nothing on its own.
+
+--- drops (field) ---
+SIG: block.drops: boolean ?
+LEAD: The one field a pack writes. Whether a block of this kind that the world breaks by itself leaves its item: true leaves it on a lite world too, false never, nil is the world's default. Reads what this pack set.
+
+--- flammability (field) ---
+SIG: block.flammability: { catches: number, burns_away: number }?
+LEAD: Fire's two numbers: how readily it catches and how fast it burns away. Nil in a game with no block-update tables.
+
+--- hardness (field) ---
+SIG: block.hardness: number
+LEAD: Seconds-scale hardness in this version's numbers; below zero is unbreakable.
+
+--- light (field) ---
+SIG: block.light: number
+LEAD: What it gives off, 0..15, and what a step through it takes away.
+
+--- light_filter (field) ---
+SIG: block.light_filter: number
+LEAD: What a step through it takes off the light, 0 to 15.
+
+--- material (field) ---
+SIG: block.material: Material ?
+LEAD: The jar's Material as five questions; nil in a game with no block-update tables.
+
+--- name (field) ---
+SIG: block.name: string
+LEAD: The block's canonical name.
+
+--- opaque (field) ---
+SIG: block.opaque: boolean
+LEAD: Whether it is an opaque full cube, which is not the material's question.
+
+--- random_ticks (field) ---
+SIG: block.random_ticks: boolean
+LEAD: Whether the random-tick pass acts on it.
+
+--- resistance (field) ---
+SIG: block.resistance: number ?
+LEAD: The three the block-update tables own: nil in a game that has none.
+
+
+########## BlockAmendSpec ##########
+
+--- on_added (function) ---
+SIG: blockAmendSpec.on_added((block: BlockAt, base: (... any) -> any) -> ()) → ?
+LEAD: It has just been stored, whatever stored it.
+PARAMS: (block:BlockAt , base: (... any ) -> any ) -> ()*
+RETURNS: ?
+
+--- on_break (function) ---
+SIG: blockAmendSpec.on_break((block: BlockAt, player: Player ?, by: Breaker, base: (... any) -> any) -> Drops ?) → ?
+LEAD: Something broke it; `by` says what. Answers "none", "table" or a drops list.
+PARAMS: (block:BlockAt , player: Player ?, by: Breaker , base: (... any ) -> any ) -> Drops
+RETURNS: ?
+
+--- on_neighbour (function) ---
+SIG: blockAmendSpec.on_neighbour((block: BlockAt, from: Vec3, announced: string, base: (... any) -> any) -> ()) → ?
+LEAD: A neighbour at `from` changed; `announced` is the block the notifier announced itself as.
+PARAMS: (block:BlockAt , from: Vec3 , announced: string , base: (... any ) -> any ) -> ()*
+RETURNS: ?
+
+--- on_place (function) ---
+SIG: blockAmendSpec.on_place((block: BlockAt, player: Player ?, base: (... any) -> any) -> ()) → ?
+LEAD: A player put it down.
+PARAMS: (block:BlockAt , player: Player ?, base: (... any ) -> any ) -> ()*
+RETURNS: ?
+
+--- on_power (function) ---
+SIG: blockAmendSpec.on_power((block: BlockAt, powered: boolean, base: (... any) -> any) -> ()) → ?
+LEAD: A redstone signal started (`powered` is true) or stopped reaching it. Called once for each, not for every change beside it.
+PARAMS: (block:BlockAt , powered: boolean , base: (... any ) -> any ) -> ()*
+RETURNS: ?
+
+--- on_random_tick (function) ---
+SIG: blockAmendSpec.on_random_tick((block: BlockAt, base: (... any) -> any) -> ()) → ?
+LEAD: The random pass landed on it.
+PARAMS: (block:BlockAt , base: (... any ) -> any ) -> ()*
+RETURNS: ?
+
+--- on_removed (function) ---
+SIG: blockAmendSpec.on_removed((block: BlockAt, base: (... any) -> any) -> ()) → ?
+LEAD: It has just gone.
+PARAMS: (block:BlockAt , base: (... any ) -> any ) -> ()*
+RETURNS: ?
+
+--- on_step (function) ---
+SIG: blockAmendSpec.on_step((block: BlockAt, body: Body, base: (... any) -> any) -> ()) → ?
+LEAD: A body (a player, mob, item or other) is standing on it.
+PARAMS: (block:BlockAt , body: Body , base: (... any ) -> any ) -> ()*
+RETURNS: ?
+
+--- on_tick (function) ---
+SIG: blockAmendSpec.on_tick((block: BlockAt, base: (... any) -> any) -> ()) → ?
+LEAD: A scheduled tick this block asked for came due.
+PARAMS: (block:BlockAt , base: (... any ) -> any ) -> ()*
+RETURNS: ?
+
+--- on_trigger (function) ---
+SIG: blockAmendSpec.on_trigger((block: BlockAt, cause: Trigger, base: (... any) -> any) -> ()) → ?
+LEAD: It was lit, blasted or burnt; `cause` is "ignite", "explosion" or "fire".
+PARAMS: (block:BlockAt , cause: Trigger , base: (... any ) -> any ) -> ()*
+RETURNS: ?
+
+--- on_use (function) ---
+SIG: blockAmendSpec.on_use((block: BlockAt, player: Player ?, held: string ?, base: (... any) -> any) -> Used ?) → ?
+LEAD: Somebody right-clicked it; `held` is the item in hand. Answers "used" or "pass"; a missed deadline passes the click through.
+PARAMS: (block:BlockAt , player: Player ?, held: string ?, base: (... any ) -> any ) -> Used
+RETURNS: ?
+
+
+########## BlockAt ##########
+
+--- at (field) ---
+SIG: blockAt.at: Vec3
+LEAD: The block's position; a live read.
+
+--- become (method) ---
+SIG: blockAt:become(entity: string, data: { [string]: any }?)
+LEAD: **The door**: this block stops being a block, and that entity appears.
+PARAMS: entity:string*, data:{ [ string ]: any }
+
+--- data (field) ---
+SIG: blockAt.data: DataView
+LEAD: What this block remembers beyond its state; kept with the position, saved with the chunk, and gone when the block goes. Nested writes are tracked; whole-record assignment is supported. Copy before keeping it beyond the hook.
+
+--- destroy (method) ---
+SIG: blockAt:destroy()
+LEAD: Takes it out, leaving nothing.
+
+--- drop (method) ---
+SIG: blockAt:drop(item: ItemSpec, count: number ?)
+LEAD: A name, or an item table: a pack item keeps its id.
+PARAMS: item:ItemSpec*, count:number
+
+--- facing (field) ---
+SIG: blockAt.facing: Facing ?
+LEAD: A facing block's front: "north", "south", "west", "east"; nil otherwise. Writable.
+
+--- get (method) ---
+SIG: blockAt:get(face: Face) → string ?
+LEAD: The block one face away, by name; nil where that chunk is not in memory.
+PARAMS: face:Face*
+RETURNS: string ?
+
+--- name (field) ---
+SIG: blockAt.name: string
+LEAD: The block's name with its namespace, such as "rave:crate"; a live read.
+
+--- notify (method) ---
+SIG: blockAt:notify()
+LEAD: Tells the six neighbours this block changed.
+
+--- powered (field) ---
+SIG: blockAt.powered: boolean ?
+LEAD: Whether a redstone signal reaches it: what a lamp asks. A live read; nil where the chunk is not loaded.
+
+--- room (field) ---
+SIG: blockAt.room: number
+LEAD: Which room the block is in.
+
+--- schedule (method) ---
+SIG: blockAt:schedule()
+LEAD: Asks for this block's `on_tick`, `tick_every` seconds from now.
+
+--- set (method) ---
+SIG: blockAt:set(block: BlockRef)
+LEAD: Puts another block at this position.
+PARAMS: block:BlockRef*
+
+--- state (field) ---
+SIG: blockAt.state: number
+LEAD: Which of this definition's states it is in, counting from 1. Writable, and bounds-checked against the definition's own `looks` list: it *is* the block state, so a crop's stages cost nothing.
+
+
+########## BlockDef ##########
+
+--- item (field) ---
+SIG: blockDef.item: ItemTable ?
+LEAD: The block as an item, when the definition gave it one: `player:give(def.item)`.
+
+--- name (field) ---
+SIG: blockDef.name: string
+LEAD: Canonical, with the pack's namespace already on it: "rave:crate".
+
+--- states (field) ---
+SIG: blockDef.states: number
+LEAD: How many states it has; `block.state` counts 1 to this.
+
+
+########## BlockSpec ##########
+
+--- drops (field) ---
+SIG: blockSpec.drops: (Drops | false)?
+LEAD: What a break leaves — and, because `on_break` fails closed, what it leaves when this pack is too slow to answer. Never the looks block's. false is nothing, as "none" is.
+
+--- extends (field) ---
+SIG: blockSpec.extends: (BlockRef | { [string]: any } | { any })?
+LEAD: A handle, a game block's name, a plain table of fields and hooks, or a list of those **innermost first**. There is no class and no metatable: fields merge and hooks wrap.
+
+--- facing (field) ---
+SIG: blockSpec.facing: boolean ?
+LEAD: Turns its front to whoever places it; `block.facing` reads and turns it.
+
+--- hardness (field) ---
+SIG: blockSpec.hardness: number ?
+LEAD: Seconds-scale, as vanilla's hardness is; below zero is unbreakable.
+
+--- item (field) ---
+SIG: blockSpec.item: (ItemTable | false)?
+LEAD: The block in a hand. Its `id` is set to the block's name, so placing it puts this block down, and a break leaves it unless `drops` says. false is no item, also for a block with a texture.
+
+--- label (field) ---
+SIG: blockSpec.label: Text ?
+LEAD: The name of the item a textured block comes with.
+
+--- light (field) ---
+SIG: blockSpec.light: number ?
+LEAD: What it gives off, 0 to 15.
+
+--- looks (field) ---
+SIG: blockSpec.looks: (string | { string })?
+LEAD: A block state the client already draws, because a client has never heard of this pack. One name, or one per state in state order. `|` takes the first this version has: "crimson_planks|nether_brick".
+
+--- material (field) ---
+SIG: blockSpec.material: { solid: boolean ?, covers: boolean ?, firm: boolean ?, liquid: boolean ?, burns: boolean ?, }?
+LEAD: The jar's Material as five questions: solid, covers (grass under it dies), firm (snow and ice need it), liquid, burns.
+
+--- model (field) ---
+SIG: blockSpec.model: (Model | { Model })?
+LEAD: Its own shape on 1.21.4+, in place of `texture`: a model that stays inside the block, one for every state or one per state. The block collides as its `looks` block does: "rail" is walked through.
+
+--- name (field) ---
+SIG: blockSpec.name: string
+LEAD: Without a namespace. The pack's own is put in front of it, and a colon here is refused: a pack cannot write another pack's name.
+
+--- on_added (function) ---
+SIG: blockSpec.on_added((block: BlockAt, base: (... any) -> any) -> ()) → ?
+LEAD: It has just been stored, whatever stored it.
+PARAMS: (block:BlockAt , base: (... any ) -> any ) -> ()*
+RETURNS: ?
+
+--- on_break (function) ---
+SIG: blockSpec.on_break((block: BlockAt, player: Player ?, by: Breaker, base: (... any) -> any) -> Drops ?) → ?
+LEAD: Something broke it. Answers "none", "table" or a drops list; fails closed to the definition's `drops`.
+PARAMS: (block:BlockAt , player: Player ?, by: Breaker , base: (... any ) -> any ) -> Drops
+RETURNS: ?
+
+--- on_neighbour (function) ---
+SIG: blockSpec.on_neighbour((block: BlockAt, from: Vec3, announced: string, base: (... any) -> any) -> ()) → ?
+LEAD: A neighbour changed; `from` is its position and `announced` the block name the notifier announced itself as.
+PARAMS: (block:BlockAt , from: Vec3 , announced: string , base: (... any ) -> any ) -> ()*
+RETURNS: ?
+
+--- on_place (function) ---
+SIG: blockSpec.on_place((block: BlockAt, player: Player ?, base: (... any) -> any) -> ()) → ?
+LEAD: A player put it down; `block.data` is empty then, ready to be filled.
+PARAMS: (block:BlockAt , player: Player ?, base: (... any ) -> any ) -> ()*
+RETURNS: ?
+
+--- on_power (function) ---
+SIG: blockSpec.on_power((block: BlockAt, powered: boolean, base: (... any) -> any) -> ()) → ?
+LEAD: A redstone signal started (`powered` is true) or stopped reaching it. Called once for each, not for every change beside it.
+PARAMS: (block:BlockAt , powered: boolean , base: (... any ) -> any ) -> ()*
+RETURNS: ?
+
+--- on_random_tick (function) ---
+SIG: blockSpec.on_random_tick((block: BlockAt, base: (... any) -> any) -> ()) → ?
+LEAD: The random pass landed on it. Not the same thing as `on_tick`, which is why it has the longer name.
+PARAMS: (block:BlockAt , base: (... any ) -> any ) -> ()*
+RETURNS: ?
+
+--- on_removed (function) ---
+SIG: blockSpec.on_removed((block: BlockAt, base: (... any) -> any) -> ()) → ?
+LEAD: It has just gone from the world.
+PARAMS: (block:BlockAt , base: (... any ) -> any ) -> ()*
+RETURNS: ?
+
+--- on_step (function) ---
+SIG: blockSpec.on_step((block: BlockAt, body: Body, base: (... any) -> any) -> ()) → ?
+LEAD: A body is standing on it; `body` is `{ id, kind }`.
+PARAMS: (block:BlockAt , body: Body , base: (... any ) -> any ) -> ()*
+RETURNS: ?
+
+--- on_tick (function) ---
+SIG: blockSpec.on_tick((block: BlockAt, base: (... any) -> any) -> ()) → ?
+LEAD: A scheduled tick this block asked for came due.
+PARAMS: (block:BlockAt , base: (... any ) -> any ) -> ()*
+RETURNS: ?
+
+--- on_trigger (function) ---
+SIG: blockSpec.on_trigger((block: BlockAt, cause: Trigger, base: (... any) -> any) -> ()) → ?
+LEAD: It was lit, blasted or burnt; `cause` is "ignite", "explosion" or "fire".
+PARAMS: (block:BlockAt , cause: Trigger , base: (... any ) -> any ) -> ()*
+RETURNS: ?
+
+--- on_use (function) ---
+SIG: blockSpec.on_use((block: BlockAt, player: Player ?, held: string ?, base: (... any) -> any) -> Used ?) → ?
+LEAD: The hooks. Writing one is what asks for it — there is no flag beside `on_random_tick` saying the random pass may land here.
+PARAMS: (block:BlockAt , player: Player ?, held: string ?, base: (... any ) -> any ) -> Used
+RETURNS: ?
+
+--- opacity (field) ---
+SIG: blockSpec.opacity: number ?
+LEAD: What a step through it takes off the light; 15 is an opaque cube.
+
+--- power (field) ---
+SIG: blockSpec.power: (number | { [string]: number } | { number | { [string]: number } })?
+LEAD: What it gives a redstone circuit, 0 or 15: one number for every face, a table keyed by face (the names `texture` takes), or a list of either with one entry per state. It is the power a block of redstone gives.
+
+--- resistance (field) ---
+SIG: blockSpec.resistance: number ?
+LEAD: What an explosion has to chew through.
+
+--- texture (field) ---
+SIG: blockSpec.texture: (Faces | { Faces })?
+LEAD: Its own picture on 1.21.4+: one for every state, or one per state.
+
+--- tick_every (field) ---
+SIG: blockSpec.tick_every: number ?
+LEAD: Seconds between `block:schedule()` and `on_tick`; 0.5 unless you say.
+
+
+########## Blocks ##########
+
+--- amend (function) ---
+SIG: blocks.amend(block: string, hooks: BlockAmendSpec)
+LEAD: Only the game's own blocks, never another pack's.
+PARAMS: block:string*, hooks:BlockAmendSpec*
+
+--- define (function) ---
+SIG: blocks.define(spec: BlockSpec) → BlockDef
+LEAD: Load-time only: a world may already be holding blocks of a definition, so one that arrived later would change the rules under the players standing on it. Define at the top of `main.luau`.
+PARAMS: spec:BlockSpec*
+RETURNS: BlockDef
+
+
+########## Breaker ##########
+
+--- cause (field) ---
+SIG: breaker.cause: "player" | "fire" | "explosion" | "water" | "support"
+LEAD: What took the block out: a player, fire, an explosion, flowing water, or the loss of what held it up ("support").
+
+--- creative (field) ---
+SIG: breaker.creative: boolean
+LEAD: Whether a creative player broke it; creative takes the block and leaves nothing. False for the four causes with no player.
+
+--- tool (field) ---
+SIG: breaker.tool: string ?
+LEAD: The item in hand, or nil for a bare hand and for the four causes that have none.
+
+
+########## Budget ##########
+
+--- asks (field) ---
+SIG: budget.asks: Asks
+LEAD: The engine's questions to this pack, and what it did with those.
+
+--- dropped (field) ---
+SIG: budget.dropped: number
+LEAD: Ordinary events lost to queue overflow. Joins, leaves, deaths and respawns are retained with their original player sessions.
+
+--- of (field) ---
+SIG: budget.of: number
+LEAD: `budget_ms` in citadel.yml; 2 by default.
+
+--- peak (field) ---
+SIG: budget.peak: number
+LEAD: The most any tick has spent.
+
+--- skipped (field) ---
+SIG: budget.skipped: number
+LEAD: Callbacks not run for want of budget, since the script started.
+
+--- slowest (field) ---
+SIG: budget.slowest: { hook: string, ms: number }?
+LEAD: The slowest single callback so far, by short hook name.
+
+--- used (field) ---
+SIG: budget.used: number
+LEAD: What the last tick spent.
+
+
+########## Builder ##########
+
+--- block (method) ---
+SIG: builder:block(pos: Vec3, block: string)
+LEAD: Sets one block of the build; later writes win.
+PARAMS: pos:Vec3*, block:string*
+
+--- box (method) ---
+SIG: builder:box(from: Vec3, to: Vec3, block: string)
+LEAD: Inclusive corners, in any order, like `chunk:fill`.
+PARAMS: from:Vec3*, to:Vec3*, block:string*
+
+--- line (method) ---
+SIG: builder:line(from: Vec3, to: Vec3, block: string)
+LEAD: Every block the straight line between the ends passes through.
+PARAMS: from:Vec3*, to:Vec3*, block:string*
+
+--- part (method) ---
+SIG: builder:part(name: string, fn: () -> ())
+LEAD: What `fn` writes is a named part, found by `citadel render --part` and `citadel check` once pasted. Nested calls name "tower/roof".
+PARAMS: name:string*, fn:() -> ()*
+
+
+########## Canvas ##########
+
+--- destroy (method) ---
+SIG: canvas:destroy()
+LEAD: Removes the canvas; clients that saw it keep its last picture, and its id is never reused.
+
+--- view (method) ---
+SIG: canvas:view(player: Player) → View
+LEAD: The map id of its top-left map, for a `filled_map`. Returns that player's own layer over the canvas, drawn with the same calls; only they see it.
+PARAMS: player:Player*
+RETURNS: View
+
+
+########## Chunk ##########
+
+--- fill (method) ---
+SIG: chunk:fill(from: Vec3, to: Vec3, block: string)
+LEAD: Fills a box of blocks, clipped to the chunk.
+PARAMS: from:Vec3*, to:Vec3*, block:string*
+
+--- fill_biome (method) ---
+SIG: chunk:fill_biome(from: Vec3, to: Vec3, biome: string)
+LEAD: Sets the biome of every column in a box, clipped to the chunk.
+PARAMS: from:Vec3*, to:Vec3*, biome:string*
+
+--- get (method) ---
+SIG: chunk:get(pos: Vec3) → string
+LEAD: Chunk X coordinate (16 blocks each). Chunk Z coordinate (16 blocks each). The chunk's lowest corner, inclusive; y runs 0..255 or the game version's height. The chunk's highest corner, inclusive. Returns the block there now, by name; air outside the chunk.
+PARAMS: pos:Vec3*
+RETURNS: string
+
+--- get_biome (method) ---
+SIG: chunk:get_biome(pos: Vec3) → string ?
+LEAD: Returns the biome of the column at `pos`, by name; `nil` outside the chunk. A biome belongs to a column, so `pos.y` is not read.
+PARAMS: pos:Vec3*
+RETURNS: string ?
+
+--- paste (method) ---
+SIG: chunk:paste(schem: Schematic, origin: Vec3, opts: { air: boolean ?, part: string ? }?)
+LEAD: Clipped to this chunk; air is skipped unless `air` is true. `part` names the paste for `citadel render --part` and `citadel check`; the build's own `b:part`s are then inside it ("house/roof").
+PARAMS: schem:Schematic*, origin:Vec3*, opts:{ air: boolean ?, part: string ? }
+
+--- set (method) ---
+SIG: chunk:set(pos: Vec3, block: string)
+LEAD: Sets one block; positions outside the chunk are ignored.
+PARAMS: pos:Vec3*, block:string*
+
+--- set_biome (method) ---
+SIG: chunk:set_biome(pos: Vec3, biome: string)
+LEAD: Sets the biome of one column: a vanilla name ("desert") or the name `game.biomes.define` returned.
+PARAMS: pos:Vec3*, biome:string*
+
+
+########## Command ##########
+
+--- cancel (method) ---
+SIG: command:cancel()
+LEAD: Takes the command away.
+
+--- suggest (method) ---
+SIG: command:suggest(arg: string, words: ({ Suggestion } | Suggester | false)?)
+LEAD: What `arg` offers from now on: a list, a function, or nil or false for nothing.
+PARAMS: arg:string*, words:({ Suggestion } | Suggester | false )
+
+
+########## CommandOpts ##########
+
+--- aliases (field) ---
+SIG: commandOpts.aliases: { string }?
+LEAD: More names for the same command: { "hub", "lobby" }.
+
+--- help (field) ---
+SIG: commandOpts.help: string ?
+LEAD: The line /help shows after the usage.
+
+--- permission (field) ---
+SIG: commandOpts.permission: string ?
+LEAD: A permission node; without it the command is not shown and not run.
+
+--- suggest (field) ---
+SIG: commandOpts.suggest: { [string]: { Suggestion } | Suggester }?
+LEAD: Per argument name: the words to offer, or a function that returns them.
+
+
+########## Commands ##########
+
+--- add (function) ---
+SIG: commands.add(usage: string, fn: (player: Player, args: { [string]: any }) -> string ?, opts: CommandOpts ?) → Command
+LEAD: usage: "bet <amount:integer 1..10000> [color:red|black]". Types: word, integer, number (with an optional min..max), player, a|b|c, text... (the rest of the line as a string), words... (as a list). args holds each argument by name; an optional one not typed is nil. Return a string and the player reads it in red.
+PARAMS: usage:string*, fn:(player: Player , args: { [ string ]: any }) -> string, opts:CommandOpts
+RETURNS: Command
+
+
+########## Connection ##########
+
+--- cancel (method) ---
+SIG: connection:cancel()
+LEAD: Stops the subscription or repeating timer, including from its own callback.
+
+
+########## Container ##########
+
+--- at (field) ---
+SIG: container.at: Vec3
+LEAD: The chest's block position.
+
+--- items (method) ---
+SIG: container:items() → { InventorySlot & { slot: number } }
+LEAD: The filled slots, in order.
+RETURNS: { InventorySlot & { slot: number } }
+
+--- put (method) ---
+SIG: container:put(item: ItemSpec) → number
+LEAD: How many did not fit; 0 when all of it went in.
+PARAMS: item:ItemSpec*
+RETURNS: number
+
+--- size (field) ---
+SIG: container.size: number
+LEAD: How many slots the chest has, e.g. 27; 0 once it has gone.
+
+--- take (method) ---
+SIG: container:take(item: ItemMatch, count: number ?) → number
+LEAD: Up to `count` (1 unless you say) of what matches; how many it took.
+PARAMS: item:ItemMatch*, count:number
+RETURNS: number
+
+
+########## DamageHit ##########
+
+--- amount (field) ---
+SIG: damageHit.amount: number
+LEAD: Half hearts, before armour.
+
+--- by (field) ---
+SIG: damageHit.by: Player ?
+LEAD: The player who hit, or who shot the arrow.
+
+--- cause (field) ---
+SIG: damageHit.cause: string
+LEAD: "fall", "drown", "suffocate", "void", "lava", "fire", "cactus", "starve", "attack", "shot", "blast" or "magic".
+
+--- kind (field) ---
+SIG: damageHit.kind: string ?
+LEAD: The kind's name ("Skeleton") when a mob did it.
+
+
+########## Dialog ##########
+
+--- destroy (method) ---
+SIG: dialog:destroy()
+LEAD: Closes it.
+
+--- refresh (method) ---
+SIG: dialog:refresh()
+LEAD: Whether the player still has it open. Draws a live view (a function) again.
+
+--- update (method) ---
+SIG: dialog:update(view: DialogNode | () -> DialogNode)
+LEAD: A new view in place: a window, or a function that makes one.
+PARAMS: view:DialogNode | () -> DialogNode*
+
+
+########## Display ##########
+
+--- animate (method) ---
+SIG: display:animate(opts: { at: Vec3 ?, scale: (Vec3 | number)?, rotation: Orientation ?, text: Text ?, color: Ink ?, background: (Ink | false)?, line_width: number ?, shadow: boolean ?, duration: number ?, })
+LEAD: Makes one tweened change of place, scale, rotation or text over `duration` seconds (0.5 by default), played by the client.
+PARAMS: opts:{ at: Vec3 ?, scale: ( Vec3 | number )?, rotation: Orientation ?, text: Text ?, color: Ink ?, background: ( Ink | false )?, line_width: number ?, shadow: boolean ?, duration: number ?, }*
+
+--- background (field) ---
+SIG: display.background: (Color | false)?
+LEAD: Text kind: the colour behind the words; nil or false for none.
+
+--- billboard (field) ---
+SIG: display.billboard: Billboard
+LEAD: Whether it is still present. Read-only. Where it sits; live, every kind. Its yaw, pitch and roll in degrees; live. Pitch 90 lays a text flat on a table. Reads a vec3; write a number for every axis at once. How it turns toward the viewer; text defaults to "center", the other kinds to "fixed".
+
+--- block (field) ---
+SIG: display.block: string ?
+LEAD: block kind
+
+--- canvas (field) ---
+SIG: display.canvas: number ?
+LEAD: Item kind: the canvas shown as a filled map; written as a canvas, read back as its map id.
+
+--- color (field) ---
+SIG: display.color: Color ?
+LEAD: The colour of the words that did not pick one.
+
+--- context (field) ---
+SIG: display.context: Context ?
+LEAD: Item kind: how the item is posed, as in a frame, a hand or on the ground.
+
+--- destroy (method) ---
+SIG: display:destroy()
+LEAD: 
+
+--- duration (field) ---
+SIG: display.duration: number
+LEAD: Seconds later changes take to play out on the client (1.19.4 and later); 0 by default.
+
+--- glide (field) ---
+SIG: display.glide: number
+LEAD: Advanced movement smoothing in seconds (1.20.2+); default 0.1, 0 follows duration.
+
+--- glow (field) ---
+SIG: display.glow: (Color | false)?
+LEAD: Its outline colour; nil or false for none.
+
+--- id (field) ---
+SIG: display.id: number
+LEAD: The raw entity id. `hit.entity` hands back this handle itself, so a pack rarely needs the number.
+
+--- item (field) ---
+SIG: display.item: string ?
+LEAD: item kind
+
+--- lead (field) ---
+SIG: display.lead: boolean ?
+LEAD: Advanced: true enables linear prediction. Default false; nil restores it. Normally submit current positions and leave this alone.
+
+--- line_width (field) ---
+SIG: display.line_width: number ?
+LEAD: Text kind: the width its lines wrap at; 200 by default.
+
+--- move (method) ---
+SIG: display:move(at: Vec3, rotation: Orientation ?)
+LEAD: Removes the display. Sets position and optional rotation together.
+PARAMS: at:Vec3*, rotation:Orientation
+
+--- shadow (field) ---
+SIG: display.shadow: boolean ?
+LEAD: Text kind: whether the words have a shadow; false by default.
+
+--- text (field) ---
+SIG: display.text: string ?
+LEAD: text kind Reads back the words; takes any text.
+
+
+########## DurableStore ##########
+
+--- blob_delete (method) ---
+SIG: durableStore:blob_delete(owner: string, key: string, if_version: number, lease: number ?)
+LEAD: Deletes a player's blob if its version is still `if_version`.
+PARAMS: owner:string*, key:string*, if_version:number*, lease:number
+
+--- blob_get (method) ---
+SIG: durableStore:blob_get(owner: string, key: string) → (string ?, number)
+LEAD: Returns one player's binary blob, or nil, and its version; `owner` is the player's uuid.
+PARAMS: owner:string*, key:string*
+RETURNS: ( string ?, number )
+
+--- blob_put (method) ---
+SIG: durableStore:blob_put(owner: string, key: string, bytes: string, if_version: number, lease: number ?) → number
+LEAD: Writes a player's binary blob if its version is still `if_version`, and returns the new version. At most 32 MiB.
+PARAMS: owner:string*, key:string*, bytes:string*, if_version:number*, lease:number
+RETURNS: number
+
+--- delete (method) ---
+SIG: durableStore:delete(key: string, if_version: number, lease: number ?)
+LEAD: Removes a fact if its version is still `if_version`.
+PARAMS: key:string*, if_version:number*, lease:number
+
+--- get (method) ---
+SIG: durableStore:get(key: string) → (any, number)
+LEAD: Returns a fact's value and its version; version 0 means absent.
+PARAMS: key:string*
+RETURNS: ( any , number )
+
+--- increment (method) ---
+SIG: durableStore:increment(key: string, by: number) → number
+LEAD: Adds `by` to a number atomically, starting at zero, and returns the result. Never retry it blindly after a timeout.
+PARAMS: key:string*, by:number*
+RETURNS: number
+
+--- list (method) ---
+SIG: durableStore:list(prefix: string ?, cursor: string ?, limit: number ?) → ({ string }, string ?)
+LEAD: Returns fact keys with this prefix and the cursor for the next page, or nil at the end.
+PARAMS: prefix:string, cursor:string, limit:number
+RETURNS: ({ string }, string ?)
+
+--- set (method) ---
+SIG: durableStore:set(key: string, value: any, if_version: number, lease: number ?) → number
+LEAD: Writes a fact if its version is still `if_version`, and returns the new version. A mismatch errors with {err = "conflict"}.
+PARAMS: key:string*, value:any*, if_version:number*, lease:number
+RETURNS: number
+
+
+########## Entities ##########
+
+--- amend (function) ---
+SIG: entities.amend(name: string, hooks: EntityAmendSpec, options: EntityAmendOptions ?)
+LEAD: The game's own content only — never another pack's.
+PARAMS: name:string*, hooks:EntityAmendSpec*, options:EntityAmendOptions
+
+--- define (function) ---
+SIG: entities.define(spec: EntitySpec) → EntityDef
+LEAD: Load time only. A definition is a fact about the world.
+PARAMS: spec:EntitySpec*
+RETURNS: EntityDef
+
+--- names (function) ---
+SIG: entities.names(query: { mob: boolean ? }?) → { string }
+LEAD: Every kind by name: the pack's own and the game's, mob or not. `mob = true` gives the mob kinds only, `mob = false` the rest.
+PARAMS: query:{ mob: boolean ? }
+RETURNS: { string }
+
+
+########## EntityAmendSpec ##########
+
+--- on_damage (function) ---
+SIG: entityAmendSpec.on_damage((e: EntityHandle, amount: number) -> ("take" | "ignore")?) → ?
+LEAD: Asked when it takes damage; return "ignore" to cancel it. Silence or a missed deadline is "take".
+PARAMS: (e:EntityHandle , amount: number ) -> ( "take" | "ignore" )
+RETURNS: ?
+
+--- on_load (function) ---
+SIG: entityAmendSpec.on_load((e: EntityHandle) -> ()) → ?
+LEAD: Called for an entity that already existed: a saved chunk loaded it, or a reload rebound it.
+PARAMS: (e:EntityHandle ) -> ()*
+RETURNS: ?
+
+--- on_remove (function) ---
+SIG: entityAmendSpec.on_remove((e: EntityHandle, why: string ?) -> ()) → ?
+LEAD: Called when it leaves the world; `why` is "removed", "settled", "killed" or "unloaded". Not called when the pack goes away.
+PARAMS: (e:EntityHandle , why: string ?) -> ()*
+RETURNS: ?
+
+--- on_spawn (function) ---
+SIG: entityAmendSpec.on_spawn((e: EntityHandle) -> ()) → ?
+LEAD: Called when a new entity of this kind spawns; told, never waited on.
+PARAMS: (e:EntityHandle ) -> ()*
+RETURNS: ?
+
+--- on_steer (function) ---
+SIG: entityAmendSpec.on_steer((e: EntityHandle, base: () -> ()) -> ()) → ?
+LEAD: Wrapped behavior runs first unless options.replace = true.
+PARAMS: (e:EntityHandle , base: () -> ()) -> ()*
+RETURNS: ?
+
+--- on_tick (function) ---
+SIG: entityAmendSpec.on_tick((e: EntityHandle, base: () -> ()) -> ()) → ?
+LEAD: Wrapped behavior runs first unless options.replace = true.
+PARAMS: (e:EntityHandle , base: () -> ()) -> ()*
+RETURNS: ?
+
+
+########## EntityHandle ##########
+
+--- age (field) ---
+SIG: entityHandle.age: number ?
+LEAD: Ticks lived.
+
+--- alive (field) ---
+SIG: entityHandle.alive: boolean
+LEAD: Whether it is still in the world. A hook only runs for one that is.
+
+--- data (field) ---
+SIG: entityHandle.data: DataView
+LEAD: A pack-defined entity's attached record. Nested edits write through. Saved with persist = "save". Built-in entities raise an error on access. on_steer/on_tick views expire after the callback batch; copy to keep a snapshot.
+
+--- destroy (method) ---
+SIG: entityHandle:destroy() → boolean
+LEAD: 
+RETURNS: boolean
+
+--- driver (field) ---
+SIG: entityHandle.driver: Player ?
+LEAD: Whether it is in water now. False for an entity that is not alive. The player supplying driving input from seat 1; nil for an NPC or empty seat.
+
+--- flying (field) ---
+SIG: entityHandle.flying: boolean
+LEAD: Intent, a living body with can_fly only: true flies (no gravity; forward moves it along its look, pitch included), false falls and walks. Setting it true on another body is an error.
+
+--- forward (field) ---
+SIG: entityHandle.forward: number
+LEAD: The intent fields: what a body *wants* to do, which is what steering is. Writing one outside `on_steer` lasts until the next decision.
+
+--- health (field) ---
+SIG: entityHandle.health: number ?
+LEAD: Its health now. Nil once it is gone.
+
+--- hostile (field) ---
+SIG: entityHandle.hostile: boolean ?
+LEAD: Whether its kind is hostile. Nil once it is gone.
+
+--- id (field) ---
+SIG: entityHandle.id: number
+LEAD: Its entity id, the one players.on_click reports in `hit.entity_id`.
+
+--- jumping (field) ---
+SIG: entityHandle.jumping: boolean
+LEAD: Intent: whether it wants to jump. A vehicle's seat 1 writes it from the keys every tick.
+
+--- max_health (field) ---
+SIG: entityHandle.max_health: number ?
+LEAD: The most health its kind gives it. Nil for an entity that is not a mob and once it is gone. Read-only.
+
+--- move (method) ---
+SIG: entityHandle:move(at: Vec3, rotation: BodyRotation ?)
+LEAD: Gone on the next tick. Sets position and optional rotation together.
+PARAMS: at:Vec3*, rotation:BodyRotation
+
+--- name (field) ---
+SIG: entityHandle.name: string ?
+LEAD: The kind's name: "cow", "rave:rocket". Nil once it is gone.
+
+--- nearby (method) ---
+SIG: entityHandle:nearby(radius: number) → { EntityHandle }
+LEAD: What else is around it, by horizontal distance.
+PARAMS: radius:number*
+RETURNS: { EntityHandle }
+
+--- on_ground (field) ---
+SIG: entityHandle.on_ground: boolean ?
+LEAD: Whether it stands on something. Nil once it is gone.
+
+--- origin (field) ---
+SIG: entityHandle.origin: string ?
+LEAD: The block it used to be, for anything that arrived through a transition; nil for anything that was never a block.
+
+--- paint (field) ---
+SIG: entityHandle.paint: { [string]: Ink }
+LEAD: Every occupant by seat number, including NPCs; nil means empty. Material name to colour; write-only.
+
+--- physics (field) ---
+SIG: entityHandle.physics: Physics ?
+LEAD: Which order of operations moves it: "vehicle", "living", "falling", "item" or "none".
+
+--- play (method) ---
+SIG: entityHandle:play(animation: string, opts: { speed: number ? }?)
+LEAD: Model size: reads vec3; write a positive number or equal-axis vec3. Nil without a model. Plays a model entity's animation from the start; on the one already playing, `speed` only changes its speed.
+PARAMS: animation:string*, opts:{ speed: number ? }
+
+--- push (method) ---
+SIG: entityHandle:push(v: Vec3) → boolean
+LEAD: A shove, in blocks a tick, added to what it is already doing.
+PARAMS: v:Vec3*
+RETURNS: boolean
+
+--- settle (method) ---
+SIG: entityHandle:settle() → boolean
+LEAD: It stops being an entity and is a block again where it stands. No argument: the entity remembers what it was.
+RETURNS: boolean
+
+--- stop (method) ---
+SIG: entityHandle:stop(animation: string)
+LEAD: Stops a model entity's animation; the parts stay where they are.
+PARAMS: animation:string*
+
+--- strafe (field) ---
+SIG: entityHandle.strafe: number
+LEAD: Intent: 1 left, -1 right. A vehicle's seat 1 writes it from the keys every tick.
+
+--- velocity (field) ---
+SIG: entityHandle.velocity: Vec3 ?
+LEAD: Where it is, live; writing it is a teleport. Nil once it is gone. Partial writes preserve other angles; nil after removal. Bodies have no roll. How it is moving, live; writing it is steering by hand. Nil once it is gone. writing it is steering by hand
+
+
+########## EntityKind ##########
+
+--- amend (method) ---
+SIG: entityKind:amend(hooks: EntityAmendSpec, options: EntityAmendOptions ?)
+LEAD: The same as `game.entities.amend(name, hooks)`.
+PARAMS: hooks:EntityAmendSpec*, options:EntityAmendOptions
+
+--- attacks (field) ---
+SIG: entityKind.attacks: boolean ?
+LEAD: Whether its hits hurt players. `nil`: on for a kind with `spawn = true`, else the room's `damage` rule. The kind's own setting is stronger than the room's rule. It covers the kind's own hit, its arrow (also after the shooter died) and a creeper's blast. `false` stops the damage to players only: a blast still breaks blocks.
+
+--- behaviour (field) ---
+SIG: entityKind.behaviour: string
+LEAD: The name of the behaviour the engine runs for this kind, such as "sheep" or "living".
+
+--- drop (field) ---
+SIG: entityKind.drop: string ?
+LEAD: The item its death leaves behind, such as "leather"; nil for none.
+
+--- height (field) ---
+SIG: entityKind.height: number
+LEAD: Its height in blocks, in this version's numbers.
+
+--- hostile (field) ---
+SIG: entityKind.hostile: boolean
+LEAD: Whether it is hostile.
+
+--- interact (field) ---
+SIG: entityKind.interact: boolean ?
+LEAD: Whether a player's right click on it has the game's effect (milk, a saddle). `nil`: on for a kind with `spawn = true`, else the room's `survival`. `true` is an error on 1.8.9, which has no right click on a mob.
+
+--- max_health (field) ---
+SIG: entityKind.max_health: number
+LEAD: The most health one of this kind has, in this version's numbers. `health` on a kind is an error: health is what one entity has now.
+
+--- mob (field) ---
+SIG: entityKind.mob: boolean
+LEAD: Whether the kind is a mob: true for a cow, false for an arrow.
+
+--- name (field) ---
+SIG: entityKind.name: string
+LEAD: Its modern registry name: "cow".
+
+--- physics (field) ---
+SIG: entityKind.physics: string ?
+LEAD: For a kind that is not a mob, which order of operations moves it: "item", "falling", "vehicle" or "none". Nil for a mob kind.
+
+--- profile (field) ---
+SIG: entityKind.profile: { [string]: string | number | boolean }?
+LEAD: Read-only copy; nil for a specialized behavior without a shared profile.
+
+--- registry_name (field) ---
+SIG: entityKind.registry_name: string
+LEAD: This version's own registry spelling: "Cow". A dungeon spawner stores this one.
+
+--- spawn (field) ---
+SIG: entityKind.spawn: boolean ?
+LEAD: The one writable field. `true`: the kind is in this world as the game defines it: it spawns by the game's own rule, also on a `mode: lite` world, and `attacks` and `interact` are on for it unless a pack sets them; an error on a 1.8.9 world with no biomes, where nothing would spawn it. `false`: the kind never spawns by itself in this world; spawner blocks, `world.spawn`, `/summon` and breeding still make it. `nil`: the pack says nothing and the world's default applies: no natural spawning on a `mode: lite` world and in a room from `rooms.create`, the game's own rule on a `mode: full` world and after `world.rules{ survival = true }`. A table is an error today. Reads what this pack set (`true`, `false` or nil), not the game's own rule. The value is this room's (`room.game.entities.cow.spawn`) and this pack's: a `false` of any pack wins. Every write is an error on a game with no natural spawning (a0.1.0 to a0.1.3).
+
+--- speed (field) ---
+SIG: entityKind.speed: number
+LEAD: Blocks a tick at a full walk.
+
+--- width (field) ---
+SIG: entityKind.width: number
+LEAD: Its width in blocks, in this version's numbers.
+
+
+########## EntitySpec ##########
+
+--- accel (field) ---
+SIG: entitySpec.accel: number ?
+LEAD: physics = "vehicle" only: seconds from standing to top speed; 1 by default.
+
+--- can_fly (field) ---
+SIG: entitySpec.can_fly: boolean ?
+LEAD: physics = "living" only: it may fly when its pack sets e.flying = true, and it takes no fall damage.
+
+--- drops (field) ---
+SIG: entitySpec.drops: ({ { [string]: any } } | false)?
+LEAD: physics = "living" only: what it leaves when it dies. Each row is { item = "stick", count = 2 }, count = { least, most } for a random count, chance = 0.05 for a row that comes from one death in twenty, or a pack item. false or nil: nothing.
+
+--- fallback (field) ---
+SIG: entitySpec.fallback: string ?
+LEAD: What a client older than 1.21.4 sees in place of the model, such as "minecart".
+
+--- looks (field) ---
+SIG: entitySpec.looks: Looks | Model
+LEAD: A shape the client draws, or a model from models.new.
+
+--- max_health (field) ---
+SIG: entitySpec.max_health: number ?
+LEAD: physics = "living" only: the most health it has, and what it starts with. 1 to 1024; 20 by default.
+
+--- name (field) ---
+SIG: entitySpec.name: string
+LEAD: Your own word for the kind, lower case, digits and underscores; the pack's namespace is added for you ("rocket" is "rave:rocket").
+
+--- on_damage (function) ---
+SIG: entitySpec.on_damage((e: EntityHandle, amount: number, by: Player ?) -> ("take" | "ignore")?) → ?
+LEAD: Asked when a player hits it: answer "take" or "ignore". Nil or a missed deadline is "take". `by` is the player who hit.
+PARAMS: (e:EntityHandle , amount: number , by: Player ?) -> ( "take" | "ignore" )
+RETURNS: ?
+
+--- on_load (function) ---
+SIG: entitySpec.on_load((e: EntityHandle) -> ()) → ?
+LEAD: Told when one that already existed comes back: a saved chunk loaded it or a reload rebound it.
+PARAMS: (e:EntityHandle ) -> ()*
+RETURNS: ?
+
+--- on_remove (function) ---
+SIG: entitySpec.on_remove((e: EntityHandle, why: string ?) -> ()) → ?
+LEAD: Told when it goes; `why` is "removed", "settled", "killed" or "unloaded". Not called when the pack goes away.
+PARAMS: (e:EntityHandle , why: string ?) -> ()*
+RETURNS: ?
+
+--- on_spawn (function) ---
+SIG: entitySpec.on_spawn((e: EntityHandle) -> ()) → ?
+LEAD: Told when one of this kind is spawned; nothing waits on it and its answer is not read.
+PARAMS: (e:EntityHandle ) -> ()*
+RETURNS: ?
+
+--- on_steer (function) ---
+SIG: entitySpec.on_steer((e: EntityHandle, base: () -> ()) -> ()) → ?
+LEAD: Runs before the physics each tick to decide where it goes; call `base(e)` to extend, leave it out to replace.
+PARAMS: (e:EntityHandle , base: () -> ()) -> ()*
+RETURNS: ?
+
+--- on_think (function) ---
+SIG: entitySpec.on_think((b: Think) -> ()) → ?
+LEAD: define only. The brain: one call for all due bodies of the kind, with their numbers in columns. The engine never waits for it; the answer lands on the next tick it is there, and is never dropped.
+PARAMS: (b:Think ) -> ()*
+RETURNS: ?
+
+--- on_tick (function) ---
+SIG: entitySpec.on_tick((e: EntityHandle, base: () -> ()) -> ()) → ?
+LEAD: Runs after the physics each tick to react to where it ended up; call `base(e)` to extend.
+PARAMS: (e:EntityHandle , base: () -> ()) -> ()*
+RETURNS: ?
+
+--- persist (field) ---
+SIG: entitySpec.persist: Persist ?
+LEAD: "save" brings it back with its chunk, `data` and all; "despawn", the default, is gone when the chunk goes.
+
+--- physics (field) ---
+SIG: entitySpec.physics: Physics ?
+LEAD: Which order of operations moves it: "living", "falling", "item", "none", or "vehicle" to drive by seat 1's keys.
+
+--- scale (field) ---
+SIG: entitySpec.scale: number ?
+LEAD: A model's size; 1 by default.
+
+--- seats (field) ---
+SIG: entitySpec.seats: { Vec3 }?
+LEAD: A model's: where riders sit (model units, seat 1 drives), its size, and what a client older than 1.21.4 sees.
+
+--- size (field) ---
+SIG: entitySpec.size: (number | { number })?
+LEAD: One number, or { width, height }. An entity is as deep as it is wide.
+
+--- sounds (field) ---
+SIG: entitySpec.sounds: ({ hurt: string ?, death: string ?, ambient: string ? } | false)?
+LEAD: physics = "living" only: sound names for its hurt, its death and its idle sound, vanilla or "<pack>.<file>". false or nil: silent.
+
+--- speed (field) ---
+SIG: entitySpec.speed: number ?
+LEAD: How fast it goes, in blocks a second. A vehicle's top speed; a living body's walk at forward = 1, the game's own mob walk by default.
+
+--- step (field) ---
+SIG: entitySpec.step: number ?
+LEAD: physics = "vehicle" only: blocks it climbs without a jump; 1 by default.
+
+--- think_every (field) ---
+SIG: entitySpec.think_every: number ?
+LEAD: define only. Seconds between two thinks of one body; one tick (0.05) by default, at most 60. The engine spreads the bodies over the ticks.
+
+--- turn (field) ---
+SIG: entitySpec.turn: number ?
+LEAD: physics = "vehicle" only: degrees a second it turns at speed; 90 by default.
+
+
+########## Faces ##########
+
+--- all (field) ---
+SIG: faces.all: TextureRef ?, side: TextureRef ?, top: TextureRef ?, bottom: TextureRef ?
+LEAD: `all` is one picture for all six faces, `side` for the four sides (`all` if left out), `top` and `bottom` the ends.
+
+--- down (field) ---
+SIG: faces.down: TextureRef ?, up: TextureRef ?, north: TextureRef ?, south: TextureRef ?, west: TextureRef ?, east: TextureRef ?
+LEAD: One face by its name; a face left out is `side`.
+
+--- front (field) ---
+SIG: faces.front: TextureRef ?, back: TextureRef ?
+LEAD: `front` is the side a facing block faces and `back` the other; a face left out is `side`.
+
+
+########## Field ##########
+
+--- abs (method) ---
+SIG: field:abs() → Field
+LEAD: 
+RETURNS: Field
+
+--- at (method) ---
+SIG: field:at(dx: number, dy: number, dz: number) → Field
+LEAD: This field read `dx, dy, dz` blocks away: `fields.water:at(1, 0, 0)` is the water east of here.
+PARAMS: dx:number*, dy:number*, dz:number*
+RETURNS: Field
+
+--- clamp (method) ---
+SIG: field:clamp(low: number, high: number) → Field
+LEAD: 
+PARAMS: low:number*, high:number*
+RETURNS: Field
+
+--- curve (method) ---
+SIG: field:curve(points: { { number } }) → Field
+LEAD: Straight lines through `{ { input, output }, ... }`, inputs rising.
+PARAMS: points:{ { number } }*
+RETURNS: Field
+
+--- floor (method) ---
+SIG: field:floor() → Field
+LEAD: 
+RETURNS: Field
+
+--- gt (method) ---
+SIG: field:gt(other: Field | number) → Field
+LEAD: 1 where this is the larger, else 0.
+PARAMS: other:Field | number*
+RETURNS: Field
+
+--- lt (method) ---
+SIG: field:lt(other: Field | number) → Field
+LEAD: 1 where this is the smaller, else 0.
+PARAMS: other:Field | number*
+RETURNS: Field
+
+--- max (method) ---
+SIG: field:max(other: Field | number) → Field
+LEAD: 
+PARAMS: other:Field | number*
+RETURNS: Field
+
+--- min (method) ---
+SIG: field:min(other: Field | number) → Field
+LEAD: 
+PARAMS: other:Field | number*
+RETURNS: Field
+
+--- smooth (method) ---
+SIG: field:smooth(from: number, to: number) → Field
+LEAD: 0 at `from`, 1 at `to`, smooth between. `from` may be the larger.
+PARAMS: from:number*, to:number*
+RETURNS: Field
+
+--- sqrt (method) ---
+SIG: field:sqrt() → Field
+LEAD: 
+RETURNS: Field
+
+
+########## Fx ##########
+
+--- particle (function) ---
+SIG: fx.particle(name: string, pos: Vec3 | { Vec3 }, opts: { count: number ?, spread: (number | Vec3)?, velocity: Vec3 ?, speed: number ?, color: Ink ?, size: number ?, }?)
+LEAD: Shows particle `name` ("dust", "end_rod", "explosion", "firework", "flame", "note", "totem_of_undying") at `pos`, or at every point of a list. Each point reaches players in the room within 64 blocks of its origin in 3D, including the boundary, before spread or velocity. `count` (1) at each point in a box `spread` (0) out; or with `velocity`, one particle moving along it (`speed` 1 then, else 0). `color` and `size` are for dust only.
+PARAMS: name:string*, pos:Vec3 | { Vec3 }*, opts:{ count: number ?, spread: ( number | Vec3 )?, velocity: Vec3 ?, speed: number ?, color: Ink ?, size: number ?, }
+
+
+########## Game ##########
+
+--- biomes (field) ---
+SIG: game.biomes: Biomes
+LEAD: Biomes of the pack's own: a vanilla biome with other colours and weather.
+
+--- block (function) ---
+SIG: game.block(name: string) → Block ?
+LEAD: Returns one block in this version's numbers, or nil for a name this game has no word for.
+PARAMS: name:string*
+RETURNS: Block ?
+
+--- blocks (field) ---
+SIG: game.blocks: Blocks
+LEAD: The one table that *adds* to a version rather than reading it.
+
+--- entities (field) ---
+SIG: game.entities: Entities & { [string]: (EntityKind | EntityDef)? }
+LEAD: The kinds of entity: `define` a pack's own, `amend` the game's own, and read a kind of the game: a mob kind by either spelling (`game.entities.cow`, `game.entities.Cow`), a kind that is not a mob by its name (`game.entities.arrow`); nil where the game has none. It iterates every kind, including pack definitions: `for name, kind in game.entities do`.
+
+--- item (function) ---
+SIG: game.item(name: string) → Item ?
+LEAD: Returns an item this game has, or nil for a name it does not; never an error.
+PARAMS: name:string*
+RETURNS: Item ?
+
+--- items (field) ---
+SIG: game.items: Items
+LEAD: Defines items of the pack's own, with a texture for clients from 1.21.4.
+
+--- recipes (field) ---
+SIG: game.recipes: Recipes
+LEAD: What a crafting grid and a furnace make of a pack's items; recipes are added while the pack loads.
+
+--- sea_level (field) ---
+SIG: game.sea_level: number
+LEAD: The y of this world's sea level.
+
+--- terrain (field) ---
+SIG: game.terrain: { snow: boolean ?, steps: { TerrainStep }? }?
+LEAD: What this world's overworld is made of: `snow` and `steps`, as citadel.yml writes them; read-only, nil when there is no list.
+
+--- texture (function) ---
+SIG: game.texture(width: number, height: number) → Texture
+LEAD: Returns a new texture of width by height pixels, see-through until drawn on, for a pack's block or item.
+PARAMS: width:number*, height:number*
+RETURNS: Texture
+
+--- version (field) ---
+SIG: game.version: string
+LEAD: This game's version, such as "a0.1.0".
+
+--- world_height (field) ---
+SIG: game.world_height: number
+LEAD: How tall the world is in blocks: 128, or 256 for a 1.8.9 world.
+
+
+########## Generated ##########
+
+--- biome_at (method) ---
+SIG: generated:biome_at(pos: Vec3) → string ?
+LEAD: Returns the biome name a column gets.
+PARAMS: pos:Vec3*
+RETURNS: string ?
+
+--- sample (method) ---
+SIG: generated:sample(field: Field | number, pos: Vec3) → number ?
+LEAD: Returns a field's value at a position; `nil` for a field made after `world.generate`, or for rules with no `height`.
+PARAMS: field:Field | number*, pos:Vec3*
+RETURNS: number ?
+
+
+########## GeneratorRules ##########
+
+--- biomes (field) ---
+SIG: generatorRules.biomes: { { [number]: string, when: (Field | number)? } }?
+LEAD: `{ "desert", when = field }`: the first that holds names the column's biome; one with no `when` is for the rest.
+
+--- carvers (field) ---
+SIG: generatorRules.carvers: { "caves" | "ravines" }?
+LEAD: The game version's own carvers, with the world seed, after the land and before the cave rules: "caves" (every version), "ravines" (b1.8 and later). Needs `height` or `density`.
+
+--- density (field) ---
+SIG: generatorRules.density: Field ?
+LEAD: Solid where this is above 0, for caves, overhangs and land in the air.
+
+--- floor (field) ---
+SIG: generatorRules.floor: string ?
+LEAD: The block at y 0; "bedrock" for a land of its own.
+
+--- fluid (field) ---
+SIG: generatorRules.fluid: string ?
+LEAD: 
+
+--- fluids (field) ---
+SIG: generatorRules.fluids: { FluidRule }?
+LEAD: What fills the caves: needs `density` or `carvers`.
+
+--- height (field) ---
+SIG: generatorRules.height: (Field | number)?
+LEAD: The y of the surface.
+
+--- plants (field) ---
+SIG: generatorRules.plants: { PlantRule }?
+LEAD: 
+
+--- rock (field) ---
+SIG: generatorRules.rock: { GroundRule }?
+LEAD: The body of the land, under the ground rules.
+
+--- sea (field) ---
+SIG: generatorRules.sea: number ?
+LEAD: Water fills the open air up to this y.
+
+--- structures (field) ---
+SIG: generatorRules.structures: { "mineshaft" | "dungeon" }?
+LEAD: The game version's own structures, with spawners and loot: "mineshaft", "dungeon" (1.7 to 1.12). Needs `height` or `density`.
+
+--- surface (field) ---
+SIG: generatorRules.surface: { GroundRule }?
+LEAD: 
+
+--- things (field) ---
+SIG: generatorRules.things: { ThingGrid }?
+LEAD: 
+
+
+########## Hit ##########
+
+--- block (field) ---
+SIG: hit.block: Vec3 ?
+LEAD: The block, when the click hit one.
+
+--- button (field) ---
+SIG: hit.button: "left" | "right"
+LEAD: "left" is an attack or swing, "right" is an interact or use.
+
+--- entity (field) ---
+SIG: hit.entity: (Display | Hitbox | Npc | Puppet)?
+LEAD: The thing clicked, as the handle the script holds for it.
+
+--- entity_id (field) ---
+SIG: hit.entity_id: number ?
+LEAD: Its raw entity id, which is all there is for something the engine made itself, such as one of a screen's own frames.
+
+--- face (field) ---
+SIG: hit.face: Face ?
+LEAD: The face of the block that was clicked.
+
+--- player (field) ---
+SIG: hit.player: Player ?
+LEAD: Another player, when that is what was clicked.
+
+--- slot (field) ---
+SIG: hit.slot: number
+LEAD: The hotbar slot in hand, 1..9.
+
+
+########## Hitbox ##########
+
+--- at (field) ---
+SIG: hitbox.at: Vec3
+LEAD: Its bottom centre; write it to move the hitbox, and its wall when solid.
+
+--- destroy (method) ---
+SIG: hitbox:destroy()
+LEAD: Removes the hitbox, and its wall when solid.
+
+--- id (field) ---
+SIG: hitbox.id: number
+LEAD: Its entity id, what `players.on_click` reports in `hit.entity_id`.
+
+
+########## HttpResponse ##########
+
+--- body (field) ---
+SIG: httpResponse.body: string
+LEAD: The answer as bytes.
+
+--- error (field) ---
+SIG: httpResponse.error: string ?
+LEAD: Why no answer came, or nil.
+
+--- headers (field) ---
+SIG: httpResponse.headers: {[string]: string }
+LEAD: The answer's headers, names in lower case.
+
+--- image (method) ---
+SIG: httpResponse:image() → {width: number, height: number, pixels: buffer}
+LEAD: A PNG body: `pixels` is 4 bytes (RGBA) a pixel, row by row from the top.
+RETURNS: {width: number , height: number , pixels: buffer}
+
+--- json (method) ---
+SIG: httpResponse:json() → any
+LEAD: The body as a table; an error when it is not JSON.
+RETURNS: any
+
+--- ok (field) ---
+SIG: httpResponse.ok: boolean
+LEAD: True for a 2xx status.
+
+--- status (field) ---
+SIG: httpResponse.status: number
+LEAD: The HTTP status; 0 when no answer came.
+
+
+########## Hud ##########
+
+--- destroy (method) ---
+SIG: hud:destroy()
+LEAD: Takes it off the player's screen.
+
+--- set (method) ---
+SIG: hud:set(values: { [string]: number | string | boolean })
+LEAD: A value per id: a number is a fill, a string a label's words, true or false whether it shows. An unknown id is an error that lists the ids.
+PARAMS: values:{ [ string ]: number | string | boolean }*
+
+
+########## HudPart ##########
+
+--- color (field) ---
+SIG: hudPart.color: Ink ?
+LEAD: A box's colour, a picture's tint, a label's ink; reads back as "#rrggbb".
+
+--- fill (field) ---
+SIG: hudPart.fill: number
+LEAD: How much of a box or picture shows, from its left edge: 0 to 1.
+
+--- text (field) ---
+SIG: hudPart.text: string
+LEAD: A label's words.
+
+--- visible (field) ---
+SIG: hudPart.visible: boolean ?
+LEAD: Whether it shows; nil shows it again.
+
+
+########## ItemMeta ##########
+
+--- canvas (field) ---
+SIG: itemMeta.canvas: Canvas ?
+LEAD: A filled map of that canvas: what the item *is*, so `item` may be left out. Everywhere an item is taken — a hand, a hotbar slot, a display.
+
+--- color (field) ---
+SIG: itemMeta.color: Color ?
+LEAD: A potion's liquid colour; 1.11 and later.
+
+--- count (field) ---
+SIG: itemMeta.count: number ?
+LEAD: How many in the stack; 1 by default.
+
+--- damage (field) ---
+SIG: itemMeta.damage: number ?
+LEAD: The wear a tool has taken; 0 is new.
+
+--- dye (field) ---
+SIG: itemMeta.dye: Color ?
+LEAD: Leather armour's colour.
+
+--- glint (field) ---
+SIG: itemMeta.glint: boolean ?
+LEAD: The enchanted shine, with no enchantment.
+
+--- id (field) ---
+SIG: itemMeta.id: string ?
+LEAD: A pack's own item: a brick with `id = "copper_ingot"` is a copper ingot, kept under the pack's name and known by it everywhere it goes.
+
+--- lore (field) ---
+SIG: itemMeta.lore: ({ Text } | Text)?
+LEAD: One line or a list of lines, grey unless they say otherwise.
+
+--- model (field) ---
+SIG: itemMeta.model: string ?
+LEAD: The item model a 1.21.4+ client draws: `assets/<pack>/items/<model>.json`.
+
+--- name (field) ---
+SIG: itemMeta.name: Text ?
+LEAD: Never italic unless it says so.
+
+--- skin (field) ---
+SIG: itemMeta.skin: (string | { value: string, signature: string ? })?
+LEAD: The face a "player_head" item shows: a player's name, or the raw `textures` property. On any other item it is an error.
+
+
+########## Items ##########
+
+--- define (function) ---
+SIG: items.define(spec: { name: string, texture: TextureRef ?, label: Text ?, lore: ({ Text } | Text)?, looks: string ?, stack: number ?, glint: boolean ?, }) → ItemTable
+LEAD: Load-time only. Hands back the item table: give it, match it, craft it.
+PARAMS: spec:{ name: string , texture: TextureRef ?, label: Text ?, lore: ({ Text } | Text )?, looks: string ?, stack: number ?, glint: boolean ?, }*
+RETURNS: ItemTable
+
+
+########## Material ##########
+
+--- burns (field) ---
+SIG: material.burns: boolean
+LEAD: Whether the jar's Material burns.
+
+--- covers (field) ---
+SIG: material.covers: boolean
+LEAD: Grass under it dies.
+
+--- firm (field) ---
+SIG: material.firm: boolean
+LEAD: Snow and ice need it beneath them.
+
+--- liquid (field) ---
+SIG: material.liquid: boolean
+LEAD: Whether the jar's Material is a liquid.
+
+--- solid (field) ---
+SIG: material.solid: boolean
+LEAD: Whether the jar's Material counts as solid.
+
+
+########## Menu ##########
+
+--- destroy (method) ---
+SIG: menu:destroy()
+LEAD: Takes it down and forgets its callbacks. A Bedrock form cannot be taken back: it stays until the player answers, and the answer then lands nowhere.
+
+--- update (method) ---
+SIG: menu:update(items: { ItemSpec }) → boolean
+LEAD: New pictures in place, the menu left open: a bar that fills, a count that changes. `on_pick` still answers by position. `false` once the player has put it away; a Bedrock form keeps what it showed.
+PARAMS: items:{ ItemSpec }*
+RETURNS: boolean
+
+
+########## Model ##########
+
+--- name (field) ---
+SIG: model.name: string
+LEAD: The name the model was given in `models.new`.
+
+
+########## ModelBuild ##########
+
+--- animation (method) ---
+SIG: modelBuild:animation(name: string, opts: { [string]: any })
+LEAD: `{ length = seconds, loop = false, <part name> = { rotation = { [t] = is both named fields and part names, so this one is open.
+PARAMS: name:string*, opts:{ [ string ]: any }*
+
+--- material (method) ---
+SIG: modelBuild:material(name: string, color: Ink, opts: { grain: number ?, alpha: number ? }?) → ModelMaterial
+LEAD: Makes a named colour a display may repaint; `grain` (0 to 1) darkens pixels into four tones, `alpha` below 1 is glass.
+PARAMS: name:string*, color:Ink*, opts:{ grain: number ?, alpha: number ? }
+RETURNS: ModelMaterial
+
+--- part (method) ---
+SIG: modelBuild:part(name: string, opts: { pivot: Vec3 ? }?) → ModelPart
+LEAD: Makes a named child part of the root that turns around its `pivot`, the model's origin unless given.
+PARAMS: name:string*, opts:{ pivot: Vec3 ? }
+RETURNS: ModelPart
+
+--- texture (method) ---
+SIG: modelBuild:texture(width: number, height: number, opts: { tint: ModelMaterial ?, scroll: ("up" | "down" | "left" | "right")?, speed: number ? }?) → ModelTexture
+LEAD: Makes a pixel picture for one face; with `tint`, drawn in greys and coloured by that material. With `scroll`, it moves by itself on a block drawn from the model, `speed` texels a tick (1, 2, 3, or 0.5, 0.25).
+PARAMS: width:number*, height:number*, opts:{ tint: ModelMaterial ?, scroll: ( "up" | "down" | "left" | "right" )?, speed: number ? }
+RETURNS: ModelTexture
+
+
+########## ModelDisplay ##########
+
+--- destroy (method) ---
+SIG: modelDisplay:destroy()
+LEAD: Removes the model from the room.
+
+--- id (field) ---
+SIG: modelDisplay.id: number
+LEAD: What `player:ride(model)` is handed; the seat is picked from `seats`.
+
+--- move (method) ---
+SIG: modelDisplay:move(at: Vec3, rotation: Orientation ?)
+LEAD: Place and turn it in one step, every part and seat together.
+PARAMS: at:Vec3*, rotation:Orientation
+
+--- paint (field) ---
+SIG: modelDisplay.paint: { [string]: Ink }
+LEAD: Whether it is still present. Read-only. Where it stands; live, and each write is a move of its own. Partial writes preserve other angles; nil after removal. Reads vec3; write a number or equal-axis vec3 for uniform size. Nil when gone. Material name to colour; write-only.
+
+--- play (method) ---
+SIG: modelDisplay:play(animation: string, opts: { speed: number ? }?)
+LEAD: Starts an animation; replaying the current one changes speed without restarting.
+PARAMS: animation:string*, opts:{ speed: number ? }
+
+--- stop (method) ---
+SIG: modelDisplay:stop(animation: string)
+LEAD: Where it is; the parts stay as they are.
+PARAMS: animation:string*
+
+
+########## ModelMaterial ##########
+
+--- name (field) ---
+SIG: modelMaterial.name: string
+LEAD: The name it was made with, which a display repaints it by.
+
+
+########## ModelPart ##########
+
+--- box (method) ---
+SIG: modelPart:box(from: Vec3, to: Vec3, skin: ModelSkin, opts: { rotation: Vec3 ?, pivot: Vec3 ?, faces: { [Face]: ModelSkin }?, }?)
+LEAD: Corners in any order; a box turns on one axis, in steps of 22.5 up to 45, and `pivot` is the box's own centre unless you give one.
+PARAMS: from:Vec3*, to:Vec3*, skin:ModelSkin*, opts:{ rotation: Vec3 ?, pivot: Vec3 ?, faces: { [ Face ]: ModelSkin }?, }
+
+--- hitbox (method) ---
+SIG: modelPart:hitbox(from: Vec3, to: Vec3)
+LEAD: A box a player can hit on a living body that wears the model (clients from 1.19.4). Not drawn; corners in any order, in model units. Square from above (its longer side), so split a long part. Animations do not move it. A model with none is hit on one box of the body's `size`.
+PARAMS: from:Vec3*, to:Vec3*
+
+--- mirror (method) ---
+SIG: modelPart:mirror(axis: "x")
+LEAD: A mirrored copy of every box and hitbox this part has, and a mirrored twin named `<name>_mirrored` of every child. Only "x" in this version.
+PARAMS: axis:"x"*
+
+--- part (method) ---
+SIG: modelPart:part(name: string, opts: { pivot: Vec3 ? }?) → ModelPart
+LEAD: Makes a child part of this one; it turns around `pivot`, the model's origin unless you give one.
+PARAMS: name:string*, opts:{ pivot: Vec3 ? }
+RETURNS: ModelPart
+
+
+########## ModelTexture ##########
+
+--- fill (method) ---
+SIG: modelTexture:fill(color: Ink)
+LEAD: Paints every pixel one colour.
+PARAMS: color:Ink*
+
+--- pixel (method) ---
+SIG: modelTexture:pixel(x: number, y: number, color: Ink)
+LEAD: Paints the pixel at x, y; `colors.transparent` makes it see-through.
+PARAMS: x:number*, y:number*, color:Ink*
+
+--- rect (method) ---
+SIG: modelTexture:rect(x: number, y: number, w: number, h: number, color: Ink)
+LEAD: Paints a rectangle `w` by `h` pixels from x, y.
+PARAMS: x:number*, y:number*, w:number*, h:number*, color:Ink*
+
+
+########## NetworkInstance ##########
+
+--- id (field) ---
+SIG: networkInstance.id: string
+LEAD: The instance's name. `player:connect` takes it.
+
+--- label (field) ---
+SIG: networkInstance.label: string
+LEAD: 
+
+--- member (field) ---
+SIG: networkInstance.member: string
+LEAD: 
+
+--- meta (field) ---
+SIG: networkInstance.meta: any
+LEAD: The instance's own value.
+
+--- open (field) ---
+SIG: networkInstance.open: number ?
+LEAD: The number of players it takes now, as it said with `network.status`.
+
+--- players (field) ---
+SIG: networkInstance.players: number ?
+LEAD: The number of players on it.
+
+--- state (field) ---
+SIG: networkInstance.state: string
+LEAD: "starting", then "online", then "stopping".
+
+--- status (field) ---
+SIG: networkInstance.status: string ?
+LEAD: The instance's own word.
+
+
+########## NetworkStarted ##########
+
+--- id (field) ---
+SIG: networkStarted.id: string
+LEAD: 
+
+--- state (field) ---
+SIG: networkStarted.state: string
+LEAD: "starting" or "online".
+
+
+########## Noise ##########
+
+--- get (method) ---
+SIG: noise:get(x: number, y_or_z: number, z: number ?) → number
+LEAD: Returns about -1..1 at a point: `get(x, z)` for a height map, `get(x, y, z)` for caves and overhangs.
+PARAMS: x:number*, y_or_z:number*, z:number
+RETURNS: number
+
+--- grid (method) ---
+SIG: noise:grid(x: number, z: number, width: number, depth: number) → { number }
+LEAD: Returns `width * depth` heights in one call, row by row: the number for `(x + dx, z + dz)` is at `[dz * width + dx + 1]`.
+PARAMS: x:number*, z:number*, width:number*, depth:number*
+RETURNS: { number }
+
+
+########## Npc ##########
+
+--- destroy (method) ---
+SIG: npc:destroy()
+LEAD: 
+
+--- dismount (method) ---
+SIG: npc:dismount()
+LEAD: Gets off where it sits; set `at` after it to put it somewhere else.
+
+--- hold (method) ---
+SIG: npc:hold(item: (ItemSpec | false)?)
+LEAD: Puts an item in the main hand; nil or false empties it. An error on an unknown item.
+PARAMS: item:( ItemSpec | false )
+
+--- id (field) ---
+SIG: npc.id: number
+LEAD: The entity id, what `players.on_click` reports in `hit.entity_id`.
+
+--- look_at (method) ---
+SIG: npc:look_at(pos: Vec3)
+LEAD: Where it stands; live, so setting it moves the NPC. A riding NPC reads the seat's position. Partial writes preserve other angles; nil after removal. Bodies have no roll. Turns head and body toward a point.
+PARAMS: pos:Vec3*
+
+--- move (method) ---
+SIG: npc:move(at: Vec3, rotation: BodyRotation ?)
+LEAD: Removes the NPC. Sets position and optional rotation together.
+PARAMS: at:Vec3*, rotation:BodyRotation
+
+--- name (field) ---
+SIG: npc.name: string
+LEAD: Whether it is still present. Read-only. "" for one made with no name, which has no name tag.
+
+--- pose (field) ---
+SIG: npc.pose: NpcPose
+LEAD: How the body is held; live.
+
+--- ride (method) ---
+SIG: npc:ride(thing: MountTarget, opts: { seat: number ? }?) → boolean
+LEAD: Sits in a seat as `player:ride` does, and never drives; `false` when somebody sits there.
+PARAMS: thing:MountTarget*, opts:{ seat: number ? }
+RETURNS: boolean
+
+--- riding (field) ---
+SIG: npc.riding: boolean
+LEAD: Whether it sits in a seat; live.
+
+--- say (method) ---
+SIG: npc:say(text: Text, color: Ink ?)
+LEAD: Sends a chat line "<name> ..." to the room, or just the words for an NPC with no name.
+PARAMS: text:Text*, color:Ink
+
+--- swing (method) ---
+SIG: npc:swing()
+LEAD: Plays the arm swing animation.
+
+--- walk (method) ---
+SIG: npc:walk(opts: { path: { Vec3 }, speed: number ?, loop: boolean ? }?)
+LEAD: Walks the points by itself, facing where it goes; nil stops it.
+PARAMS: opts:{ path: { Vec3 }, speed: number ?, loop: boolean ? }
+
+--- walking (field) ---
+SIG: npc.walking: boolean
+LEAD: True while it walks a path, until the last point; never false with `loop`.
+
+--- wear (method) ---
+SIG: npc:wear(pieces: Worn)
+LEAD: Puts armour on it, head first; each piece is an item.
+PARAMS: pieces:Worn*
+
+
+########## Overlay ##########
+
+--- destroy (method) ---
+SIG: overlay:destroy()
+LEAD: Takes it off the player's screen.
+
+--- open (field) ---
+SIG: overlay.open: boolean
+LEAD: True until `destroy` or the player leaves.
+
+
+########## PartDefinition ##########
+
+--- at (field) ---
+SIG: partDefinition.at: Vec3
+LEAD: Where the build's block (0, 0, 0) lands.
+
+--- build (function) ---
+SIG: partDefinition.build(b: Builder)
+LEAD: Exactly a world.build function.
+PARAMS: b:Builder*
+
+--- detail (field) ---
+SIG: partDefinition.detail: number ?
+LEAD: 1 (whole blocks, the default) or 2 (half blocks), as world.build.
+
+--- name (field) ---
+SIG: partDefinition.name: string
+LEAD: Unique; a path, "downtown/tower-3", nests.
+
+
+########## Picture ##########
+
+--- circle (method) ---
+SIG: picture:circle(x: number, y: number, r: number, color: Ink)
+LEAD: Fills a circle of radius `r` pixels around (x, y).
+PARAMS: x:number*, y:number*, r:number*, color:Ink*
+
+--- clear (method) ---
+SIG: picture:clear(color: Ink ?)
+LEAD: Its width in pixels: 128 for each map across. Its height in pixels: 128 for each map down. Paints every pixel one colour; black by default. On a view, the default clears it to see-through.
+PARAMS: color:Ink
+
+--- draw (method) ---
+SIG: picture:draw(source: Screen | Canvas | View, x: number ?, y: number ?)
+LEAD: Draws another screen, canvas or view with its top-left at (x, y), skipping its transparent pixels.
+PARAMS: source:Screen | Canvas | View*, x:number, y:number
+
+--- fill (method) ---
+SIG: picture:fill(x: number, y: number, w: number, h: number, color: Ink)
+LEAD: Fills a w by h box of pixels with one colour, its top-left at (x, y).
+PARAMS: x:number*, y:number*, w:number*, h:number*, color:Ink*
+
+--- gradient (method) ---
+SIG: picture:gradient(x: number, y: number, w: number, h: number, from: Ink, to: Ink, across: string ?)
+LEAD: Fills a box that fades from `from` to `to`, top to bottom; `"across"` runs it left to right.
+PARAMS: x:number*, y:number*, w:number*, h:number*, from:Ink*, to:Ink*, across:string
+
+--- line (method) ---
+SIG: picture:line(x0: number, y0: number, x1: number, y1: number, color: Ink, width: number ?)
+LEAD: Draws a smoothed line with round ends, `width` pixels wide (1 by default); positions may be fractions.
+PARAMS: x0:number*, y0:number*, x1:number*, y1:number*, color:Ink*, width:number
+
+--- measure (method) ---
+SIG: picture:measure(text: string, size: number ?) → number
+LEAD: The width in pixels that `text` would draw, without drawing it; for centring.
+PARAMS: text:string*, size:number
+RETURNS: number
+
+--- part (method) ---
+SIG: picture:part(col: number, row: number) → { id: number }
+LEAD: One map of the picture, `{ id = .. }`, by column and row from (0, 0) top- left; for a hand or a single frame.
+PARAMS: col:number*, row:number*
+RETURNS: { id: number }
+
+--- pixels (method) ---
+SIG: picture:pixels(x: number, y: number, w: number, h: number, data: buffer | string)
+LEAD: Writes raw RGB bytes (a buffer or a string), three a pixel, row by row, into a w by h box.
+PARAMS: x:number*, y:number*, w:number*, h:number*, data:buffer | string*
+
+--- play (method) ---
+SIG: picture:play(opts: { file: string, fps: number ?, loop: boolean ? }) → Video
+LEAD: Plays a raw RGB video file from the pack at `fps` 0.5 to 20, the engine drawing each frame; returns the Video.
+PARAMS: opts:{ file: string , fps: number ?, loop: boolean ? }*
+RETURNS: Video
+
+--- polygon (method) ---
+SIG: picture:polygon(points: { { number } | { x: number, y: number } }, color: Ink)
+LEAD: Fills a smoothed shape with any number of corners; a point is `{x, y}` or `{ x = .., y = .. }`.
+PARAMS: points:{ { number } | { x: number , y: number } }*, color:Ink*
+
+--- rect (method) ---
+SIG: picture:rect(x: number, y: number, w: number, h: number, color: Ink, radius: number ?)
+LEAD: Fills a box like `fill`, with smoothed rounded corners of `radius` pixels when given.
+PARAMS: x:number*, y:number*, w:number*, h:number*, color:Ink*, radius:number
+
+--- ring (method) ---
+SIG: picture:ring(x: number, y: number, r: number, color: Ink, width: number ?)
+LEAD: Draws a circle's outline, `width` pixels wide (1 by default), smoothed.
+PARAMS: x:number*, y:number*, r:number*, color:Ink*, width:number
+
+--- set (method) ---
+SIG: picture:set(x: number, y: number, color: Ink)
+LEAD: Paints one pixel; (0, 0) is the top-left.
+PARAMS: x:number*, y:number*, color:Ink*
+
+--- sprite (method) ---
+SIG: picture:sprite(x: number, y: number, rows: { string }, inks: { [string]: Ink }, scale: number ?)
+LEAD: Draws pixel art: each string a row, each character a dot `scale` pixels square (1 by default); a character with no ink is skipped.
+PARAMS: x:number*, y:number*, rows:{ string }*, inks:{ [ string ]: Ink }*, scale:number
+
+--- text (method) ---
+SIG: picture:text(x: number, y: number, text: string, color: Ink, size: number ?) → number
+LEAD: Draws text in DejaVu Sans Bold, `size` pixels tall (16 by default), smoothed; returns its width in pixels.
+PARAMS: x:number*, y:number*, text:string*, color:Ink*, size:number
+RETURNS: number
+
+
+########## PlantRule ##########
+
+--- afloat (field) ---
+SIG: plantRule.afloat: boolean ?
+LEAD: On the water over a column, not on its ground.
+
+--- biome (field) ---
+SIG: plantRule.biome: string ?
+LEAD: 
+
+--- block (field) ---
+SIG: plantRule.block: BlockPick ?
+LEAD: 
+
+--- blocks (field) ---
+SIG: plantRule.blocks: { BlockPick }?
+LEAD: The blocks from the foot up, in place of `block`: a two-block flower.
+
+--- chance (field) ---
+SIG: plantRule.chance: (Field | number)?
+LEAD: 
+
+--- clear (field) ---
+SIG: plantRule.clear: number ?
+LEAD: Blocks of water to keep clear over a plant that grows in it.
+
+--- height (field) ---
+SIG: plantRule.height: (Field | number)?
+LEAD: How many blocks a plant that grows is tall: `block` repeats.
+
+--- place (field) ---
+SIG: plantRule.place: ("top" | "floor" | "ceiling" | "wall")?
+LEAD: Where it goes: "top" (the default), or in the caves `density` or `carvers` dig: "floor", "ceiling" (it hangs down: `tip` is lowest) or "wall" (one block; `{wall}` in its name is the side the rock is on, `{facing}` the side away). One plant on each floor and each ceiling of a cave, and in each wall block. `when` and `chance` are read at the air block it starts in.
+
+--- sink (field) ---
+SIG: plantRule.sink: number ?
+LEAD: Blocks to stand lower: 1 is in the ground, or in the top of the water.
+
+--- tip (field) ---
+SIG: plantRule.tip: BlockPick ?
+LEAD: With `height`, the block on top of a plant that grows.
+
+--- when (field) ---
+SIG: plantRule.when: (Field | number)?
+LEAD: 
+
+--- y (field) ---
+SIG: plantRule.y: { number }?
+LEAD: `{ low, high }`: the y it may start at.
+
+
+########## Player ##########
+
+--- add_group (method) ---
+SIG: player:add_group(group: string)
+LEAD: Puts the player in a group until they leave; errors on a group citadel.yml does not define.
+PARAMS: group:string*
+
+--- camera (field) ---
+SIG: player.camera: (Camera | false)?
+LEAD: What they look out of: a camera from camera.fixed/free/orbit/chase, or nil or false for their own eyes. No delay is needed after creating its target. Ends when the target is destroyed or the player leaves the room.
+
+--- can_fly (field) ---
+SIG: player.can_fly: boolean
+LEAD: May fly in a mode that cannot.
+
+--- can_see (method) ---
+SIG: player:can_see(other: Player) → boolean
+LEAD: True unless `other` is not visible or is hidden from this player.
+PARAMS: other:Player*
+RETURNS: boolean
+
+--- clear_effect (method) ---
+SIG: player:clear_effect(name: string)
+LEAD: Takes a potion effect off the player, by its modern name.
+PARAMS: name:string*
+
+--- connect (method) ---
+SIG: player:connect(server: string)
+LEAD: Asks Minefort to move the player to another server by name: an instance's `id`, the network's name (its default member) or "hub". Minefort decides and does not answer; a player still here was not moved.
+PARAMS: server:string*
+
+--- count (method) ---
+SIG: player:count(item: ItemMatch) → number
+LEAD: Returns how many of an item the player carries, across every slot.
+PARAMS: item:ItemMatch*
+RETURNS: number
+
+--- damage (method) ---
+SIG: player:damage(amount: number) → boolean
+LEAD: A hit in half-hearts: the flash, the sound, the resistance window. `false` on a version with no damage rules.
+PARAMS: amount:number*
+RETURNS: boolean
+
+--- dismount (method) ---
+SIG: player:dismount()
+LEAD: Gets the player off what they ride; sneaking does the same, as off a horse.
+
+--- effect (method) ---
+SIG: player:effect(name: string, opts: { level: number ?, duration: number ?, particles: boolean ? }?)
+LEAD: A potion effect by its modern name; `duration` in seconds, math.huge for ever.
+PARAMS: name:string*, opts:{ level: number ?, duration: number ?, particles: boolean ? }
+
+--- gamemode (field) ---
+SIG: player.gamemode: number
+LEAD: The hotbar slot in hand, 1..9; live. 0 survival, 1 creative, 2 adventure, 3 spectator; writable.
+
+--- give (method) ---
+SIG: player:give(item: ItemSpec)
+LEAD: One item: "stone", or { item = "arrow", count = 16 }.
+PARAMS: item:ItemSpec*
+
+--- groups (method) ---
+SIG: player:groups() → { string }
+LEAD: Returns the player's groups; `default` is not listed.
+RETURNS: { string }
+
+--- has (method) ---
+SIG: player:has(node: string) → boolean
+LEAD: True if the player's groups give them this permission node; operators have every node.
+PARAMS: node:string*
+RETURNS: boolean
+
+--- held (method) ---
+SIG: player:held() → InventorySlot ?
+LEAD: Returns the stack in hand ({ item, count }, plus `id` for a pack item and `damage` for a worn tool), or nil.
+RETURNS: InventorySlot ?
+
+--- hide (method) ---
+SIG: player:hide(other: Player)
+LEAD: This player stops seeing `other`, or sees them again.
+PARAMS: other:Player*
+
+--- hotbar (method) ---
+SIG: player:hotbar(slots: { [number]: ItemTable })
+LEAD: Replaces the nine hotbar slots; a missing index is empty.
+PARAMS: slots:{ [ number ]: ItemTable }*
+
+--- inventory (method) ---
+SIG: player:inventory() → { InventorySlot }
+LEAD: Returns one { item, count } row per filled slot.
+RETURNS: { InventorySlot }
+
+--- kick (method) ---
+SIG: player:kick(reason: Text ?)
+LEAD: Disconnects the player, with that text on their screen.
+PARAMS: reason:Text
+
+--- kill (method) ---
+SIG: player:kill() → boolean
+LEAD: 0..20, or nil where the game version has no food bar. The food saturation, or nil where the game version has no food bar. True while the player is on the death screen. Kills the player; returns false on a version with no damage rules.
+RETURNS: boolean
+
+--- level (field) ---
+SIG: player.level: number
+LEAD: The experience bar: the number over it, and how full it is (0..1).
+
+--- look (method) ---
+SIG: player:look() → Vec3
+LEAD: Returns the unit vector the player faces.
+RETURNS: Vec3
+
+--- look_at (method) ---
+SIG: player:look_at(pos: Vec3)
+LEAD: Turns the player's head to a point, where they stand.
+PARAMS: pos:Vec3*
+
+--- max_health (field) ---
+SIG: player.max_health: number ?
+LEAD: Their health now, 0 to `max_health`; nil where the game version has no damage rules. Writable: set outright, no flash; 0 is a death; a number above `max_health` stops there. The most health they can have: 20 unless a pack set it; nil where the game version has no damage rules. Writable, 1 to 1024; nil gives the game's own back. A lower maximum takes `health` down to it. It lasts for the session. Every Java client draws its hearts; Bedrock draws none.
+
+--- message (method) ---
+SIG: player:message(text: Text, color: Ink ?)
+LEAD: What shows on this player's screen: the calls `ui` has, for them alone, plus their own menu and overlay. Sends a chat line to this player alone; `color` is for the words that did not pick one. Chat is not part of the screen, so it is not in `ui`.
+PARAMS: text:Text*, color:Ink
+
+--- move_to (method) ---
+SIG: player:move_to(room: Room)
+LEAD: Moves the player to another room; the client swaps worlds in place.
+PARAMS: room:Room*
+
+--- push (method) ---
+SIG: player:push(velocity: Vec3)
+LEAD: A shove in blocks per tick, on top of what they are doing.
+PARAMS: velocity:Vec3*
+
+--- reach (field) ---
+SIG: player.reach: number
+LEAD: How far a block can be clicked or dug, 0 to 64 blocks (4.5 by default); 1.20.5 and later. Measured from the camera when there is one.
+
+--- remove_group (method) ---
+SIG: player:remove_group(group: string)
+LEAD: Takes the player out of a group.
+PARAMS: group:string*
+
+--- ride (method) ---
+SIG: player:ride(thing: MountTarget, opts: { seat: number ?, locked: boolean ? }?) → boolean
+LEAD: The player's name. The account's own id: the one name for a player a rename does not change. Where they stand now. Your own table, kept on the player for as long as they are connected. A player is one value while connected: `a == b` and `t[player]` work. The Room the player is in; nil while they move between rooms. Degrees: `yaw` sideways, `pitch` up or down; live, read only. True while the player sneaks; live. `attack` is the left button held on a block in reach (see player.reach); a client says nothing about a button held on air. True while the player sits on something; live. Seat 1 drives a vehicle; `locked` keeps a sneak from getting them off. `false` when somebody sits in that seat; keeps the current ride on failure. Works immediately after creating the target. Repeating the same ride keeps the seat; no delay or extra movement is needed.
+PARAMS: thing:MountTarget*, opts:{ seat: number ?, locked: boolean ? }
+RETURNS: boolean
+
+--- scale (field) ---
+SIG: player.scale: number
+LEAD: 1/16 to 16; 1.20.5 and later, older clients stay as they are.
+
+--- set_held (method) ---
+SIG: player:set_held(item: (ItemSpec | false)?)
+LEAD: The stack in hand, replaced; nil or false empties the hand.
+PARAMS: item:( ItemSpec | false )
+
+--- set_slot (method) ---
+SIG: player:set_slot(n: number)
+LEAD: Selects hotbar slot 1..9.
+PARAMS: n:number*
+
+--- show (method) ---
+SIG: player:show(other: Player)
+LEAD: This player sees `other` again after a `hide`.
+PARAMS: other:Player*
+
+--- sound (method) ---
+SIG: player:sound(name: string, opts: { at: Vec3 ?, volume: number ?, pitch: number ?, category: string ?, }?)
+LEAD: Plays a sound by name to this player only, with an optional position, volume, pitch and category.
+PARAMS: name:string*, opts:{ at: Vec3 ?, volume: number ?, pitch: number ?, category: string ?, }
+
+--- spawn_point (field) ---
+SIG: player.spawn_point: Vec3 ?
+LEAD: The player's own respawn point (the block of the position), or nil for the room's. Writable; a point a pack sets needs no bed. nil clears it, a bed's point too.
+
+--- speed (field) ---
+SIG: player.speed: number
+LEAD: The body: what a pack sets on a player. See docs/luau-api.md, "Body and movement". Walk speed as a multiple of normal; 0 pins them.
+
+--- stop_sound (method) ---
+SIG: player:stop_sound(name: string ?)
+LEAD: Where their view is from: the camera they look out of, or their eyes. One sound by name, or every sound; 1.13 and later.
+PARAMS: name:string
+
+--- supports (method) ---
+SIG: player:supports(feature: Feature) → boolean
+LEAD: True if this player's client can show the feature.
+PARAMS: feature:Feature*
+RETURNS: boolean
+
+--- take (method) ---
+SIG: player:take(item: ItemMatch, count: number ?) → number
+LEAD: Up to `count` (1 unless you say) of what matches, the hand first; answers how many it took.
+PARAMS: item:ItemMatch*, count:number
+RETURNS: number
+
+--- teleport (method) ---
+SIG: player:teleport(pos: Vec3, rotation: BodyRotation ?)
+LEAD: Yaw and pitch left out keep the way they face.
+PARAMS: pos:Vec3*, rotation:BodyRotation
+
+--- travel (method) ---
+SIG: player:travel(dimension: string, pos: Vec3 ?)
+LEAD: Sends the player to another world of the group, at `pos` or its spawn.
+PARAMS: dimension:string*, pos:Vec3
+
+--- visible (field) ---
+SIG: player.visible: boolean ?
+LEAD: false: no other player is sent this body. The tab line stays. true or nil shows the body again.
+
+--- wear (method) ---
+SIG: player:wear(pieces: Worn)
+LEAD: The four armour slots; a piece left out is bare.
+PARAMS: pieces:Worn*
+
+--- xp (field) ---
+SIG: player.xp: number
+LEAD: How full the experience bar is, 0..1.
+
+
+########## PlayerUi ##########
+
+--- dialog (function) ---
+SIG: playerUi.dialog(view: DialogNode | () -> DialogNode) → Dialog ?
+LEAD: A screen of boxes, words and pictures (see "Dialogs"): a `ui.kit.window{}`, or a function that returns one and is drawn again after every click. nil where `player:supports("dialog")` is false.
+PARAMS: view:DialogNode | () -> DialogNode*
+RETURNS: Dialog ?
+
+--- menu (function) ---
+SIG: playerUi.menu(opts: { title: Text ?, items: { ItemSpec }, on_pick: (player: Player, n: number) -> (), on_close: ((player: Player) -> ())?, }) → Menu
+LEAD: A titled grid of up to 54 items over the player's view; each pick is answered by `on_pick(player, n)`. Nothing goes in or out of it: the items are pictures, not stacks. A chest on Java, a form of buttons on Bedrock. `on_close` fires when the player puts it away without picking. A new menu replaces the open one.
+PARAMS: opts:{ title: Text ?, items: { ItemSpec }, on_pick: (player: Player , n: number ) -> (), on_close: ((player: Player ) -> ())?, }*
+RETURNS: Menu
+
+--- overlay (function) ---
+SIG: playerUi.overlay(opts: { corner: ("top_left" | "top_right" | "bottom_left" | "bottom_right")?, size: number ?, margin: number ? }?) → Overlay ?
+LEAD: Puts a canvas in a corner of this player's screen, `size` screen pixels square at GUI scale 1 (96 by default, 16 to 511), `margin` from the edges (4 by default); nil where `player:supports("overlay")` is false.
+PARAMS: opts:{ corner: ( "top_left" | "top_right" | "bottom_left" | "bottom_right" )?, size: number ?, margin: number ? }
+RETURNS: Overlay ?
+
+--- show (function) ---
+SIG: playerUi.show(layout: Layout) → Hud
+LEAD: Puts a layout on this player's screen. A client older than 1.21.4 (`player:supports("layout")`) gets a handle that shows nothing.
+PARAMS: layout:Layout*
+RETURNS: Hud
+
+
+########## Players ##########
+
+--- count (function) ---
+SIG: players.count() → number
+LEAD: Returns how many players are in the room.
+RETURNS: number
+
+--- get (function) ---
+SIG: players.get(name: string) → Player ?
+LEAD: Returns the player with this name, or nil.
+PARAMS: name:string*
+RETURNS: Player ?
+
+--- list (function) ---
+SIG: players.list() → { Player }
+LEAD: Returns every player in the room.
+RETURNS: { Player }
+
+--- near (function) ---
+SIG: players.near(pos: Vec3, radius: number) → { Player }
+LEAD: Who is within a radius of a point, and who is inside a box of blocks.
+PARAMS: pos:Vec3*, radius:number*
+RETURNS: { Player }
+
+--- on_break (function) ---
+SIG: players.on_break(fn: (player: Player ?, pos: Vec3, block: string) -> boolean ?) → Connection
+LEAD: Cancellable. Return `false` to stop it; return nothing to let it through. These are asked *before* the world changes and the engine waits milliseconds for the answer, so they must be quick and must never `task.wait`. Timeout, error, overflow and disabled handlers deny the action. Across packs any `false` wins. See docs/luau-api.md, "saying no".
+PARAMS: fn:(player: Player ?, pos: Vec3 , block: string ) -> boolean
+RETURNS: Connection
+
+--- on_chat (function) ---
+SIG: players.on_chat(fn: (player: Player, text: string) -> boolean ?) → Connection
+LEAD: Return false and the line is not said.
+PARAMS: fn:(player: Player , text: string ) -> boolean
+RETURNS: Connection
+
+--- on_click (function) ---
+SIG: players.on_click(fn: (player: Player, hit: Hit) -> ()) → Connection
+LEAD: Calls `fn` on a left or right click; `hit` holds the button and the entity, player, block and face it met.
+PARAMS: fn:(player: Player , hit: Hit ) -> ()*
+RETURNS: Connection
+
+--- on_damage (function) ---
+SIG: players.on_damage(fn: (player: Player ?, hit: DamageHit) -> boolean ?) → Connection
+LEAD: Asks `fn` before damage lands on a player; return false to refuse it. A missed deadline denies it. A pack's own `player:damage` is not asked about.
+PARAMS: fn:(player: Player ?, hit: DamageHit ) -> boolean
+RETURNS: Connection
+
+--- on_death (function) ---
+SIG: players.on_death(fn: (player: Player ?, cause: string, message: string, by: Player ?) -> ()) → Connection
+LEAD: Calls `fn` when a player dies, with the cause (fall, drown, void, lava, ...) and the line broadcast; `player` is nil once they have left.
+PARAMS: fn:(player: Player ?, cause: string , message: string , by: Player ?) -> ()*
+RETURNS: Connection
+
+--- on_drop (function) ---
+SIG: players.on_drop(fn: (player: Player ?, item: string, count: number) -> ()) → Connection
+LEAD: Calls `fn` when a stack lands on the ground; `player` is nil where the world dropped it or they have left.
+PARAMS: fn:(player: Player ?, item: string , count: number ) -> ()*
+RETURNS: Connection
+
+--- on_join (function) ---
+SIG: players.on_join(fn: (player: Player) -> ()) → Connection
+LEAD: Calls `fn` when a player arrives: on the globals when a client connects, on a room's table each time a player moves into it.
+PARAMS: fn:(player: Player ) -> ()*
+RETURNS: Connection
+
+--- on_leave (function) ---
+SIG: players.on_leave(fn: (player: Player) -> ()) → Connection
+LEAD: The same player value on_join had; it can no longer be sent to.
+PARAMS: fn:(player: Player ) -> ()*
+RETURNS: Connection
+
+--- on_pickup (function) ---
+SIG: players.on_pickup(fn: (player: Player ?, item: string, count: number) -> ()) → Connection
+LEAD: A stack taken off the ground, and one that landed on it. `player` is nil where the world dropped it, or where they have already left.
+PARAMS: fn:(player: Player ?, item: string , count: number ) -> ()*
+RETURNS: Connection
+
+--- on_place (function) ---
+SIG: players.on_place(fn: (player: Player ?, pos: Vec3, block: string) -> boolean ?) → Connection
+LEAD: Asks `fn` before a player puts a block down; return false to cancel it. A missed deadline denies the place.
+PARAMS: fn:(player: Player ?, pos: Vec3 , block: string ) -> boolean
+RETURNS: Connection
+
+--- on_respawn (function) ---
+SIG: players.on_respawn(fn: (player: Player ?) -> ()) → Connection
+LEAD: Calls `fn` when a player respawns; `player` is nil once they have left.
+PARAMS: fn:(player: Player ?) -> ()*
+RETURNS: Connection
+
+--- on_slot (function) ---
+SIG: players.on_slot(fn: (player: Player, slot: number) -> ()) → Connection
+LEAD: Calls `fn` when a player picks a hotbar slot, 1..9.
+PARAMS: fn:(player: Player , slot: number ) -> ()*
+RETURNS: Connection
+
+--- on_sneak (function) ---
+SIG: players.on_sneak(fn: (player: Player, down: boolean) -> ()) → Connection
+LEAD: Calls `fn` once per sneak press and release; `down` is true on the press.
+PARAMS: fn:(player: Player , down: boolean ) -> ()*
+RETURNS: Connection
+
+--- within (function) ---
+SIG: players.within(from: Vec3, to: Vec3) → { Player }
+LEAD: Returns every player inside a box of blocks, corners included.
+PARAMS: from:Vec3*, to:Vec3*
+RETURNS: { Player }
+
+
+########## Puppet ##########
+
+--- destroy (method) ---
+SIG: puppet:destroy()
+LEAD: Removes the puppet.
+
+--- id (field) ---
+SIG: puppet.id: number
+LEAD: The raw entity id.
+
+--- move (method) ---
+SIG: puppet:move(at: Vec3, rotation: BodyRotation ?)
+LEAD: 
+PARAMS: at:Vec3*, rotation:BodyRotation
+
+--- name (field) ---
+SIG: puppet.name: string ?
+LEAD: The text of its name tag, which is always shown.
+
+
+########## Recipes ##########
+
+--- shaped (function) ---
+SIG: recipes.shaped(spec: { pattern: { string }, keys: { [string]: ItemMatch }, result: ItemSpec })
+LEAD: 1 to 3 rows of 1 to 3 letters; a space is an empty cell.
+PARAMS: spec:{ pattern: { string }, keys: { [ string ]: ItemMatch }, result: ItemSpec }*
+
+--- shapeless (function) ---
+SIG: recipes.shapeless(spec: { items: { ItemMatch }, result: ItemSpec })
+LEAD: Adds a crafting recipe whose ingredients may go anywhere in the grid.
+PARAMS: spec:{ items: { ItemMatch }, result: ItemSpec }*
+
+--- smelt (function) ---
+SIG: recipes.smelt(spec: { input: ItemMatch, result: ItemSpec })
+LEAD: Adds a furnace recipe; a furnace smelts a pack item only by one of these.
+PARAMS: spec:{ input: ItemMatch , result: ItemSpec }*
+
+
+########## Room ##########
+
+--- destroy (method) ---
+SIG: room:destroy()
+LEAD: Takes the room away; players still in it keep the world. Does nothing to `rooms.main`.
+
+--- message (method) ---
+SIG: room:message(text: Text, color: Ink ?)
+LEAD: This room's `world` table: its blocks, entities and displays. This room's `players` table; its `on_join` fires each time a player moves in. This room's `sound` table. This room's `fx` table. This room's `ui` table. This room's `game` table: the game version it runs, its entity kinds and blocks. This room's `commands` table. Sends a chat line to everyone in this room.
+PARAMS: text:Text*, color:Ink
+
+--- spawn_point (field) ---
+SIG: room.spawn_point: Vec3
+LEAD: The room's number. Rooms also compare by identity with `==`. Where players arrive in this room; writable. A write is not stored and does not move the chunks that stay loaded.
+
+
+########## Schematic ##########
+
+--- mirror (method) ---
+SIG: schematic:mirror(axis: "x" | "z") → Schematic
+LEAD: A new build flipped: "x" swaps east and west, "z" north and south.
+PARAMS: axis:"x" | "z"*
+RETURNS: Schematic
+
+--- rotate (method) ---
+SIG: schematic:rotate(degrees: number) → Schematic
+LEAD: The build's width, height and length in blocks. The build's own lowest corner, which `origin` puts down; zero for a file. A new build turned clockwise seen from above (90, 180 or 270), states and all.
+PARAMS: degrees:number*
+RETURNS: Schematic
+
+
+########## Screen ##########
+
+--- destroy (method) ---
+SIG: screen:destroy()
+LEAD: Removes the screen.
+
+--- on_click (function) ---
+SIG: screen.on_click(((player: Player, x: number, y: number, button: "left" | "right") -> ()) | false) → ?
+LEAD: Called with the pixel the player points at and the button, when a player clicks the screen. nil or false takes the hook off.
+PARAMS: ((player:Player , x: number , y: number , button: "left" | "right" ) -> ()) | false*
+RETURNS: ?
+
+--- view (method) ---
+SIG: screen:view(player: Player) → View
+LEAD: Returns this player's own layer over the screen; only they see it, and the shared picture shows where it is see-through.
+PARAMS: player:Player*
+RETURNS: View
+
+
+########## ShopPurchase ##########
+
+--- player (field) ---
+SIG: shopPurchase.player: string
+LEAD: The player's uuid.
+
+--- product (field) ---
+SIG: shopPurchase.product: string
+LEAD: The product's key.
+
+--- request (field) ---
+SIG: shopPurchase.request: string
+LEAD: 
+
+
+########## Slow ##########
+
+--- hook (field) ---
+SIG: slow.hook: string
+LEAD: The short name of the hook that ran out: "on_tick", "every", or the event's own.
+
+--- of (field) ---
+SIG: slow.of: number
+LEAD: The pack's budget per tick, in milliseconds: `budget_ms` in citadel.yml.
+
+--- skipped (field) ---
+SIG: slow.skipped: number
+LEAD: Callbacks not run for want of budget, since the script started.
+
+--- used (field) ---
+SIG: slow.used: number
+LEAD: Milliseconds the pack spent in the tick that ran out.
+
+
+########## Socket ##########
+
+--- cancel (method) ---
+SIG: socket:cancel()
+LEAD: Closes the socket for good.
+
+--- send (method) ---
+SIG: socket:send(text: string) → boolean
+LEAD: True while the connection is up. Terminal receive-queue overflow; nil otherwise. Queues text; false when closed or full. Messages over 1 MiB are errors.
+PARAMS: text:string*
+RETURNS: boolean
+
+
+########## SocketMessage ##########
+
+--- json (method) ---
+SIG: socketMessage:json() → any
+LEAD: The message as a table; an error when it is not JSON.
+RETURNS: any
+
+--- text (field) ---
+SIG: socketMessage.text: string
+LEAD: The message as text.
+
+
+########## Sound ##########
+
+--- play (function) ---
+SIG: sound.play(name: string, opts: { at: Vec3 ?, volume: number ?, pitch: number ?, category: string ?, }?)
+LEAD: Plays a sound by name to everyone in the room; volume above 1 carries further, pitch 0.5..2.0.
+PARAMS: name:string*, opts:{ at: Vec3 ?, volume: number ?, pitch: number ?, category: string ?, }
+
+--- stop (function) ---
+SIG: sound.stop(name: string ?)
+LEAD: One sound by name, or every sound, for everyone in the room; 1.13+.
+PARAMS: name:string
+
+--- stream (function) ---
+SIG: sound.stream(opts: { url: string ?, file: string ?, at: (SoundSpeaker | { SoundSpeaker })?, to: (Player | { Player })?, distance: number ?, loop: boolean ?, name: string ?, }) → SoundStream
+LEAD: A live stream (MP3, or an FLV's sound) or a pack's sound file (OGG, MP3, WAV), heard through the mod a screen's stream uses. With `at`, from speakers: each player hears every speaker within `distance`. Without, from no place, at one volume. `to`: only these players. `loop`: files only.
+PARAMS: opts:{ url: string ?, file: string ?, at: ( SoundSpeaker | { SoundSpeaker })?, to: ( Player | { Player })?, distance: number ?, loop: boolean ?, name: string ?, }*
+RETURNS: SoundStream
+
+
+########## SoundStream ##########
+
+--- add (method) ---
+SIG: soundStream:add(at: SoundSpeaker) → number
+LEAD: 
+PARAMS: at:SoundSpeaker*
+RETURNS: number
+
+--- listen (method) ---
+SIG: soundStream:listen(player: Player)
+LEAD: Who hears it, changed while it plays.
+PARAMS: player:Player*
+
+--- move (method) ---
+SIG: soundStream:move(speaker: number, at: SoundSpeaker)
+LEAD: Speakers, for a sound made with `at`; on one with no place, an error.
+PARAMS: speaker:number*, at:SoundSpeaker*
+
+--- playing (field) ---
+SIG: soundStream.playing: boolean
+LEAD: False once stopped, or once a file that does not loop has played.
+
+--- remove (method) ---
+SIG: soundStream:remove(speaker: number)
+LEAD: 
+PARAMS: speaker:number*
+
+--- stop (method) ---
+SIG: soundStream:stop()
+LEAD: 
+
+--- unlisten (method) ---
+SIG: soundStream:unlisten(player: Player)
+LEAD: 
+PARAMS: player:Player*
+
+
+########## TerrainStep ##########
+
+--- below (field) ---
+SIG: terrainStep.below: number ?
+LEAD: An ore step places its veins below this y.
+
+--- big (field) ---
+SIG: terrainStep.big: number ?
+LEAD: Trees: one chunk in this many grows big trees instead of small ones.
+
+--- block (field) ---
+SIG: terrainStep.block: string ?
+LEAD: The block a clay, ore or patch step places.
+
+--- bonus (field) ---
+SIG: terrainStep.bonus: number ?
+LEAD: Trees: one chunk in this many gets one more tree.
+
+--- bound (field) ---
+SIG: terrainStep.bound: number ?
+LEAD: Springs: the y is picked below this bound before `nesting` pushes it deeper.
+
+--- chance (field) ---
+SIG: terrainStep.chance: number ?
+LEAD: Patch: made one time in this many, in place of `count` times.
+
+--- count (field) ---
+SIG: terrainStep.count: number ?
+LEAD: How many tries, veins, blobs, clumps or springs the step makes in a chunk.
+
+--- fluid (field) ---
+SIG: terrainStep.fluid: string ?
+LEAD: The fluid a springs step places: "water" or "lava".
+
+--- nesting (field) ---
+SIG: terrainStep.nesting: number ?
+LEAD: Springs: how many times the y is picked again below itself; lava's 2 keeps it deeper than water's 1.
+
+--- size (field) ---
+SIG: terrainStep.size: number ?
+LEAD: How long each clay blob or ore vein is.
+
+--- step (field) ---
+SIG: terrainStep.step: string
+LEAD: Which populate step: "dungeons", "clay", "ore", "trees", "patch", "reeds", "cactus", "springs" or "snow".
+
+
+########## TextRuns ##########
+
+--- bold (field) ---
+SIG: textRuns.bold: boolean ?
+LEAD: Bold for every run that does not say otherwise.
+
+--- color (field) ---
+SIG: textRuns.color: Ink ?
+LEAD: The colour of every run that does not pick its own: a colour value, a name or hex.
+
+--- effect (field) ---
+SIG: textRuns.effect: Effect ?
+LEAD: Called for every letter, every frame the text is on screen: hands back how that letter looks, or nil to leave it.
+
+--- italic (field) ---
+SIG: textRuns.italic: boolean ?
+LEAD: Italic for every run that does not say otherwise.
+
+--- strike (field) ---
+SIG: textRuns.strike: boolean ?
+LEAD: Struck through for every run that does not say otherwise.
+
+--- underline (field) ---
+SIG: textRuns.underline: boolean ?
+LEAD: Underlined for every run that does not say otherwise.
+
+
+########## Texture ##########
+
+--- copy (method) ---
+SIG: texture:copy() → Texture
+LEAD: Returns a copy to draw on.
+RETURNS: Texture
+
+--- draw (method) ---
+SIG: texture:draw(other: Texture, x: number ?, y: number ?)
+LEAD: Draws another texture over this one; its see-through pixels are skipped.
+PARAMS: other:Texture*, x:number, y:number
+
+--- fill (method) ---
+SIG: texture:fill(color: Ink)
+LEAD: Paints every pixel one colour.
+PARAMS: color:Ink*
+
+--- frame (method) ---
+SIG: texture:frame(x: number, y: number, w: number, h: number, color: Ink)
+LEAD: Draws a box's outline, one pixel wide.
+PARAMS: x:number*, y:number*, w:number*, h:number*, color:Ink*
+
+--- height (field) ---
+SIG: texture.height: number
+LEAD: Height in pixels.
+
+--- noise (method) ---
+SIG: texture:noise(x: number, y: number, w: number, h: number, colors: { Ink }, seed: number ?)
+LEAD: Paints each pixel in the area one of the colours at random, as for stone, bark or grain.
+PARAMS: x:number*, y:number*, w:number*, h:number*, colors:{ Ink }*, seed:number
+
+--- pixel (method) ---
+SIG: texture:pixel(x: number, y: number, color: Ink)
+LEAD: Sets one pixel; (0, 0) is the top left.
+PARAMS: x:number*, y:number*, color:Ink*
+
+--- rect (method) ---
+SIG: texture:rect(x: number, y: number, w: number, h: number, color: Ink)
+LEAD: Fills a rectangle of pixels.
+PARAMS: x:number*, y:number*, w:number*, h:number*, color:Ink*
+
+--- sprite (method) ---
+SIG: texture:sprite(x: number, y: number, rows: { string }, inks: { [string]: Ink }, scale: number ?)
+LEAD: Draws pixel art from rows of characters, each character painted with its ink, as on a screen.
+PARAMS: x:number*, y:number*, rows:{ string }*, inks:{ [ string ]: Ink }*, scale:number
+
+--- width (field) ---
+SIG: texture.width: number
+LEAD: Width in pixels.
+
+
+########## Ui ##########
+
+--- actionbar (function) ---
+SIG: ui.actionbar(text: Text, color: Ink ?)
+LEAD: Shows a line above the hotbar to everyone in the room.
+PARAMS: text:Text*, color:Ink
+
+--- bossbar (function) ---
+SIG: ui.bossbar(opts: { title: Text ?, color: BarColor ?, progress: number ? }?) → Bar
+LEAD: Shows a boss bar to everyone in the room and returns its handle; progress 0..1. 1.8 reads the title on its action bar.
+PARAMS: opts:{ title: Text ?, color: BarColor ?, progress: number ? }
+RETURNS: Bar
+
+--- box (function) ---
+SIG: ui.box(opts: { id: string ?, width: number, height: number, color: Ink ?, radius: number ? }) → LayoutNode
+LEAD: The pieces of a layout (see "Layouts"). Sizes are pixels of the game's own HUD; a box is 1 to 256 a side. An item with an `id` is live.
+PARAMS: opts:{ id: string ?, width: number , height: number , color: Ink ?, radius: number ? }*
+RETURNS: LayoutNode
+
+--- column (function) ---
+SIG: ui.column(opts: { gap: number ?, align: LayoutAlign ?, [number]: LayoutNode }) → LayoutNode
+LEAD: 
+PARAMS: opts:{ gap: number ?, align: LayoutAlign ?, [ number ]: LayoutNode }*
+RETURNS: LayoutNode
+
+--- define (function) ---
+SIG: ui.define(name: string, opts: { anchor: "bottom" ?, margin: number ?, [number]: LayoutNode }) → Layout
+LEAD: A layout of one child, centred over the hotbar with its bottom edge `margin` pixels above the screen's (40, or 25 when `hide_hud` takes the hearts and the food away). While the pack loads only.
+PARAMS: name:string*, opts:{ anchor: "bottom" ?, margin: number ?, [ number ]: LayoutNode }*
+RETURNS: Layout
+
+--- image (function) ---
+SIG: ui.image(opts: { id: string ?, image: Texture, color: Ink ? }) → LayoutNode
+LEAD: 
+PARAMS: opts:{ id: string ?, image: Texture , color: Ink ? }*
+RETURNS: LayoutNode
+
+--- kit (field) ---
+SIG: ui.kit: { [string]: any }
+LEAD: What a dialog is made of (see "Dialogs"): row, column, stack, space, text, image, and window, button, tabs, close, badge, dot, progress, divider, card, grid, theme, mix and SCREEN.
+
+--- label (function) ---
+SIG: ui.label(opts: { id: string ?, text: string ?, width: number ?, align: LayoutAlign ?, color: Ink ? }) → LayoutNode
+LEAD: Words in the client's own letters, space to `~`. Give a label whose words change a `width`.
+PARAMS: opts:{ id: string ?, text: string ?, width: number ?, align: LayoutAlign ?, color: Ink ? }*
+RETURNS: LayoutNode
+
+--- row (function) ---
+SIG: ui.row(opts: { gap: number ?, align: LayoutAlign ?, [number]: LayoutNode }) → LayoutNode
+LEAD: The children are the list part: `ui.row{ gap = 4, a, b }`.
+PARAMS: opts:{ gap: number ?, align: LayoutAlign ?, [ number ]: LayoutNode }*
+RETURNS: LayoutNode
+
+--- sidebar (function) ---
+SIG: ui.sidebar(opts: ({ title: Text ?, lines: { Text }? } | false)?)
+LEAD: Sets the sidebar for everyone in the room; lines run top to bottom and only changed lines are sent. nil or false removes the sidebar.
+PARAMS: opts:({ title: Text ?, lines: { Text }? } | false )
+
+--- stack (function) ---
+SIG: ui.stack(opts: { align: LayoutAlign ?, [number]: LayoutNode }) → LayoutNode
+LEAD: 
+PARAMS: opts:{ align: LayoutAlign ?, [ number ]: LayoutNode }*
+RETURNS: LayoutNode
+
+--- tab (function) ---
+SIG: ui.tab(opts: { header: Text ?, footer: Text ? })
+LEAD: Sets the player list's header and footer for everyone in the room.
+PARAMS: opts:{ header: Text ?, footer: Text ? }*
+
+--- title (function) ---
+SIG: ui.title(opts: { title: Text ?, subtitle: Text ?, color: Ink ?, fade_in: number ?, stay: number ?, fade_out: number ?, })
+LEAD: Shows a title and subtitle to everyone in the room; fades and stay are in seconds.
+PARAMS: opts:{ title: Text ?, subtitle: Text ?, color: Ink ?, fade_in: number ?, stay: number ?, fade_out: number ?, }*
+
+
+########## Video ##########
+
+--- stop (method) ---
+SIG: video:stop()
+LEAD: False once it ends (and does not loop) or is stopped. Stops the video.
+
+
+########## View ##########
+
+--- destroy (method) ---
+SIG: view:destroy()
+LEAD: Removes this player's view; they see the shared picture again.
+
+
+########## World ##########
+
+--- block (function) ---
+SIG: world.block(pos: Vec3) → BlockAt ?
+LEAD: The block there as the handle a hook gets: reads are live, and what it does lands on the next tick. `state` and `data` are for this pack's own blocks. `nil` where that chunk is not in memory.
+PARAMS: pos:Vec3*
+RETURNS: BlockAt ?
+
+--- build (function) ---
+SIG: world.build(fn: (b: Builder) -> (), opts: { detail: number ? }?) → Schematic
+LEAD: The same value, written in code instead of read from a file. `{ detail = 2 }`: coordinates are half blocks, fitted to slabs and stairs.
+PARAMS: fn:(b: Builder ) -> ()*, opts:{ detail: number ? }
+RETURNS: Schematic
+
+--- canvas (function) ---
+SIG: world.canvas(opts: { width: number ?, height: number ? }?) → Canvas
+LEAD: Makes a picture of `width` by `height` maps (1 by 1 by default, 16 at most a side) with no frame of its own, for a frame, a hand or a screen.
+PARAMS: opts:{ width: number ?, height: number ? }
+RETURNS: Canvas
+
+--- container (function) ---
+SIG: world.container(pos: Vec3) → Container ?
+LEAD: A chest's stacks, or nil where the block keeps none.
+PARAMS: pos:Vec3*
+RETURNS: Container ?
+
+--- dimension (function) ---
+SIG: world.dimension(name: string) → World
+LEAD: Another world of the server's group, by dimension id or its last part ("dungeon", "minecraft:the_nether"): that world's own `world` table.
+PARAMS: name:string*
+RETURNS: World
+
+--- display (function) ---
+SIG: world.display((opts: { kind: "model", model: Model, at: Vec3 ?, rotation: Orientation ?, scale: (number | Vec3)?, -- models require equal positive axes paint: { [string]: Ink }?, fallback: string ?, seats: { Vec3 }?, lead: boolean ?, }) -> ModelDisplay) → & ((opts: { kind: "item" | "text" | "block" | "frame", at: Vec3 ?, rotation: Orientation ?, scale: (Vec3 | number)?, billboard: Billboard ?, glow: (Ink | false)?, item: ItemSpec ?, canvas: Canvas ?, context: Context ?, text: Text ?, color: Ink ?, background: (Ink | false)?, line_width: number ?, shadow: boolean ?, block: string ?, facing: ScreenFacing ?, invisible: boolean ?, glide: number ?, lead: boolean ?, }) -> Display)
+LEAD: A model stands in the world through the same call as everything else, and is the one kind that hands back something other than a Display.
+PARAMS: (opts:{ kind: "model" , model: Model , at: Vec3 ?, rotation: Orientation ?, scale: ( number | Vec3 )?, -- models require equal positive axes paint: { [ string ]: Ink }?, fallback: string ?, seats: { Vec3 }?, lead: boolean ?, }) -> ModelDisplay*
+RETURNS: & ((opts: { kind: "item" | "text" | "block" | "frame" , at: Vec3 ?, rotation: Orientation ?, scale: ( Vec3 | number )?, billboard: Billboard ?, glow: ( Ink | false )?, item: ItemSpec ?, canvas: Canvas ?, context: Context ?, text: Text ?, color: Ink ?, background: ( Ink | false )?, line_width: number ?, shadow: boolean ?, block: string ?, facing: ScreenFacing ?, invisible: boolean ?, glide: number ?, lead: boolean ?, }) -> Display )
+
+--- drop (function) ---
+SIG: world.drop(pos: Vec3, item: ItemSpec)
+LEAD: A stack on the ground at a block, as a broken block leaves one.
+PARAMS: pos:Vec3*, item:ItemSpec*
+
+--- entities (function) ---
+SIG: world.entities(query: { near: Vec3 ?, radius: number ?, kind: string ?, mob: boolean ? }?) → { EntityHandle }
+LEAD: Live and queued entities, in ascending id. Optional near/radius select a sphere; kind filters by canonical name. near and radius go together. `mob = true` gives the mobs only, `mob = false` the rest.
+PARAMS: query:{ near: Vec3 ?, radius: number ?, kind: string ?, mob: boolean ? }
+RETURNS: { EntityHandle }
+
+--- explode (function) ---
+SIG: world.explode(pos: Vec3, power: number ?)
+LEAD: A blast at a point. The power is clamped by this game's own column and the tick's explosion budget decides when it goes off, never whether.
+PARAMS: pos:Vec3*, power:number
+
+--- fill (function) ---
+SIG: world.fill(from: Vec3, to: Vec3, block: BlockRef)
+LEAD: Fills a box of blocks between two corners, live, stored and sent to everyone.
+PARAMS: from:Vec3*, to:Vec3*, block:BlockRef*
+
+--- generate (function) ---
+SIG: world.generate(rules: GeneratorRules) → Generated
+LEAD: Declares this world: the engine makes each chunk from the rules, on every core, and no script runs for a chunk.
+PARAMS: rules:GeneratorRules*
+RETURNS: Generated
+
+--- get_biome (function) ---
+SIG: world.get_biome(pos: Vec3) → string ?
+LEAD: Returns the biome name of the column at `pos`; `nil` where that chunk is not in memory.
+PARAMS: pos:Vec3*
+RETURNS: string ?
+
+--- get_block (function) ---
+SIG: world.get_block(pos: Vec3) → string ?
+LEAD: `nil` where that chunk is not in memory: a read never generates.
+PARAMS: pos:Vec3*
+RETURNS: string ?
+
+--- get_blocks (function) ---
+SIG: world.get_blocks(from: Vec3, to: Vec3) → { string ? }
+LEAD: A box, in x, then z, then y order.
+PARAMS: from:Vec3*, to:Vec3*
+RETURNS: { string ? }
+
+--- hitbox (function) ---
+SIG: world.hitbox(opts: { at: Vec3, width: number ?, height: number ?, depth: number ?, solid: boolean ?, on_click: ((player: Player, button: "left" | "right") -> ())?, }) → Hitbox
+LEAD: Makes an invisible box a player can click; `solid` also makes it a wall. `depth` is the width unless given. 1.19.4 and later.
+PARAMS: opts:{ at: Vec3 , width: number ?, height: number ?, depth: number ?, solid: boolean ?, on_click: ((player: Player , button: "left" | "right" ) -> ())?, }*
+RETURNS: Hitbox
+
+--- items (function) ---
+SIG: world.items() → { GroundItem }
+LEAD: The stacks on the ground: `{ id, item, count, at }` rows.
+RETURNS: { GroundItem }
+
+--- light (function) ---
+SIG: world.light(sources: { LightSource })
+LEAD: Sends players light no block makes, 1 to 15 a source; each call replaces the last, `{}` ends it. 1.14 and later.
+PARAMS: sources:{ LightSource }*
+
+--- light_at (function) ---
+SIG: world.light_at(pos: Vec3) → (number, number, boolean)
+LEAD: Block light and sky light, 0 to 15, and whether nothing above holds off the sky.
+PARAMS: pos:Vec3*
+RETURNS: ( number , number , boolean )
+
+--- npc (function) ---
+SIG: world.npc(opts: { name: string ?, at: Vec3 ?, rotation: BodyRotation ?, skin: (string | { value: string, signature: string } | false)?, }) → Npc
+LEAD: Places a player-shaped entity every client from 1.8 sees; removed when the script ends or reloads.
+PARAMS: opts:{ name: string ?, at: Vec3 ?, rotation: BodyRotation ?, skin: ( string | { value: string , signature: string } | false )?, }*
+RETURNS: Npc
+
+--- on_block_break (function) ---
+SIG: world.on_block_break(fn: (player: Player ?, pos: Vec3, block: string) -> ()) → Connection
+LEAD: What the survival tick did. Observe-only: the world has already changed, and what the callback returns is not read.
+PARAMS: fn:(player: Player ?, pos: Vec3 , block: string ) -> ()*
+RETURNS: Connection
+
+--- on_block_place (function) ---
+SIG: world.on_block_place(fn: (player: Player ?, pos: Vec3, block: string) -> ()) → Connection
+LEAD: Tells after a block was placed, with its canonical name. Observe-only; `player` is nil when nobody placed it or they left.
+PARAMS: fn:(player: Player ?, pos: Vec3 , block: string ) -> ()*
+RETURNS: Connection
+
+--- on_entity_death (function) ---
+SIG: world.on_entity_death(fn: (id: number, name: string) -> ()) → Connection
+LEAD: Tells after a mob died; it is gone, so its id and name is all there is. Mob kinds only.
+PARAMS: fn:(id: number , name: string ) -> ()*
+RETURNS: Connection
+
+--- on_entity_spawn (function) ---
+SIG: world.on_entity_spawn(fn: (entity: EntityHandle, name: string) -> ()) → Connection
+LEAD: Tells after a mob appeared, with its handle and name; a natural spawn fires it on every game version that has one, and a pack's own `world.spawn("cow", pos)` fires it too. Mob kinds only.
+PARAMS: fn:(entity: EntityHandle , name: string ) -> ()*
+RETURNS: Connection
+
+--- on_generate (function) ---
+SIG: world.on_generate(fn: (chunk: Chunk) -> ())
+LEAD: Called for a chunk each time it comes into memory, in a script world; it must make the same blocks every time.
+PARAMS: fn:(chunk: Chunk ) -> ()*
+
+--- on_populate (function) ---
+SIG: world.on_populate(fn: (chunk: Chunk) -> ())
+LEAD: Each chunk the overworld terrain made, once, after it made it.
+PARAMS: fn:(chunk: Chunk ) -> ()*
+
+--- paste (function) ---
+SIG: world.paste(schem: Schematic, origin: Vec3, opts: { air: boolean ?, part: string ? }?)
+LEAD: Live, stored and sent; air is skipped unless `air` is true.
+PARAMS: schem:Schematic*, origin:Vec3*, opts:{ air: boolean ?, part: string ? }
+
+--- path (function) ---
+SIG: world.path(from: Vec3, to: Vec3, opts: { size: (number | { number })?, swim: boolean ?, fall: number ?, range: number ?, budget: number ? }?) → { Vec3 }?
+LEAD: The points a body walks from `from` to the block at `to`, or nil. The game's own search: a step up of one block, falls of `fall` (3). `size` is { width, height } (0.6, 1.8); `swim` goes through water; `range` (the distance + 16) and `budget` (2000 nodes) stop a long search, which then gives the part that came closest.
+PARAMS: from:Vec3*, to:Vec3*, opts:{ size: ( number | { number })?, swim: boolean ?, fall: number ?, range: number ?, budget: number ? }
+RETURNS: { Vec3 }?
+
+--- puppet (function) ---
+SIG: world.puppet(opts: { kind: string, at: Vec3 ?, rotation: BodyRotation ?, name: Text ? }) → Puppet
+LEAD: Places a mob's body with no mind of its own that the script moves; its name tag always shows. An error when this game has no such mob kind.
+PARAMS: opts:{ kind: string , at: Vec3 ?, rotation: BodyRotation ?, name: Text ? }*
+RETURNS: Puppet
+
+--- raycast (function) ---
+SIG: world.raycast(from: Vec3, direction: Vec3, max: number ?) → RayHit ?
+LEAD: The first block a ray from `from` along `direction` meets within `max` blocks, and the face it came in through; nil for none.
+PARAMS: from:Vec3*, direction:Vec3*, max:number
+RETURNS: RayHit ?
+
+--- raycasts (function) ---
+SIG: world.raycasts(rays: buffer, out: buffer, n: number)
+LEAD: `n` lines at once. `rays` holds six f64 a line (from x, y, z, to x, y, z); `out` gets one f64 a line: how far along it the first block is that stops it, or -1 for a clear line.
+PARAMS: rays:buffer*, out:buffer*, n:number*
+
+--- rules (function) ---
+SIG: world.rules(opts: { survival: boolean ?, fall: boolean ?, damage: boolean ?, hunger: boolean ?, anticheat: boolean ?, day_cycle: boolean ?, redstone: boolean ? }?) → Rules
+LEAD: `world.rules{ fall = true }` switches one on, false off; a rule left out or nil keeps its value, and a number or a string is an error. `world.rules()` reads them.
+PARAMS: opts:{ survival: boolean ?, fall: boolean ?, damage: boolean ?, hunger: boolean ?, anticheat: boolean ?, day_cycle: boolean ?, redstone: boolean ? }
+RETURNS: Rules
+
+--- schematic (function) ---
+SIG: world.schematic(file: string) → Schematic
+LEAD: A file inside the pack; a path that leaves it, or one that is not there, is an error naming the file.
+PARAMS: file:string*
+RETURNS: Schematic
+
+--- screen (function) ---
+SIG: world.screen(opts: { at: Vec3, facing: Facing | "up", up: Facing ?, width: number ?, height: number ?, glow: boolean ?, on_click: ((player: Player, x: number, y: number, button: "left" | "right") -> ())?, }) → Screen
+LEAD: Puts a wall of map frames, `width` by `height` frames (128 pixels each), in front of a wall; `at` is the top-left frame. Returns a Screen.
+PARAMS: opts:{ at: Vec3 , facing: Facing | "up" , up: Facing ?, width: number ?, height: number ?, glow: boolean ?, on_click: ((player: Player , x: number , y: number , button: "left" | "right" ) -> ())?, }*
+RETURNS: Screen
+
+--- sees (function) ---
+SIG: world.sees(from: Vec3, to: Vec3) → boolean
+LEAD: True when no block stops the line from `from` to `to`: a block with a collision box does (glass, leaves), water and grass do not.
+PARAMS: from:Vec3*, to:Vec3*
+RETURNS: boolean
+
+--- set_block (function) ---
+SIG: world.set_block(pos: Vec3, block: BlockRef, opts: { skin: HeadSkin ? }?)
+LEAD: `skin` is for "player_head" and "player_wall_head" only: an account's name, or the raw `textures` property.
+PARAMS: pos:Vec3*, block:BlockRef*, opts:{ skin: HeadSkin ? }
+
+--- set_blocks (function) ---
+SIG: world.set_blocks(changes: { { at: Vec3, block: BlockRef, skin: HeadSkin ? } })
+LEAD: Sets many blocks at once, live, stored and sent; the cheapest way. A row takes `skin` too, for a player head.
+PARAMS: changes:{ { at: Vec3 , block: BlockRef , skin: HeadSkin ? } }*
+
+--- spawn (function) ---
+SIG: world.spawn(def: EntityDef | string, pos: Vec3, data: { [string]: any }?) → EntityHandle ?
+LEAD: Puts an entity at a point and returns its handle. A mob kind of the game by name (`world.spawn("cow", pos)`) is the game's own entity, and takes no `data`. A pack's own kind takes the data it starts life holding. `nil` for a kind nothing defined and this game does not have.
+PARAMS: def:EntityDef | string*, pos:Vec3*, data:{ [ string ]: any }
+RETURNS: EntityHandle ?
+
+--- spawn_point (field) ---
+SIG: world.spawn_point: Vec3
+LEAD: Where players arrive in this room; writable. The same value as the room's `spawn_point`.
+
+--- time (function) ---
+SIG: world.time((at: number | TimeName | (s: number) -> number | TimeName) -> ()) → & (() -> number)
+LEAD: Holds the sky at a time (ticks, or "sunrise", "day", "noon", "sunset", "night", "midnight"), or asks a function each tick, `s` seconds after the call. With no argument: the time of day now, 0 to 23999.
+PARAMS: (at:number | TimeName | (s: number ) -> number | TimeName ) -> ()*
+RETURNS: & (() -> number )
+
+--- zone (function) ---
+SIG: world.zone(opts: { from: Vec3, to: Vec3, on_enter: ((player: Player) -> ())?, on_leave: ((player: Player) -> ())? }) → Zone
+LEAD: Makes a box of blocks, both corners included, that knows who is in it; checked once a tick by feet position. Ends with the script.
+PARAMS: opts:{ from: Vec3 , to: Vec3 , on_enter: ((player: Player ) -> ())?, on_leave: ((player: Player ) -> ())? }*
+RETURNS: Zone
+
+
+########## Zone ##########
+
+--- contains (method) ---
+SIG: zone:contains(player: Player) → boolean
+LEAD: Returns true when the player is in the zone.
+PARAMS: player:Player*
+RETURNS: boolean
+
+--- destroy (method) ---
+SIG: zone:destroy()
+LEAD: Removes the zone.
+
+--- players (method) ---
+SIG: zone:players() → { Player }
+LEAD: Returns who is in the zone now.
+RETURNS: { Player }
+
+
+########## citadel ##########
+
+--- budget (function) ---
+SIG: citadel.budget() → Budget
+LEAD: This pack's slice of a tick, and what it did with it.
+RETURNS: Budget
+
+--- env (field) ---
+SIG: citadel.env: string
+LEAD: "development", "unlisted" or "published": which copy of the game this is.
+
+--- game (field) ---
+SIG: citadel.game: string
+LEAD: The game version from citadel.yml, e.g. "1.8.9".
+
+--- log (function) ---
+SIG: citadel.log(... any)
+LEAD: Writes its arguments to the server log, under this pack's name.
+PARAMS: ...any:any*
+
+--- on_slow (function) ---
+SIG: citadel.on_slow(fn: (slow: Slow) -> ()) → Connection
+LEAD: Called when a batch runs out of budget; at most once a second.
+PARAMS: fn:(slow: Slow ) -> ()*
+RETURNS: Connection
+
+--- version (field) ---
+SIG: citadel.version: string
+LEAD: The engine version, e.g. "0.1.0".
+
+
+########## color ##########
+
+--- gradient (function) ---
+SIG: color.gradient(list: { Ink }, u: number, loop: boolean ?) → Color
+LEAD: The colour `u` (0 to 1) of the way along the list; with `loop`, `u` wraps and the last colour runs back into the first.
+PARAMS: list:{ Ink }*, u:number*, loop:boolean
+RETURNS: Color
+
+--- hsv (function) ---
+SIG: color.hsv(h: number, s: number, v: number) → Color
+LEAD: Makes a colour from hue, saturation and value, each 0 to 1.
+PARAMS: h:number*, s:number*, v:number*
+RETURNS: Color
+
+--- nearest (function) ---
+SIG: color.nearest(c: Color) → Color
+LEAD: The colour a picture really shows, since it snaps to the map palette.
+PARAMS: c:Color*
+RETURNS: Color
+
+
+########## colors ##########
+
+--- aqua (field) ---
+SIG: colors.aqua: Color
+LEAD: 
+
+--- black (field) ---
+SIG: colors.black: Color
+LEAD: 
+
+--- blue (field) ---
+SIG: colors.blue: Color
+LEAD: 
+
+--- cyan (field) ---
+SIG: colors.cyan: Color
+LEAD: 
+
+--- dark_aqua (field) ---
+SIG: colors.dark_aqua: Color
+LEAD: 
+
+--- dark_blue (field) ---
+SIG: colors.dark_blue: Color
+LEAD: 
+
+--- dark_gray (field) ---
+SIG: colors.dark_gray: Color
+LEAD: 
+
+--- dark_green (field) ---
+SIG: colors.dark_green: Color
+LEAD: 
+
+--- dark_purple (field) ---
+SIG: colors.dark_purple: Color
+LEAD: 
+
+--- dark_red (field) ---
+SIG: colors.dark_red: Color
+LEAD: 
+
+--- gold (field) ---
+SIG: colors.gold: Color
+LEAD: 
+
+--- gray (field) ---
+SIG: colors.gray: Color
+LEAD: 
+
+--- green (field) ---
+SIG: colors.green: Color
+LEAD: 
+
+--- light_purple (field) ---
+SIG: colors.light_purple: Color
+LEAD: 
+
+--- lime (field) ---
+SIG: colors.lime: Color
+LEAD: 
+
+--- magenta (field) ---
+SIG: colors.magenta: Color
+LEAD: 
+
+--- orange (field) ---
+SIG: colors.orange: Color
+LEAD: 
+
+--- pink (field) ---
+SIG: colors.pink: Color
+LEAD: 
+
+--- purple (field) ---
+SIG: colors.purple: Color
+LEAD: 
+
+--- red (field) ---
+SIG: colors.red: Color
+LEAD: 
+
+--- transparent (field) ---
+SIG: colors.transparent: Color
+LEAD: 
+
+--- white (field) ---
+SIG: colors.white: Color
+LEAD: 
+
+--- yellow (field) ---
+SIG: colors.yellow: Color
+LEAD: 
+
+
+########## data ##########
+
+--- copy (function) ---
+SIG: data.copy(value: any) → any
+LEAD: A detached JSON snapshot as ordinary Lua values/tables.
+PARAMS: value:any*
+RETURNS: any
+
+--- insert (function) ---
+SIG: data.insert((list: DataView, value: any) -> ()) → & ((list: DataView, index: number, value: any) -> ())
+LEAD: Insert into a nested data list; omitted index appends.
+PARAMS: (list:DataView , value: any ) -> ()*
+RETURNS: & ((list: DataView , index: number , value: any ) -> ())
+
+--- remove (function) ---
+SIG: data.remove(list: DataView, index: number ?) → any
+LEAD: Remove and return a detached value; omitted index removes the last element.
+PARAMS: list:DataView*, index:number
+RETURNS: any
+
+
+########## fields ##########
+
+--- cells (function) ---
+SIG: fields.cells(size: number, seed: number ?) → { distance: Field, random: Field }
+LEAD: A scattered grid, one point per `size` blocks: the distance to the nearest point, and that point's own number 0..1.
+PARAMS: size:number*, seed:number
+RETURNS: { distance: Field , random: Field }
+
+--- depth (field) ---
+SIG: fields.depth: Field
+LEAD: Blocks under the surface: `fields.height - fields.y`.
+
+--- hash (function) ---
+SIG: fields.hash(cell: number ?, seed: number ?) → Field
+LEAD: One number 0..1 for each square of `cell` blocks (1).
+PARAMS: cell:number, seed:number
+RETURNS: Field
+
+--- height (field) ---
+SIG: fields.height: Field
+LEAD: The y of the surface of a column, as a block.
+
+--- mix (function) ---
+SIG: fields.mix(a: Field | number, b: Field | number, t: Field | number) → Field
+LEAD: `a` where `t` is 0, `b` where it is 1.
+PARAMS: a:Field | number*, b:Field | number*, t:Field | number*
+RETURNS: Field
+
+--- noise (function) ---
+SIG: fields.noise(opts: { seed: number ?, scale: number ?, octaves: number ?, gain: number ?, lacunarity: number ?, solid: boolean ? }?) → Field
+LEAD: Smooth noise, about -1..1. `solid = true` changes with y too.
+PARAMS: opts:{ seed: number ?, scale: number ?, octaves: number ?, gain: number ?, lacunarity: number ?, solid: boolean ? }
+RETURNS: Field
+
+--- room (field) ---
+SIG: fields.room: Field
+LEAD: The height of the open space a block is in: 0 in rock, 64 at most (and in the open sky). `density` cannot use it.
+
+--- shore (field) ---
+SIG: fields.shore: Field
+LEAD: 1 on a column at the water's edge with water beside it.
+
+--- slope (field) ---
+SIG: fields.slope: Field
+LEAD: The step to the steepest of the four columns beside this one.
+
+--- water (field) ---
+SIG: fields.water: Field
+LEAD: How deep the water is over the surface; 0 and below on land.
+
+--- x (field) ---
+SIG: fields.x: Field
+LEAD: 
+
+--- y (field) ---
+SIG: fields.y: Field
+LEAD: 
+
+--- z (field) ---
+SIG: fields.z: Field
+LEAD: 
+
+
+########## http ##########
+
+--- get (function) ---
+SIG: http.get(url: string, options: {query: {[string]: string }?, headers: {[string]: string }?, timeout: number ?, cache: number ?}?) → HttpResponse
+LEAD: GET a URL. `cache` is the seconds a 200 answer is kept on disk; `timeout` is 1 to 60 seconds, 15 by default.
+PARAMS: url:string*, options:{query: {[ string ]: string }?, headers: {[ string ]: string }?, timeout: number ?, cache: number ?}
+RETURNS: HttpResponse
+
+--- socket (function) ---
+SIG: http.socket(url: string, options: {headers: {[string]: string }?, on_message: (message: SocketMessage) -> ()}) → Socket
+LEAD: Opens a WebSocket (`ws` or `wss`) and keeps it open: when the connection ends, the engine dials again. `on_message` gets each message on a tick.
+PARAMS: url:string*, options:{headers: {[ string ]: string }?, on_message: (message: SocketMessage ) -> ()}*
+RETURNS: Socket
+
+
+########## hub ##########
+
+--- experiences (function) ---
+SIG: hub.experiences() → { {slot: number, experience: string, title: string, pitch: string ?, icon: string ?, banner: string ?, players: number ?} }
+LEAD: The portals of the experience grounds. `experience` is what `/play` takes.
+RETURNS: { {slot: number , experience: string , title: string , pitch: string ?, icon: string ?, banner: string ?, players: number ?} }
+
+--- hubs (function) ---
+SIG: hub.hubs() → { {id: string, name: string, players: number ?, region: string ?} }
+LEAD: Every hub that is online, this one included. `id` is what `player:connect` takes.
+RETURNS: { {id: string , name: string , players: number ?, region: string ?} }
+
+--- point (function) ---
+SIG: hub.point(player: Player | string, slot: number, experience: string) → boolean
+LEAD: Turns the player's own live portal to another published experience.
+PARAMS: player:Player | string*, slot:number*, experience:string*
+RETURNS: boolean
+
+--- rent (function) ---
+SIG: hub.rent(player: Player | string, slot: number, product: string, experience: string ?) → string ?
+LEAD: Offers portal `slot` for Gems, to lead to `experience` (what `/play` takes). Returns the request id, or nil. More time on your own portal may leave `experience` out.
+PARAMS: player:Player | string*, slot:number*, product:string*, experience:string
+RETURNS: string ?
+
+--- servers (function) ---
+SIG: hub.servers() → { {id: string, name: string, category: string, motd: string ?, icon: string ?, banner: string ?, players: number ?, maxPlayers: number ?} }
+LEAD: The players' servers that are online, and the published experiences (`category == "experience"`). `id` is what `player:connect` takes.
+RETURNS: { {id: string , name: string , category: string , motd: string ?, icon: string ?, banner: string ?, players: number ?, maxPlayers: number ?} }
+
+
+########## models ##########
+
+--- new (function) ---
+SIG: models.new(name: string, fn: (m: ModelBuild) -> ()) → Model
+LEAD: Makes a model named `name` from the parts `fn` builds and returns it. Call it at the top of the script; from a callback it is an error.
+PARAMS: name:string*, fn:(m: ModelBuild ) -> ()*
+RETURNS: Model
+
+
+########## network ##########
+
+--- find (function) ---
+SIG: network.find(options: {label: string, players: number ?, party: (Player | string)?, start: {member: string, slots: number, data: any }?}) → (NetworkStarted ?, string ?)
+LEAD: The instance to send `players` players to (1 unless set), or nil when none has room. With `start`, one is started when none has room.
+PARAMS: options:{label: string , players: number ?, party: ( Player | string )?, start: {member: string , slots: number , data: any }?}*
+RETURNS: ( NetworkStarted ?, string ?)
+
+--- info (function) ---
+SIG: network.info() → ({network: string, id: string ?, member: string ?, label: string ?, slots: number ?, data: any }?, string ?)
+LEAD: This server's network, by name, and the instance this pack runs on: `id` and the fields after it are nil on a server that is not one.
+RETURNS: ({network: string , id: string ?, member: string ?, label: string ?, slots: number ?, data: any }?, string ?)
+
+--- list (function) ---
+SIG: network.list(label: string ?) → ({ NetworkInstance }, string ?)
+LEAD: The network's instances, or only those with `label`.
+PARAMS: label:string
+RETURNS: ({ NetworkInstance }, string ?)
+
+--- on_gone (function) ---
+SIG: network.on_gone(handler: (id: string) -> ()) → Connection
+LEAD: Called with the id of an instance that is gone.
+PARAMS: handler:(id: string ) -> ()*
+RETURNS: Connection
+
+--- on_instance (function) ---
+SIG: network.on_instance(handler: (instance: NetworkInstance) -> ()) → Connection
+LEAD: Called when an instance starts or changes.
+PARAMS: handler:(instance: NetworkInstance ) -> ()*
+RETURNS: Connection
+
+--- start (function) ---
+SIG: network.start(options: {member: string, label: string, slots: number, data: any }) → (NetworkStarted ?, string ?)
+LEAD: Starts an instance of `member`. Answers at once; it is online later.
+PARAMS: options:{member: string , label: string , slots: number , data: any }*
+RETURNS: ( NetworkStarted ?, string ?)
+
+--- status (function) ---
+SIG: network.status(options: {open: number, status: string ?, meta: any })
+LEAD: Says where this instance is. At most one a second is sent: the first at once, then the last of those that came after.
+PARAMS: options:{open: number , status: string ?, meta: any }*
+
+--- stop (function) ---
+SIG: network.stop(id: string) → (boolean, string ?)
+LEAD: Stops an instance of this network.
+PARAMS: id:string*
+RETURNS: ( boolean , string ?)
+
+
+########## noise ##########
+
+--- new (function) ---
+SIG: noise.new(opts: { seed: number ?, scale: number ?, octaves: number ?, gain: number ?, lacunarity: number ? }?) → Noise
+LEAD: Returns a noise. `scale` is the size of a hill in blocks (64), and each of the `octaves` (1) adds detail `lacunarity` (2) times finer and `gain` (0.5) times as strong.
+PARAMS: opts:{ seed: number ?, scale: number ?, octaves: number ?, gain: number ?, lacunarity: number ? }
+RETURNS: Noise
+
+
+########## parts ##########
+
+--- define (function) ---
+SIG: parts.define(def: PartDefinition)
+LEAD: Declares a named part and its generator; nothing runs on load. A generator runs on request, or when its code changes.
+PARAMS: def:PartDefinition*
+
+
+########## rooms ##########
+
+--- create (function) ---
+SIG: rooms.create(opts: { spawn_point: Vec3 ?, generate: ((chunk: Chunk) -> ())? }) → Room
+LEAD: Creates an isolated room with its own chunks, players and effects; `spawn_point` defaults to (0.5, 65, 0.5), `generate` fills each chunk.
+PARAMS: opts:{ spawn_point: Vec3 ?, generate: ((chunk: Chunk ) -> ())? }*
+RETURNS: Room
+
+--- main (field) ---
+SIG: rooms.main: Room
+LEAD: The main room, whose tables are the globals `world`, `players`, `ui` and the rest.
+
+
+########## routes ##########
+
+--- add (function) ---
+SIG: routes.add(route: { from: string, to: string, trigger: { block: string, ticks: number ? }?, placement: Vec3 ? })
+LEAD: From one dimension to another: standing `ticks` ticks in `block`, or only by `player:travel` without a trigger; arriving at `placement` or the destination's spawn.
+PARAMS: route:{ from: string , to: string , trigger: { block: string , ticks: number ? }?, placement: Vec3 ? }*
+
+
+########## shop ##########
+
+--- on_declined (function) ---
+SIG: shop.on_declined(handler: (purchase: ShopPurchase) -> ()) → Connection
+LEAD: Called when the player said no or did not answer.
+PARAMS: handler:(purchase: ShopPurchase ) -> ()*
+RETURNS: Connection
+
+--- on_paid (function) ---
+SIG: shop.on_paid(handler: (purchase: ShopPurchase) -> ()) → Connection
+LEAD: Called once per paid purchase; returning without an error hands it over. An error leaves it waiting, to be called again later.
+PARAMS: handler:(purchase: ShopPurchase ) -> ()*
+RETURNS: Connection
+
+--- owns (function) ---
+SIG: shop.owns(player: Player | string, product: string) → boolean
+LEAD: Whether the player owns this pass.
+PARAMS: player:Player | string*, product:string*
+RETURNS: boolean
+
+--- prompt (function) ---
+SIG: shop.prompt(player: Player | string, product: string) → string ?
+LEAD: Asks Minefort to offer `product` to the player. Returns the request id, or nil when it was not offered.
+PARAMS: player:Player | string*, product:string*
+RETURNS: string ?
+
+
+########## storage ##########
+
+--- flush (function) ---
+SIG: storage.flush()
+LEAD: Yields until saved; raises an error on failure. After initialization only.
+
+--- get (function) ---
+SIG: storage.get(key: string) → any
+LEAD: Returns the value saved under `key`, or nil when there is none.
+PARAMS: key:string*
+RETURNS: any
+
+--- keys (function) ---
+SIG: storage.keys(prefix: string ?) → { string }
+LEAD: Every key, sorted; with a prefix, only those that start with it.
+PARAMS: prefix:string
+RETURNS: { string }
+
+--- set (function) ---
+SIG: storage.set(key: string, value: any)
+LEAD: Saves a value under `key` in this pack's storage.json; nil forgets it.
+PARAMS: key:string*, value:any*
+
+--- status (function) ---
+SIG: storage.status() → { pending: boolean, error: string ? }
+LEAD: Last persistence error and whether there are unsaved changes.
+RETURNS: { pending: boolean , error: string ? }
+
+
+########## stores ##########
+
+--- blob_list (function) ---
+SIG: stores.blob_list(owner: string) → {{store: string, key: string, version: number, size: number }}
+LEAD: Lists a player's blobs across all blob stores in this scope, each with its store, key, version and size.
+PARAMS: owner:string*
+RETURNS: {{store: string , key: string , version: number , size: number }}
+
+--- lease (function) ---
+SIG: stores.lease(key: string, holder: string, ttl_ms: number) → number
+LEAD: Takes a lease on `key` for `holder`, lasting `ttl_ms` milliseconds (up to one hour); returns a fencing token.
+PARAMS: key:string*, holder:string*, ttl_ms:number*
+RETURNS: number
+
+--- open (function) ---
+SIG: stores.open() → DurableStore
+LEAD: Returns the experience's one store. It takes no id; passing one is an error.
+RETURNS: DurableStore
+
+--- release (function) ---
+SIG: stores.release(key: string, token: number)
+LEAD: Gives up the lease on `key` that `token` holds.
+PARAMS: key:string*, token:number*
+
+--- renew (function) ---
+SIG: stores.renew(key: string, token: number)
+LEAD: Extends the lease on `key` that `token` holds.
+PARAMS: key:string*, token:number*
+
+--- request (function) ---
+SIG: stores.request(query: {[string]: any }, bytes: string ?) → ({[string]: any }, string ?)
+LEAD: Sends one raw query to the store and yields until it answers; returns the answer table and any blob bytes.
+PARAMS: query:{[ string ]: any }*, bytes:string
+RETURNS: ({[ string ]: any }, string ?)
+
+
+########## time ##########
+
+--- every (function) ---
+SIG: time.every(seconds: number, fn: () -> ()) → Connection
+LEAD: Calls `fn` every `seconds`, precise to 1 ms and never drifting; use it for music.
+PARAMS: seconds:number*, fn:() -> ()*
+RETURNS: Connection
+
+--- now (function) ---
+SIG: time.now() → number
+LEAD: Seconds since the pack started.
+RETURNS: number
+
+--- on_tick (function) ---
+SIG: time.on_tick(fn: (tick: number) -> ()) → Connection
+LEAD: Calls `fn` every tick, 20 times a second, with the tick number; keep it short.
+PARAMS: fn:(tick: number ) -> ()*
+RETURNS: Connection
+
+
+########## vec3 ##########
+
+--- up (field) ---
+SIG: vec3.up: Vec3
+LEAD: vec3(0, 1, 0).
+
+--- zero (field) ---
+SIG: vec3.zero: Vec3
+LEAD: vec3(0, 0, 0).

@@ -1,0 +1,1 @@
+{"type": "ref", "name": "Context", "kind": "type", "assocType": "", "lead": "How an item display is posed; a read gives back the same words.", "typedef": "\"none\" | \"frame\" | \"menu\" | \"dropped\" | \"worn\" | \"held\" | \"own_hand\"", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "Context type"}

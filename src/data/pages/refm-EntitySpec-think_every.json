@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntitySpec", "name": "think_every", "title": "entitySpec.think_every", "kind": "field", "lead": "define only. Seconds between two thinks of one body; one tick (0.05) by default, at most 60. The engine spreads the bodies over the ticks.", "signature": "entitySpec.think_every: number ?", "params": [], "returns": [], "usedIn": []}

@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Block", "name": "name", "title": "block.name", "kind": "field", "lead": "The block's canonical name.", "signature": "block.name: string", "params": [], "returns": [], "usedIn": [{"quote": "block.name       -- \"rave:crate\"", "source": "Custom blocks", "href": "#/wiki/custom-blocks"}]}

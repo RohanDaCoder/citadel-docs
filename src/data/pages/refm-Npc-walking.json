@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Npc", "name": "walking", "title": "npc.walking", "kind": "field", "lead": "True while it walks a path, until the last point; never false with `loop`.", "signature": "npc.walking: boolean", "params": [], "returns": [], "usedIn": []}

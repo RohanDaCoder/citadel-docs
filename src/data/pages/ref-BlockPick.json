@@ -1,0 +1,1 @@
+{"type": "ref", "name": "BlockPick", "kind": "type", "assocType": "", "lead": "One block, or one of a list chosen by a field: `floor(by)` counts through the list and starts again at its end.", "typedef": "string | { [number]: string, by: (Field | number)? }", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "BlockPick type"}

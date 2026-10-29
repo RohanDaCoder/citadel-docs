@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Npc", "name": "id", "title": "npc.id", "kind": "field", "lead": "The entity id, what `players.on_click` reports in `hit.entity_id`.", "signature": "npc.id: number", "params": [], "returns": [], "usedIn": []}

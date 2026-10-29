@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "TerrainStep", "name": "bonus", "title": "terrainStep.bonus", "kind": "field", "lead": "Trees: one chunk in this many gets one more tree.", "signature": "terrainStep.bonus: number ?", "params": [], "returns": [], "usedIn": []}

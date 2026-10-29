@@ -1,0 +1,1 @@
+{"type": "ref", "name": "LayoutAlign", "kind": "type", "assocType": "", "lead": "How a row, a column or a stack lines its children up, and a label its words.", "typedef": "\"start\" | \"center\" | \"end\"", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "LayoutAlign type"}

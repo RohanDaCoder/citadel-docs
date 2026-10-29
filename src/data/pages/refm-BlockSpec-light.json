@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "BlockSpec", "name": "light", "title": "blockSpec.light", "kind": "field", "lead": "What it gives off, 0 to 15.", "signature": "blockSpec.light: number ?", "params": [], "returns": [], "usedIn": []}

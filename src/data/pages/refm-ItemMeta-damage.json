@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "ItemMeta", "name": "damage", "title": "itemMeta.damage", "kind": "field", "lead": "The wear a tool has taken; 0 is new.", "signature": "itemMeta.damage: number ?", "params": [], "returns": [], "usedIn": []}

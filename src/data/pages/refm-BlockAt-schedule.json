@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "BlockAt", "name": "schedule", "title": "blockAt:schedule", "kind": "method", "lead": "Asks for this block's `on_tick`, `tick_every` seconds from now.", "signature": "blockAt:schedule()", "params": [], "returns": [], "usedIn": []}

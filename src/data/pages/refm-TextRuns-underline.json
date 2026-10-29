@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "TextRuns", "name": "underline", "title": "textRuns.underline", "kind": "field", "lead": "Underlined for every run that does not say otherwise.", "signature": "textRuns.underline: boolean ?", "params": [], "returns": [], "usedIn": []}

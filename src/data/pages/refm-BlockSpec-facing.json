@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "BlockSpec", "name": "facing", "title": "blockSpec.facing", "kind": "field", "lead": "Turns its front to whoever places it; `block.facing` reads and turns it.", "signature": "blockSpec.facing: boolean ?", "params": [], "returns": [], "usedIn": []}

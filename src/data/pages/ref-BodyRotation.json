@@ -1,0 +1,1 @@
+{"type": "ref", "name": "BodyRotation", "kind": "type", "assocType": "", "lead": "Degrees: 0 yaw faces south, 90 west; positive pitch tips down. Constructors default missing angles to zero; later writes preserve them.", "typedef": "{ read yaw: number ?, read pitch: number ? }", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "BodyRotation type"}

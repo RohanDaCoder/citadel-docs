@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Texture", "name": "height", "title": "texture.height", "kind": "field", "lead": "Height in pixels.", "signature": "texture.height: number", "params": [], "returns": [], "usedIn": []}

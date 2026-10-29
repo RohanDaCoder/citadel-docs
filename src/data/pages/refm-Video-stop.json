@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Video", "name": "stop", "title": "video:stop", "kind": "method", "lead": "False once it ends (and does not loop) or is stopped. Stops the video.", "signature": "video:stop()", "params": [], "returns": [], "usedIn": []}

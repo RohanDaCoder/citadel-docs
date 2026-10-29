@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntityHandle", "name": "age", "title": "entityHandle.age", "kind": "field", "lead": "Ticks lived.", "signature": "entityHandle.age: number ?", "params": [], "returns": [], "usedIn": []}

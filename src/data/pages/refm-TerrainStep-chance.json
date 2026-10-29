@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "TerrainStep", "name": "chance", "title": "terrainStep.chance", "kind": "field", "lead": "Patch: made one time in this many, in place of `count` times.", "signature": "terrainStep.chance: number ?", "params": [], "returns": [], "usedIn": []}

@@ -1,0 +1,1 @@
+{"type": "ref", "name": "InventorySlot", "kind": "type", "assocType": "", "lead": "A stack as a script reads it. `id` is there for a pack item, `damage` for a worn tool.", "typedef": "{ item: string, count: number, id: string ?, damage: number ? }", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "InventorySlot type"}

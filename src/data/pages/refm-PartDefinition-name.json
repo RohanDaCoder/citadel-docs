@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "PartDefinition", "name": "name", "title": "partDefinition.name", "kind": "field", "lead": "Unique; a path, \"downtown/tower-3\", nests.", "signature": "partDefinition.name: string", "params": [], "returns": [], "usedIn": []}

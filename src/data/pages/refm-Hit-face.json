@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Hit", "name": "face", "title": "hit.face", "kind": "field", "lead": "The face of the block that was clicked.", "signature": "hit.face: Face ?", "params": [], "returns": [], "usedIn": [{"quote": "--   hit.face   = \"up\" | \"down\" | \"north\" | \"south\" | \"west\" | \"east\" | nil", "source": "Input", "href": "#/wiki/movement"}]}

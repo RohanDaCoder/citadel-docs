@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Dialog", "name": "update", "title": "dialog:update", "kind": "method", "lead": "A new view in place: a window, or a function that makes one.", "signature": "dialog:update(view: DialogNode | () -> DialogNode)", "params": [{"name": "view", "type": "DialogNode | () -> DialogNode", "required": true}], "returns": [], "usedIn": []}

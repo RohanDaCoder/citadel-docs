@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Block", "name": "resistance", "title": "block.resistance", "kind": "field", "lead": "The three the block-update tables own: nil in a game that has none.", "signature": "block.resistance: number ?", "params": [], "returns": [], "usedIn": []}

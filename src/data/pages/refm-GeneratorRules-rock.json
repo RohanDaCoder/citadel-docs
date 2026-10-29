@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "GeneratorRules", "name": "rock", "title": "generatorRules.rock", "kind": "field", "lead": "The body of the land, under the ground rules.", "signature": "generatorRules.rock: { GroundRule }?", "params": [], "returns": [], "usedIn": []}

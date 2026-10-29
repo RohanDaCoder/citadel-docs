@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntitySpec", "name": "speed", "title": "entitySpec.speed", "kind": "field", "lead": "How fast it goes, in blocks a second. A vehicle's top speed; a living body's walk at forward = 1, the game's own mob walk by default.", "signature": "entitySpec.speed: number ?", "params": [], "returns": [], "usedIn": []}

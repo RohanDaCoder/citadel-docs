@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "TerrainStep", "name": "count", "title": "terrainStep.count", "kind": "field", "lead": "How many tries, veins, blobs, clumps or springs the step makes in a chunk.", "signature": "terrainStep.count: number ?", "params": [], "returns": [], "usedIn": []}

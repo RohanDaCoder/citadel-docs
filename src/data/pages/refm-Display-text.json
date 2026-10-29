@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Display", "name": "text", "title": "display.text", "kind": "field", "lead": "text kind Reads back the words; takes any text.", "signature": "display.text: string ?", "params": [], "returns": [], "usedIn": []}

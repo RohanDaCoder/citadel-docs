@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "AskCount", "name": "answered", "title": "askCount.answered", "kind": "field", "lead": "Answers that arrived in time.", "signature": "askCount.answered: number", "params": [], "returns": [], "usedIn": []}

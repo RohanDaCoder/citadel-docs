@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "ShopPurchase", "name": "player", "title": "shopPurchase.player", "kind": "field", "lead": "The player's uuid.", "signature": "shopPurchase.player: string", "params": [], "returns": [], "usedIn": []}

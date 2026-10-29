@@ -1,0 +1,577 @@
+{
+ "sections": [
+  {
+   "id": "getting-started",
+   "title": "Getting started",
+   "pages": [
+    {
+     "slug": "what-is-citadel",
+     "title": "What is Citadel",
+     "description": "Citadel is Minefort's Luau scripting engine for Minecraft servers — one pack runs unchanged on every Java client from 1.8 to 26.x, as the whole game (lite mode) or as a plugin over survival (full mode)."
+    },
+    {
+     "slug": "quick-start",
+     "title": "Quick start",
+     "description": "Build a first Citadel pack from scratch — manifest, script, terrain, a join handler, a command — then run it, edit it live, and understand what the reload did."
+    },
+    {
+     "slug": "tooling",
+     "title": "Tooling",
+     "description": "Set up luau-lsp with Citadel's type definitions for autocomplete and strict type checking, and use the citadel CLI to run, check, generate and render packs."
+    },
+    {
+     "slug": "luau-primer",
+     "title": "Luau primer",
+     "description": "The Luau language in one page, for developers coming from JavaScript, Python or Java — syntax, tables as objects, types, strict mode, and the parts of standard Lua that Citadel leaves out."
+    }
+   ]
+  },
+  {
+   "id": "concepts",
+   "title": "Core concepts",
+   "pages": [
+    {
+     "slug": "architecture",
+     "title": "Architecture",
+     "description": "How a Citadel server is put together — the main room, per-room tables, ticks and the scheduler, chunks and loading, the pack lifecycle, and what happens on reload."
+    },
+    {
+     "slug": "pack-anatomy",
+     "title": "Pack anatomy",
+     "description": "Everything in a Citadel pack — the citadel.yml manifest key by key, the file layout, sounds and other assets, dimensions, permissions groups, and where the world and its data live on disk."
+    },
+    {
+     "slug": "runtime",
+     "title": "Runtime",
+     "description": "The script runtime in detail — task.spawn/wait/delay/defer semantics, the initialization exception, require and modules, the tick budget, what reload keeps and discards."
+    },
+    {
+     "slug": "events",
+     "title": "The event model",
+     "description": "How every on_* subscription works — connections and cancellation, the notification events across world, players and rooms, and the three cancellable asks with their two-millisecond deadline."
+    },
+    {
+     "slug": "conventions",
+     "title": "Conventions",
+     "description": "The rules every Citadel API call follows — namespaces, vec3 positions, colours and colour names, text runs, options tables with strict field checking, the nil/false/true tri-state, and the spelling invariants."
+    },
+    {
+     "slug": "rooms-and-dimensions",
+     "title": "Rooms and dimensions",
+     "description": "Two ways to have more than one world — rooms, made at runtime with rooms.create and each with its own world/players/ui/game tables, and dimensions, declared in citadel.yml and reached by routes and player:travel."
+    }
+   ]
+  },
+  {
+   "id": "world",
+   "title": "World & building",
+   "pages": [
+    {
+     "slug": "terrain-generation",
+     "title": "Terrain generation",
+     "description": "Making chunks with world.on_generate and world.on_populate, the Chunk API, biomes, noise, the a0.1.0 terrain steps in citadel.yml, and declaring a whole world with world.generate rules."
+    },
+    {
+     "slug": "block-reference",
+     "title": "Block reference",
+     "description": "Block naming in Citadel — canonical names without the namespace, [property=value] states in any order and subset, version fallbacks with | alternatives, the write and read calls, player heads with skins, and the detail = 2 half-block system."
+    },
+    {
+     "slug": "building",
+     "title": "Building",
+     "description": "world.build and the Builder API, Schematic values, pasting with world.paste and chunk:paste, turning, cropping and replacing builds, .schem import, the render/check workflow, craft advice for building well, and named parts with build mode."
+    },
+    {
+     "slug": "custom-blocks",
+     "title": "Custom blocks",
+     "description": "game.blocks.define makes a pack's own blocks — the definition fields, states and block.data, the eleven hooks with their exact callbacks, extends and the base() protocol, missed-deadline behaviour, redstone power, and textures and models for 1.21.4+ clients."
+    },
+    {
+     "slug": "game-data",
+     "title": "Game data",
+     "description": "The game registry a pack reads — game.block(name) and its fields, the block drops switch, game.item, entity kinds with their facts, the spawn/attacks/interact tri-state fields and their resolution rules, and game.terrain."
+    },
+    {
+     "slug": "world-state",
+     "title": "World state",
+     "description": "The room-level switches and clocks — world.rules with its seven boolean rules and read/write semantics, the time of day with world.time, weather, world.explode, and where players arrive with world.spawn_point."
+    },
+    {
+     "slug": "spatial-queries",
+     "title": "Zones, raycasts and paths",
+     "description": "Querying space — trigger zones with on_enter/on_leave, single and batched raycasts, line-of-sight checks, the mob pathfinder, light at a position, and nearby-player queries."
+    }
+   ]
+  },
+  {
+   "id": "entities",
+   "title": "Entities",
+   "pages": [
+    {
+     "slug": "custom-entities",
+     "title": "Custom entities",
+     "description": "Defining your own entity kinds with game.entities.define — looks, physics, size, persist, the living body, hit volumes, flying, and the on_think brain — plus amending the game's own kinds."
+    },
+    {
+     "slug": "entity-handles",
+     "title": "Entity handles",
+     "description": "The EntityHandle API — the live handle world.spawn returns, world.entities lists and every hook receives: position and rotation, velocity and push, nearby queries, e.data, and life checks."
+    },
+    {
+     "slug": "mobs",
+     "title": "Mobs and spawning",
+     "description": "Putting mobs in the world with world.spawn, how a mob acts on its own on both kinds of server, the per-kind spawn tri-state, and what mobs drop."
+    },
+    {
+     "slug": "npcs",
+     "title": "NPCs",
+     "description": "world.npc and the Npc API — skins, name tags, poses, walking, holding items, armour and riding — plus world.puppet, a mob body with no mind of its own that the script moves."
+    }
+   ]
+  },
+  {
+   "id": "players",
+   "title": "Players",
+   "pages": [
+    {
+     "slug": "player-lifecycle",
+     "title": "Player lifecycle",
+     "description": "The four player events — on_join, on_leave, on_death and on_respawn — the one player value and its per-session data table, what survives a reconnect, and moving a player to another server with player:connect."
+    },
+    {
+     "slug": "movement",
+     "title": "Movement and cameras",
+     "description": "Moving players — teleport, move_to, travel, push, and the writable speed, scale and reach — riding and seats, body rotation, the four camera modes with camera.path easing, and the input events a pack can read."
+    },
+    {
+     "slug": "inventory",
+     "title": "Inventory and items",
+     "description": "ItemSpec forms — a name or a table with count, name, lore, colours, glint, canvas, id, damage, model and skin — the give/take/count/inventory/held calls, pack items, head items, armour via wear, and recipes."
+    },
+    {
+     "slug": "visibility",
+     "title": "Visibility and teams",
+     "description": "Who sees whom — player.visible removes a body from every client, viewer:hide removes it from one viewer only, and can_see reads the two together; what hidden means, how long it lasts and what a new session resets."
+    },
+    {
+     "slug": "health",
+     "title": "Health and damage",
+     "description": "player.health, max_health, food and saturation — nil where the game version has no rule, the 1..1024 maximum, healing and respawn — plus player:damage, the death causes, the damage/fall/survival room rules and PvP through players.on_click."
+    },
+    {
+     "slug": "permissions",
+     "title": "Permissions",
+     "description": "Permission nodes — wildcards, a leading minus, most-specific-wins — groups in the pack's citadel.yml with inheritance, putting players in groups from script until they leave, operators with every node, and gating commands with player:has."
+    }
+   ]
+  },
+  {
+   "id": "ui",
+   "title": "Interface & media",
+   "pages": [
+    {
+     "slug": "ui-basics",
+     "title": "UI basics",
+     "description": "Chat lines, titles and subtitles, the action bar, boss bars, the sidebar and the tab list — the ui global and player.ui — plus the text-run system, colour names and moving text that every text surface shares."
+    },
+    {
+     "slug": "screens",
+     "title": "Screens and layouts",
+     "description": "world.screen — a wall or floor of map frames drawn on pixel by pixel, with click hooks and per-player views — and the layout system that puts a HUD of boxes, images and labels on the client's own screen."
+    },
+    {
+     "slug": "canvases",
+     "title": "Canvases and pictures",
+     "description": "world.canvas — a picture of one or more maps with no frame of its own, shown on frames, in hands and on screens — plus frame displays, the map palette, and video, live-stream and streamed-sound playback."
+    },
+    {
+     "slug": "menus",
+     "title": "Menus",
+     "description": "player.ui.menu — a titled grid of up to 54 items every client draws, chest on Java and form on Bedrock — and the hotbar as a per-player menu of nine items with live canvas maps."
+    },
+    {
+     "slug": "dialogs",
+     "title": "Dialogs",
+     "description": "player.ui.dialog — a screen of boxes, words and pictures built from ui.kit, live-redrawn after every click. Needs Java 1.21.6, a declared dialogs flag in citadel.yml, and a client that took the resource pack."
+    },
+    {
+     "slug": "displays",
+     "title": "Displays and models",
+     "description": "world.display — floating text, items, blocks, frames and 3D models with live fields, tweening and billboards — plus the models.new system of materials, textures, parts, boxes, named animations and vehicles."
+    },
+    {
+     "slug": "fx",
+     "title": "Particles and lasers",
+     "description": "fx.particle — particles at points, one call or many, with count, spread, velocity, speed and dust colour and size — and the beam pattern: dust along a line, redrawn every other tick, tweenable into a laser."
+    },
+    {
+     "slug": "sound",
+     "title": "Sound",
+     "description": "sound.play and player:sound for short effects through the client's resource pack, sound.stop, and sound.stream — music, ambience and radios through Simple Voice Chat, from speakers that move or no place at all."
+    }
+   ]
+  },
+  {
+   "id": "systems",
+   "title": "Server systems",
+   "pages": [
+    {
+     "slug": "commands",
+     "title": "Commands",
+     "description": "commands.add builds slash commands from a usage line — the argument types and ranges, permission nodes, aliases, tab-completion suggestions with tooltips, one name with several shapes, and what /help shows."
+    },
+    {
+     "slug": "storage",
+     "title": "Storage",
+     "description": "The per-pack local JSON store — storage.get/set/keys by key in the pack's storage.json, what a JSON value may be, the UTF-8 rule, atomic writes, and storage.status/flush for when a write fails."
+    },
+    {
+     "slug": "shared-stores",
+     "title": "Shared stores",
+     "description": "The experience-wide durable store — stores.open and the DurableStore calls, versions and conflict errors, fencing-token leases, player blobs, every size limit, and the rules of calling a store that yields."
+    },
+    {
+     "slug": "network",
+     "title": "Network",
+     "description": "An experience of more than one server — members, labels and instances; network.start/find/status, on_instance and on_gone, the instance table, how player:connect moves players, failures with reasons, and every limit."
+    },
+    {
+     "slug": "http",
+     "title": "HTTP",
+     "description": "http.get fetches public URLs with headers, timeout and an on-disk cache; the answer is an HttpResponse with :json() and :image(). Plus http.socket WebSockets, the queue limits, and fetching chunk terrain live."
+    },
+    {
+     "slug": "shop",
+     "title": "Shop",
+     "description": "Selling products for Gems — shop.prompt and shop.owns, the on_paid delivery contract with its all-handlers-must-succeed acknowledgement, on_declined, product keys, and the retry and idempotence rules."
+    },
+    {
+     "slug": "hub",
+     "title": "Hub",
+     "description": "What Minefort tells its own hub — hub.servers, hub.experiences and hub.hubs with their fields, hub.role ranks and hub.online, banners read through the http cache, and the rent/point portal calls."
+    },
+    {
+     "slug": "server-settings",
+     "title": "Server settings",
+     "description": "The server's citadel.yml — mode, packs, the bind addresses for Java, resource packs, Bedrock RakNet and NetherNet, game, world_dir, operators, online_mode, nethernet_tls and store_dir; the mode decision order and how a player's identity is decided."
+    },
+    {
+     "slug": "limits",
+     "title": "Limits",
+     "description": "The tick budget — budget_ms and its 2 ms default, what it covers and what keeps the 100 ms runaway limit instead, what happens when it runs out, citadel.budget() fields, citadel.on_slow, the 4096-event queue, and the asks the engine asks."
+    }
+   ]
+  },
+  {
+   "id": "guides",
+   "title": "Guides",
+   "pages": [
+    {
+     "slug": "guide-build-a-cottage",
+     "title": "Build a cottage",
+     "description": "Code a cottage — plinth, walls, set-back windows, gable roof, garden — as one world.build with named parts, paste it into generated ground, and check it with the citadel CLI."
+    },
+    {
+     "slug": "guide-coin-rush",
+     "title": "Coin rush",
+     "description": "Build a sixty-second arcade game — a round arena, gold plates taken by walking on them, a boss-bar countdown, live sidebar scores, and best scores kept in storage."
+    },
+    {
+     "slug": "guide-parkour-a-room-each",
+     "title": "Parkour, a room each",
+     "description": "Give every player a world of their own — /play makes a room with a random twelve-jump course, a live timer, gold checkpoints, an emerald finish, and a best time in storage."
+    },
+    {
+     "slug": "guide-a-dungeon-dimension",
+     "title": "A dungeon dimension",
+     "description": "Add a second world to a pack — declare a dungeon dimension in citadel.yml, generate mossy corridors under a bedrock roof, step on a carpet to travel in, and /leave to come back."
+    },
+    {
+     "slug": "guide-scoreboard-with-a-button",
+     "title": "Scoreboard with a button",
+     "description": "A compact tutorial — a screen in the air, a Tap me item on the hotbar: right-click it, a hat sound plays, and every player's tap count redraws on the board, kept in storage."
+    }
+   ]
+  },
+  {
+   "id": "cookbook",
+   "title": "Cookbook",
+   "pages": [
+    {
+     "slug": "cookbook-cooldowns",
+     "title": "Cooldowns",
+     "description": "Rate-limit commands and actions with player.data and time.now — per-player cooldowns that survive reloads safely and degrade correctly."
+    },
+    {
+     "slug": "cookbook-leaderboards",
+     "title": "Leaderboards",
+     "description": "Three leaderboard patterns — the live sidebar for a running game, the world.screen board that persists with storage, and the experience-wide best score with stores:increment."
+    },
+    {
+     "slug": "cookbook-teleport-pads",
+     "title": "Teleport pads",
+     "description": "Three ways to move players between places — world.zone trigger pads in a room, routes between dimensions with a standing trigger, and commands for explicit travel."
+    },
+    {
+     "slug": "cookbook-kits",
+     "title": "Kits",
+     "description": "Give players starter kits with player:give — inventory merging rules, taking items back, replacing the whole loadout, and hotbar shortcuts for one-click kits."
+    },
+    {
+     "slug": "cookbook-teams",
+     "title": "Teams",
+     "description": "Set up teams with player.data, make members visible only to their own team, and keep the assignments alive across joins and reloads."
+    },
+    {
+     "slug": "cookbook-minigame-loop",
+     "title": "A minigame loop",
+     "description": "The round-based minigame skeleton — a room per round with rooms.create, a countdown on time.every with a boss bar, scores in player.data, and cleanup when the last player leaves."
+    },
+    {
+     "slug": "cookbook-save-load",
+     "title": "Save and load",
+     "description": "Choosing and using the three persistence layers — player.data for the session, storage for the pack, stores for the experience — with flush, conflict and reload rules in one place."
+    }
+   ]
+  },
+  {
+   "id": "appendix",
+   "title": "Appendix",
+   "pages": [
+    {
+     "slug": "event-catalog",
+     "title": "Event catalog",
+     "description": "Every on_* event in the Citadel API in one table — what fires it, what the handler receives, and where the full treatment lives."
+    },
+    {
+     "slug": "client-versions",
+     "title": "Client versions",
+     "description": "The player:supports feature matrix — which client version each UI and world feature needs, how resource-pack refusals read, and what min_client does."
+    },
+    {
+     "slug": "faq",
+     "title": "FAQ and troubleshooting",
+     "description": "The questions that come up when a pack misbehaves — load failures, silent reloads, mobs that do not spawn, commands that vanish, stores that error, and what the log is telling you."
+    },
+    {
+     "slug": "limits-table",
+     "title": "Limits",
+     "description": "Every numeric limit in Citadel in one table — tick budgets, load times, event queues, stores, blobs, leases, builds and generation."
+    }
+   ]
+  }
+ ],
+ "reference": {
+  "domains": [
+   {
+    "id": "world",
+    "title": "World & game",
+    "globals": [
+     "world",
+     "game",
+     "models",
+     "parts",
+     "routes",
+     "noise",
+     "fields",
+     "data"
+    ]
+   },
+   {
+    "id": "players",
+    "title": "Players",
+    "globals": [
+     "players",
+     "camera"
+    ]
+   },
+   {
+    "id": "interface",
+    "title": "Interface & media",
+    "globals": [
+     "ui",
+     "fx",
+     "sound",
+     "message",
+     "tween",
+     "color",
+     "colors"
+    ]
+   },
+   {
+    "id": "systems",
+    "title": "Systems",
+    "globals": [
+     "commands",
+     "time",
+     "task",
+     "rooms",
+     "storage",
+     "stores",
+     "http",
+     "network",
+     "shop",
+     "hub"
+    ]
+   },
+   {
+    "id": "engine",
+    "title": "Engine",
+    "globals": [
+     "citadel",
+     "vec3"
+    ]
+   }
+  ],
+  "types": [
+   "AskCount",
+   "Asks",
+   "Bar",
+   "BarColor",
+   "Billboard",
+   "BiomeDefinition",
+   "Biomes",
+   "Block",
+   "BlockAmendSpec",
+   "BlockAt",
+   "BlockDef",
+   "BlockPick",
+   "BlockRef",
+   "BlockSpec",
+   "Blocks",
+   "Body",
+   "BodyRotation",
+   "Breaker",
+   "Budget",
+   "Builder",
+   "Camera",
+   "Canvas",
+   "ChaseCamera",
+   "Chunk",
+   "Color",
+   "ColorName",
+   "Command",
+   "CommandOpts",
+   "Commands",
+   "Connection",
+   "Container",
+   "Context",
+   "DamageHit",
+   "DataView",
+   "Dialog",
+   "DialogNode",
+   "Display",
+   "Drops",
+   "DurableStore",
+   "Easing",
+   "Effect",
+   "Entities",
+   "EntityAmendOptions",
+   "EntityAmendSpec",
+   "EntityCamera",
+   "EntityDef",
+   "EntityHandle",
+   "EntityKind",
+   "EntitySpec",
+   "Face",
+   "Faces",
+   "Facing",
+   "Feature",
+   "Field",
+   "FixedCamera",
+   "FluidRule",
+   "FreeCamera",
+   "Fx",
+   "Game",
+   "Generated",
+   "GeneratorRules",
+   "GroundItem",
+   "GroundRule",
+   "HeadSkin",
+   "Hit",
+   "Hitbox",
+   "HttpResponse",
+   "Hud",
+   "HudPart",
+   "Ink",
+   "InventorySlot",
+   "Item",
+   "ItemMatch",
+   "ItemMeta",
+   "ItemSpec",
+   "ItemTable",
+   "Items",
+   "Layout",
+   "LayoutAlign",
+   "LayoutNode",
+   "LetterStyle",
+   "LightSource",
+   "Looks",
+   "Material",
+   "Menu",
+   "Model",
+   "ModelBuild",
+   "ModelDisplay",
+   "ModelMaterial",
+   "ModelPart",
+   "ModelSkin",
+   "ModelTexture",
+   "MountTarget",
+   "NetworkInstance",
+   "NetworkStarted",
+   "Noise",
+   "Npc",
+   "NpcPose",
+   "Occupant",
+   "OrbitCamera",
+   "Orientation",
+   "Overlay",
+   "PartDefinition",
+   "Persist",
+   "Physics",
+   "Picture",
+   "PlantRule",
+   "Player",
+   "PlayerUi",
+   "Players",
+   "Puppet",
+   "RayHit",
+   "Recipes",
+   "Room",
+   "Rotation",
+   "Rules",
+   "Schematic",
+   "Screen",
+   "ScreenFacing",
+   "ShopPurchase",
+   "Slow",
+   "Socket",
+   "SocketMessage",
+   "Sound",
+   "SoundSpeaker",
+   "SoundStream",
+   "Suggester",
+   "Suggestion",
+   "TerrainStep",
+   "Text",
+   "TextRuns",
+   "Texture",
+   "TextureRef",
+   "ThingGrid",
+   "ThingRule",
+   "Think",
+   "TimeName",
+   "Trigger",
+   "Tween",
+   "Ui",
+   "Used",
+   "Vec3",
+   "Video",
+   "View",
+   "World",
+   "WorldTarget",
+   "Worn",
+   "Zone"
+  ]
+ }
+}

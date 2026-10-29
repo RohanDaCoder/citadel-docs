@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "BiomeDefinition", "name": "fog", "title": "biomeDefinition.fog", "kind": "field", "lead": "The colour of the far distance.", "signature": "biomeDefinition.fog: (Color | string)?", "params": [], "returns": [], "usedIn": []}

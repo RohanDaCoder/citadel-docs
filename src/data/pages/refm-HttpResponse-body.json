@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "HttpResponse", "name": "body", "title": "httpResponse.body", "kind": "field", "lead": "The answer as bytes.", "signature": "httpResponse.body: string", "params": [], "returns": [], "usedIn": []}

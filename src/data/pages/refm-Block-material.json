@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Block", "name": "material", "title": "block.material", "kind": "field", "lead": "The jar's Material as five questions; nil in a game with no block-update tables.", "signature": "block.material: Material ?", "params": [], "returns": [], "usedIn": []}

@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntityKind", "name": "height", "title": "entityKind.height", "kind": "field", "lead": "Its height in blocks, in this version's numbers.", "signature": "entityKind.height: number", "params": [], "returns": [], "usedIn": []}

@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Socket", "name": "cancel", "title": "socket:cancel", "kind": "method", "lead": "Closes the socket for good.", "signature": "socket:cancel()", "params": [], "returns": [], "usedIn": [{"quote": "socket:cancel()      -- closes it for good", "source": "HTTP", "href": "#/wiki/http"}]}

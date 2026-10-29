@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "BlockSpec", "name": "name", "title": "blockSpec.name", "kind": "field", "lead": "Without a namespace. The pack's own is put in front of it, and a colon here is refused: a pack cannot write another pack's name.", "signature": "blockSpec.name: string", "params": [], "returns": [], "usedIn": []}

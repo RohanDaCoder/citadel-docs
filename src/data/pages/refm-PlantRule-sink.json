@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "PlantRule", "name": "sink", "title": "plantRule.sink", "kind": "field", "lead": "Blocks to stand lower: 1 is in the ground, or in the top of the water.", "signature": "plantRule.sink: number ?", "params": [], "returns": [], "usedIn": []}

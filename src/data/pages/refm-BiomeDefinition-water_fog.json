@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "BiomeDefinition", "name": "water_fog", "title": "biomeDefinition.water_fog", "kind": "field", "lead": "The colour of the view under water.", "signature": "biomeDefinition.water_fog: (Color | string)?", "params": [], "returns": [], "usedIn": []}

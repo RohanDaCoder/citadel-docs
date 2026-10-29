@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Display", "name": "shadow", "title": "display.shadow", "kind": "field", "lead": "Text kind: whether the words have a shadow; false by default.", "signature": "display.shadow: boolean ?", "params": [], "returns": [], "usedIn": []}

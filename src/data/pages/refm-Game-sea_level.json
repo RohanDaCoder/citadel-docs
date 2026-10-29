@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Game", "name": "sea_level", "title": "game.sea_level", "kind": "field", "lead": "The y of this world's sea level.", "signature": "game.sea_level: number", "params": [], "returns": [], "usedIn": [{"quote": "game.sea_level", "source": "Game data", "href": "#/wiki/game-data"}]}

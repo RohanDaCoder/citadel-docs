@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "Zone", "name": "contains", "title": "zone:contains", "kind": "method", "lead": "Returns true when the player is in the zone.", "signature": "zone:contains(player: Player) → boolean", "params": [{"name": "player", "type": "Player", "required": true}], "returns": ["boolean"], "usedIn": []}

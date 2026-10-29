@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "EntityHandle", "name": "on_ground", "title": "entityHandle.on_ground", "kind": "field", "lead": "Whether it stands on something. Nil once it is gone.", "signature": "entityHandle.on_ground: boolean ?", "params": [], "returns": [], "usedIn": []}

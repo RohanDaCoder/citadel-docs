@@ -1,0 +1,1 @@
+{"type": "ref", "name": "EntityDef", "kind": "type", "assocType": "", "lead": "What `define{}` hands back. Usable anywhere the name is, so an author rarely types the namespace at all.", "typedef": "{ read name: string, read mob: false }", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "EntityDef type"}

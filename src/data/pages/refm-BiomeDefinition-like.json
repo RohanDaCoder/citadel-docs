@@ -1,0 +1,1 @@
+{"type": "refmember", "parent": "BiomeDefinition", "name": "like", "title": "biomeDefinition.like", "kind": "field", "lead": "The vanilla biome to copy; \"plains\" when left out.", "signature": "biomeDefinition.like: string ?", "params": [], "returns": [], "usedIn": []}
