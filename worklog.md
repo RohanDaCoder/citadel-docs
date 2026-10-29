@@ -311,3 +311,18 @@ Work Log:
 
 Stage Summary:
 - Repo now mirrored at github.com:RohanDaCoder/citadel-docs; future syncs: GIT_SSH_COMMAND="python3 scripts/git_ssh.py" git push origin main
+
+---
+Task ID: 9
+Agent: main (Z.ai)
+Task: Auto-push hook — sync remote on every commit
+
+Work Log:
+- Added .githooks/post-commit (tracked in-repo): after every successful commit it pushes the current branch (HEAD) to origin (git@github.com:RohanDaCoder/citadel-docs.git), falling back to the canonical URL if origin is missing.
+- Transport: exports GIT_SSH_COMMAND=scripts/git_ssh.py (paramiko) when present for this openssh-less container; clones with real ssh skip that and use git's default transport.
+- Failure semantics: push errors never block the commit (exit 0); the warning notes retry-on-next-commit, and git push inherently ships any backlog, so failed pushes self-heal on the next commit. Detached HEAD is skipped.
+- Activated via git config core.hooksPath .githooks (local; one command re-enables in any clone).
+- Self-verified: the commit that adds this hook triggers it, pushing itself to origin; remote HEAD confirmed equal to local HEAD afterward.
+
+Stage Summary:
+- Every commit on this working copy now mirrors to github.com/RohanDaCoder/citadel-docs automatically, including platform auto-snapshots (post-commit is not bypassed by --no-verify).

@@ -1,0 +1,41 @@
+#!/bin/bash
+# .githooks/post-commit — auto-push every commit to the citadel-docs remote.
+#
+# Enabled in this working copy via: git config core.hooksPath .githooks
+# Enable in a fresh clone with the same command.
+#
+# Behaviour:
+#   * pushes the current branch after every successful commit
+#   * this container has no openssh-client, so it routes the push through
+#     scripts/git_ssh.py (paramiko transport) when that file exists;
+#     normal clones with a real ssh binary use git's default transport
+#   * a failed push never blocks the commit: it prints a warning and
+#     exits 0; the next commit retries (git push sends the whole backlog)
+#   * detached-HEAD states are skipped silently
+
+set -u
+
+repo="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
+[ -n "${repo}" ] || exit 0
+
+# only act on a real branch
+git symbolic-ref -q HEAD >/dev/null 2>&1 || exit 0
+
+# transport: in-repo paramiko wrapper when available (container has no ssh)
+wrapper="${repo}/scripts/git_ssh.py"
+if [ -f "${wrapper}" ]; then
+  export GIT_SSH_COMMAND="python3 ${wrapper}"
+fi
+
+# remote: prefer configured origin, fall back to canonical URL
+remote="git@github.com:RohanDaCoder/citadel-docs.git"
+git remote get-url origin >/dev/null 2>&1 && remote="origin"
+
+err="$(git push "${remote}" HEAD 2>&1)"
+status=$?
+if [ $status -eq 0 ]; then
+  echo "[post-commit] auto-pushed $(git rev-parse --short HEAD) to ${remote}"
+  exit 0
+fi
+echo "[post-commit] push failed (rc=${status}; will retry on next commit): ${err}" >&2
+exit 0
