@@ -298,3 +298,16 @@ Work Log:
 Stage Summary:
 - Deliverables: download/citadel-wiki.bundle (full-history portable repo), scripts/git_ssh.py + scripts/gen_deploy_key.py (in-container SSH push transport), deploy public key printed in chat for authorization.
 - Pending one user input: the GitHub repo URL (after adding the deploy key); then `git remote add origin git@github.com:<user>/<repo>.git && git push -u origin main` completes the sync from here.
+
+---
+Task ID: 8 (cont.)
+Agent: main (Z.ai)
+Task: Remote wired and initial push
+
+Work Log:
+- User added the deploy key and provided the remote: git@github.com:RohanDaCoder/citadel-docs.git
+- Added as origin; ls-remote auth via the paramiko transport succeeded; remote repo empty (no refs).
+- Pushed full history (main) with upstream tracking.
+
+Stage Summary:
+- Repo now mirrored at github.com:RohanDaCoder/citadel-docs; future syncs: GIT_SSH_COMMAND="python3 scripts/git_ssh.py" git push origin main
