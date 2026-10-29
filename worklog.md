@@ -355,3 +355,21 @@ Work Log:
 
 Stage Summary:
 - Every commit now fetches remote edits before pushing (no more non-fast-forward rejections after web UI edits), and a periodic cron keeps local fresh regardless of commit activity.
+
+---
+Task ID: 11
+Agent: main (Z.ai)
+Task: Integrate rohan-local (user's Windows repo) into main
+
+Work Log:
+- User pushed their independently-born repo (from the zip deliverable) as remote branch rohan-local: 5 commits — Initial Commit, format code, remove duplicate preview script, crlf .gitattributes, Astro 7.4.2 + Starlight 0.42.7 + sharp 0.35.5 upgrade.
+- Histories unrelated (no common ancestor) by design: theirs = zip snapshot lineage, main = container pipeline lineage. Full merge/rebase rejected as conflict-prohibitive; cherry-pick + scoped replay chosen.
+- Cherry-picked the three functional commits (authorship preserved): e21d3ae removes the duplicate "start" script (kept preview; main's generate:llms/sync scripts retained through auto-merge), 91752f7 adds .gitattributes "* text=crlf", 1c1d969 upgrades deps — resolved manually: package.json union (their bumps + my scripts), bun.lock theirs (Astro 7 lock), astro.config.mjs theirs (prettier style, top-level tagline dropped per Starlight 0.42 strict config).
+- Format commit NOT cherry-picked (901 of 1025 touched files are generated pages/artifacts that regenerate in generator style; prettier-ing them = pure churn). Replayed instead: verified bunx prettier reproduces their formatting byte-for-byte on an identical file, then prettier'd the hand-maintained set — 106 files byte-identical to 7ba7dfb, 8 evolved files (7-member sync pages) formatted on current content.
+- Excluded 7 wiki_src/_sources pages built on the '--- item' pseudo-list construct (blocks-and-terrain, building-well, custom-entities, layouts, named-parts, npcs, sound): prettier (both versions) corrupts their nested tables; original formatting kept — it is what the site renders correctly.
+- Committed as 1d73f88 with the user's authorship; hook auto-pushed each step.
+- Verification under the upgraded toolchain: bun install (91 pkgs, bun.lock consistent), bun run build — 916 pages in 12.06s under Astro 7.4.2 / Starlight 0.42.7, Pagefind over 1820 HTML files; check_dist_links.py — 220408 links, 0 broken, 0 anchor misses.
+- Not adopted from rohan-local: the Initial Commit (its tree is subsumed by main's evolved state). Flagged to user: package-lock.json is now stale (Astro 5-era) while bun.lock is canonical; suggest deleting it.
+
+Stage Summary:
+- main = full pipeline + user's Astro 7 upgrade + scoped formatting, verified end-to-end; rohan-local kept on the remote as reference.
