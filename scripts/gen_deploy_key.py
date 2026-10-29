@@ -1,53 +1,92 @@
 #!/usr/bin/env python3
-"""Generate an ed25519 deploy keypair for git SSH pushes.
+"""Generate a fresh Ed25519 deploy keypair for citadel-docs sync.
 
-The container has no ssh-keygen binary, so we use paramiko.
-Keys land in ~/.ssh/id_ed25519(.pub). The public key is printed
-so it can be added as a GitHub deploy key (with write access).
+Writes:
+  /home/z/my-project/.secrets/id_ed25519      (private, mode 600)
+  /home/z/my-project/.secrets/id_ed25519.pub  (public,  mode 644)
+
+Both paths are under .secrets/, which is gitignored — so neither half
+can ever leak to GitHub via a stray `git add`.
+
+Ed25519 is generated via the `cryptography` library (a paramiko
+dependency, already installed) using standard OpenSSH-format
+serialization. The script verifies that paramiko can load the key back
+after writing — that proves scripts/git_ssh.py will be able to use it
+for fetch/push.
+
+Idempotent: refuses to overwrite an existing private key. Delete the
+file first if you want a fresh keypair.
 """
 import os
 import sys
 
 from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+from cryptography.hazmat.primitives.asymmetric.ed25519 import (
+    Ed25519PrivateKey,
+)
+import paramiko  # for round-trip verification
 
-SSH_DIR = os.path.expanduser("~/.ssh")
-PRIV = os.path.join(SSH_DIR, "id_ed25519")
-PUB = PRIV + ".pub"
-COMMENT = "citadel-wiki-container"
+SECRETS_DIR = "/home/z/my-project/.secrets"
+PRIV_PATH = os.path.join(SECRETS_DIR, "id_ed25519")
+PUB_PATH = os.path.join(SECRETS_DIR, "id_ed25519.pub")
+COMMENT = "citadel-docs-sync@container"
 
 
 def main() -> int:
-    if os.path.exists(PRIV):
-        print(f"key already exists: {PRIV}")
-        with open(PUB) as fh:
-            print(fh.read(), end="")
-        return 0
+    if os.path.exists(PRIV_PATH):
+        print(f"[keygen] refusing to overwrite existing private key at {PRIV_PATH}")
+        print("[keygen] delete it first if you genuinely want a fresh keypair.")
+        return 1
 
-    os.makedirs(SSH_DIR, mode=0o700, exist_ok=True)
-    key = Ed25519PrivateKey.generate()
-    priv_pem = key.private_bytes(
-        serialization.Encoding.PEM,
-        serialization.PrivateFormat.OpenSSH,
-        serialization.NoEncryption(),
+    os.makedirs(SECRETS_DIR, exist_ok=True)
+    os.chmod(SECRETS_DIR, 0o700)
+
+    # Generate Ed25519 keypair and serialize in standard OpenSSH format.
+    private_key = Ed25519PrivateKey.generate()
+    priv_pem = private_key.private_bytes(
+        encoding=serialization.Encoding.PEM,  # OpenSSH priv format is PEM-wrapped
+        format=serialization.PrivateFormat.OpenSSH,
+        encryption_algorithm=serialization.NoEncryption(),
     )
-    with open(PRIV, "wb") as fh:
-        fh.write(priv_pem)
-    os.chmod(PRIV, 0o600)
+    with open(PRIV_PATH, "wb") as f:
+        f.write(priv_pem)
+    os.chmod(PRIV_PATH, 0o600)
 
-    pub_bytes = key.public_key().public_bytes(
-        serialization.Encoding.OpenSSH,
-        serialization.PublicFormat.OpenSSH,
+    # Public key in authorized_keys format: "ssh-ed25519 <b64> <comment>"
+    pub_bytes = private_key.public_key().public_bytes(
+        encoding=serialization.Encoding.OpenSSH,
+        format=serialization.PublicFormat.OpenSSH,
     )
-    pub_line = pub_bytes.decode() + " " + COMMENT + "\n"
-    with open(PUB, "w") as fh:
-        fh.write(pub_line)
-    os.chmod(PUB, 0o644)
+    # cryptography returns "ssh-ed25519 <b64>" with no comment; add ours.
+    pub_line = pub_bytes.decode("ascii").strip() + " " + COMMENT
+    with open(PUB_PATH, "w") as f:
+        f.write(pub_line + "\n")
+    os.chmod(PUB_PATH, 0o644)
 
-    print("generated:", PRIV)
+    # Round-trip: prove paramiko can load the key we just wrote. If this
+    # fails, sync will fail too — better to know now.
+    try:
+        paramiko.Ed25519Key.from_private_key_file(PRIV_PATH)
+    except Exception as e:
+        print(f"[keygen] round-trip FAILED — paramiko cannot load the key: {e}")
+        return 1
+
+    print("[keygen] generated fresh Ed25519 deploy keypair (round-trip verified):")
+    print(f"  private: {PRIV_PATH}  (mode 600, gitignored, stays in container)")
+    print(f"  public:  {PUB_PATH}")
     print()
-    print("=== PUBLIC KEY (add as GitHub deploy key with write access) ===")
-    print(pub_line, end="")
+    print("=== PUBLIC KEY — register this on GitHub as a deploy key ===")
+    print(pub_line)
+    print("=== END PUBLIC KEY ===")
+    print()
+    print("GitHub setup:")
+    print("  1. https://github.com/RohanDaCoder/citadel-docs/settings/keys/new")
+    print("  2. Title: citadel-docs-sync")
+    print("  3. Key: paste the single public-key line above")
+    print("  4. CHECK 'Allow write access' (required for push)")
+    print("  5. Add key")
+    print()
+    print("Then: python3 /home/z/my-project/scripts/git_sync.py")
     return 0
 
 
