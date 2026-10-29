@@ -1,0 +1,105 @@
+# Citadel
+
+> Minefort's own Minecraft server. A pack is a folder of Luau scripts that becomes a game any Java client can join. API version 0.1.0.
+
+The whole API in one file: https://minefort.com/docs/citadel/llms-full.txt
+
+## Examples
+
+Whole packs that run: read one to see how the calls below fit together.
+
+- [Your first pack](https://minefort.com/docs/citadel/your-first-pack): Build a small lobby with solid ground, a welcome, and a /spawn command. A pack is a folder with two files: citadel.yml configures it, and main.luau defines what happens in the…
+- [Scoreboard with a button](https://minefort.com/docs/citadel/scoreboard-with-a-button): The hotbar is the menu, the screen shows the scores, and storage keeps the count over restarts. Clients from 1.8 see it all.
+- [A world per player](https://minefort.com/docs/citadel/a-world-per-player): rooms.create gives a player their own world, with own chunks, players and effects. Add the room’s listeners before you move the player: its on_join fires as the player arrives.
+
+## Basics
+
+What a pack is, how a server runs it, and the rules every call follows.
+
+- [Packs](https://minefort.com/docs/citadel/packs): A pack is a folder. citadel.yml names the pack and points at main.luau. Each assets/sounds/*.ogg file becomes a sound event named <pack>.<file>.
+- [Server settings](https://minefort.com/docs/citadel/server-settings): The citadel.yml beside the world describes the server. On a hosted server, the owner changes settings here, not on the command line. An edit takes effect on restart and survives…
+- [API basics](https://minefort.com/docs/citadel/api-basics): The rules that hold for every call: namespaces, handles, callbacks and errors.
+- [Vectors and colours](https://minefort.com/docs/citadel/vectors-and-colours): Positions are vec3 values and colours are color values; both have math of their own.
+- [Version info](https://minefort.com/docs/citadel/version-info): The citadel global tells a script which engine runs it, and when a batch ran out of budget.
+
+## World
+
+The ground players stand on: terrain, blocks, builds, time, and the game version’s own data.
+
+- [Blocks and terrain](https://minefort.com/docs/citadel/blocks-and-terrain): Make the ground as chunks load, change blocks live, and build in code or from a file.
+- [Named parts](https://minefort.com/docs/citadel/named-parts): The world folder (world: city) is the source of truth. It is stored, saved as people edit it, and shipped with the pack. A part is a named box of it that a generator writes on…
+- [Custom blocks](https://minefort.com/docs/citadel/custom-blocks): game.blocks.define gives a pack its own block:
+- [Time and tweens](https://minefort.com/docs/citadel/time-and-tweens): Ticks, timers and tweens: what runs later, and what changes smoothly.
+- [Game data](https://minefort.com/docs/citadel/game-data): game describes this room’s game version. rooms.create inherits the server’s version. A world imported from a vanilla folder carries its own.
+- [Building well](https://minefort.com/docs/citadel/building-well): The plan and the build order make a build look handmade, not the API.
+
+## Players
+
+Who is here, how they move and see, what they type and click, and what they may do.
+
+- [Players](https://minefort.com/docs/citadel/players): Join and leave, messages, health, inventory, and who sees whom.
+- [Body and movement](https://minefort.com/docs/citadel/body-and-movement): Fields read back the last value set, and the client gets the change at once. Nothing here needs player:supports: a client too old for a feature is left alone.
+- [Cameras](https://minefort.com/docs/citadel/cameras): A camera takes over what a player sees: a fixed shot, free look, an orbit, or an intro that eases from shot to shot.
+- [Input](https://minefort.com/docs/citadel/input): Input events are per room, like players.on_join.
+- [Commands](https://minefort.com/docs/citadel/commands): The client shows, completes and checks each argument of the usage as the player types. The function runs only when the arguments fit. Otherwise the player gets the reason and the…
+- [Permissions](https://minefort.com/docs/citadel/permissions): A permission is a dotted node: casino.admin, or the engine’s minecraft.command.gamemode, minecraft.command.summon and citadel.build (build mode; see “Named parts”).
+- [Client versions](https://minefort.com/docs/citadel/client-versions): Citadel serves Java clients 1.8 to 26.2. A script never reads a version number. It asks:
+
+## Interface
+
+What a player reads: titles, bars, the HUD, menus, and pictures on walls.
+
+- [Titles and bars](https://minefort.com/docs/citadel/titles-and-bars): Chat lines, titles, the action bar and boss bars, for one player or for everyone.
+- [HUD](https://minefort.com/docs/citadel/hud): A layer drawn over the player’s own screen: text, bars and a canvas.
+- [Layouts](https://minefort.com/docs/citadel/layouts): A layout is a HUD made of boxes, pictures and labels: a health bar, a level badge, a frame round the hotbar. Define it while the pack loads, then show it to a player and change its…
+- [Menus](https://minefort.com/docs/citadel/menus): A menu is a titled grid of up to 54 items. A menu is not an inventory: the player cannot take or put items. A click only picks an item.
+- [Dialogs](https://minefort.com/docs/citadel/dialogs): A dialog is a screen of boxes, words and pictures over the player’s view: a server list, a shop, a page of rules. It needs Java 1.21.6 or newer (player:supports("dialog")); on any…
+- [Hotbar menus](https://minefort.com/docs/citadel/hotbar-menus): The hotbar is a menu of nine items, set per player.
+- [Text formatting](https://minefort.com/docs/citadel/text-formatting): Every call that shows words takes text: chat, the action bar, titles, kicks, boss bars, the sidebar, the tab header and footer, item name and lore, menu titles, text displays, npc…
+- [Screens](https://minefort.com/docs/citadel/screens): A screen is a wall of item frames that hold maps: 128 pixels per frame, on every client from 1.8.
+- [Canvases](https://minefort.com/docs/citadel/canvases): A canvas is a picture of one or more maps (128×128 pixels each), with no item frame. Show it on:
+- [Map pictures](https://minefort.com/docs/citadel/map-pictures): A client draws a map picture only in an item frame. To show a canvas in the world, use a frame display (invisible by default).
+
+## Sound and effects
+
+What a player hears and sees in the air: sounds, particles, lasers and light.
+
+- [Sound](https://minefort.com/docs/citadel/sound): Play the game’s sounds or the pack’s own, for everyone or at a point.
+- [Particles and lasers](https://minefort.com/docs/citadel/particles-and-lasers): Particles at points: a burst, a trail, or a laser drawn as a line of dust.
+- [Lighting](https://minefort.com/docs/citadel/lighting): world.light sends players light that no block makes. Each call replaces the last call’s sources. world.light{} removes them all.
+
+## Entities
+
+Things in the world: displays, models, NPCs, entities, items, and the zones that notice them.
+
+- [Displays](https://minefort.com/docs/citadel/displays): A display is a floating item, text or block with no physics.
+- [3D models](https://minefort.com/docs/citadel/3d-models): A model is a 3D shape a pack writes in code: boxes in a tree of named parts. The engine shows it as item displays that move together.
+- [NPCs](https://minefort.com/docs/citadel/npcs): An NPC is a player-shaped entity. Every client from 1.8 sees it. A puppet is a mob’s body with no mind of its own: the script sets its position. Use a puppet for anything a race or…
+- [Mobs and drops](https://minefort.com/docs/citadel/mobs-and-drops): A mob belongs to the engine: it decides, walks, falls and drops its normal drops. world.spawn with the name of a mob kind spawns one and returns a handle.
+- [Custom entities](https://minefort.com/docs/citadel/custom-entities): The facts, switches and hooks of a mob kind of the game are in game.entities.<kind>.
+- [Items](https://minefort.com/docs/citadel/items): An item is a name, or a table with its meta. Everything that takes an item reads both.
+- [Armour](https://minefort.com/docs/citadel/armour): What a player or an NPC wears.
+- [Zones and raycasts](https://minefort.com/docs/citadel/zones-and-raycasts): A zone tracks who is inside a box of blocks, once a tick. The other lookups answer at once.
+
+## Game logic
+
+How a game runs: rooms, the rules a room simulates, events, and code split into modules.
+
+- [Rooms](https://minefort.com/docs/citadel/rooms): A room is an isolated world with its own chunks and players. The globals world, players, sound, fx, ui and commands belong to rooms.main. Every other room has them as fields.
+- [Dimensions](https://minefort.com/docs/citadel/dimensions): A dimension is a world of the server’s group, beside the main one: its own chunks, its own type, its own folder. A Beta 1.6+ server in mode: full has the Nether; a pack declares…
+- [Room rules](https://minefort.com/docs/citadel/room-rules): On a pack server, nothing hurts a player until the pack turns on a rule. The anticheat is the exception: it is on everywhere until a pack turns it off. Rules are set one at a time,…
+- [Game events](https://minefort.com/docs/citadel/game-events): On a mode: full server, these events fire after the world changes. The engine ignores return values, and a slow pack does not delay the tick. To veto a break or a place, see below.
+- [Cancelling events](https://minefort.com/docs/citadel/cancelling-events): players.on_break and players.on_place run before the world changes. A handler that returns false cancels the action. The player’s client gets the correct state.
+- [Modules and tasks](https://minefort.com/docs/citadel/modules-and-tasks): Split a pack into modules, and run work later or at the same time.
+
+## Data
+
+What survives a restart, what the whole experience shares, and the limits a pack runs in.
+
+- [Storage](https://minefort.com/docs/citadel/storage): storage keeps small per-pack values across restarts and reloads: numbers, strings, booleans and plain tables of those. It saves to <pack>/data/storage.json shortly after each…
+- [Shared stores](https://minefort.com/docs/citadel/shared-stores): stores keeps facts and player-owned binary blobs outside disposable instance worlds.
+- [Shop](https://minefort.com/docs/citadel/shop): shop sells this experience’s products for Gems. The owner creates products on minefort.com, each with a key such as vip. The pack draws its own shop and asks Minefort to offer a…
+- [Network](https://minefort.com/docs/citadel/network): network is for an experience made of more than one server. Such an experience is a network. Each server in it is a member. One member is the default: players land on it. Every…
+- [Hub](https://minefort.com/docs/citadel/hub): hub is what Minefort tells its own hub: the portals of the experience grounds and the staff. Never the servers or the hubs: the hub browses them with network.browse, and its hubs…
+- [HTTP](https://minefort.com/docs/citadel/http): http.get fetches a URL: map tiles, a leaderboard, any public API.
+- [Limits and reload](https://minefort.com/docs/citadel/limits-and-reload): The runaway stop. A callback that runs longer than 100 ms is stopped. The log names its file and line. Chunk callbacks get 2 s, and 2 s again after each wait.

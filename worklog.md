@@ -384,3 +384,12 @@ Work Log:
 
 Stage Summary:
 - Working tree 616 MB -> 361 MB, tracked 4,154 -> 1,108 files; dataset + authored + fixture layers intact; npm run sync verified robust against the missing crawl dir.
+
+Work Log:
+- User asked to switch the pipeline to the official llms-full.txt instead of crawling HTML ("the docs are provided in markdown"). Live-verified before acting: minefort now publishes llms.txt (55 prose entries) + llms-full.txt (280,807 bytes, byte-identical to the 2026-10-29 snapshot), BUT they cover ONLY the prose pages — zero /reference/ URLs, zero Parameters/Returns blocks. The reference layer (178 parents / 682 members -> 850 of the wiki's 915 pages + all of citadel.d.ts) exists only as rendered HTML, so a full switch would delete 93% of the site. The HTML path stays for the reference layer; documented the finding in PIPELINE.md (Stage 1 note + new Stage 3c).
+- Built scripts/fetch_official_llms.py so the official markdown IS a first-class pipeline input: snapshots both files into official_llms/, extracts every real-name ns.member( mention (Lua stdlib filtered), auto-detects example-local namespaces (local dungeon = / function steer.fly / kit from ui.kit), regenerates official_calls.txt + official_all_calls.txt + ours_identifiers.txt, and diffs against the dataset with three buckets: matched / known gap-fills / candidates. Exits 1 on candidates.
+- First automated run reproduced the 2026-10-29 manual finding's value: flagged hub.role (hub parent has only experiences/point/rent). Ran sync_official.py --sections hub live — no new members, hub.role is prose-only (documented in the official prose, no reference page). bank.* / buffer.* same class: covered by our authored systems/commands.md + systems/http.md. All six moved to the script's KNOWN_GAPS allowlist (documented-in-wiki-from-prose, unfixable until minefort adds reference pages). Final run: 102 matched, 12 known gaps, 9 example-local, 0 candidates, exit 0.
+- PIPELINE.md: fixed the stale "llms.txt 404s" note (they exist now, prose-only), added Stage 3c (drift probe), cookbook line, provenance row.
+
+Stage Summary:
+- Full llms-source switch impossible (reference layer absent from official markdown — verified live); the official markdown is now wired in as a repeatable drift probe instead of a manual one-off, and the HTML sync stays exactly for the 93% of the wiki that has no markdown source.

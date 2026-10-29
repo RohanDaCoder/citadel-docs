@@ -22709,6 +22709,14 @@
       "BrowseEntry"
      ]
     }
+   },
+   {
+    "synced_at": "2026-10-29T16:33:36.495053+00:00",
+    "source": "https://minefort.com/docs/citadel (live reference pages, SSR HTML)",
+    "official_llms": "https://minefort.com/docs/citadel/llms-full.txt",
+    "changes": {
+     "parents_scanned": 1
+    }
    }
   ]
  }

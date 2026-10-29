@@ -59,7 +59,11 @@ Two details matter:
   `noise/Noise`, `tween/Tween`, `vec3/Vec3`) they are genuinely different pages.
   Both variants are kept and reconciled later, in the site generation.
 - `/docs/citadel/llms.txt` and `/docs/citadel/llms-full.txt` are linked but
-  404 on the original site — they are skipped.
+  404 on the original site — they are skipped. **(Update, 2026-10-30:)**
+  minefort has since published both; live-verified they cover ONLY the 55
+  prose pages (zero `/reference/` URLs, no Parameters/Returns blocks), so
+  they cannot replace the HTML crawl for the reference layer — but they
+  are snapshotted and cross-checked by `fetch_official_llms.py` (Stage 3c).
 
 Run: `python3 scripts/discover_all.py` (writes `scripts/crawl_html/urls.txt`,
 ~916 URLs; `--limit N` stops early for a test).
@@ -161,6 +165,31 @@ Companion: `scripts/gen_reference_full.py` regenerates
 `wiki_src/_sources/reference-full.txt` (the reference provenance dump) from
 the dataset after any sync.
 
+## Stage 3c — Official-llms drift probe: `scripts/fetch_official_llms.py`
+
+The official markdown (`llms.txt` + `llms-full.txt`, ~280 KB, 55 prose
+pages — no reference layer) cannot be the dataset's source: the 178
+parents / 682 members exist only as rendered HTML pages. Its pipeline role
+is a one-request drift probe:
+
+1. snapshot both files into `scripts/official_llms/` (tracked),
+2. extract every real-name `ns.member(` call the official prose mentions
+   (Lua stdlib filtered; example-local namespaces like `local dungeon =`
+   auto-detected and skipped),
+3. diff against `dataset.json`:
+   * **matched** — the dataset covers it (the normal case);
+   * **known gap-fills** — documented in the wiki from prose, no
+     reference page exists (task.\*, camera.path, hub.role, bank.\*,
+     buffer.\* — allowlisted so the report stays actionable);
+   * **candidates** — mentioned officially but in nothing of ours →
+     review, then `sync_official.py --sections <ns>` if a reference page
+     exists (this is how the 2026-10-29 sync caught the network.\*
+     migration; on its first automated run it re-verified hub.role is
+     prose-only: `--sections hub` found no new members).
+
+Exits 0 when everything is matched/known, 1 when candidates need review.
+Run after (or before) every sync: `python3 scripts/fetch_official_llms.py`.
+
 ## Stage 4 — The wiki itself: `scripts/wiki_src/`
 
 The dataset is the *raw material*; `wiki_src/` is the *authored* synthesis
@@ -242,6 +271,7 @@ multi-returns and spec literals.
 # refresh the dataset from the LIVE official docs (fast, targeted diff):
 npm run sync                               # -> scripts/dataset.json
 python3 scripts/gen_reference_full.py      # -> wiki_src/_sources/reference-full.txt
+python3 scripts/fetch_official_llms.py      # llms drift probe (Stage 3c)
 
 # full rebuild from the live site (crawl ~215 MB):
 python3 scripts/discover_all.py
@@ -276,8 +306,9 @@ python3 scripts/diff_smoke.py               # 12/12 byte-identical
 | `scripts/crawl_html_smoke/` | 14-page verification fixture | original (Task 7) |
 | `scripts/dataset.json` | structured crawl (1.0 MB) | original (Task 1) + live-synced 2026-10-29 (`sync_official.py`) |
 | `scripts/sync_official.py` | live re-sync: parents, members, doc pages | original (2026-10-29 sync stage) |
+| `scripts/fetch_official_llms.py` | official llms snapshot + identifier drift probe | original (2026-10-30, Stage 3c) |
 | `scripts/gen_reference_full.py` | dataset → `reference-full.txt` dump | original (2026-10-29 sync stage) |
-| `scripts/official_llms/` | the official `llms-full.txt` snapshot + diff work files | fetched 2026-10-29 |
+| `scripts/official_llms/` | the official `llms.txt`/`llms-full.txt` snapshots + identifier diff work files | fetched 2026-10-29, auto-refreshed by `fetch_official_llms.py` |
 | `scripts/wiki_src/**` | authored wiki sources + `_sources/` raw crawl | original (Tasks 1–2) |
 | `scripts/gen_starlight.py` | wiki + dataset → Starlight site | original (Task 3) |
 | `scripts/gen_llms_full.py` | site content → llms.txt / llms-full.txt | original (Task 5) |
