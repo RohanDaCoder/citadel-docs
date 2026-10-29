@@ -1,20 +1,16 @@
 # SOURCE: Build a cottage
 
 ## What you build
-
 - A cottage of 9 by 7 blocks on a cobblestone plinth, with oak posts and
-  white walls.
+white walls.
 - Windows set back into the wall, with a sill under each.
 - A gable roof of stairs that overhangs the walls, and a brick chimney.
 - A garden: a path, a fence, flowers, a tree and a barrel.
-  Read **Your first pack** first. This guide is about building well, and
-  the code is simple.
-
+Read **Your first pack** first. This guide is about building well, and
+the code is simple.
 ## 1. Plan before code
-
 A good build starts as a plan, not as blocks. Write it at the top of
 `main.luau`:
-
 ```luau
 -- main.luau
 -- Plan: a small cottage, known at a glance by its steep roof and chimney.
@@ -25,18 +21,14 @@ A good build starts as a plan, not as blocks. Write it at the top of
 --   setting   a path to the door, a fenced garden, a tree, a barrel
 -- The middle of the door is x = 0, so the cottage is symmetric in x.
 ```
-
 The plan answers four questions: what makes the build recognisable, its
 parts in the order you build them, where it stands, and where the detail
 goes. Keep the middle of the door at x = 0: then the house is symmetric,
 and every number on the left has a partner on the right.
-
 ## 2. One build, in parts
-
 `world.build` makes a build in code: a schematic with no file. It gets a
 builder, `b`, with three calls: `b:block` sets one block, `b:box` fills a
 box between two corners, and `b:line` draws a line.
-
 ```luau
 -- main.luau
 -- One build from two parts; `b:part` names each stage inside them.
@@ -45,13 +37,10 @@ local cottage = world.build(function(b)
     garden(b)
 end)
 ```
-
 The house and the garden are two modules, each a function that takes the
 builder. Inside them, `b:part("walls", ...)` names what it writes. The
 names show up when you check and render the build, below.
-
 ## 3. The footing
-
 ```luau
 -- house.luau
 b:part("plinth", function()
@@ -63,11 +52,9 @@ b:part("plinth", function()
     b:box(vec3(-3, 0, -2), vec3(3, 0, 2), "spruce_planks") -- the floor inside
 end)
 ```
-
 A plinth one block wider than the walls makes the house stand on
 something. A plain cobblestone floor looks flat, so one block in three is
 mossy. `mix` decides which:
-
 ```luau
 -- mix.luau
 --!strict
@@ -81,12 +68,9 @@ end
 
 return mix
 ```
-
 `math.random` would give a new pattern on every restart. `mix` gives the
 same number for the same block every time, so the wall never changes.
-
 ## 4. The walls
-
 ```luau
 -- house.luau
 b:part("walls", function()
@@ -103,17 +87,13 @@ b:part("walls", function()
     b:box(vec3(-3, 4, -2), vec3(3, 4, 2), "air")
 end)
 ```
-
 - Fill the whole box, then hollow it out: two lines instead of four walls.
 - Oak posts at the corners and in the middle of the long walls stand in
-  front of the white wall. That is the timber frame.
+front of the white wall. That is the timber frame.
 - The beam on top is a ring, so the room inside is open up to the roof.
-
 ## 5. Windows and the door
-
 A window is not a pane in a flat wall. It is a hole with the glass set
 back, and a sill under it:
-
 ```luau
 -- house.luau
 b:part("openings", function()
@@ -135,15 +115,12 @@ b:part("openings", function()
     b:block(vec3(0, 3, 4), "lantern[hanging=true]") -- under the eaves
 end)
 ```
-
 - `out` is which way the wall faces: the glass goes one block in, the sill
-  one block out.
+one block out.
 - A block name can carry its state: `spruce_trapdoor[half=top,facing=north]`
-  is a trapdoor on the top half of its block, which reads as a sill.
+is a trapdoor on the top half of its block, which reads as a sill.
 - The lantern hangs under the eaves, over the door.
-
 ## 6. The roof
-
 ```luau
 -- house.luau
 b:part("roof", function()
@@ -162,18 +139,14 @@ b:part("roof", function()
     b:box(vec3(3, 1, -2), vec3(3, 9, -2), "bricks") -- the chimney, through the roof
 end)
 ```
-
 Each row of stairs is one block in and one block up from the one below,
 from both sides, until they meet at the ridge. The stairs face the middle.
 The rows start one block outside the walls: the overhang throws a shadow,
 and the house stops looking like a box. The chimney goes up through the
 roof from the floor inside.
-
 ## 7. The garden
-
 A build with bare grass round it floats. The garden sets the house in a
 place:
-
 ```luau
 -- garden.luau
 b:box(vec3(0, 0, 5), vec3(0, 0, 11), "dirt_path")
@@ -183,10 +156,8 @@ end
 b:box(vec3(-6, 1, 9), vec3(-2, 1, 9), "oak_fence") -- a gap for the path
 b:box(vec3(2, 1, 9), vec3(6, 1, 9), "oak_fence")
 ```
-
 Fences join their neighbours on their own. The gap in the front fence is
 where the path goes through.
-
 ```luau
 -- garden.luau
 for x = -5, 5 do
@@ -197,7 +168,6 @@ for x = -5, 5 do
     end
 end
 ```
-
 ```luau
 -- garden.luau
 -- A tree beside the house, and a barrel by the wall.
@@ -206,9 +176,7 @@ b:box(vec3(-10, 4, -3), vec3(-6, 5, 1), "oak_leaves")
 b:box(vec3(-9, 6, -2), vec3(-7, 6, 0), "oak_leaves")
 b:block(vec3(5, 1, 2), "barrel[facing=up]")
 ```
-
 ## 8. Into the world
-
 ```luau
 -- main.luau
 world.on_generate(function(chunk)
@@ -219,12 +187,10 @@ world.on_generate(function(chunk)
     chunk:paste(cottage, vec3(0, 64, 0) + cottage.min) -- only the part in this chunk
 end)
 ```
-
 `chunk:paste` puts the part of the cottage that falls in each chunk as
 the chunk is made. A paste puts the build’s lowest corner at the origin;
 adding `cottage.min` puts the build’s own `(0, 0, 0)` at `(0, 64, 0)`
 instead.
-
 ```luau
 -- main.luau
 world.time("sunset")
@@ -233,27 +199,20 @@ players.on_join(function(player)
     player.ui.title{ title = "Home", subtitle = "a cottage built in code", color = "gold" }
 end)
 ```
-
 `world.time("sunset")` holds the sky at sunset: low light makes the roof
 and the walls stand out.
-
 ## 9. Look, then fix
-
 Build it in stages, and look at each stage before the next. On your own
 machine, `citadel render` draws the build to a picture, and `citadel check` measures it:
-
 ```
 citadel render ./cottage --view approach,sides --out cottage.png
 citadel check ./cottage --enclosed --storeys 1
 ```
-
 `check` names what to fix: a room nobody can walk to, a flat wall, a
 window with no depth, bare ground round the build. The first version of
 this cottage had a closed ceiling that made a sealed second floor, and no
 window in its end walls; the check found both.
-
 ## The whole pack
-
 ```luau
 -- main.luau
 --!strict
@@ -290,7 +249,6 @@ players.on_join(function(player)
     player.ui.title{ title = "Home", subtitle = "a cottage built in code", color = "gold" }
 end)
 ```
-
 ```luau
 -- house.luau
 --!strict
@@ -359,7 +317,6 @@ return function(b)
     end)
 end
 ```
-
 ```luau
 -- garden.luau
 --!strict
@@ -393,11 +350,9 @@ return function(b)
     end)
 end
 ```
-
 ## Try this next
-
 - Add a porch over the door: two posts and a small roof of slabs.
 - Turn the cottage into a street: paste it three times along the path,
-  and change the wall colour of each with a `mix` of the position.
+and change the wall colour of each with a `mix` of the position.
 - Put a bed, a table and a fireplace inside, and check that a player can
-  walk to each.
+walk to each.

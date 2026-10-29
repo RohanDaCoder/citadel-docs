@@ -306,7 +306,24 @@ local chaser = game.entities.define {
 ## The handle
 `world.spawn` returns a handle, `world.entities()` lists handles, and each
 hook gets one:
-`e.data` is a [data view](#data-views) for a **pack-defined entity**, including
+```luau
+it.id, it.name, it.alive, it.age
+it.at    -- vec3; writing it is a teleport
+it.velocity    -- vec3; writing it is steering by hand
+it.on_ground, it.rotation, it.physics
+it.health, it.max_health    -- health now; max_health is nil for an entity that is not alive (a mob or a living body)
+it.origin    -- the block it used to be, or nil
+it.data    -- your own record, saved with the chunk
+it:push(vec3(0, 0.4, 0))    -- a shove, added to what it is already doing
+it:settle()    -- stop being an entity, be a block again where you stand
+it:destroy()    -- gone on the next tick
+it:nearby(8)    -- what else is within eight blocks, horizontally
+it.forward, it.strafe, it.jumping    -- the intent fields: what it *wants* to do
+it.flying    -- intent: a can_fly body flies; see "flying and swimming"
+it.in_water    -- whether it is in water now
+it.driver, it.riders, it.paint, it.scale, it:play(name, opts), it:stop(name)    -- a model entity's; see "vehicles"
+```
+`e.data` is a data view for a **pack-defined entity**, including
 one with `physics = "living"`. Nested writes persist through both callback and
 world handles. It saves with the chunk only when the kind has `persist = "save"`.
 Reading or assigning `.data` on a **built-in entity**, including an amended one,
@@ -334,6 +351,12 @@ local allCows = world.entities { kind = "cow" }
 - Invalid options, a negative radius and non-finite numbers raise an error. An unknown kind returns an empty list.
 - `entity:nearby(radius)` measures horizontal distance and excludes the entity itself.
 `game.entities` gives a mob’s native behaviour values:
+```luau
+local zombie = game.entities.zombie
+print(zombie.behaviour)    -- "zombie"
+print(zombie.profile.damage)    -- 5 in a0.1.0
+print(game.entities.creeper.profile.ticks)    -- 30 in a0.1.0
+```
 - Profiles are read-only. A write raises an error.
 - A special behaviour without a shared profile returns `nil`.
 - Profiles run no callbacks. To change gameplay, use `game.entities.amend(name, hooks)` and `game.entities.define(spec)`.

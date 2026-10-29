@@ -1,5 +1,16 @@
 # SOURCE: Room rules
 
+```luau
+world.rules{ fall = true }    -- landings past three blocks cost health
+world.rules{ damage = true }    -- the world hurts: void, fire, lava, drowning, suffocation, cactus
+world.rules{ hunger = true }    -- the food bar runs down and, when full, heals
+world.rules{ anticheat = false }    -- on by default: moves and hits are checked for cheats, see below
+world.rules{ day_cycle = true }    -- the sun moves: see "the time of day"
+world.rules{ redstone = false }    -- on by default: redstone signals move, see below
+world.rules{ survival = true }    -- the whole game: see below
+world.rules()    -- { survival = false, fall = true, damage = false, hunger = false, anticheat = true, day_cycle = false, redstone = true }
+room.world.rules{ fall = true, damage = true }    -- per room; a room made by rooms.create starts with only the anticheat and redstone on
+```
 A `mode: full` server has them all on. A pack can turn one off.
 A rule is `true` or `false`. A rule that you leave out keeps its value, and
 so does a rule you write as `nil`. Any other value is an error:
@@ -9,7 +20,6 @@ signal moves: a lever lights no wire, a piston stays in, a pack block’s
 `power` gives nothing and `block.powered` reads `false`. What was lit when
 the rule changed stays as it is until something beside it changes.
 `anticheat` checks what each Java player’s client claims:
-
 - A player who flies, runs too fast, sends moves faster than the game ticks, or walks through full blocks goes back to the last legal position.
 - A claim to stand on nothing does not prevent fall damage.
 - A hit on something the player does not look at, or faster than 20 per second, does not land.
@@ -17,28 +27,27 @@ the rule changed stays as it is until something beside it changes.
 - The flight check skips creative and spectator players, a player who may fly (`player.can_fly`), a rider and a dead player.
 - `player:push` and a movement effect (`speed`, `jump_boost`, `levitation`, `slow_falling`, `dolphins_grace`) exempt the player while they last. `player:teleport` is always allowed.
 - A pack that moves players in any other way turns `anticheat` off: `world.rules{ anticheat = false }`.
-  `survival` gives the room to the engine’s survival, as on a `mode: full`
-  server:
+`survival` gives the room to the engine’s survival, as on a `mode: full`
+server:
 - A broken block drops its normal drops.
 - A block the world breaks by itself drops them too: a torch whose wall is
-  gone, a leaf that decays, a block an explosion or a piston breaks, sand
-  that cannot land.
+gone, a leaf that decays, a block an explosion or a piston breaks, sand
+that cannot land.
 - Placing uses up the stack.
 - The inventory and a crafting table craft.
 - A death drops the inventory, and the respawn button works.
 - The engine saves the player’s inventory.
 - It also turns on `fall`, `damage`, `hunger`, `anticheat` and `day_cycle`.
-  Without `survival`, a dig reaches no block, and a block the world breaks by
-  itself leaves no item. `game.block(name).drops = true` switches one block of
-  the game back on (see “Blocks”). A pack block still leaves the drops its
-  definition lists; `drops = "table"` is the game’s own drop and leaves
-  nothing. A survival pack puts `world.rules{ survival = true }` at the top,
-  and runs the same on either kind of server.
-  Anything that is not a rule is the pack’s job: `player:damage` for a hit,
-  `player.health` to heal, `players.on_death` and `players.on_respawn` for what
-  happens next, and `hit.player` in `players.on_click` for one player hitting
-  another:
-
+Without `survival`, a dig reaches no block, and a block the world breaks by
+itself leaves no item. `game.block(name).drops = true` switches one block of
+the game back on (see “Blocks”). A pack block still leaves the drops its
+definition lists; `drops = "table"` is the game’s own drop and leaves
+nothing. A survival pack puts `world.rules{ survival = true }` at the top,
+and runs the same on either kind of server.
+Anything that is not a rule is the pack’s job: `player:damage` for a hit,
+`player.health` to heal, `players.on_death` and `players.on_respawn` for what
+happens next, and `hit.player` in `players.on_click` for one player hitting
+another:
 ```luau
 world.rules{ fall = true }
 players.on_click(function(player, hit)

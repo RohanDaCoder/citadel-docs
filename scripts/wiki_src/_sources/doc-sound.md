@@ -1,5 +1,9 @@
 # SOURCE: Sound
 
+```luau
+sound.play(name, { at = spawn, volume = 1, pitch = 1, category = "record" })    -- volume above 1 carries further (16 blocks per unit); pitch 0.5..2.0 is two octaves category: "record" (jukebox slider), "music", "master" every call is one packet to every player, sent ahead of particles
+sound.stop("rave.track")    -- stops that sound for everyone in the room; sound.stop() stops every sound 1.13 and later; older clients play on
+```
 ## sound.stream
 `sound.stream` plays a live stream or a pack’s sound file through the
 players’ voice mods, with no screen. A live stream is MP3, as a radio station

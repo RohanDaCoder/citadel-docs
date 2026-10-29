@@ -24,15 +24,15 @@ A rule left out or `nil` keeps its value, and **a number or a string is an
 error**: `world.rules{ fall = 0 }` and `world.rules{ fall = "off" }` stop the
 script. [`world.rules()`](/ref/World/rules/) with no argument reads them.
 
-| Rule | What it runs |
-| --- | --- |
-| `survival` | the engine's survival — and it turns `fall`, `damage`, `hunger`, `anticheat` and `day_cycle` on |
-| `fall` | fall damage |
-| `damage` | hits and blasts hurt players |
-| `hunger` | the food bar |
-| `anticheat` | the movement and hit checks |
-| `day_cycle` | the sun moves |
-| `redstone` | signals move in the room |
+| Rule        | What it runs                                                                                    |
+| ----------- | ----------------------------------------------------------------------------------------------- |
+| `survival`  | the engine's survival — and it turns `fall`, `damage`, `hunger`, `anticheat` and `day_cycle` on |
+| `fall`      | fall damage                                                                                     |
+| `damage`    | hits and blasts hurt players                                                                    |
+| `hunger`    | the food bar                                                                                    |
+| `anticheat` | the movement and hit checks                                                                     |
+| `day_cycle` | the sun moves                                                                                   |
+| `redstone`  | signals move in the room                                                                        |
 
 A `mode: full` server has them all on; a pack can turn one off. On a pack
 server they are all off until the pack says — except `anticheat` and `redstone`,

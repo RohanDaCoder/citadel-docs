@@ -14,23 +14,23 @@ manifest reference and the folder map around it.
 
 ```yaml
 # citadel.yml — a pack manifest
-name: first                  # the pack's id; "castle:dungeon" ids are prefixed by it
-entry: main.luau             # the script that runs
-motd: My first Citadel pack  # shown in the server list
+name: first # the pack's id; "castle:dungeon" ids are prefixed by it
+entry: main.luau # the script that runs
+motd: My first Citadel pack # shown in the server list
 spawn_point: [0.5, 65.0, 0.5]
-gamemode: 2                  # 0 survival, 1 creative, 2 adventure
-mode: lite                   # lite | full | absent (runs on either)
-world: script                # script | overworld | a world folder name
-budget_ms: 2                 # this pack's slice of each tick (default 2 ms)
+gamemode: 2 # 0 survival, 1 creative, 2 adventure
+mode: lite # lite | full | absent (runs on either)
+world: script # script | overworld | a world folder name
+budget_ms: 2 # this pack's slice of each tick (default 2 ms)
 ```
 
 ### `mode` — who owns the game
 
-| Mode | Meaning |
-| --- | --- |
-| `mode: lite` | Your scripts are the game. Terrain from `world.on_generate`; no survival rules unless switched on. |
-| `mode: full` | Citadel plays survival; the pack adds to it (a shop, a scoreboard, a custom drop). A pack cannot ship survival — it *adds* to it. |
-| no `mode` key | Runs on either kind of server, like a plugin. |
+| Mode          | Meaning                                                                                                                           |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `mode: lite`  | Your scripts are the game. Terrain from `world.on_generate`; no survival rules unless switched on.                                |
+| `mode: full`  | Citadel plays survival; the pack adds to it (a shop, a scoreboard, a custom drop). A pack cannot ship survival — it _adds_ to it. |
+| no `mode` key | Runs on either kind of server, like a plugin.                                                                                     |
 
 Packs that name different modes, or that all name none, stop the server with a
 message saying how to set one. A flag or the server file overrules a pack that
@@ -40,12 +40,12 @@ names the other mode — the log names that pack.
 
 `world` says where a chunk comes from:
 
-| Value | Chunks come from |
-| --- | --- |
-| `"script"` | `world.on_generate` makes them. A chunk it does not fill is air. |
-| `"overworld"` | Citadel's terrain: biomes, hills, caves, ores, trees, sea level 63. `seed` pins the map. Scripts only add (`world.on_populate`). |
+| Value                | Chunks come from                                                                                                                                                                                                              |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `"script"`           | `world.on_generate` makes them. A chunk it does not fill is air.                                                                                                                                                              |
+| `"overworld"`        | Citadel's terrain: biomes, hills, caves, ores, trees, sea level 63. `seed` pins the map. Scripts only add (`world.on_populate`).                                                                                              |
 | a name, e.g. `"hub"` | A world folder in the pack, `<pack>/hub`, made once from a build or a vanilla world. The server reads it chunk by chunk and saves player changes into it. A chunk the folder lacks comes from `world.on_generate`, or is air. |
-| no `world` key | The scripts are asked first. A chunk no script filled is overworld terrain on a full server, air on a lite server. |
+| no `world` key       | The scripts are asked first. A chunk no script filled is overworld terrain on a full server, air on a lite server.                                                                                                            |
 
 Making a world folder ahead of time (a map too big to make live):
 
@@ -66,7 +66,7 @@ A pack adds worlds under `dimensions:`. The name is its id inside the pack
 dimensions:
   dungeon:
     type: { has_skylight: false, has_ceiling: true, weather: false }
-    world: script        # or "void" to leave chunks empty
+    world: script # or "void" to leave chunks empty
 ```
 
 Every `type` field is optional and starts from the main world's:
@@ -84,8 +84,12 @@ The manifest defines permission groups; every player starts in `default`:
 ```yaml
 permissions:
   default: { nodes: [casino.play] }
-  vip:     { inherits: [default], nodes: [casino.vip] }
-  staff:   { inherits: [vip], nodes: [minecraft.command.gamemode, "casino.*", "-casino.debug"] }
+  vip: { inherits: [default], nodes: [casino.vip] }
+  staff:
+    {
+      inherits: [vip],
+      nodes: [minecraft.command.gamemode, "casino.*", "-casino.debug"],
+    }
 ```
 
 Same-name groups in two packs merge; a group that inherits an undefined group,
@@ -151,7 +155,7 @@ chunk); do not loop over every block of every level at load.
 
 ## See also
 
-- [Server settings](/systems/server-settings/) — the *server's* `citadel.yml`:
+- [Server settings](/systems/server-settings/) — the _server's_ `citadel.yml`:
   bind ports, game version, operators, online mode.
 - [Architecture](/concepts/architecture/) — how the manifest is consumed at boot.
 - [Runtime](/concepts/runtime/) — the load budget in context, reload semantics.

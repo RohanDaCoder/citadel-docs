@@ -12,6 +12,7 @@ them back. It is the guide for dimensions and routes.
 :::
 
 ## What you build
+
 - A castle yard of stone bricks with a square of blue carpet in it.
 - `dungeon`, a second world: bedrock at both ends, mossy walls, two
   crossing corridors. A client draws it with the Nether's dark sky.

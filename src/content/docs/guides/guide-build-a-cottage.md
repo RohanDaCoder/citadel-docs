@@ -11,6 +11,7 @@ building well.
 :::
 
 ## What you build
+
 - A cottage of 9 by 7 blocks on a cobblestone plinth, with oak posts and
   white walls.
 - Windows set back into the wall, with a sill under each.

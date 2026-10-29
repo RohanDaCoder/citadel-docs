@@ -93,21 +93,39 @@ BeautifulSoup turns the HTML into one structured JSON file with four sections:
 
 | key | entries | shape |
 |---|---|---|
-| `guides` | 5 | `{slug: {title, markdown}}` |
-| `docs` | 56 | `{slug: {title, markdown}}` (incl. the `/reference` listing) |
+| `guides` | 5 | `{slug: {title, lead, markdown}}` |
+| `docs` | 56 | `{slug: {title, lead, markdown}}` (incl. the `/reference` listing) |
 | `reference_parents` | 178 | `{Name: {title, url, lead, typedef, docs_link, members[], sections[]}}` |
 | `reference_members` | 682 | `{Parent: {member: {title, url, kind, lead, signature, params[], returns[], used_in[]}}}` |
 | `_meta` | – | sync history: one record per `sync_official.py` run (see Stage 3b) |
 
-(Counts reflect the dataset after the 2026-10-29 live sync — Stage 3b.)
+(Counts reflect the dataset after the 2026-10-29 live sync — Stage 3b — and
+the 2026-10-30 prose re-extraction — Stage 3d.) The `lead` field captures
+the `p.t-lead` headline that sits outside the prose div; it was silently
+dropped before the 2026-10-30 parity audit caught it.
 
 The DOM rules the extractor relies on (all verified against the live markup):
 
 - **doc/guide pages**: content lives in `article div.prose` — h2/h3, paragraphs,
   `<pre><code class="language-X">` fences (`language-lua` is emitted as
   `luau`, bare `<code>` as a plain fence), bullet lists, pipe tables. The
-  `p.t-lead` sits *outside* the prose div and is excluded from the markdown.
-  Pages without an `<article>` (the `/guides` card listing) are skipped.
+  `p.t-lead` sits *outside* the prose div and is captured as the entry's
+  own `lead` field (not part of `markdown`). Pages without an `<article>`
+  (the `/guides` card listing) are skipped.
+- **api-list blocks** (2026-10-30 parity fix): prose pages embed mini
+  reference cards in `div.api-list > div.api-row > code.api-sig
+  + dl.api-subs (dt/dd) + div.api-doc` (input's `hit.*` table,
+  version-info's `citadel.*`, layouts' `hide_hud`, titles-and-bars' whole
+  body). Each list is emitted as ONE fenced block — `sig    -- doc` per
+  row, `-- dt  dd` per sub-pair (`#` instead of `--` when every sig is a
+  yaml `key:` line) — mirroring the shape minefort's own llms-full.txt
+  uses for the same DOM. The old walk silently dropped every api-list
+  (titles-and-bars extracted to 0 chars).
+- **code blocks inside list items** (2026-10-30 parity fix): a `<pre>` or
+  multi-line `<code>` inside an `<li>` (text-formatting's animation
+  examples) is emitted as a fenced block right after the bullet; the
+  top-level walk skips pre-in-li, so `ul_md` is the only path that
+  renders them.
 - **reference parents**: h1 (raw text keeps the `global · type X` suffix),
   `p.t-lead`, an optional typedef `<pre>`, a `Docs: X` cross-link chip, and
   per-section member cards `<a id=…><code>signature</code><p class=t-body>…`.
@@ -146,11 +164,17 @@ What it does (nothing is guessed; the live HTML is the only source):
      definitive 404** (dead HTML files move to `crawl_html/removed/`);
    - the parent entry itself is refreshed when its cards, lead, typedef or
      sections moved on.
-4. **`--doc-pages a,b`**: refresh prose doc pages into `dataset["docs"]` and
-   the `wiki_src/_sources/doc-<slug>.md` provenance copies.
+4. **`--doc-pages a,b`**: refresh prose pages into `dataset["docs"]` (or
+   `dataset["guides"]` for guide slugs — a slug present in both, like
+   `your-first-pack`, refreshes both pages) and the
+   `wiki_src/_sources/doc-<slug>.md` / `guide-<slug>.md` provenance copies;
+   each entry captures `title`, `lead` and `markdown`.
 5. Write `dataset.json` (+ `_meta.history` sync record), the manifest, and
    `all_urls.json`; print a sync report. `--dry-run` reports only;
-   `--deep` re-fetches every member page too.
+   `--deep` re-fetches every member page too. **`--docs-only`** skips the
+   reference walk entirely (parent discovery + member diff) and refreshes
+   only `--doc-pages` — ~61 fetches, the fast prose path used by the
+   2026-10-30 re-extraction.
 
 **2026-10-29 sync** (Citadel 0.1.0): +13 members (`network.browse`,
 `network.instances`, `network.online`, `network.on_instance_start/change/stop`,
@@ -190,6 +214,41 @@ is a one-request drift probe:
 Exits 0 when everything is matched/known, 1 when candidates need review.
 Run after (or before) every sync: `python3 scripts/fetch_official_llms.py`.
 
+## Stage 3d — Content parity audit: `scripts/audit_parity.py`
+
+The identifier probe above asks "does the dataset know every NAME the
+official prose uses?"; the parity audit asks the stronger question:
+"page by page, word by word, is our HTML extraction the same CONTENT as
+the official markdown?" It exists because the answer used to be *no*:
+the first run (2026-10-30) found 13 of the 55 covered pages short —
+whole api-lists silently dropped (`titles-and-bars` extracted to **zero**
+bytes), code blocks inside list items lost, the page leads dropped
+(everywhere), and two pages (`layouts`, `dialogs`) plain stale. All fixed
+the same day; the audit now reports 55/55 pages ≥ 94% word-similarity
+(most ≥ 99%, several 100%), token-set differences of zero.
+
+What it does:
+
+1. fence-aware parse of `official_llms/minefort-llms-full.txt` into its
+   55 page bodies (code fences contain `# comment` lines — a naive
+   header scan lies);
+2. map each page to its dataset entry (doc first, guide fallback), join
+   the captured `lead` + `markdown`, and word-tokenize both sides —
+   fence languages, heading depth, apostrophe variants and table padding
+   are normalised away, so the ratio measures CONTENT, not formatting;
+3. report every page's similarity, the official-only / ours-only token
+   samples for drifted pages (with the exact `sync_official.py
+   --doc-pages ...` refresh command), and the dataset pages the official
+   files do not cover (4 guides + the reference listing + the whole
+   reference layer — the crawl-only surplus).
+
+Exits 0 when every covered page is ≥ `--min` (default 0.85), 1 otherwise.
+Run after every sync: `python3 scripts/audit_parity.py`. The two layers
+are complementary by design — llms-full.txt is complete *prose*
+coverage with zero extraction heuristics, but has no reference layer;
+the crawl is the only complete source and is *audited* against the
+official markdown wherever both exist. Neither invents anything.
+
 ## Stage 4 — The wiki itself: `scripts/wiki_src/`
 
 The dataset is the *raw material*; `wiki_src/` is the *authored* synthesis
@@ -224,7 +283,7 @@ One 903-line pass that turns `wiki_src/` + `dataset.json` into the site:
   (`ref/<Name>/index.md`: lead, linked typedef, functions/fields tables) +
   674 member pages (`ref/<Parent>/<member>.md`: signature, parameters with
   linked types, returns, used-in quotes).
-- `scripts/generated/starlight-manifest.json`: the full sidebar + **913
+- `scripts/generated/starlight-manifest.json`: the full sidebar + **904
   redirects** preserving every original `minefort.com/docs/citadel` URL.
 - self-validates before build: all 3,225 internal links + anchors checked.
 
@@ -272,6 +331,10 @@ multi-returns and spec literals.
 npm run sync                               # -> scripts/dataset.json
 python3 scripts/gen_reference_full.py      # -> wiki_src/_sources/reference-full.txt
 python3 scripts/fetch_official_llms.py      # llms drift probe (Stage 3c)
+python3 scripts/audit_parity.py             # content parity audit (Stage 3d)
+
+# prose-only refresh (no reference walk, ~61 fetches):
+python3 scripts/sync_official.py --docs-only --doc-pages <slugs>
 
 # full rebuild from the live site (crawl ~215 MB):
 python3 scripts/discover_all.py
@@ -305,8 +368,9 @@ python3 scripts/diff_smoke.py               # 12/12 byte-identical
 | `scripts/diff_smoke.py` | extractor verification harness | original (Task 7) |
 | `scripts/crawl_html_smoke/` | 14-page verification fixture | original (Task 7) |
 | `scripts/dataset.json` | structured crawl (1.0 MB) | original (Task 1) + live-synced 2026-10-29 (`sync_official.py`) |
-| `scripts/sync_official.py` | live re-sync: parents, members, doc pages | original (2026-10-29 sync stage) |
+| `scripts/sync_official.py` | live re-sync: parents, members, doc+guide pages | original (2026-10-29 sync stage; `--docs-only`/guides/lead added 2026-10-30) |
 | `scripts/fetch_official_llms.py` | official llms snapshot + identifier drift probe | original (2026-10-30, Stage 3c) |
+| `scripts/audit_parity.py` | content parity audit: official llms-full.txt vs dataset, page by page | original (2026-10-30, Stage 3d; first run caught 13 short pages) |
 | `scripts/gen_reference_full.py` | dataset → `reference-full.txt` dump | original (2026-10-29 sync stage) |
 | `scripts/official_llms/` | the official `llms.txt`/`llms-full.txt` snapshots + identifier diff work files | fetched 2026-10-29, auto-refreshed by `fetch_official_llms.py` |
 | `scripts/wiki_src/**` | authored wiki sources + `_sources/` raw crawl | original (Tasks 1–2) |

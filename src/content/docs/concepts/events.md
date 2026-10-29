@@ -73,12 +73,12 @@ players.on_damage(function(player, hit) return false end)
 
 `players.on_damage` receives a `hit` table:
 
-| Field | Meaning |
-| --- | --- |
-| `hit.amount` | The damage, in half hearts, before armour. |
-| `hit.cause` | `"fall"`, `"drown"`, `"suffocate"`, `"void"`, `"lava"`, `"fire"`, `"cactus"`, `"starve"`, `"attack"`, `"shot"`, `"blast"` or `"magic"`. |
-| `hit.by` | The player who hit, or who shot the arrow; `nil` for anything else. |
-| `hit.kind` | The kind's name (`"Skeleton"`) when a mob did it; else `nil`. |
+| Field        | Meaning                                                                                                                                 |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `hit.amount` | The damage, in half hearts, before armour.                                                                                              |
+| `hit.cause`  | `"fall"`, `"drown"`, `"suffocate"`, `"void"`, `"lava"`, `"fire"`, `"cactus"`, `"starve"`, `"attack"`, `"shot"`, `"blast"` or `"magic"`. |
+| `hit.by`     | The player who hit, or who shot the arrow; `nil` for anything else.                                                                     |
+| `hit.kind`   | The kind's name (`"Skeleton"`) when a mob did it; else `nil`.                                                                           |
 
 The veto rules:
 
@@ -112,14 +112,14 @@ end)
 The engine waits **two milliseconds** for your pack, then stops waiting.
 `task.wait` and anything that blocks are errors inside an ask handler.
 
-| Hook | A missed deadline means |
-| --- | --- |
-| `players.on_break` | **The break is denied.** Protection fails closed on timeout, error, overflow, or a disabled handler. |
-| `players.on_place` | **The place is denied.** The same protection guarantee. |
-| `players.on_damage` | **The damage is denied.** The same protection guarantee. |
+| Hook                | A missed deadline means                                                                              |
+| ------------------- | ---------------------------------------------------------------------------------------------------- |
+| `players.on_break`  | **The break is denied.** Protection fails closed on timeout, error, overflow, or a disabled handler. |
+| `players.on_place`  | **The place is denied.** The same protection guarantee.                                              |
+| `players.on_damage` | **The damage is denied.** The same protection guarantee.                                             |
 
 The rule: **fail open only where the default is safe.** A pack block's own
-`on_break` (which comes with pack blocks) fails *closed* to the drops its
+`on_break` (which comes with pack blocks) fails _closed_ to the drops its
 definition declares.
 
 Miss a kind too often and the engine **stops asking you** that kind: it takes

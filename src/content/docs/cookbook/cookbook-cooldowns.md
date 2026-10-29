@@ -45,8 +45,9 @@ a script reload restarts the clock — `time.now()` counts from
 the pack's start — but `player.data` is also reset per session, so the two
 stay consistent. For cooldowns that must survive restarts, store the
 timestamp in [storage](/systems/storage/) with `storage.set("cooldown." ..
-player.uuid, time.now())` instead.
 :::
+
+player.uuid, time.now())` instead.
 
 ## Cooldown on an action, not a command
 

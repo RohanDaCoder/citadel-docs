@@ -12,6 +12,7 @@ tasks and the UI bars together.
 :::
 
 ## What you build
+
 - A round grass arena with a fence on its rim.
 - Five gold pressure plates, the coins, at random places on the floor.
   Walk onto one to take it; a new one appears somewhere else.

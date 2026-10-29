@@ -7,9 +7,7 @@ player:wear{ head = "carved_pumpkin" }   -- replaces all four: the three left ou
 player:wear{}                            -- all off
 npc:wear{ chest = "diamond_chestplate" } -- the same on an npc
 ```
-
 `wear` fills the armour slots of a player or an npc. Each piece is an item (see “items”), so `dye` and `glint` work.
-
 - The inventory, the body and the armour bar show the pieces. Armour does not reduce damage yet.
 - Nearby clients draw the pieces from 1.8.
 - Any item goes on the head. Other slots draw only armour made for them.

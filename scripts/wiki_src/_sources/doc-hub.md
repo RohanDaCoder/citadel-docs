@@ -8,7 +8,6 @@ task.spawn(function()
     print(network.online())
 end)
 ```
-
 - `hub.role(player)` returns the player’s rank on Minefort: `"owner"`, `"admin"`, `"moderator"` or `"builder"`, and nil for everyone else. It also takes a uuid, with or without dashes.
 - Minefort sends the ranks every minute. Anywhere but a hub, they are nil.
 - `hub.role(player)` returns the player’s rank on Minefort: `"owner"`, `"admin"`, `"moderator"` or `"builder"`, and nil for everyone else. It also takes a uuid, with or without dashes. Minefort sends the list every minute, so a new rank reaches the hub within one. Anywhere but a hub, it is nil.

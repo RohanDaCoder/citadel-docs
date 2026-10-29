@@ -86,7 +86,7 @@ inside the pack, so `dungeon` under pack `castle` is `castle:dungeon`:
 dimensions:
   dungeon:
     type: { has_skylight: false, has_ceiling: true, weather: false }
-    world: script            # or "void" to leave chunks empty
+    world: script # or "void" to leave chunks empty
 ```
 
 - `type` says how the world behaves. Every field is optional and starts from

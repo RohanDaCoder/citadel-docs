@@ -16,12 +16,12 @@ precise rules of a hot reload.
 suspended coroutine, forward all arguments (including nils), and return that
 coroutine:
 
-| Call | Runs |
-| --- | --- |
-| `task.spawn(fn, ...)` | Immediately, until the task yields or returns. |
-| `task.delay(sec, fn, ...)` | After `sec` seconds of elapsed real time. |
-| `task.defer(fn, ...)` | On the next scheduler turn. |
-| `task.wait(sec)` | Yields the calling thread until `sec` real seconds have passed. |
+| Call                       | Runs                                                            |
+| -------------------------- | --------------------------------------------------------------- |
+| `task.spawn(fn, ...)`      | Immediately, until the task yields or returns.                  |
+| `task.delay(sec, fn, ...)` | After `sec` seconds of elapsed real time.                       |
+| `task.defer(fn, ...)`      | On the next scheduler turn.                                     |
+| `task.wait(sec)`           | Yields the calling thread until `sec` real seconds have passed. |
 
 - `task.wait` and `task.delay` measure **elapsed real time**, in full and lite
   mode alike. Unlike Roblox's heartbeat scheduling they resume once the time
@@ -60,19 +60,18 @@ after initialization commits — the pack's startup is atomic:
 :::caution[Gotcha]
 a module's top level may not call `task.wait`, and synchronous
 ask handlers may not either. Ordinary event callbacks, `main.luau` and task
+threads may.
 :::
-
-  threads may.
 
 ## The tick budget
 
 A pack's tick and event callbacks share part of each tick, set with
 `budget_ms` in the pack's `citadel.yml`. The default is **2 ms**.
 
-| Covered by the budget | Not covered (100 ms runaway limit instead) |
-| --- | --- |
+| Covered by the budget                                                               | Not covered (100 ms runaway limit instead)                                      |
+| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
 | `time.on_tick`, `time.every`, survival events (`world.on_block_break` and the rest) | `players.on_join`, input events (`on_click`, `on_chat`, commands), task threads |
-| | Chunk callbacks keep their separate **2 s** limit |
+|                                                                                     | Chunk callbacks keep their separate **2 s** limit                               |
 
 It counts work, not time spent waiting. When the budget runs out mid-batch:
 

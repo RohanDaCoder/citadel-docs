@@ -1,5 +1,13 @@
 # SOURCE: Modules and tasks
 
+```luau
+local venue = require("venue")    -- loads <pack>/venue.luau once; its return value is the module
+local elapsed = task.wait(seconds)    -- seconds actually waited, not pack uptime; seconds defaults to 0
+local co = task.spawn(fn, ...)    -- starts now; returns a thread
+local co = task.delay(seconds, fn, ...)    -- starts after the delay; returns a thread
+local co = task.defer(fn, ...)    -- starts after this callback yields or returns; returns a thread
+task.cancel(co)    -- closes the thread and cancels its pending wakeup
+```
 `spawn`, `delay` and `defer` accept either a function or a suspended coroutine,
 forward all arguments (including nils), and return that coroutine. `spawn`
 runs immediately until the task yields or returns. `task.cancel` also works

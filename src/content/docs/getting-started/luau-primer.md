@@ -102,10 +102,9 @@ local opts: { count: number?, spread: number? } = { count = 3 }
 ```
 
 Compound assignments (`+=`, `-=`, `..=`), string interpolation with backticks
-(`` `hi {name}` `), and generalized iteration (`for _, v in table do` without
-`pairs`/`ipairs`) are Luau additions you will see throughout the samples.
+(`` `hi {name}` `), and generalized iteration (`for _, v in table do`without`pairs`/`ipairs`) are Luau additions you will see throughout the samples.
 
-## What is *not* there
+## What is _not_ there
 
 Citadel's Luau is sandboxed to the pack, and a few Lua/Roblox staples are
 deliberately absent:

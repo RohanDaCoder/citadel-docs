@@ -393,3 +393,26 @@ Work Log:
 
 Stage Summary:
 - Full llms-source switch impossible (reference layer absent from official markdown — verified live); the official markdown is now wired in as a repeatable drift probe instead of a manual one-off, and the HTML sync stays exactly for the 93% of the wiki that has no markdown source.
+
+---
+Task ID: 12
+Agent: main (Z.ai)
+Task: Decide HTML-crawl vs llms-full.txt sourcing; use the best (turned out: both, in complementary roles); maximum parity, nothing invented
+
+Work Log:
+- Re-verified live (not from memory): llms.txt indexes exactly 55 prose pages; llms-full.txt (280,853 bytes, byte-identical to our snapshot) has zero /reference/ URLs and zero Parameters/Returns blocks. All 5 guides live at /guides/<name> and 4 of them (build-a-cottage, coin-rush, parkour-a-room-each, a-dungeon-dimension) are not in the official files either; the reference listing + 178 parents + 682 members (~92% of the site) exist only as rendered HTML. The crawl is a strict superset -> it stays the source of record; the official markdown becomes the AUDITOR of the crawl (a second, zero-heuristic rendering of the same 55 pages).
+- Built scripts/audit_parity.py (new Stage 3d): fence-aware parse of llms-full.txt into 55 page bodies, maps each to its dataset entry, word-tokenizes both sides with formatting normalised away (fence languages, heading depth, ASCII vs typographic apostrophes, table padding, lead field joined), and reports per-page similarity + official-only/ours-only token sets + the exact sync refresh command. Exits 1 on drift below --min (0.85).
+- FIRST RUN FOUND REAL BUGS (the audit paid for itself immediately): 13 of 55 covered pages short, two root causes in extract_final.py:
+  1. div.api-list mini reference cards (api-row/api-sig/api-doc + dl.api-subs dt/dd) silently dropped on 8+ pages — titles-and-bars extracted to 0 chars, input's hit.* table, version-info's citadel.* block, mobs-and-drops' cow.* fields, layouts' hide_hud yaml, packs' citadel.yml annotations all missing. Fixed: each api-list emits as ONE fenced block (sig -- doc per row, -- dt dd per sub-pair, # marker when all sigs are yaml key: lines) — byte-shaped like minefort's own llms-full rendering of the same DOM.
+  2. pre/multi-line-code inside <li> lost (text-formatting's gradient/rainbow animation examples leaked as glued inline backticks). Fixed: ul_md promotes them to fenced blocks after the bullet.
+  3. Every page's p.t-lead (outside the prose div) was silently dropped dataset-wide. Fixed: docs/guides entries capture it as their own `lead` field (reference parents already did).
+- sync_official.py: added --docs-only (skip parent discovery + member diff entirely), guide-page refresh support (slug in both buckets refreshes both pages — your-first-pack), lead capture, bucket-prefixed report entries.
+- Refreshed ALL 55 docs + 5 guides live with the fixed extractor (61 fetches, one sync history record); regenerated all 60 _sources/doc-*.md + guide-*.md provenance copies.
+- Smoke fixture: only packs.html contained api-lists (2) and reference_index.html was stale ("Types 148" vs live 149 after BrowseEntry) — refreshed those + client-versions + guides_your-first-pack from the sync's own saved HTML (crawl_html/ cache, no extra fetches), re-extracted dataset_smoke.json, diff_smoke back to 12/12 byte-identical.
+- Audit after the refresh: 55/55 pages >= 94% (most >= 99%, several 100%); token-set differences zero on the two lowest (server-settings 94.4%, mobs-and-drops 94.6% — pure word-order effects from table alignment). Drift probe (Stage 3c) still exit 0: 102 matched / 12 known gaps / 9 example-local / 0 candidates.
+- Regenerated downstream: gen_reference_full (178 blocks, no-op content-wise), gen_starlight (915 pages, 0 broken links/anchor misses pre-build), gen_llms_full (llms-full.txt 1.04 MB / llms.txt 28.5 KB, 1 pre-existing unmapped anchor '/ref/Sound/stream/#sound' — content unchanged, was already in HEAD), npm run build 916 pages, check_dist_links 220,408 links 0 broken 0 anchor misses.
+- gen_starlight's src/content diff (915 files) is NOT new content: ~854 ref pages are mode-only normalisation (755->644 from the rohan-local copy), and the rest is the prettier table padding from the user's 1d73f88 pass on wiki_src that had never been regenerated into src/content — the pipeline invariant (src/content == gen_starlight(wiki_src, dataset)) is restored.
+- Docs: PIPELINE.md Stage 3 (new DOM rules + lead in the schema), Stage 3b (--docs-only/guides/lead), new Stage 3d, cookbook + provenance rows. Removed the two one-off diagnostic scripts (their function is subsumed by audit_parity.py).
+
+Stage Summary:
+- Answer to "which source": both, by design — the HTML crawl is the only complete source (llms-full.txt covers 55 of 916 pages and no reference layer), and the official llms-full.txt is now a permanent page-by-page, word-by-word parity auditor of that crawl, on top of the existing identifier drift probe. First audit run caught 3 systematic extraction losses (api-lists, pre-in-li, leads) + 2 stale pages, all fixed and re-verified: extractor 12/12 byte-identical on the fixture, audit 55/55 green, site builds clean.

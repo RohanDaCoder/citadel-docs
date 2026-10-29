@@ -15,12 +15,12 @@ whole world as rules the engine builds on every core with no script per chunk.
 
 The `world` key in the pack's manifest says where a chunk comes from:
 
-| `world` key | Chunks |
-| --- | --- |
-| `"script"` | `world.on_generate` makes them. A chunk it does not fill is air. |
-| `"overworld"` | Citadel's terrain: biomes, hills, caves, ores, trees, sea level 63. Scripts only add to it (`world.on_populate`). `seed` pins the map. |
+| `world` key    | Chunks                                                                                                                                                                                                                                           |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `"script"`     | `world.on_generate` makes them. A chunk it does not fill is air.                                                                                                                                                                                 |
+| `"overworld"`  | Citadel's terrain: biomes, hills, caves, ores, trees, sea level 63. Scripts only add to it (`world.on_populate`). `seed` pins the map.                                                                                                           |
 | any other name | A world folder in the pack — `<pack>/hub` for `world: hub` — made once from a build or a vanilla world. The server reads it chunk by chunk and saves player changes into it. A chunk the folder lacks comes from `world.on_generate`, or is air. |
-| no key | The scripts are asked first. A chunk no script filled is overworld terrain on a `mode: full` server and air on a `mode: lite` server. |
+| no key         | The scripts are asked first. A chunk no script filled is overworld terrain on a `mode: full` server and air on a `mode: lite` server.                                                                                                            |
 
 **Chunks nobody is near are unloaded.** Every ten seconds the server drops
 chunks beyond the view distance of all players and entities. When someone
@@ -69,15 +69,15 @@ A chunk is a 16 by 16 column of blocks, handed to `world.on_generate`,
 chunk's lowest corner, inclusive (y runs 0..255 or the game version's height),
 and `chunk.max` the highest, inclusive.
 
-| Call | Returns | Purpose |
-| --- | --- | --- |
-| [`chunk:get(pos: Vec3)`](/ref/Chunk/get/) | `string` | The block there now, by name; air outside the chunk |
-| [`chunk:set(pos: Vec3, block: string)`](/ref/Chunk/set/) | — | Sets one block; positions outside the chunk are ignored |
-| [`chunk:fill(from: Vec3, to: Vec3, block: string)`](/ref/Chunk/fill/) | — | Fills a box of blocks, clipped to the chunk |
-| [`chunk:paste(schem, origin, opts?)`](/ref/Chunk/paste/) | — | Pastes a build or schematic, clipped to this chunk |
-| [`chunk:get_biome(pos: Vec3)`](/ref/Chunk/get_biome/) | `string?` | The biome of the column at `pos`; `nil` outside the chunk |
-| [`chunk:set_biome(pos: Vec3, biome: string)`](/ref/Chunk/set_biome/) | — | Sets one column's biome: a vanilla name or a `game.biomes.define` name |
-| [`chunk:fill_biome(from: Vec3, to: Vec3, biome: string)`](/ref/Chunk/fill_biome/) | — | Sets the biome of every column in a box, clipped |
+| Call                                                                             | Returns   | Purpose                                                                |
+| -------------------------------------------------------------------------------- | --------- | ---------------------------------------------------------------------- |
+| [`chunk:get(pos: Vec3)`](/ref/Chunk/get/)                                         | `string`  | The block there now, by name; air outside the chunk                    |
+| [`chunk:set(pos: Vec3, block: string)`](/ref/Chunk/set/)                          | —         | Sets one block; positions outside the chunk are ignored                |
+| [`chunk:fill(from: Vec3, to: Vec3, block: string)`](/ref/Chunk/fill/)             | —         | Fills a box of blocks, clipped to the chunk                            |
+| [`chunk:paste(schem, origin, opts?)`](/ref/Chunk/paste/)                          | —         | Pastes a build or schematic, clipped to this chunk                     |
+| [`chunk:get_biome(pos: Vec3)`](/ref/Chunk/get_biome/)                             | `string?` | The biome of the column at `pos`; `nil` outside the chunk              |
+| [`chunk:set_biome(pos: Vec3, biome: string)`](/ref/Chunk/set_biome/)              | —         | Sets one column's biome: a vanilla name or a `game.biomes.define` name |
+| [`chunk:fill_biome(from: Vec3, to: Vec3, biome: string)`](/ref/Chunk/fill_biome/) | —         | Sets the biome of every column in a box, clipped                       |
 
 `chunk:paste` takes the same `{ air = true, part = "name" }` options as
 [`world.paste`](/ref/World/paste/): `part` names the paste for
@@ -106,13 +106,13 @@ inside the generator:
 `noise` gives smooth random numbers for hills, caves and biome borders. The
 same seed gives the same numbers every time.
 
-| Option | Default | Meaning |
-| --- | --- | --- |
-| `seed` | 0 | the same seed gives the same numbers each time |
-| `scale` | 64 | the size of one hill, in blocks |
-| `octaves` | 1 | layers of detail, 1 to 16 |
-| `lacunarity` | 2 | how many times finer each next layer is |
-| `gain` | 0.5 | how many times as strong each next layer is |
+| Option       | Default | Meaning                                        |
+| ------------ | ------- | ---------------------------------------------- |
+| `seed`       | 0       | the same seed gives the same numbers each time |
+| `scale`      | 64      | the size of one hill, in blocks                |
+| `octaves`    | 1       | layers of detail, 1 to 16                      |
+| `lacunarity` | 2       | how many times finer each next layer is        |
+| `gain`       | 0.5     | how many times as strong each next layer is    |
 
 A world with hills and two biomes:
 
@@ -198,12 +198,12 @@ end)
 game: a0.1.0
 world: overworld
 terrain:
-  snow: true              # Alpha's snowy world: a frozen sea, snow on every open column
-  steps:                  # the whole populate list, in order, in place of the jar's
+  snow: true # Alpha's snowy world: a frozen sea, snow on every open column
+  steps: # the whole populate list, in order, in place of the jar's
     - { step: dungeons, count: 8 }
     - { step: clay, block: clay, size: 32, count: 10 }
     - { step: ore, block: coal_ore, size: 16, count: 20, below: 128 }
-    - { step: ore, block: diamond_ore, size: 7, count: 4, below: 16 }   # four times the jar's
+    - { step: ore, block: diamond_ore, size: 7, count: 4, below: 16 } # four times the jar's
     - { step: trees, bonus: 10, big: 10 }
     - { step: patch, block: dandelion, count: 2 }
     - { step: patch, block: poppy, count: 1, chance: 2 }
@@ -214,17 +214,17 @@ terrain:
     - { step: snow }
 ```
 
-| step | what it places |
-| --- | --- |
-| `dungeons` | `count` tries at a cobblestone room with a spawner and up to two chests |
-| `clay` | `count` blobs of `block`, `size` long, into sand that starts under water |
-| `ore` | `count` veins of `block`, `size` long, into stone below y `below` |
-| `trees` | trees on the surface; one chunk in `bonus` gets one more, one in `big` grows big trees |
-| `patch` | a patch of 64 tries at `block` — `count` times, or with `chance: n` one time in n |
-| `reeds` | `count` clumps of sugar cane beside water |
-| `cactus` | `count` clumps of cactus on sand |
-| `springs` | `count` fluid sources in stone walls; `nesting` pushes them deeper |
-| `snow` | a snow layer on every open column — in a `snow: true` world only |
+| step       | what it places                                                                         |
+| ---------- | -------------------------------------------------------------------------------------- |
+| `dungeons` | `count` tries at a cobblestone room with a spawner and up to two chests                |
+| `clay`     | `count` blobs of `block`, `size` long, into sand that starts under water               |
+| `ore`      | `count` veins of `block`, `size` long, into stone below y `below`                      |
+| `trees`    | trees on the surface; one chunk in `bonus` gets one more, one in `big` grows big trees |
+| `patch`    | a patch of 64 tries at `block` — `count` times, or with `chance: n` one time in n      |
+| `reeds`    | `count` clumps of sugar cane beside water                                              |
+| `cactus`   | `count` clumps of cactus on sand                                                       |
+| `springs`  | `count` fluid sources in stone walls; `nesting` pushes them deeper                     |
+| `snow`     | a snow layer on every open column — in a `snow: true` world only                       |
 
 :::caution[Gotcha]
 order matters — moving or removing a step changes everything
@@ -288,14 +288,14 @@ plants = { { block = "sugar_cane", height = 2, chance = 0.5, when = beside_water
 
 ### The rules
 
-| Key | A rule | Meaning |
-| --- | --- | --- |
-| `biomes` | `{ "desert", when = f }` | the first that holds names the biome of the column |
-| `surface` | `{ block, biome, when, depth }` | `block` for the top `depth` blocks (1) of each surface |
-| `rock` | the same | the body of the land under the surface rules |
-| `plants` | `{ block, chance, biome, when, ... }` | at most one plant on a column |
-| `things` | `{ cell, seed, { shapes, chance, biome, when, afloat, place, y }, ... }` | at most one thing in a grid cell |
-| `fluids` | `{ block, below, biome, when }` | the carved air under `below` becomes `block`; the first that holds |
+| Key       | A rule                                                                   | Meaning                                                            |
+| --------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------ |
+| `biomes`  | `{ "desert", when = f }`                                                 | the first that holds names the biome of the column                 |
+| `surface` | `{ block, biome, when, depth }`                                          | `block` for the top `depth` blocks (1) of each surface             |
+| `rock`    | the same                                                                 | the body of the land under the surface rules                       |
+| `plants`  | `{ block, chance, biome, when, ... }`                                    | at most one plant on a column                                      |
+| `things`  | `{ cell, seed, { shapes, chance, biome, when, afloat, place, y }, ... }` | at most one thing in a grid cell                                   |
+| `fluids`  | `{ block, below, biome, when }`                                          | the carved air under `below` becomes `block`; the first that holds |
 
 `sea` fills the open air with water up to its y, and `floor` is the block at
 y 0 (`"bedrock"` for a land of its own).
@@ -350,12 +350,12 @@ world.generate {
 }
 ```
 
-| `place` | Where | At most |
-| --- | --- | --- |
-| `"top"` (the default) | on the top surface, as before | one plant on a column |
-| `"floor"` | the air block over each floor of a cave | one plant on each floor |
-| `"ceiling"` | the air block under each ceiling, hanging down | one plant under each ceiling |
-| `"wall"` | each air block of a cave with rock on a side (plants only) | one plant in each block |
+| `place`               | Where                                                      | At most                      |
+| --------------------- | ---------------------------------------------------------- | ---------------------------- |
+| `"top"` (the default) | on the top surface, as before                              | one plant on a column        |
+| `"floor"`             | the air block over each floor of a cave                    | one plant on each floor      |
+| `"ceiling"`           | the air block under each ceiling, hanging down             | one plant under each ceiling |
+| `"wall"`              | each air block of a cave with rock on a side (plants only) | one plant in each block      |
 
 - A column can cross many caves. Each floor and each ceiling of each cave is
   its own place, with its own roll.
@@ -408,11 +408,11 @@ world.generate {
 }
 ```
 
-| Key | Names | Versions |
-| --- | --- | --- |
-| `carvers` | `"caves"` | every version |
-|  | `"ravines"` | b1.8 and later |
-| `structures` | `"mineshaft"`, `"dungeon"` | 1.7 to 1.12 |
+| Key          | Names                      | Versions       |
+| ------------ | -------------------------- | -------------- |
+| `carvers`    | `"caves"`                  | every version  |
+|              | `"ravines"`                | b1.8 and later |
+| `structures` | `"mineshaft"`, `"dungeon"` | 1.7 to 1.12    |
 
 - They dig and build after the land (`height`, `density`) and before the
   plants, fluids and things, so the cave rules (`place`, `fluids`) use the

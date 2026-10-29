@@ -1,5 +1,40 @@
 # SOURCE: Blocks and terrain
 
+```luau
+world.on_generate(function(chunk) end)    -- called for a chunk each time it comes into memory; same blocks every time it may wait (task.wait, http.get, stores); the chunk is done when it returns
+--   chunk.x, chunk.z   chunk coordinates (16 blocks each)
+--   chunk.min, chunk.max   vec3 bounds of this chunk, inclusive; y runs 0 .. 255, the game version's height, for every client
+--   chunk:get(pos)   what is there now, by name; air outside the chunk
+--   chunk:set(pos, block)   one block; positions outside the chunk are ignored
+--   chunk:fill(from, to, block)   a box, clipped to the chunk
+--   chunk:paste(schem, origin)   a schematic, clipped to the chunk
+--   chunk:set_biome(pos, biome)   the biome of one column; see "biomes"
+--   chunk:fill_biome(from, to, biome)   the biome of each column in a box
+--   chunk:get_biome(pos)   the biome name there; nil outside the chunk
+world.set_block(pos, block)    -- live change, stored and sent to everyone
+world.set_block(pos, "player_head[rotation=8]", { skin = "Notch" })    -- a head with a face; see "player heads"
+world.set_blocks({ { at = vec3(...), block = "red_wool" }, ... })    -- many at once, cheapest; a row takes skin = too
+world.fill(from, to, block)    -- live box
+world.get_block(pos)    -- the block name there, or nil (see below)
+world.block(pos)    -- the block there as a handle: its state, its data, whether it is powered; see "power"
+world.get_blocks(from, to)    -- a box of names in one pass
+world.get_biome(pos)    -- the biome name of a column, or nil (chunk not loaded)
+world.time("day")    -- the sky stays there; see "the time of day"
+world.time(function(s) return s * 20 end)    -- asked each tick; s is seconds since this call
+world.time()    -- the time of day now, 0 .. 23999; 6000 (noon) on a lite world until something sets it
+world.schematic(file)    -- a .schem file in the pack, read once
+--   schem.size   vec3, the build's width, height and length in blocks
+--   schem.min   vec3, the build's own lowest corner (0, 0, 0 for a file)
+world.build(function(b) end, { detail = 1 })    -- the same value, written in code; detail 2 is half blocks
+--   b:block(pos, block)   one block
+--   b:box(from, to, block)   a box, inclusive corners, like chunk:fill
+--   b:line(from, to, block)   every block the straight line passes through
+--   b:part(name, function() end)   what the function writes is a named part; see "naming the parts"
+world.paste(schem, origin)    -- live, like world.fill; { part = "house" } names the paste
+world.container(pos)    -- a chest's stacks, or nil; see "containers"
+world.drop(pos, item)    -- a stack on the ground at a block, as a broken block leaves one
+world.on_populate(function(chunk) end)    -- add to the overworld's own chunks; see "populating the overworld"
+```
 A build that a script writes is a schematic with no file:
 ```luau
 local road = world.build(function(b)
@@ -44,7 +79,7 @@ name is looked up when its chunk loads.
 - `skin` on any other block is an error.
 - Clients from 1.7 see the face. Bedrock clients see no face.
 - For a head as an item, see “head items”.
-## Half blocks: `detail = 2`
+## Half blocks: detail = 2
 At `detail = 2`, every coordinate is a half block. The engine turns each
 block’s eight cells into the block, a slab or a stair of the material, with
 the correct `facing`, `half` and `shape`:
@@ -77,6 +112,12 @@ blocks. The cube limit counts cells, so detail 2 holds an eighth as many
 blocks.
 ## Turning a build
 A build turns and flips as a value; the original does not change:
+```luau
+local window = world.build(function(b) ... end)
+local east = window:rotate(90)    -- a quarter turn clockwise seen from above: north becomes east
+local back = window:rotate(180)
+local left = window:mirror("x")    -- east and west swap; "z" swaps north and south
+```
 - A build turns about `vec3(0, 0, 0)`, so a part drawn around its middle
 turns in place. `min` reads back the new start.
 - Block states turn with it: facings, log axes, fence and pane sides, stair
@@ -86,6 +127,13 @@ corners, door hinges, rail curves, sign and banner rotation.
 A build somebody made by hand is a kit of pieces. `crop` takes one piece out
 of it, and `replace` makes it of other blocks. Both give a new build; the
 original does not change.
+```luau
+local town = world.schematic("builds/town.schem")
+local tower = town:crop(vec3(140, 17, 80), vec3(172, 99, 112))    -- two corners, both inside the piece
+tower.min, tower.size    -- vec3(140, 17, 80) and vec3(33, 83, 33): the piece keeps its place
+local blue = tower:replace { red_nether_bricks = "blue_concrete", red_wool = "blue_wool" }
+world.paste(blue, vec3(0, 64, 0))    -- its lowest corner goes here, as for any build
+```
 - The corners are in the build’s own blocks, in either order. A file’s
 lowest corner is `vec3(0, 0, 0)`.
 - A box that reaches outside the build is cut to it. A box with none of the
@@ -274,6 +322,10 @@ next `world.time` call.
 - A stopped sky, the normal day or an `s * 20` day costs one packet a second. A faster or
 slower day costs one packet every tick it moves.
 Reading blocks:
+```luau
+local here = world.get_block(player.at - vec3(0, 1, 0))    -- "grass_block"
+local box = world.get_blocks(vec3(0, 64, 0), vec3(15, 64, 15))    -- 256 names the order is x, then z, then y: index ((dx * zn) + dz) * yn + dy + 1
+```
 **A read never generates.** A position in an unloaded chunk reads as `nil`
 (not loaded), not `"air"`. Inside `on_generate`, `chunk:get` always works.
 A block change is stored, so late joiners see it. A block name may list `|`
@@ -282,12 +334,22 @@ wins. Without `|`, an unknown name becomes the nearest block, never air.
 ## Containers
 A chest’s stacks, for a pipe, a quarry or a sorting machine to take from
 and put into:
+```luau
+local box = world.container(pos)    -- nil unless the block there is a chest
+box.size    -- 27
+box:items()    -- { { slot = 1, item = "cobblestone", count = 12 }, ... }, the filled slots
+box:take("cobblestone", 16)    -- up to 16, slot by slot; answers how many it took
+box:put{ item = "brick", id = "copper_ingot", count = 5 }    -- answers how many did not fit, 0 for all of it
+```
 - A chest a player has open belongs to that player until they close it.
 Until then, `take` and `put` do nothing.
 - Each half of a double chest is its own 27 slots.
 - A kept handle never goes stale. `items()` on a chest that is gone returns
 an empty list.
 ## Populating the overworld
+```luau
+world.on_populate(function(chunk) end)    -- once per chunk the overworld terrain made, after it made it
+```
 `on_populate` works on the engine’s overworld (`world: overworld`, or
 `mode: full` with no `world` key). It gets each new chunk with terrain,
 caves and ores in place, with the same `chunk:get`, `chunk:set` and
@@ -297,6 +359,12 @@ hook reaches new land only.
 A biome is what the client colours a column by: the grass, the leaves, the
 water, the sky and the fog. It is also the weather there. Each block column
 has one biome.
+```luau
+chunk:set_biome(pos, "desert")    -- one column; pos.y is not read
+chunk:fill_biome(chunk.min, chunk.max, "jungle")    -- each column of a box, clipped to the chunk
+chunk:get_biome(pos)    -- "jungle"; nil outside the chunk
+world.get_biome(pos)    -- the same for a loaded chunk; nil when it is not loaded
+```
 - A column that nothing sets is `"plains"`.
 - The engine’s overworld sets the biomes of its own chunks. `on_populate`
 can read them and change them.
@@ -336,6 +404,12 @@ also makes the grass and leaves colder in colour, unless you set them.
 ## Noise
 `noise` gives smooth random numbers for hills, caves and biome borders. The
 engine calculates them, so a generator stays inside its 100 ms.
+```luau
+local hills = noise.new { seed = 7, scale = 96, octaves = 4 }
+hills:get(x, z)    -- about -1 .. 1, for a height
+hills:get(x, y, z)    -- the same in 3D, for caves and overhangs
+hills:grid(x, z, 16, 16)    -- 256 heights in one call: [dz * 16 + dx + 1]
+```
 | Option | Default | Meaning |
 | --- | --- | --- |
 | `seed` | 0 | the same seed gives the same numbers each time |
@@ -395,6 +469,22 @@ made:biome_at(pos)          -- "forest"
 **A field** is a number at each block, written as a recipe. `fields.noise`
 gives one, and maths on fields gives more: `+ - * / ^`, a minus sign, and
 the methods. A number is a field too.
+```luau
+fields.noise { seed = 7, scale = 96, octaves = 4, solid = false }    -- about -1 .. 1; solid = true changes with y
+fields.x, fields.y, fields.z    -- the block's own coordinates
+fields.height, fields.slope    -- the surface y of the column; the step to its steepest neighbour
+fields.water, fields.shore    -- the water depth over the surface (0 or less on land); 1 at the water's edge
+fields.depth    -- blocks under the surface: fields.height - fields.y
+fields.room    -- the height of the open space the block is in (0 in rock, 64 at most)
+fields.hash(cell, seed)    -- one number 0 .. 1 for each square of `cell` blocks
+fields.cells(size, seed)    -- { distance = field, random = field }: the nearest point of a scattered grid
+fields.mix(a, b, t)    -- a where t is 0, b where t is 1
+f:abs() f:floor() f:sqrt() f:min(g) f:max(g) f:clamp(low, high)
+f:gt(g) f:lt(g)    -- 1 or 0
+f:smooth(from, to)    -- 0 at from, 1 at to, smooth between
+f:curve({ { -1, -40 }, { 0, 2 }, { 1, 20 } })    -- straight lines through the points
+f:at(dx, dy, dz)    -- f at the block that far away
+```
 ```luau
 -- 1 on a column with water beside it: sugar cane beside water.
 local w = fields.water

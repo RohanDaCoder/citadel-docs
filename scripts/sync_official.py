@@ -29,6 +29,10 @@ Usage:
   python3 scripts/sync_official.py --doc-pages network,commands
   python3 scripts/sync_official.py --deep                    # also re-fetch
                                        # every member page (slow, thorough)
+
+Prose-only refresh (no reference walk, ~60 fetches):
+  python3 scripts/sync_official.py --docs-only \
+          --doc-pages <all-doc-and-guide-slugs>
 """
 import argparse
 import json
@@ -41,8 +45,8 @@ from datetime import datetime, timezone
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from crawl_citadel import fetch as fetch_html            # noqa: E402
-from extract_final import extract_member, extract_parent, article_markdown \
-    # noqa: E402
+from extract_final import extract_member, extract_parent, article_markdown, \
+    article_lead                                            # noqa: E402
 
 ROOT = "/home/z/my-project"
 DS_PATH = f"{ROOT}/scripts/dataset.json"
@@ -105,8 +109,12 @@ def main():
     ap.add_argument("--sections", default="",
                     help="comma-separated parent names (default: all)")
     ap.add_argument("--doc-pages", default="",
-                    help="comma-separated doc slugs to refresh in dataset "
-                         "+ wiki_src/_sources")
+                    help="comma-separated slugs to refresh in dataset "
+                         "+ wiki_src/_sources (docs and/or guides; a slug "
+                         "present in both refreshes both pages)")
+    ap.add_argument("--docs-only", action="store_true",
+                    help="skip the reference walk (parent discovery + "
+                         "member diff); refresh only --doc-pages")
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--deep", action="store_true",
                     help="also re-fetch every member page of every section")
@@ -138,14 +146,18 @@ def main():
     # A NEW parent (a fresh type/global page) is fetched, staged, and added
     # to the scan so all of its member pages are extracted; a parent that the
     # index no longer links is pruned only when its own page answers 404.
+    # Skipped entirely under --docs-only (prose-only refresh).
     staged = {}
     report = {"parents_scanned": 0, "parents_added": [], "parents_gone": [],
               "parents_refreshed": [], "members_added": [],
               "members_pruned": [], "members_refetched": [],
               "doc_pages_refreshed": []}
-    idx_html = fetch_html(REF_INDEX)
     new_parents, gone_parents = [], []
-    if idx_html:
+    idx_html = None if args.docs_only else fetch_html(REF_INDEX)
+    if args.docs_only:
+        print("  --docs-only: reference walk skipped (parent discovery + "
+              "member diff)")
+    elif idx_html:
         live_p = set()
         for m in re.finditer(r'href="(/docs/citadel/reference/'
                              r'[A-Za-z0-9_().\-]+)"', idx_html):
@@ -202,6 +214,8 @@ def main():
     wanted = [s.strip() for s in args.sections.split(",") if s.strip()] \
         or sorted(parents, key=str.lower)
     wanted += [p for p in new_parents if p not in wanted]
+    if args.docs_only:
+        wanted = []            # --docs-only: no reference walk at all
 
     for pname in wanted:
         pdata = parents.get(pname) or staged.get(pname)
@@ -296,25 +310,37 @@ def main():
                     report["members_refetched"].append(f"{pname}.{m}")
         time.sleep(0.25)
 
-    # -- doc pages refresh (prose pages: dataset["docs"] + _sources copies)
+    # -- doc/guide pages refresh (prose pages: dataset + _sources copies).
+    # A slug present in BOTH docs and guides (your-first-pack) refreshes both
+    # pages; a slug only in guides resolves to /docs/citadel/guides/<slug>.
     for slug in [s.strip() for s in args.doc_pages.split(",") if s.strip()]:
-        durl = f"/docs/citadel/{slug}"
-        html = fetch_html(durl)
-        if html is None:
-            print(f"  ! doc page unreachable: {durl}", file=sys.stderr)
-            continue
-        article = html_to_article(html)
-        title = article.find("h1").get_text().strip()
-        md = article_markdown(article)
-        report["doc_pages_refreshed"].append(slug)
-        if not args.dry_run:
-            ds["docs"][slug] = {"title": title, "markdown": md}
-            src_path = f"{ROOT}/scripts/wiki_src/_sources/doc-{slug}.md"
-            with open(src_path, "w") as f:
-                f.write(f"# SOURCE: {title}\n\n{md}")
-            save_html(durl, html)
-            manifest[durl] = fname_for(durl)
-        print(f"  ~ doc page refreshed: {slug} ({title})")
+        targets = []
+        if slug in ds.get("docs", {}):
+            targets.append(("docs", f"/docs/citadel/{slug}"))
+        if slug in ds.get("guides", {}):
+            targets.append(("guides", f"/docs/citadel/guides/{slug}"))
+        if not targets:                       # unknown -> assume a doc page
+            targets.append(("docs", f"/docs/citadel/{slug}"))
+        for bucket, durl in targets:
+            html = fetch_html(durl)
+            if html is None:
+                print(f"  ! page unreachable: {durl}", file=sys.stderr)
+                continue
+            article = html_to_article(html)
+            title = article.find("h1").get_text().strip()
+            lead = article_lead(article)
+            md = article_markdown(article)
+            report["doc_pages_refreshed"].append(f"{bucket}/{slug}")
+            if not args.dry_run:
+                ds[bucket][slug] = {"title": title, "lead": lead,
+                                    "markdown": md}
+                prefix = "guide" if bucket == "guides" else "doc"
+                src_path = f"{ROOT}/scripts/wiki_src/_sources/{prefix}-{slug}.md"
+                with open(src_path, "w") as f:
+                    f.write(f"# SOURCE: {title}\n\n{md}")
+                save_html(durl, html)
+                manifest[durl] = fname_for(durl)
+            print(f"  ~ {bucket} page refreshed: {slug} ({title})")
 
     # -- write everything back
     if args.dry_run:

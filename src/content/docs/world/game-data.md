@@ -17,19 +17,19 @@ the tri-state `spawn`, `attacks`, `interact` and block `drops` — `true`,
 [`game.block(name)`](/ref/Game/block/) returns one block in **this version's**
 numbers, or `nil` if this game lacks it.
 
-| Field | Type | Meaning |
-| --- | --- | --- |
-| `name` | `string` | The block's canonical name |
-| `behaviour` | `string?` | The rule Citadel runs for it: `"grass"`, `"flowing"`, `"torch"` or `"falling"`; `nil` for a block that does nothing on its own |
-| `hardness` | `number` | Seconds-scale hardness in this version's numbers; below zero is unbreakable |
-| `random_ticks` | `boolean` | Whether the random-tick pass acts on it |
-| `opaque` | `boolean` | Whether it is an opaque full cube, which is not the material's question |
-| `light` | `number` | What it gives off, 0..15, and what a step through it takes away |
-| `light_filter` | `number` | What a step through it takes off the light, 0 to 15 |
-| `resistance` | `number?` | The three the block-update tables own: `nil` in a game that has none |
-| `flammability` | `{ catches: number, burns_away: number }?` | Fire's two numbers: how readily it catches and how fast it burns away |
-| `material` | `Material?` | The jar's Material as five questions; `nil` in a game with no block-update tables |
-| `drops` | `boolean?` | The one field a pack writes — see below |
+| Field          | Type                                       | Meaning                                                                                                                        |
+| -------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| `name`         | `string`                                   | The block's canonical name                                                                                                     |
+| `behaviour`    | `string?`                                  | The rule Citadel runs for it: `"grass"`, `"flowing"`, `"torch"` or `"falling"`; `nil` for a block that does nothing on its own |
+| `hardness`     | `number`                                   | Seconds-scale hardness in this version's numbers; below zero is unbreakable                                                    |
+| `random_ticks` | `boolean`                                  | Whether the random-tick pass acts on it                                                                                        |
+| `opaque`       | `boolean`                                  | Whether it is an opaque full cube, which is not the material's question                                                        |
+| `light`        | `number`                                   | What it gives off, 0..15, and what a step through it takes away                                                                |
+| `light_filter` | `number`                                   | What a step through it takes off the light, 0 to 15                                                                            |
+| `resistance`   | `number?`                                  | The three the block-update tables own: `nil` in a game that has none                                                           |
+| `flammability` | `{ catches: number, burns_away: number }?` | Fire's two numbers: how readily it catches and how fast it burns away                                                          |
+| `material`     | `Material?`                                | The jar's Material as five questions; `nil` in a game with no block-update tables                                              |
+| `drops`        | `boolean?`                                 | The one field a pack writes — see below                                                                                        |
 
 `resistance`, `flammability` and `material` are `nil`, not zero, in a game with
 no block-update tables. Everything above is read-only.
@@ -42,11 +42,11 @@ whose wall is gone, a leaf that decays, a block an explosion or a piston
 breaks, sand that cannot land. On a `mode: lite` world, the world leaves no
 such item. The pack switches a block on:
 
-| Value | Meaning |
-| --- | --- |
-| `true` | The world leaves the block's normal drops, on a lite world too. |
+| Value   | Meaning                                                          |
+| ------- | ---------------------------------------------------------------- |
+| `true`  | The world leaves the block's normal drops, on a lite world too.  |
 | `false` | The world leaves nothing for this block, with `survival` on too. |
-| `nil` | The pack sets nothing. The world's default applies. |
+| `nil`   | The pack sets nothing. The world's default applies.              |
 
 - The world's default is off on a `mode: lite` world and in a room made by
   `rooms.create`. It is on on a `mode: full` world and after
@@ -97,19 +97,19 @@ game.entities.names { mob = true }    -- the mob kinds only
 game.entities.names { mob = false }   -- the kinds that are not mobs
 ```
 
-| Fact | Meaning |
-| --- | --- |
-| `name` | Its modern registry name: `"cow"` |
-| `mob` | Whether the kind is a mob: `true` for a cow, `false` for an arrow |
-| `max_health` | The most health one of this kind has, in this version's numbers. `health` on a kind is an error: health is what one entity has now |
-| `width`, `height` | Its size in blocks, in this version's numbers |
-| `speed` | Blocks a tick at a full walk |
-| `hostile` | Whether it is hostile |
-| `drop` | The item its death leaves behind, such as `"leather"`; `nil` for none |
-| `registry_name` | This version's own registry spelling: `"Cow"`. A dungeon spawner stores this one |
-| `physics` | For a kind that is not a mob, which order of operations moves it: `"item"`, `"falling"`, `"vehicle"` or `"none"`. `nil` for a mob kind |
-| `behaviour` | The name of the behaviour the engine runs for this kind, such as `"sheep"` or `"living"` |
-| `profile` | Read-only copy; `nil` for a specialized behaviour without a shared profile |
+| Fact              | Meaning                                                                                                                                |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`            | Its modern registry name: `"cow"`                                                                                                      |
+| `mob`             | Whether the kind is a mob: `true` for a cow, `false` for an arrow                                                                      |
+| `max_health`      | The most health one of this kind has, in this version's numbers. `health` on a kind is an error: health is what one entity has now     |
+| `width`, `height` | Its size in blocks, in this version's numbers                                                                                          |
+| `speed`           | Blocks a tick at a full walk                                                                                                           |
+| `hostile`         | Whether it is hostile                                                                                                                  |
+| `drop`            | The item its death leaves behind, such as `"leather"`; `nil` for none                                                                  |
+| `registry_name`   | This version's own registry spelling: `"Cow"`. A dungeon spawner stores this one                                                       |
+| `physics`         | For a kind that is not a mob, which order of operations moves it: `"item"`, `"falling"`, `"vehicle"` or `"none"`. `nil` for a mob kind |
+| `behaviour`       | The name of the behaviour the engine runs for this kind, such as `"sheep"` or `"living"`                                               |
+| `profile`         | Read-only copy; `nil` for a specialized behaviour without a shared profile                                                             |
 
 - Use `for name, kind in game.entities do`, not `pairs(game.entities)`.
 - A game kind that is not a mob (an arrow, a boat, primed TNT) has the facts
@@ -132,11 +132,11 @@ Everything above is read-only.
 is in this world by itself. On a `mode: lite` world, no mob spawns by itself;
 the pack switches a kind on, and it then spawns by the game's own rule.
 
-| Value | Meaning |
-| --- | --- |
-| `true` | The kind is in this world as the game defines it. It spawns by the game's own rule, and it is the game's entity in full. |
-| `false` | The kind never spawns by itself. |
-| `nil` | The pack sets nothing. The world's default applies. |
+| Value   | Meaning                                                                                                                  |
+| ------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `true`  | The kind is in this world as the game defines it. It spawns by the game's own rule, and it is the game's entity in full. |
+| `false` | The kind never spawns by itself.                                                                                         |
+| `nil`   | The pack sets nothing. The world's default applies.                                                                      |
 
 - The world's default is off on a `mode: lite` world and in a room made by
   `rooms.create`: no mob spawns by itself. The default is on on a `mode: full`
@@ -171,10 +171,10 @@ the pack switches a kind on, and it then spawns by the game's own rule.
 `attacks` and `interact` are two more fields of a mob kind that a pack writes.
 Each is `true`, `false` or `nil`. A different value is an error.
 
-| Field | `true` | `false` |
-| --- | --- | --- |
-| `attacks` | The entity's hits hurt players. | The entity's hits do not hurt players. |
-| `interact` | A player's right click on the entity has the game's effect (milk from a cow, a saddle on a pig). | The right click has no effect. |
+| Field      | `true`                                                                                           | `false`                                |
+| ---------- | ------------------------------------------------------------------------------------------------ | -------------------------------------- |
+| `attacks`  | The entity's hits hurt players.                                                                  | The entity's hits do not hurt players. |
+| `interact` | A player's right click on the entity has the game's effect (milk from a cow, a saddle on a pig). | The right click has no effect.         |
 
 With `nil`, the engine uses the first line that applies:
 

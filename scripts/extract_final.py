@@ -90,6 +90,68 @@ def clean_sig(s: str) -> str:
     return s.strip()
 
 
+# -------------------------------------------------- api-list blocks (prose pages)
+# Some prose pages (input, version-info, mobs-and-drops, dimensions, storage,
+# layouts, titles-and-bars, packs...) embed a mini reference card list:
+#   div.api-list > div.api-row > code.api-sig + (dl.api-subs dt/dd) + div.api-doc
+# The 2026-10-30 parity audit against the official llms-full.txt found the
+# old walk silently dropped every api-list (titles-and-bars extracted to 0
+# chars). They are emitted as ONE fenced block per list, mirroring the
+# shape minefort's own llms-full.txt uses for the same DOM: a signature
+# line per row ('sig  -- doc'), dt/dd pairs as '-- dt  dd' comment lines.
+# Links keep only their labels, so nothing is invented, nothing lost.
+YAML_KEY = re.compile(r"^\s*[A-Za-z_][\w-]*\s*:")
+
+
+def api_list_md(al) -> str:
+    def flat_text(el):
+        # text nodes meet element text with original spacing; collapse all
+        # whitespace runs to single spaces (multi-space alignment in the
+        # DOM is styling, not content)
+        return re.sub(r"\s+", " ", el.get_text()).strip()
+
+    rows = al.find_all("div", class_="api-row", recursive=False) or [al]
+    sigs, metas = [], []
+    for row in rows:
+        sig = row.find("code", class_="api-sig", recursive=False)
+        doc = row.find("div", class_="api-doc", recursive=False)
+        dl = row.find("dl", class_="api-subs", recursive=False)
+        sigs.append(flat_text(sig) if sig is not None else None)
+        metas.append((doc, dl))
+    have = [s for s in sigs if s]
+    fence = "yaml" if have and all(YAML_KEY.match(s) for s in have) else "luau"
+    mark = "#" if fence == "yaml" else "--"
+    out = []
+    for sig, (doc, dl) in zip(sigs, metas):
+        if sig:
+            line = sig
+            if doc is not None:
+                dtxt = inline_md(doc).strip()
+                if dtxt:
+                    line += f"    {mark} {dtxt}"
+            out.append(line)
+        if dl is not None:
+            for dt in dl.find_all("dt", recursive=False):
+                dd = dt.find_next_sibling("dd")
+                line = f"{mark}   " + flat_text(dt)
+                if dd is not None:
+                    line += "   " + inline_md(dd).strip()
+                out.append(line)
+    return f"```{fence}\n" + "\n".join(out) + "\n```"
+
+
+def block_fence(el) -> list:
+    """A <pre> (or a multi-line <code>) as a fenced block."""
+    code = el if el.name == "code" else el.find("code")
+    lang = ""
+    for c in (el.get("class") or []) + \
+             ((code.get("class") or []) if code is not None else []):
+        if c.startswith("language-"):
+            lang = c[len("language-"):]
+    lang = {"lua": "luau"}.get(lang, lang)
+    return [f"```{lang}", el.get_text().rstrip(), "```"]
+
+
 # ------------------------------------------------------------- article -> md
 def article_markdown(article) -> str:
     """Doc/guide pages: content blocks, single-newline joined.
@@ -101,6 +163,17 @@ def article_markdown(article) -> str:
     """
     root = article.find("div", class_="prose") or article
     had_prose = root is not article
+    api_lists = root.find_all("div", class_="api-list")
+    api_list_ids = {id(x) for x in api_lists}
+    emitted_api = set()
+
+    def enclosing_api_list(el):
+        p = el
+        while p is not None:
+            if id(p) in api_list_ids:
+                return p
+            p = p.parent
+        return None
 
     def is_skipped(el):
         if el.parent is None:                # detached (nested ul extracted)
@@ -120,7 +193,15 @@ def article_markdown(article) -> str:
         lines.append(block)
 
     for el in root.find_all(["h2", "h3", "p", "pre", "ul", "ol", "table",
-                             "blockquote"], recursive=True):
+                             "blockquote", "dl", "code"], recursive=True):
+        al = enclosing_api_list(el)
+        if al is not None:
+            # inside an api-list: the whole list is one block, emitted at
+            # the position of its first descendant the walk touches.
+            if id(al) not in emitted_api:
+                emit(api_list_md(al))
+                emitted_api.add(id(al))
+            continue
         if is_skipped(el):
             continue
         name = el.name
@@ -164,15 +245,24 @@ def article_markdown(article) -> str:
 
 
 def ul_md(ul, indent=""):
-    """Bullet list; nested <ul> inside an <li> is indented by two spaces."""
+    """Bullet list; nested <ul> inside an <li> is indented by two spaces.
+    A <pre> or a multi-line <code> inside an <li> becomes a fenced block
+    emitted right after the item — the top-level walk skips pre-in-li,
+    so this is the only path that renders them (parity audit finding:
+    text-formatting's animation examples were silently dropped)."""
     out = []
     for li in ul.find_all("li", recursive=False):
-        nested = []
-        for sub in li.find_all("ul", recursive=False):
-            nested.append(sub.extract())
+        nested, blocks = [], []
+        for sub in li.find_all(["ul", "pre"], recursive=False):
+            (nested if sub.name == "ul" else blocks).append(sub.extract())
+        for code in li.find_all("code", recursive=False):
+            if "\n" in code.get_text():
+                blocks.append(code.extract())
         out.append(indent + "- " + inline_md(li).strip())
         for sub in nested:
             out.extend(ul_md(sub, indent + "  "))
+        for b in blocks:
+            out.extend(block_fence(b))
     return out
 
 
@@ -295,6 +385,15 @@ def extract_member(article, url):
     return entry
 
 
+def article_lead(article) -> str:
+    """The p.t-lead headline that sits OUTSIDE the prose div ('' if none).
+    Captured as its own field (2026-10-30 parity fix) so the page lead is
+    no longer lost — the official llms-full.txt includes it, and the old
+    policy of dropping it left the dataset without a word of it."""
+    lead = article.find("p", class_="t-lead")
+    return inline_md(lead).strip() if lead else ""
+
+
 # --------------------------------------------------------------------- main
 def url_from_manifest_or_name(crawl_dir, fname, manifest):
     for url, f in manifest.items():
@@ -341,6 +440,7 @@ def main():
             slug = url[len("/docs/citadel/guides/"):]
             data["guides"][slug] = {
                 "title": article.find("h1").get_text().strip(),
+                "lead": article_lead(article),
                 "markdown": article_markdown(article),
             }
         elif url.startswith("/docs/citadel/reference/"):
@@ -356,6 +456,7 @@ def main():
             slug = url[len("/docs/citadel/"):]
             data["docs"][slug] = {
                 "title": article.find("h1").get_text().strip(),
+                "lead": article_lead(article),
                 "markdown": article_markdown(article),
             }
 

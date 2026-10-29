@@ -63,11 +63,11 @@ and rotation, velocity and push, intent fields, `e.data`, queries — is
 `spawn` is the field of a mob kind that a pack writes. It says whether the
 kind is in this world by itself:
 
-| Value | Meaning |
-| --- | --- |
-| `true` | The kind is in this world as the game defines it. It spawns by the game's own rule, and it is the game's entity in full. |
-| `false` | The kind never spawns by itself. |
-| `nil` | The pack sets nothing. The world's default applies. |
+| Value   | Meaning                                                                                                                  |
+| ------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `true`  | The kind is in this world as the game defines it. It spawns by the game's own rule, and it is the game's entity in full. |
+| `false` | The kind never spawns by itself.                                                                                         |
+| `nil`   | The pack sets nothing. The world's default applies.                                                                      |
 
 - The world's default is off on a `mode: lite` world and in a room made by `rooms.create`: no mob spawns by itself. The default is on on a `mode: full` world and after `world.rules{ survival = true }`.
 - `false` stops natural spawning only. A spawner block, `world.spawn`, `/summon` and breeding still make the entity. Mobs already in the world stay.

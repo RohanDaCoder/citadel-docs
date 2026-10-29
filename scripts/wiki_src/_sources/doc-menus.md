@@ -17,9 +17,7 @@ commands.add("kit", function(player)
     -- m:destroy() takes it down again; m:update(items) redraws it in place
 end)
 ```
-
 The rules:
-
 - **Every client draws a menu.** Java (1.7 to 26.3) shows a chest. Bedrock shows a form with one button per item, labelled with `name` or the item’s name. No `player:supports` check is needed.
 - An item is an item (see “items”) with `name`, `lore`, `color`, `dye`, `glint`, `skin` and `count`. The count shows on the stack, for a price or a quantity.
 - `on_pick` may `task.wait`.

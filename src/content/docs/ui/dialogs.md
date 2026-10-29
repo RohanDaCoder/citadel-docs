@@ -53,12 +53,12 @@ a function that returns one. With a function the dialog is live: after every
 click it calls the function again and draws what it returns, so a click only
 has to change your state. It returns a handle:
 
-| Call or field | What it does |
-| --- | --- |
-| `d:refresh()` | Draws a live view again (after a change that was not a click) |
-| `d:update(view)` | Puts a new view (a window or a function) in place |
-| `d:destroy()` | Closes it |
-| `d.open` | `false` once the player closed it |
+| Call or field    | What it does                                                  |
+| ---------------- | ------------------------------------------------------------- |
+| `d:refresh()`    | Draws a live view again (after a change that was not a click) |
+| `d:update(view)` | Puts a new view (a window or a function) in place             |
+| `d:destroy()`    | Closes it                                                     |
+| `d.open`         | `false` once the player closed it                             |
 
 The view itself is a [`DialogNode`](/ref/DialogNode/): a table with a `kind`,
 made by `ui.kit` — or written by hand.
@@ -97,18 +97,18 @@ image is drawn in glyph cells, which the client draws every frame.
 
 Made of the primitives, in plain Luau (copy one to make your own):
 
-| Node | What it is |
-| --- | --- |
+| Node                                                                 | What it is                                                                                                                                                                                                                                             |
+| -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `kit.window{ title, button, on_close, input, size = "screen", ... }` | The dialog itself. `button` is its button's label, `false` for none; `input = { label, value, width, on_submit = function(player, text) end }` adds a text field; `size = "screen"` is `kit.SCREEN`, a body that fits every screen without a scrollbar |
-| `kit.button{ "Play", style = ..., on_click }` | A button; `style` is `"primary"`, `"secondary"`, `"ghost"` or `"danger"` |
-| `kit.tabs{ "A", "B", selected, on_change }` | Tabs |
-| `kit.close{}` | A close button |
-| `kit.badge{ "LIVE", color, dot }` | A badge |
-| `kit.dot{}` | A dot |
-| `kit.progress{ value = 0.5 }` | A progress bar |
-| `kit.divider{}` | A divider |
-| `kit.card{ image, title, text, badges, on_click }` | A card |
-| `kit.grid{ columns = 3, gap = 6, ... }` | Any nodes, in rows of `columns` |
+| `kit.button{ "Play", style = ..., on_click }`                        | A button; `style` is `"primary"`, `"secondary"`, `"ghost"` or `"danger"`                                                                                                                                                                               |
+| `kit.tabs{ "A", "B", selected, on_change }`                          | Tabs                                                                                                                                                                                                                                                   |
+| `kit.close{}`                                                        | A close button                                                                                                                                                                                                                                         |
+| `kit.badge{ "LIVE", color, dot }`                                    | A badge                                                                                                                                                                                                                                                |
+| `kit.dot{}`                                                          | A dot                                                                                                                                                                                                                                                  |
+| `kit.progress{ value = 0.5 }`                                        | A progress bar                                                                                                                                                                                                                                         |
+| `kit.divider{}`                                                      | A divider                                                                                                                                                                                                                                              |
+| `kit.card{ image, title, text, badges, on_click }`                   | A card                                                                                                                                                                                                                                                 |
+| `kit.grid{ columns = 3, gap = 6, ... }`                              | Any nodes, in rows of `columns`                                                                                                                                                                                                                        |
 
 `kit.theme` holds the colours they use when a call names none: change it once
 to restyle them all. `kit.mix(a, b, t)` mixes two `"#rrggbb"` colours.

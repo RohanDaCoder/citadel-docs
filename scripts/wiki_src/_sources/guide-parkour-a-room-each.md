@@ -1,19 +1,16 @@
 # SOURCE: Parkour, a room each
 
 ## What you build
-
 - A lobby: a small platform, and a title that says to type `/play`.
 - `/play` makes a room with a random course of twelve jumps. Every fourth
-  jump is a gold checkpoint; the last one is an emerald.
+jump is a gold checkpoint; the last one is an emerald.
 - A timer above the hotbar, from the start to the emerald.
 - Fall, and you are back at the last checkpoint.
 - `/leave` goes back to the lobby; finishing does too, after the time
-  shows.
-  This guide builds on **Coin rush**: modules, `player.data`, zones and
-  `storage`.
-
+shows.
+This guide builds on **Coin rush**: modules, `player.data`, zones and
+`storage`.
 ## 1. The pack and the lobby
-
 ```yaml
 # citadel.yml
 name: parkour
@@ -24,9 +21,7 @@ gamemode: 2
 mode: lite
 world: script
 ```
-
 The lobby is the main room, the one every player joins first:
-
 ```luau
 -- main.luau
 world.on_generate(function(chunk)
@@ -41,15 +36,11 @@ players.on_join(function(player)
     end
 end)
 ```
-
 `chunk:fill` with corners outside the chunk is clipped to it, so one line
 makes a 7 by 7 platform whichever chunk asks.
-
 ## 2. A course
-
 A course is two lists: every block to place, and the pads a player lands
 on, in order.
-
 ```luau
 -- course.luau
 function course.make(jumps: number)
@@ -76,19 +67,15 @@ function course.make(jumps: number)
     return { blocks = blocks, pads = pads, finish = at }
 end
 ```
-
 - A jump one block up is two blocks forward; a level jump or a drop is
-  three. A running jump makes every one of them.
+three. A running jump makes every one of them.
 - `math.clamp` keeps the course between y = 62 and y = 70.
 - The pad’s kind decides its block: stone bricks, a gold checkpoint, or the
-  emerald finish.
-  The course is random, but it is made **once**, before the room exists.
-  That matters for the next step.
-
+emerald finish.
+The course is random, but it is made **once**, before the room exists.
+That matters for the next step.
 ## 3. A room of its own
-
 `rooms.create` makes a world with its own chunks, players and effects:
-
 ```luau
 -- run.luau
 local c = course.make(12)
@@ -102,14 +89,11 @@ local room = rooms.create{
     end,
 }
 ```
-
 A room’s `generate` works like `world.on_generate`: it must make the same
 blocks every time a chunk loads. It does, because it only reads the course
 that was made above. `chunk:set` ignores a block outside the chunk, so the
 function can hand every chunk the whole course.
-
 ## 4. The timer
-
 ```luau
 -- run.luau
 local started = time.now()
@@ -118,13 +102,10 @@ local timer = time.every(0.1, function()
     player.ui.actionbar(seconds(time.now() - started), "yellow")
 end)
 ```
-
 `time.now()` is seconds since the pack started; the difference is the
 run’s time. Ten times a second the action bar shows it. `time.every` gives
 back a connection: `timer:cancel()` stops it later.
-
 ## 5. Checkpoints and falls
-
 ```luau
 -- run.luau
 -- A zone checks a player's feet, one point. One block wider than the
@@ -151,18 +132,15 @@ room.world.zone{ from = vec3(-40, 30, -10), to = vec3(40, 58, c.finish.z + 10), 
     p:teleport(respawn)
 end }
 ```
-
 - Each checkpoint is a zone just above its gold block. Walking in moves
-  `respawn` there, once.
+`respawn` there, once.
 - A zone checks a player’s feet, which is one point. `above` makes each
-  zone one block wider than its pad, so a player who lands on the edge
-  still counts.
+zone one block wider than its pad, so a player who lands on the edge
+still counts.
 - One big zone fills the air under the whole course. Falling into it
-  teleports the player back to `respawn`: no fall damage, no death
-  screen.
-
+teleports the player back to `respawn`: no fall damage, no death
+screen.
 ## 6. The finish
-
 ```luau
 -- run.luau
 local done = false
@@ -184,14 +162,11 @@ room.world.zone{ from = from, to = to, on_enter = function(p)
     p:move_to(rooms.main)
 end }
 ```
-
 `done` makes the finish count once. The time is compared with the
 player’s best in `storage`: a lower time is better, and `nil` means no
 time yet. After three seconds of fireworks, the player goes back to the
 lobby: `rooms.main` is the room everyone starts in.
-
 ## 7. Leaving, and cleaning up
-
 ```luau
 -- run.luau
 room.commands.add("leave", function(p)
@@ -209,23 +184,19 @@ room.players.on_leave(function()
 end)
 player:move_to(room)
 ```
-
 - `room.commands` adds a command that works only in this room: `/leave`.
 - A room’s own `on_join` runs when a player moves in. Add it **before**
-  `move_to`, or it misses the player it was written for.
+`move_to`, or it misses the player it was written for.
 - When the last player leaves, the timer stops and `room:destroy()` frees
-  the world.
-  And the command that starts it all:
-
+the world.
+And the command that starts it all:
 ```luau
 -- main.luau
 commands.add("play", function(player)
     run.start(player)
 end, { help = "Run a new course" })
 ```
-
 ## The whole pack
-
 ```luau
 -- run.luau
 --!strict
@@ -319,7 +290,6 @@ end
 
 return run
 ```
-
 ```luau
 -- course.luau
 --!strict
@@ -354,7 +324,6 @@ end
 
 return course
 ```
-
 ```luau
 -- main.luau
 --!strict
@@ -378,13 +347,11 @@ commands.add("play", function(player)
     run.start(player)
 end, { help = "Run a new course" })
 ```
-
 ## Try this next
-
 - Show the lobby a leaderboard of best times in the sidebar, with
-  `storage.keys("best.")`.
+`storage.keys("best.")`.
 - Let two friends race: `/race <name>` moves both players into one room,
-  and the first to the emerald wins.
+and the first to the emerald wins.
 - Make the course harder as it goes: longer jumps after each checkpoint.
-  Next, **Build a cottage** shows how to build something that looks
-  handmade.
+Next, **Build a cottage** shows how to build something that looks
+handmade.

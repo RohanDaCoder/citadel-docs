@@ -26,15 +26,15 @@ task.spawn(function()
 end)
 ```
 
-| Call | Returns | Purpose |
-| --- | --- | --- |
-| `hub.experiences()` | list | The portals of the experience grounds. |
-| `hub.role(player)` | string | The player's rank on Minefort, or nil. |
-| `hub.rent(player, slot, product, experience?)` | request id | Offers a portal of the grounds for Gems. |
-| `hub.point(player, slot, experience)` | boolean | Turns the player's own live portal. |
-| `network.browse(view, options?)` | rows, total | Finds other networks. Hub only. |
-| `network.instances(label?)` | list | The network's always-on servers and hubs. |
-| `network.online(label?)` | number | How many play on this network. |
+| Call                                           | Returns     | Purpose                                   |
+| ---------------------------------------------- | ----------- | ----------------------------------------- |
+| `hub.experiences()`                            | list        | The portals of the experience grounds.    |
+| `hub.role(player)`                             | string      | The player's rank on Minefort, or nil.    |
+| `hub.rent(player, slot, product, experience?)` | request id  | Offers a portal of the grounds for Gems.  |
+| `hub.point(player, slot, experience)`          | boolean     | Turns the player's own live portal.       |
+| `network.browse(view, options?)`               | rows, total | Finds other networks. Hub only.           |
+| `network.instances(label?)`                    | list        | The network's always-on servers and hubs. |
+| `network.online(label?)`                       | number      | How many play on this network.            |
 
 **Anywhere but a hub, the lists are empty and the ranks are nil** — the calls
 work, they just have nothing to say.
@@ -44,13 +44,13 @@ work, they just have nothing to say.
 Returns a list of `{slot, experience, title, pitch, icon, banner, players}` —
 the portals of the experience grounds:
 
-| Field | Meaning |
-| --- | --- |
-| `slot` | The portal's slot. |
-| `experience` | The name `/play` takes. |
-| `title`, `pitch` | What the portal shows. |
-| `icon`, `banner` | Artwork, or nil. |
-| `players` | How many players the experience has. |
+| Field            | Meaning                              |
+| ---------------- | ------------------------------------ |
+| `slot`           | The portal's slot.                   |
+| `experience`     | The name `/play` takes.              |
+| `title`, `pitch` | What the portal shows.               |
+| `icon`, `banner` | Artwork, or nil.                     |
+| `players`        | How many players the experience has. |
 
 A slot that is not in the list has no experience.
 
@@ -62,7 +62,7 @@ A slot that is not in the list has no experience.
 - [`network.browse(view, options?)`](/ref/network/browse/) finds other
   networks: `"featured"` (the busiest), `"search"`, `"for-you"` and
   `"recent"`. Each row is a network — `{id, name, category, motd, icon,
-  players, maxPlayers, state}` — and `id` is what `player:connect` takes.
+players, maxPlayers, state}` — and `id` is what `player:connect` takes.
 - [`network.instances()`](/ref/network/instances/) returns this network's
   servers that run all the time — on the platform's hub, the hubs — each
   `{id, name, state, players, region}`, then the network's games started on

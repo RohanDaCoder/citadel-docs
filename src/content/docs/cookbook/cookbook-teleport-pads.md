@@ -94,13 +94,13 @@ end)
 
 ## Choosing the pattern
 
-| Need | Use |
-| --- | --- |
-| Move within the room, by area | `world.zone` with `on_enter` |
-| Move between the group's worlds, by standing | `routes.add` with a trigger |
-| Move between the group's worlds, on demand | `player:travel(dim, pos)` |
-| Move within the room, by command | `player:teleport(pos)` |
-| Effect on everyone near a point | `players.near` on a timer |
+| Need                                         | Use                          |
+| -------------------------------------------- | ---------------------------- |
+| Move within the room, by area                | `world.zone` with `on_enter` |
+| Move between the group's worlds, by standing | `routes.add` with a trigger  |
+| Move between the group's worlds, on demand   | `player:travel(dim, pos)`    |
+| Move within the room, by command             | `player:teleport(pos)`       |
+| Effect on everyone near a point              | `players.near` on a timer    |
 
 ## See also
 

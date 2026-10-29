@@ -32,11 +32,11 @@ works — its handle or its namespaced name (`"rave:crate"`). See
 
 ## Version fallbacks
 
-| Situation | What happens |
-| --- | --- |
-| A name this game version lacks | the nearest block it has — never air |
-| An older client than the block | the client sees the nearest block its version has |
-| A name no version has (`"grassblock"`) | an error that lists the nearest real names |
+| Situation                              | What happens                                      |
+| -------------------------------------- | ------------------------------------------------- |
+| A name this game version lacks         | the nearest block it has — never air              |
+| An older client than the block         | the client sees the nearest block its version has |
+| A name no version has (`"grassblock"`) | an error that lists the nearest real names        |
 
 - A block name may list `|` alternatives (`"deepslate|stone"`): the first one
   the game version knows wins. Write `"future_block|obsidian"` to pick the
@@ -45,11 +45,11 @@ works — its handle or its namespaced name (`"rave:crate"`). See
 
 ## Writing blocks
 
-| Call | Returns | Purpose |
-| --- | --- | --- |
-| [`world.set_block(pos, block, opts?)`](/ref/World/set_block/) | — | Sets one block, live, stored and sent |
-| [`world.set_blocks(changes)`](/ref/World/set_blocks/) | — | Sets many blocks at once; the cheapest way |
-| [`world.fill(from, to, block)`](/ref/World/fill/) | — | Fills a box between two corners, live, stored and sent to everyone |
+| Call                                                         | Returns | Purpose                                                            |
+| ------------------------------------------------------------ | ------- | ------------------------------------------------------------------ |
+| [`world.set_block(pos, block, opts?)`](/ref/World/set_block/) | —       | Sets one block, live, stored and sent                              |
+| [`world.set_blocks(changes)`](/ref/World/set_blocks/)         | —       | Sets many blocks at once; the cheapest way                         |
+| [`world.fill(from, to, block)`](/ref/World/fill/)             | —       | Fills a box between two corners, live, stored and sent to everyone |
 
 `block` is a `BlockRef`: a name string or a custom-block handle. Both
 `set_block` and `set_blocks` take `skin` for player heads — a row of
@@ -61,13 +61,13 @@ works — its handle or its namespaced name (`"rave:crate"`). See
 (not loaded), not `"air"`. Inside `on_generate`, `chunk:get` always works. A
 block change is stored, so late joiners see it.
 
-| Call | Returns | Purpose |
-| --- | --- | --- |
-| [`world.get_block(pos)`](/ref/World/get_block/) | `string?` | The block's name; `nil` where the chunk is not in memory |
-| [`world.get_blocks(from, to)`](/ref/World/get_blocks/) | `{string?}` | A box of names, in x, then z, then y order |
-| [`world.block(pos)`](/ref/World/block/) | `BlockAt?` | The block there as the handle a hook gets |
-| [`world.light_at(pos)`](/ref/World/light_at/) | `number, number, boolean` | Block light and sky light, 0 to 15, and whether nothing above holds off the sky |
-| [`world.get_biome(pos)`](/ref/World/get_biome/) | `string?` | The biome name of the column; `nil` where not in memory |
+| Call                                                  | Returns                   | Purpose                                                                         |
+| ----------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------- |
+| [`world.get_block(pos)`](/ref/World/get_block/)        | `string?`                 | The block's name; `nil` where the chunk is not in memory                        |
+| [`world.get_blocks(from, to)`](/ref/World/get_blocks/) | `{string?}`               | A box of names, in x, then z, then y order                                      |
+| [`world.block(pos)`](/ref/World/block/)                | `BlockAt?`                | The block there as the handle a hook gets                                       |
+| [`world.light_at(pos)`](/ref/World/light_at/)          | `number, number, boolean` | Block light and sky light, 0 to 15, and whether nothing above holds off the sky |
+| [`world.get_biome(pos)`](/ref/World/get_biome/)        | `string?`                 | The biome name of the column; `nil` where not in memory                         |
 
 `world.block` gives the live handle every block hook receives:
 
@@ -93,9 +93,9 @@ world.set_block(vec3(2, 65, 0), "player_head", { skin = { value = "ewogICJ0aW1l.
 world.set_blocks({ { at = vec3(3, 65, 0), block = "player_head", skin = "jeb_" } })
 ```
 
-| Form | Meaning |
-| --- | --- |
-| a name string | looked up from a player in this room, else from Mojang |
+| Form                        | Meaning                                                      |
+| --------------------------- | ------------------------------------------------------------ |
+| a name string               | looked up from a player in this room, else from Mojang       |
 | `{ value = , signature = }` | the account's `textures` property; the signature is optional |
 
 - The head appears at once and gets its face later. A name with no account
@@ -127,14 +127,14 @@ local roof = world.build(function(b)
 end, { detail = 2 })                         -- 10 blocks wide: coordinates 0..19
 ```
 
-| cells of a block | what is placed |
-| --- | --- |
-| all eight | the block |
-| the bottom four, or the top four | a bottom or top slab |
-| a half and one quarter above it (or below) | an outer-corner stair |
-| a half and two quarters on one side | a straight stair, climbing that side |
-| a half and three quarters | an inner-corner stair |
-| anything else | the block when four or more cells hold it, else nothing |
+| cells of a block                           | what is placed                                          |
+| ------------------------------------------ | ------------------------------------------------------- |
+| all eight                                  | the block                                               |
+| the bottom four, or the top four           | a bottom or top slab                                    |
+| a half and one quarter above it (or below) | an outer-corner stair                                   |
+| a half and two quarters on one side        | a straight stair, climbing that side                    |
+| a half and three quarters                  | an inner-corner stair                                   |
+| anything else                              | the block when four or more cells hold it, else nothing |
 
 - The slab and the stair are the material's own: `stone_bricks` makes
   `stone_brick_slab` and `stone_brick_stairs`, `oak_planks` makes `oak_slab`,

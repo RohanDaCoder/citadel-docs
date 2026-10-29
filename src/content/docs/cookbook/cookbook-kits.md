@@ -33,7 +33,7 @@ What `player:give` does with each stack:
 - What does not fit is **dropped from the give, not duplicated** — count what
   you need before sending a full inventory.
 - One item is a bare string (`"stone"`), several are `{ item = "arrow",
-  count = 16 }`. A pack's own item carries its `id`.
+count = 16 }`. A pack's own item carries its `id`.
 
 ## A kit that costs something
 

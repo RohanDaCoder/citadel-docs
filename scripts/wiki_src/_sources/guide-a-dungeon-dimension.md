@@ -1,20 +1,16 @@
 # SOURCE: A dungeon dimension
 
 ## What you build
-
 - A castle yard of stone bricks with a square of blue carpet in it.
 - `dungeon`, a second world: bedrock at both ends, mossy walls, two
-  crossing corridors. A client draws it with the Nether’s dark sky.
+crossing corridors. A client draws it with the Nether’s dark sky.
 - Step on the carpet and you arrive in the dungeon. `/leave` brings you
-  back.
-  This guide builds on **Your first pack**: `world.on_generate` and
-  `commands.add`.
-
+back.
+This guide builds on **Your first pack**: `world.on_generate` and
+`commands.add`.
 ## 1. Declare the dimension
-
 A pack adds a world in `citadel.yml`, under `dimensions:`. The name is its
 id inside the pack, so this one is `castle:dungeon`:
-
 ```yaml
 # citadel.yml
 name: castle
@@ -29,22 +25,18 @@ dimensions:
     type: { has_skylight: false, has_ceiling: true, weather: false }
     world: script
 ```
-
 - `type` says how the world behaves. Every field is optional and starts
-  from the main world’s: `has_skylight`, `has_ceiling`, `weather`,
-  `ultrawarm`, `bed_works`, `respawn_anchor_works`, `coordinate_scale`,
-  `fixed_time` and `effects`.
+from the main world’s: `has_skylight`, `has_ceiling`, `weather`,
+`ultrawarm`, `bed_works`, `respawn_anchor_works`, `coordinate_scale`,
+`fixed_time` and `effects`.
 - A world with a roof looks like the Nether to a client, one with no sky
-  and no roof like the End. `effects` chooses one of the three yourself.
+and no roof like the End. `effects` chooses one of the three yourself.
 - `world: script` means the pack makes its chunks. `void` leaves them
-  empty.
-  The dungeon is a world of the server’s group: it ticks after the main world
-  and, on a server that keeps its world, saves to `world_dungeon` beside it.
-
+empty.
+The dungeon is a world of the server’s group: it ticks after the main world
+and, on a server that keeps its world, saves to `world_dungeon` beside it.
 ## 2. The yard
-
 The main world, as in the first guide:
-
 ```luau
 -- main.luau
 -- The castle yard: a stone floor, and a square of blue carpet in the middle.
@@ -53,12 +45,9 @@ world.on_generate(function(chunk)
     chunk:fill(vec3(4, 65, 4), vec3(5, 65, 5), "light_blue_carpet")
 end)
 ```
-
 ## 3. The dungeon’s terrain
-
 `world.dimension(name)` is that world’s own `world` table. Its
 `on_generate` fills the dungeon’s chunks:
-
 ```luau
 -- main.luau
 -- The dungeon: bedrock below and above, dark corridors in between.
@@ -71,12 +60,9 @@ dungeon.on_generate(function(chunk)
     chunk:fill(vec3(chunk.min.x, 69, chunk.min.z), vec3(chunk.max.x, 69, chunk.max.z), "bedrock")
 end)
 ```
-
 ## 4. The gate
-
 A route is how a player gets from one world to another. This one starts in
 the overworld, and the trigger is standing in a block:
-
 ```luau
 -- main.luau
 -- Step on the carpet and you are in the dungeon.
@@ -87,20 +73,16 @@ routes.add{
     placement = { x = 7.5, y = 64, z = 7.5 },
 }
 ```
-
 - `trigger = { block = "light_blue_carpet" }` fires on the first tick a
-  player stands in carpet. `ticks = 80` would make them wait, as a Nether
-  portal does.
+player stands in carpet. `ticks = 80` would make them wait, as a Nether
+portal does.
 - `placement` is where they arrive. Leave it out and they arrive at the
-  dungeon’s spawn.
+dungeon’s spawn.
 - After a trip a player must step out of the trigger block for half a second
-  before it can fire again.
-
+before it can fire again.
 ## 5. The way back
-
 `player:travel(dimension, pos)` sends a player to any world of the group, at
 `pos` or, without it, at its spawn:
-
 ```luau
 -- main.luau
 -- `/leave` goes back up, to the yard's spawn.
@@ -108,7 +90,5 @@ commands.add("leave", function(player)
     player:travel("overworld")
 end)
 ```
-
 ## Try it
-
 Run the pack, step on the carpet, look up at the roof, and type `/leave`.

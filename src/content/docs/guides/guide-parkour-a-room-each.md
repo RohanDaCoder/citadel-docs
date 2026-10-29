@@ -12,6 +12,7 @@ player, made at runtime.
 :::
 
 ## What you build
+
 - A lobby: a small platform, and a title that says to type `/play`.
 - `/play` makes a room with a random course of twelve jumps. Every fourth
   jump is a gold checkpoint; the last one is an emerald.
