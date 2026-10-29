@@ -46,14 +46,53 @@ except ModuleNotFoundError:
     sys.stderr.write("git_ssh.py: paramiko installed, continuing.\n")
     import paramiko  # retry; if this still fails the real ImportError fires
 
-DEFAULT_KEY = os.path.expanduser("~/.ssh/id_ed25519")
+# Where to look for the deploy key, in priority order.
+#
+# The home directory (~/.ssh/) can be wiped when the container's venv is
+# rebuilt (this already happened once, between 14:00 and 16:00 on
+# 2026-10-29). /home/z/my-project/ itself survives such wipes, so the
+# PRIMARY key location is the in-project, gitignored .secrets/ dir. The
+# ~/.ssh/ paths remain as fallbacks for when the home dir is intact.
+#
+# An explicit GIT_SSH_IDENTITY env var wins over everything, so ops can
+# override without editing code.
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+KEY_SEARCH_PATHS = [
+    os.path.join(PROJECT_ROOT, ".secrets", "id_ed25519"),
+    os.path.join(PROJECT_ROOT, ".secrets", "id_rsa"),
+    os.path.expanduser("~/.ssh/id_ed25519"),
+    os.path.expanduser("~/.ssh/id_rsa"),
+]
 # ssh.github.com:443 is the firewall-friendly fallback for port 22
 FALLBACKS = {22: ("ssh.github.com", 443)}
 
 
+def resolve_identity(explicit=None):
+    """Pick the SSH key file to use.
+
+    Order: explicit -i flag > $GIT_SSH_IDENTITY > first existing entry in
+    KEY_SEARCH_PATHS. Returns None if nothing usable is found, in which
+    case connect() will fail with a clear, self-documenting message.
+    """
+    candidates = []
+    if explicit:
+        candidates.append(explicit)
+    env_override = os.environ.get("GIT_SSH_IDENTITY")
+    if env_override:
+        candidates.append(env_override)
+    candidates.extend(KEY_SEARCH_PATHS)
+    for path in candidates:
+        if path and os.path.exists(path):
+            return path
+    # Nothing found — return the primary delete-safe path so the failure
+    # message tells the user exactly where to drop the key.
+    return KEY_SEARCH_PATHS[0]
+
+
 def parse_args(argv):
     port = 22
-    identity = DEFAULT_KEY
+    identity = None  # resolved after parsing so -i / env / defaults merge
+    explicit_identity = None
     args = []
     i = 0
     while i < len(argv):
@@ -63,7 +102,7 @@ def parse_args(argv):
             port = int(argv[i])
         elif a == "-i":
             i += 1
-            identity = argv[i]
+            explicit_identity = argv[i]
         elif a == "-o":
             i += 1  # skip -o option values; policy is fixed (auto-add)
         elif a in ("-T", "-G", "-q"):
@@ -80,6 +119,7 @@ def parse_args(argv):
         user, host = dest.rsplit("@", 1)
     else:
         user, host = "git", dest
+    identity = resolve_identity(explicit_identity)
     return user, host, port, identity, command
 
 
@@ -113,12 +153,16 @@ def connect(user, host, port, identity):
     sys.stderr.write(f"git_ssh.py: connection failed: {last_err}\n")
     # Distinguish the unrecoverable auth case so the cron relay is
     # self-documenting instead of just echoing "No authentication
-    # methods available".
-    if identity and not os.path.exists(identity):
+    # methods available". Point at the delete-safe primary location so
+    # the user knows exactly where to drop the key.
+    if identity is None or not os.path.exists(identity):
+        primary = KEY_SEARCH_PATHS[0]
         sys.stderr.write(
-            f"git_ssh.py: SSH key {identity} is missing — restore the "
-            f"deploy key registered on the GitHub repo before retrying. "
-            f"This cannot be auto-recovered.\n"
+            f"git_ssh.py: no usable SSH key found. Restore the deploy "
+            f"key (the private half registered on the GitHub repo) to:\n"
+            f"    {primary}\n"
+            f"  (mode 600, owner-owned). ~/.ssh/id_ed25519 is also "
+            f"still honored as a fallback. This cannot be auto-recovered.\n"
         )
     sys.exit(255)
 

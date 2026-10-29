@@ -45,3 +45,6 @@ tool-results/
 # deliverables (download/) are build outputs, not source
 download/
 # generated content is committed; manifests under scripts/generated are build inputs
+
+# SSH deploy keys (delete-safe location: survives home-dir wipes)
+.secrets/
