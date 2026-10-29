@@ -324,6 +324,54 @@ multi-returns and spec literals.
 
 ---
 
+## Stage 8 — Live server control: `scripts/minefort_mcp.py`
+
+A separate axis from the doc-mirror pipeline: an MCP (Model Context
+Protocol) client + CLI that lets the assistant operate the user's actual
+Citadel server through Minefort's official MCP endpoint
+(`https://minefort.com/mcp`). Docs at `https://minefort.com/docs/mcp`.
+
+Protocol stack:
+- **Transport**: Streamable HTTP (POST JSON-RPC 2.0, `Accept:
+  application/json, text/event-stream`, response is one JSON body or a
+  sequence of SSE `data:` frames).
+- **Auth**: OAuth 2.1 PKCE (S256) with Dynamic Client Registration
+  (RFC 7591, public client, `token_endpoint_auth_method: none`), the
+  RFC 8707 `resource=https://minefort.com/mcp` indicator bound into
+  authorize + token + refresh, and a refresh-token-aware cache at
+  `.secrets/minefort_mcp_token.json` (mode 600, gitignored).
+- **Handshake**: `initialize` (protocol `2025-06-18`) →
+  `notifications/initialized` → `tools/list` → `tools/call`. The
+  `Mcp-Session-Id` and `MCP-Protocol-Version` response headers are
+  captured and resent on every subsequent request per spec.
+
+First-run UX (interactive shell only — a browser must open):
+
+```sh
+python3 scripts/minefort_mcp.py auth            # opens minefort.com, caches token
+python3 scripts/minefort_mcp.py list-tools      # discover server-exposed tools
+python3 scripts/minefort_mcp.py list-workloads  # first real call
+python3 scripts/minefort_mcp.py power <id> restart
+```
+
+Every documented tool has a convenience alias (`list-workloads`,
+`get-workload`, `power`, `list-files`, `read-file`, `write-file`,
+`run-command`, `read-console`, `list-backups`, `create-backup`,
+`restore-backup`, `list-products`, `send-feedback`, … — 37 total); the
+generic `call NAME --arg key=value` form reaches any tool, including
+ones Minefort adds later without an alias. `--json-input` reads a JSON
+object from stdin for complex arguments; `--raw` dumps the full MCP
+result envelope.
+
+Headless / cron / agent contexts set `MINEFORT_MCP_NONINTERACTIVE=1`:
+if the cached token is missing or refresh fails, the CLI exits with
+code 2 (`EXIT_OAUTH_REQUIRED`) and a clear "run `auth` first" message
+instead of blocking 5 minutes on a browser callback that cannot land.
+Exit codes: `0` OK, `1` usage, `2` OAuth required, `3` MCP error
+response, `4` network/transport.
+
+---
+
 ## Regeneration cookbook
 
 ```sh
@@ -377,5 +425,6 @@ python3 scripts/diff_smoke.py               # 12/12 byte-identical
 | `scripts/gen_starlight.py` | wiki + dataset → Starlight site | original (Task 3) |
 | `scripts/gen_llms_full.py` | site content → llms.txt / llms-full.txt | original (Task 5) |
 | `scripts/gen_citadel_dts.py` | dataset → citadel.d.ts | original (Task 6) |
+| `scripts/minefort_mcp.py` | MCP client + CLI for live Citadel server control via https://minefort.com/mcp (OAuth 2.1 PKCE + DCR + RFC 8707 resource binding; 41-subcommand CLI) | original (Task 13) |
 | `scripts/check_dist_links.py` | built-HTML link sweep | original (Task 3) |
 | `citadel-ts/**` | TSTL transpile project | original (Task 6) |
