@@ -40,5 +40,5 @@ prompt
 # python bytecode
 __pycache__/
 *.pyc
-
+tool-results/
 # generated content is committed; manifests under scripts/generated are build inputs
