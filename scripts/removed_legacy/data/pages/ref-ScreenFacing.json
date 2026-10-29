@@ -1,1 +1,0 @@
-{"type": "ref", "name": "ScreenFacing", "kind": "type", "assocType": "", "lead": "The side a frame display hangs on: a wall side, or \"up\" to lie flat on a floor or table (1.13 and later).", "typedef": "\"north\" | \"south\" | \"west\" | \"east\" | \"up\"", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "ScreenFacing type"}

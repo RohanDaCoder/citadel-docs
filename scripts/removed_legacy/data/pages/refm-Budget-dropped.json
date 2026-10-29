@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Budget", "name": "dropped", "title": "budget.dropped", "kind": "field", "lead": "Ordinary events lost to queue overflow. Joins, leaves, deaths and respawns are retained with their original player sessions.", "signature": "budget.dropped: number", "params": [], "returns": [], "usedIn": []}

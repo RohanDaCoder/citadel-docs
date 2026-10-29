@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "BlockAt", "name": "name", "title": "blockAt.name", "kind": "field", "lead": "The block's name with its namespace, such as \"rave:crate\"; a live read.", "signature": "blockAt.name: string", "params": [], "returns": [], "usedIn": []}

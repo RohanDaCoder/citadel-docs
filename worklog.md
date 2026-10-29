@@ -373,3 +373,14 @@ Work Log:
 
 Stage Summary:
 - main = full pipeline + user's Astro 7 upgrade + scoped formatting, verified end-to-end; rohan-local kept on the remote as reference.
+
+Work Log:
+- Tracked-workspace tidy-up (user-requested): removed 3,046 dead/regenerable files (~255 MB) from git and disk. 4,154 -> 1,108 tracked files.
+- scripts/crawl_html/ (215 MB raw crawl) untracked + gitignored: regenerable via the PIPELINE.md cookbook; the tracked all_urls.json preserves sync_official.py's manifest self-heal. Added os.makedirs(CRAWL_DIR) to sync_official.py — the script never created the dir itself, so a fresh clone would have crashed npm run sync at the manifest write.
+- Removed dead pre-Starlight pipeline chain (all read/write src/data/, which was deleted with the Next.js app): build_wiki.py, prepare_site_data.py, gen_page_loaders.py, extract_content.py + their data strays docs_hierarchy.json, reference_nav.json, reference_types.json, top-level manifest.json.
+- Removed obsolete/QA artifacts: scripts/content/ (912 old-extractor outputs, written never read), scripts/analysis/ (derived dumps), scripts/verify/ + 17 top-level shot-*/final-*.png (QA screenshots; old checker read deleted src/data/), stale scripts/llms*.txt copies (canonical = public/), strays citadel_page.html, crawl_log.txt, citadel_urls.txt.
+- Kept by design: crawl_html_smoke/ (offline diff_smoke verification fixture, 12/12 byte-identical), dataset.json (ground truth), all_urls.json, wiki_src/ (authored layer), official_llms/ (captured reference data), generated/ (913 redirects), all documented pipeline scripts, and the git recovery infra (git_ssh.py paramiko auto-bootstrap + .secrets/ key search, git_sync.py, gen_deploy_key.py).
+- Matches the historical cleanup already recorded above (crawl_html/analysis/content/old pipeline scripts/QA screenshots were deleted once before and crept back in via branch integration); everything removed is regenerable or recoverable from git history.
+
+Stage Summary:
+- Working tree 616 MB -> 361 MB, tracked 4,154 -> 1,108 files; dataset + authored + fixture layers intact; npm run sync verified robust against the missing crawl dir.

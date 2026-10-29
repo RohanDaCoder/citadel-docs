@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "PlantRule", "name": "when", "title": "plantRule.when", "kind": "field", "lead": "", "signature": "plantRule.when: (Field | number)?", "params": [], "returns": [], "usedIn": []}

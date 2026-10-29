@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "ModelDisplay", "name": "stop", "title": "modelDisplay:stop", "kind": "method", "lead": "Where it is; the parts stay as they are.", "signature": "modelDisplay:stop(animation: string)", "params": [{"name": "animation", "type": "string", "required": true}], "returns": [], "usedIn": []}

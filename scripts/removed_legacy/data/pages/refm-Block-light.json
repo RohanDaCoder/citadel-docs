@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Block", "name": "light", "title": "block.light", "kind": "field", "lead": "What it gives off, 0..15, and what a step through it takes away.", "signature": "block.light: number", "params": [], "returns": [], "usedIn": []}

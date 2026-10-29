@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "colors", "name": "green", "title": "colors.green", "kind": "field", "lead": "", "signature": "colors.green: Color", "params": [], "returns": [], "usedIn": [{"quote": "local skin = m:material(\"skin\", colors.green)", "source": "Custom entities", "href": "#/wiki/custom-entities"}]}

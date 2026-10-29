@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "TerrainStep", "name": "nesting", "title": "terrainStep.nesting", "kind": "field", "lead": "Springs: how many times the y is picked again below itself; lava's 2 keeps it deeper than water's 1.", "signature": "terrainStep.nesting: number ?", "params": [], "returns": [], "usedIn": []}

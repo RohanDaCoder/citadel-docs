@@ -1,1 +1,0 @@
-{"type": "ref", "name": "message", "kind": "global", "assocType": "", "lead": "A chat line to everyone in the main room.", "typedef": "(text: Text, color: Ink ?) -> ()", "docsLink": {"title": "Data", "href": "#/wiki/storage"}, "functions": [], "fields": [], "others": [], "title": "message global"}

@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "BlockAt", "name": "destroy", "title": "blockAt:destroy", "kind": "method", "lead": "Takes it out, leaving nothing.", "signature": "blockAt:destroy()", "params": [], "returns": [], "usedIn": []}

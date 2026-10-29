@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "CommandOpts", "name": "aliases", "title": "commandOpts.aliases", "kind": "field", "lead": "More names for the same command: { \"hub\", \"lobby\" }.", "signature": "commandOpts.aliases: { string }?", "params": [], "returns": [], "usedIn": []}

@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Npc", "name": "name", "title": "npc.name", "kind": "field", "lead": "Whether it is still present. Read-only. \"\" for one made with no name, which has no name tag.", "signature": "npc.name: string", "params": [], "returns": [], "usedIn": []}

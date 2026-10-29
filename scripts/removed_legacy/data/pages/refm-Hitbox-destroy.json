@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Hitbox", "name": "destroy", "title": "hitbox:destroy", "kind": "method", "lead": "Removes the hitbox, and its wall when solid.", "signature": "hitbox:destroy()", "params": [], "returns": [], "usedIn": []}

@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "EntityHandle", "name": "origin", "title": "entityHandle.origin", "kind": "field", "lead": "The block it used to be, for anything that arrived through a transition; nil for anything that was never a block.", "signature": "entityHandle.origin: string ?", "params": [], "returns": [], "usedIn": []}

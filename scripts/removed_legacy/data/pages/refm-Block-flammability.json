@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Block", "name": "flammability", "title": "block.flammability", "kind": "field", "lead": "Fire's two numbers: how readily it catches and how fast it burns away. Nil in a game with no block-update tables.", "signature": "block.flammability: { catches: number, burns_away: number }?", "params": [], "returns": [], "usedIn": []}

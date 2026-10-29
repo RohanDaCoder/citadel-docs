@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "HttpResponse", "name": "image", "title": "httpResponse:image", "kind": "method", "lead": "A PNG body: `pixels` is 4 bytes (RGBA) a pixel, row by row from the top.", "signature": "httpResponse:image() → {width: number, height: number, pixels: buffer}", "params": [], "returns": ["{width: number , height: number , pixels: buffer}"], "usedIn": []}

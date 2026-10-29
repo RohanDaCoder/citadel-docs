@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "ItemMeta", "name": "model", "title": "itemMeta.model", "kind": "field", "lead": "The item model a 1.21.4+ client draws: `assets/<pack>/items/<model>.json`.", "signature": "itemMeta.model: string ?", "params": [], "returns": [], "usedIn": []}

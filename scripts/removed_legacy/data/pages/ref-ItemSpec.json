@@ -1,1 +1,0 @@
-{"type": "ref", "name": "ItemSpec", "kind": "type", "assocType": "", "lead": "An item is a name, or a table with the meta it carries.", "typedef": "string | ItemTable", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "ItemSpec type"}

@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Display", "name": "color", "title": "display.color", "kind": "field", "lead": "The colour of the words that did not pick one.", "signature": "display.color: Color ?", "params": [], "returns": [], "usedIn": []}

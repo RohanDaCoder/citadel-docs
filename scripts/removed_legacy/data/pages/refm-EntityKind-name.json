@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "EntityKind", "name": "name", "title": "entityKind.name", "kind": "field", "lead": "Its modern registry name: \"cow\".", "signature": "entityKind.name: string", "params": [], "returns": [], "usedIn": []}

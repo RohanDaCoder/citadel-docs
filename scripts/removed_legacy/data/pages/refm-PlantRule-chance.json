@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "PlantRule", "name": "chance", "title": "plantRule.chance", "kind": "field", "lead": "", "signature": "plantRule.chance: (Field | number)?", "params": [], "returns": [], "usedIn": []}

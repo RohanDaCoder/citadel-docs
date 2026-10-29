@@ -75,6 +75,14 @@ and Cloudflare challenge pages are detected and never written.
 
 Run: `python3 scripts/crawl_citadel.py` (~215 MB for the full 916-page crawl).
 
+**`scripts/crawl_html/` is a local cache and is NOT tracked in git.** It
+regenerates via the cookbook at the bottom of this file, and
+`sync_official.py` recreates the directory on demand when it saves fetched
+HTML. The tracked ground truth is `scripts/dataset.json`; the tracked
+`scripts/all_urls.json` carries the url→filename map the sync's manifest
+self-heal needs, so nothing depends on the 215 MB of raw HTML being
+committed.
+
 ## Stage 3 — Extraction: `scripts/extract_final.py` → `scripts/dataset.json`
 
 BeautifulSoup turns the HTML into one structured JSON file with four sections:

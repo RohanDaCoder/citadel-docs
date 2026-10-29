@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "PlantRule", "name": "tip", "title": "plantRule.tip", "kind": "field", "lead": "With `height`, the block on top of a plant that grows.", "signature": "plantRule.tip: BlockPick ?", "params": [], "returns": [], "usedIn": []}

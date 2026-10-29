@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "TerrainStep", "name": "block", "title": "terrainStep.block", "kind": "field", "lead": "The block a clay, ore or patch step places.", "signature": "terrainStep.block: string ?", "params": [], "returns": [], "usedIn": []}

@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "ItemMeta", "name": "glint", "title": "itemMeta.glint", "kind": "field", "lead": "The enchanted shine, with no enchantment.", "signature": "itemMeta.glint: boolean ?", "params": [], "returns": [], "usedIn": []}

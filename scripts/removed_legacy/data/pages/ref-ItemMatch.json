@@ -1,1 +1,0 @@
-{"type": "ref", "name": "ItemMatch", "kind": "type", "assocType": "", "lead": "An item to find — `take`, `count`, a recipe's ingredient. A name is the plain item and never a pack item made of it; a table matches the fields it names.", "typedef": "string | { id: string ?, item: string ? }", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "ItemMatch type"}

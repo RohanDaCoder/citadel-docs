@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "BiomeDefinition", "name": "sky", "title": "biomeDefinition.sky", "kind": "field", "lead": "", "signature": "biomeDefinition.sky: (Color | string)?", "params": [], "returns": [], "usedIn": []}

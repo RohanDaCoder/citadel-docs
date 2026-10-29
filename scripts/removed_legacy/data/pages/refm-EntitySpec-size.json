@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "EntitySpec", "name": "size", "title": "entitySpec.size", "kind": "field", "lead": "One number, or { width, height }. An entity is as deep as it is wide.", "signature": "entitySpec.size: (number | { number })?", "params": [], "returns": [], "usedIn": []}

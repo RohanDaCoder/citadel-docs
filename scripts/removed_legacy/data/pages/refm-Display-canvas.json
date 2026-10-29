@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Display", "name": "canvas", "title": "display.canvas", "kind": "field", "lead": "Item kind: the canvas shown as a filled map; written as a canvas, read back as its map id.", "signature": "display.canvas: number ?", "params": [], "returns": [], "usedIn": []}

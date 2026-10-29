@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "EntitySpec", "name": "turn", "title": "entitySpec.turn", "kind": "field", "lead": "physics = \"vehicle\" only: degrees a second it turns at speed; 90 by default.", "signature": "entitySpec.turn: number ?", "params": [], "returns": [], "usedIn": []}

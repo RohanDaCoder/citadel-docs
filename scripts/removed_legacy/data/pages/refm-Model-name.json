@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Model", "name": "name", "title": "model.name", "kind": "field", "lead": "The name the model was given in `models.new`.", "signature": "model.name: string", "params": [], "returns": [], "usedIn": []}

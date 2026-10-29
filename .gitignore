@@ -42,6 +42,10 @@ __pycache__/
 *.pyc
 tool-results/
 
+# raw crawl cache (~215 MB, regenerable via the PIPELINE.md cookbook);
+# sync_official.py recreates the directory on demand — not part of the tree
+scripts/crawl_html/
+
 # deliverables (download/) are build outputs, not source
 download/
 # generated content is committed; manifests under scripts/generated are build inputs

@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "DamageHit", "name": "by", "title": "damageHit.by", "kind": "field", "lead": "The player who hit, or who shot the arrow.", "signature": "damageHit.by: Player ?", "params": [], "returns": [], "usedIn": []}

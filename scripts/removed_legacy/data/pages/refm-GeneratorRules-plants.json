@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "GeneratorRules", "name": "plants", "title": "generatorRules.plants", "kind": "field", "lead": "", "signature": "generatorRules.plants: { PlantRule }?", "params": [], "returns": [], "usedIn": []}

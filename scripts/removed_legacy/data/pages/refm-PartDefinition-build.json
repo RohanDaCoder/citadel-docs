@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "PartDefinition", "name": "build", "title": "partDefinition.build", "kind": "function", "lead": "Exactly a world.build function.", "signature": "partDefinition.build(b: Builder)", "params": [{"name": "b", "type": "Builder", "required": true}], "returns": [], "usedIn": []}

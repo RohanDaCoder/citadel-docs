@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "ItemMeta", "name": "dye", "title": "itemMeta.dye", "kind": "field", "lead": "Leather armour's colour.", "signature": "itemMeta.dye: Color ?", "params": [], "returns": [], "usedIn": []}

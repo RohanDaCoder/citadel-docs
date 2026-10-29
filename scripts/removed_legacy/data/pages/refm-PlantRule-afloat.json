@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "PlantRule", "name": "afloat", "title": "plantRule.afloat", "kind": "field", "lead": "On the water over a column, not on its ground.", "signature": "plantRule.afloat: boolean ?", "params": [], "returns": [], "usedIn": []}

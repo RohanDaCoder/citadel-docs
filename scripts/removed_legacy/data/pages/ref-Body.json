@@ -1,1 +1,0 @@
-{"type": "ref", "name": "Body", "kind": "type", "assocType": "", "lead": "Whatever is standing on one. `kind` is `\"mob\"` for a cow or a zombie.", "typedef": "{ id: number, kind: \"player\" | \"mob\" | \"item\" | \"other\" }", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "Body type"}

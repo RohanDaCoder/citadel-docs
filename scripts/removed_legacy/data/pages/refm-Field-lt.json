@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Field", "name": "lt", "title": "field:lt", "kind": "method", "lead": "1 where this is the smaller, else 0.", "signature": "field:lt(other: Field | number) → Field", "params": [{"name": "other", "type": "Field | number", "required": true}], "returns": ["Field"], "usedIn": []}

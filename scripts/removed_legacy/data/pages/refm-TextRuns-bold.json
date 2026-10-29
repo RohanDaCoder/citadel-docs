@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "TextRuns", "name": "bold", "title": "textRuns.bold", "kind": "field", "lead": "Bold for every run that does not say otherwise.", "signature": "textRuns.bold: boolean ?", "params": [], "returns": [], "usedIn": []}

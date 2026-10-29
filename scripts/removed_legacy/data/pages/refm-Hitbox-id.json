@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Hitbox", "name": "id", "title": "hitbox.id", "kind": "field", "lead": "Its entity id, what `players.on_click` reports in `hit.entity_id`.", "signature": "hitbox.id: number", "params": [], "returns": [], "usedIn": []}

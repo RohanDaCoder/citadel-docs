@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Overlay", "name": "destroy", "title": "overlay:destroy", "kind": "method", "lead": "Takes it off the player's screen.", "signature": "overlay:destroy()", "params": [], "returns": [], "usedIn": []}

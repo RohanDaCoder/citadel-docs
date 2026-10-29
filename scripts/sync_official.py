@@ -119,6 +119,10 @@ def main():
     all_urls = set(all_urls)
 
     # -- 1. self-heal the crawl manifest (url -> filename forward map)
+    # crawl_html/ is a local cache, not tracked in git (215 MB, regenerable
+    # via the cookbook in PIPELINE.md); a fresh clone starts without it, so
+    # make sure it exists before the manifest write / save_html below.
+    os.makedirs(CRAWL_DIR, exist_ok=True)
     manifest = {}
     missing_files = []
     for u in all_urls:

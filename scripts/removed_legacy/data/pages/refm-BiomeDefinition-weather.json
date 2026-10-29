@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "BiomeDefinition", "name": "weather", "title": "biomeDefinition.weather", "kind": "field", "lead": "", "signature": "biomeDefinition.weather: (\"rain\" | \"snow\" | \"none\" | false)?", "params": [], "returns": [], "usedIn": []}

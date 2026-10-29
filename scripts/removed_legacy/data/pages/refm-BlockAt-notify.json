@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "BlockAt", "name": "notify", "title": "blockAt:notify", "kind": "method", "lead": "Tells the six neighbours this block changed.", "signature": "blockAt:notify()", "params": [], "returns": [], "usedIn": []}

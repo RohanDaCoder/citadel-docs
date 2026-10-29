@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "EntityHandle", "name": "stop", "title": "entityHandle:stop", "kind": "method", "lead": "Stops a model entity's animation; the parts stay where they are.", "signature": "entityHandle:stop(animation: string)", "params": [{"name": "animation", "type": "string", "required": true}], "returns": [], "usedIn": []}

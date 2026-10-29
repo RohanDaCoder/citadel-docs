@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "NetworkInstance", "name": "status", "title": "networkInstance.status", "kind": "field", "lead": "The instance's own word.", "signature": "networkInstance.status: string ?", "params": [], "returns": [], "usedIn": []}

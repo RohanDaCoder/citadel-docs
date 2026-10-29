@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "TerrainStep", "name": "below", "title": "terrainStep.below", "kind": "field", "lead": "An ore step places its veins below this y.", "signature": "terrainStep.below: number ?", "params": [], "returns": [], "usedIn": []}

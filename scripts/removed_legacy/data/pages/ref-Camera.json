@@ -1,1 +1,0 @@
-{"type": "ref", "name": "Camera", "kind": "type", "assocType": "", "lead": "", "typedef": "FixedCamera | EntityCamera | FreeCamera | OrbitCamera | ChaseCamera", "docsLink": null, "functions": [], "fields": [], "others": [], "title": "Camera type"}

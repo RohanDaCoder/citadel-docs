@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Field", "name": "abs", "title": "field:abs", "kind": "method", "lead": "", "signature": "field:abs() → Field", "params": [], "returns": ["Field"], "usedIn": []}

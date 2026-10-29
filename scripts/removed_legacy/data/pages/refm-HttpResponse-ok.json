@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "HttpResponse", "name": "ok", "title": "httpResponse.ok", "kind": "field", "lead": "True for a 2xx status.", "signature": "httpResponse.ok: boolean", "params": [], "returns": [], "usedIn": []}

@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Block", "name": "random_ticks", "title": "block.random_ticks", "kind": "field", "lead": "Whether the random-tick pass acts on it.", "signature": "block.random_ticks: boolean", "params": [], "returns": [], "usedIn": []}

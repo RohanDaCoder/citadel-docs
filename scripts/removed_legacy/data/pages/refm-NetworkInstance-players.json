@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "NetworkInstance", "name": "players", "title": "networkInstance.players", "kind": "field", "lead": "The number of players on it.", "signature": "networkInstance.players: number ?", "params": [], "returns": [], "usedIn": []}

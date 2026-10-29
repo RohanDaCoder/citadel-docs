@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "EntityKind", "name": "hostile", "title": "entityKind.hostile", "kind": "field", "lead": "Whether it is hostile.", "signature": "entityKind.hostile: boolean", "params": [], "returns": [], "usedIn": []}

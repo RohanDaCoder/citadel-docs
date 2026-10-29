@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Builder", "name": "block", "title": "builder:block", "kind": "method", "lead": "Sets one block of the build; later writes win.", "signature": "builder:block(pos: Vec3, block: string)", "params": [{"name": "pos", "type": "Vec3", "required": true}, {"name": "block", "type": "string", "required": true}], "returns": [], "usedIn": []}

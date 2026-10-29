@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "EntityHandle", "name": "health", "title": "entityHandle.health", "kind": "field", "lead": "Its health now. Nil once it is gone.", "signature": "entityHandle.health: number ?", "params": [], "returns": [], "usedIn": []}

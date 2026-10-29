@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "ModelTexture", "name": "fill", "title": "modelTexture:fill", "kind": "method", "lead": "Paints every pixel one colour.", "signature": "modelTexture:fill(color: Ink)", "params": [{"name": "color", "type": "Ink", "required": true}], "returns": [], "usedIn": []}

@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Display", "name": "item", "title": "display.item", "kind": "field", "lead": "item kind", "signature": "display.item: string ?", "params": [], "returns": [], "usedIn": []}

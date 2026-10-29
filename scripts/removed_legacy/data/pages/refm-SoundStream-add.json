@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "SoundStream", "name": "add", "title": "soundStream:add", "kind": "method", "lead": "", "signature": "soundStream:add(at: SoundSpeaker) → number", "params": [{"name": "at", "type": "SoundSpeaker", "required": true}], "returns": ["number"], "usedIn": []}

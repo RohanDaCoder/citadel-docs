@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Faces", "name": "front", "title": "faces.front", "kind": "field", "lead": "`front` is the side a facing block faces and `back` the other; a face left out is `side`.", "signature": "faces.front: TextureRef ?, back: TextureRef ?", "params": [], "returns": [], "usedIn": []}

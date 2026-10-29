@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "Npc", "name": "pose", "title": "npc.pose", "kind": "field", "lead": "How the body is held; live.", "signature": "npc.pose: NpcPose", "params": [], "returns": [], "usedIn": []}

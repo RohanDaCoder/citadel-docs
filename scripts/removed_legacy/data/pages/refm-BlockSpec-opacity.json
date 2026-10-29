@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "BlockSpec", "name": "opacity", "title": "blockSpec.opacity", "kind": "field", "lead": "What a step through it takes off the light; 15 is an opaque cube.", "signature": "blockSpec.opacity: number ?", "params": [], "returns": [], "usedIn": []}

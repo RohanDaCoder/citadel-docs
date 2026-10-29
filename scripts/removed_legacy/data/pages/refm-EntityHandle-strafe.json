@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "EntityHandle", "name": "strafe", "title": "entityHandle.strafe", "kind": "field", "lead": "Intent: 1 left, -1 right. A vehicle's seat 1 writes it from the keys every tick.", "signature": "entityHandle.strafe: number", "params": [], "returns": [], "usedIn": []}

@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "EntityKind", "name": "behaviour", "title": "entityKind.behaviour", "kind": "field", "lead": "The name of the behaviour the engine runs for this kind, such as \"sheep\" or \"living\".", "signature": "entityKind.behaviour: string", "params": [], "returns": [], "usedIn": []}

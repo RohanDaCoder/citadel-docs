@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "EntityKind", "name": "registry_name", "title": "entityKind.registry_name", "kind": "field", "lead": "This version's own registry spelling: \"Cow\". A dungeon spawner stores this one.", "signature": "entityKind.registry_name: string", "params": [], "returns": [], "usedIn": []}

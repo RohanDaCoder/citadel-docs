@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "ItemMeta", "name": "skin", "title": "itemMeta.skin", "kind": "field", "lead": "The face a \"player_head\" item shows: a player's name, or the raw `textures` property. On any other item it is an error.", "signature": "itemMeta.skin: (string | { value: string, signature: string ? })?", "params": [], "returns": [], "usedIn": []}

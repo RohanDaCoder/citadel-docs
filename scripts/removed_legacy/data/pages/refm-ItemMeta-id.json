@@ -1,1 +1,0 @@
-{"type": "refmember", "parent": "ItemMeta", "name": "id", "title": "itemMeta.id", "kind": "field", "lead": "A pack's own item: a brick with `id = \"copper_ingot\"` is a copper ingot, kept under the pack's name and known by it everywhere it goes.", "signature": "itemMeta.id: string ?", "params": [], "returns": [], "usedIn": []}
