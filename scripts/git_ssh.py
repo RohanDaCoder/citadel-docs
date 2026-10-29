@@ -17,9 +17,34 @@ Exit status mirrors the remote command's exit status.
 import os
 import select
 import socket
+import subprocess
 import sys
 
-import paramiko
+try:
+    import paramiko
+except ModuleNotFoundError:
+    # Self-bootstrap: the container's venv can lose paramiko (rebuild,
+    # pip purge, fresh checkout). Rather than crash and make git print a
+    # misleading "Could not read from remote repository", install it on
+    # first use. All pip output is forced to stderr so it never pollutes
+    # git's stdout protocol channel (which is wired to this process's
+    # stdout during fetch/push). Idempotent: when paramiko is already
+    # present the try/except never fires, so zero overhead on the hot
+    # path.
+    sys.stderr.write("git_ssh.py: paramiko missing — auto-installing...\n")
+    _r = subprocess.run(
+        [sys.executable, "-m", "pip", "install", "--quiet",
+         "--disable-pip-version-check", "--no-input", "paramiko"],
+        capture_output=True, text=True,
+    )
+    if _r.returncode != 0:
+        sys.stderr.write(
+            f"git_ssh.py: auto-install failed (exit {_r.returncode}): "
+            f"{(_r.stderr or _r.stdout).strip()}\n"
+        )
+        sys.exit(255)
+    sys.stderr.write("git_ssh.py: paramiko installed, continuing.\n")
+    import paramiko  # retry; if this still fails the real ImportError fires
 
 DEFAULT_KEY = os.path.expanduser("~/.ssh/id_ed25519")
 # ssh.github.com:443 is the firewall-friendly fallback for port 22
@@ -86,6 +111,15 @@ def connect(user, host, port, identity):
             if client:
                 client.close()
     sys.stderr.write(f"git_ssh.py: connection failed: {last_err}\n")
+    # Distinguish the unrecoverable auth case so the cron relay is
+    # self-documenting instead of just echoing "No authentication
+    # methods available".
+    if identity and not os.path.exists(identity):
+        sys.stderr.write(
+            f"git_ssh.py: SSH key {identity} is missing — restore the "
+            f"deploy key registered on the GitHub repo before retrying. "
+            f"This cannot be auto-recovered.\n"
+        )
     sys.exit(255)
 
 
