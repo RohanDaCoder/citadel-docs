@@ -1,41 +1,40 @@
 #!/bin/bash
-# .githooks/post-commit — auto-push every commit to the citadel-docs remote.
+# .githooks/post-commit — keep local and origin in sync after every commit.
 #
 # Enabled in this working copy via: git config core.hooksPath .githooks
 # Enable in a fresh clone with the same command.
 #
-# Behaviour:
-#   * pushes the current branch after every successful commit
-#   * this container has no openssh-client, so it routes the push through
-#     scripts/git_ssh.py (paramiko transport) when that file exists;
-#     normal clones with a real ssh binary use git's default transport
-#   * a failed push never blocks the commit: it prints a warning and
-#     exits 0; the next commit retries (git push sends the whole backlog)
-#   * detached-HEAD states are skipped silently
+# The heavy lifting is delegated to scripts/git_sync.py:
+#   fetch -> integrate (ff-only, or rebase if diverged) -> push
+# so remote-side edits (e.g. GitHub web UI changes) are pulled in and
+# local commits are pushed in the same step. Failures never block the
+# commit and retry on the next commit.
+#
+# Fallback if git_sync.py is missing: plain push, never block the commit.
 
 set -u
 
 repo="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
 [ -n "${repo}" ] || exit 0
 
-# only act on a real branch
-git symbolic-ref -q HEAD >/dev/null 2>&1 || exit 0
+sync="${repo}/scripts/git_sync.py"
+if [ -f "${sync}" ]; then
+  msg="$(python3 "${sync}" 2>&1)"
+  rc=$?
+  [ "${rc}" -ne 0 ] && msg="sync reported failure (rc=${rc}): ${msg}"
+  echo "[post-commit] ${msg}"
+  exit 0
+fi
 
-# transport: in-repo paramiko wrapper when available (container has no ssh)
+# --- fallback: simple push ---
+git symbolic-ref -q HEAD >/dev/null 2>&1 || exit 0
 wrapper="${repo}/scripts/git_ssh.py"
 if [ -f "${wrapper}" ]; then
   export GIT_SSH_COMMAND="python3 ${wrapper}"
 fi
-
-# remote: prefer configured origin, fall back to canonical URL
 remote="git@github.com:RohanDaCoder/citadel-docs.git"
 git remote get-url origin >/dev/null 2>&1 && remote="origin"
-
-err="$(git push "${remote}" HEAD 2>&1)"
-status=$?
-if [ $status -eq 0 ]; then
-  echo "[post-commit] auto-pushed $(git rev-parse --short HEAD) to ${remote}"
-  exit 0
-fi
-echo "[post-commit] push failed (rc=${status}; will retry on next commit): ${err}" >&2
+err="$(git push "${remote}" HEAD 2>&1)" \
+  && echo "[post-commit] auto-pushed $(git rev-parse --short HEAD) to ${remote}" \
+  || echo "[post-commit] push failed (will retry on next commit): ${err}" >&2
 exit 0

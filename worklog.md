@@ -340,3 +340,18 @@ Work Log:
 
 Stage Summary:
 - main is synced across local and origin; tool-results excluded from version control; auto-push hook active and verified end-to-end.
+
+---
+Task ID: 10
+Agent: main (Z.ai)
+Task: Ignore download/, bidirectional local<->remote sync automation
+
+Work Log:
+- .gitignore: added download/ (deliverables are build outputs, not source); untracked the 4 download files (zip, citadel.d.ts, llms.txt, llms-full.txt) with git rm -r --cached — they stay on disk for download.
+- Added scripts/git_sync.py: idempotent fetch -> integrate -> push. Compares HEAD to origin/<branch>: equal = no-op; remote ahead = ff-only pull (captures GitHub web UI edits); local ahead = push; diverged = rebase local unpushed commits onto remote then push, aborting on conflict rather than forcing. Guards: skips when rebase/merge/cherry-pick in progress or HEAD detached. Routes SSH through scripts/git_ssh.py (paramiko) when present.
+- Rewrote .githooks/post-commit to delegate to git_sync.py (single source of sync logic); keeps a plain-push fallback if the script is missing; still never blocks a commit.
+- Scheduled a 15-minute cron agentTurn that runs git_sync.py, so remote-side changes flow back even between commits.
+- Verified: this commit's own post-commit run exercises the new sync path end-to-end.
+
+Stage Summary:
+- Every commit now fetches remote edits before pushing (no more non-fast-forward rejections after web UI edits), and a periodic cron keeps local fresh regardless of commit activity.

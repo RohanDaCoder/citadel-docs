@@ -41,4 +41,7 @@ prompt
 __pycache__/
 *.pyc
 tool-results/
+
+# deliverables (download/) are build outputs, not source
+download/
 # generated content is committed; manifests under scripts/generated are build inputs
