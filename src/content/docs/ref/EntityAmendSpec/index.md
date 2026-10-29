@@ -1,9 +1,7 @@
 ---
 title: 'EntityAmendSpec type'
-description: 'Called when a new entity of this kind spawns; told, never waited on.'
+description: 'EntityAmendSpec reference — every call, field and type in one place.'
 ---
-
-Called when a new entity of this kind spawns; told, never waited on.
 
 ## Functions
 

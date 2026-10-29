@@ -59,3 +59,4 @@ A player in the room: what `players.on_join` and every player event hand you.
 | [`player.level: number`](/ref/Player/level/) | The experience bar: the number over it, and how full it is (0..1). |
 | [`player.xp: number`](/ref/Player/xp/) | How full the experience bar is, 0..1. |
 | [`player.camera: (Camera \| false)?`](/ref/Player/camera/) | What they look out of: a camera from camera.fixed/free/orbit/chase, or nil or false for their own eyes. No delay is needed after creating its target. Ends when the target is destroyed or the player leaves the room. |
+| [`player.time: (number \| TimeName \| false)?`](/ref/Player/time/) | This player's sky alone, held at a time of day; nil or false gives them the room's again, as does moving rooms. Reads back in ticks. |

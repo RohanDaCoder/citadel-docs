@@ -7,9 +7,9 @@
 > Unmodified Java clients from 1.8 to 26.x join and play. This file is the
 > complete, restructured developer reference: 61 wiki documents
 > (concepts, guides, cookbook, appendices) plus the full API reference —
-> 170 global and type pages, 674 documented members.
+> 171 global and type pages, 682 documented members.
 >
-> Generated 2026-10-24 from the Citadel Developer Wiki (an Astro Starlight
+> Generated 2026-10-29 from the Citadel Developer Wiki (an Astro Starlight
 > project). Regenerate with
 > `python3 scripts/gen_starlight.py && python3 scripts/gen_llms_full.py`.
 
@@ -166,7 +166,7 @@ How to use this file:
 *Systems*
 
 - [commands global · type Commands](#ref-Commands)
-  - Members: commands.add
+  - Members: commands.add, commands.run
 - [time global](#ref-time)
   - Members: time.every, time.now, time.on_tick
 - [task global](#ref-task)
@@ -179,11 +179,11 @@ How to use this file:
 - [http global](#ref-http)
   - Members: http.get, http.socket
 - [network global](#ref-network)
-  - Members: network.find, network.info, network.list, network.on_gone, network.on_instance, network.start, network.status, network.stop
+  - Members: network.browse, network.find, network.info, network.instances, network.on_instance_change, network.on_instance_start, network.on_instance_stop, network.online, network.start, network.status, network.stop
 - [shop global](#ref-shop)
   - Members: shop.on_declined, shop.on_paid, shop.owns, shop.prompt
 - [hub global](#ref-hub)
-  - Members: hub.experiences, hub.hubs, hub.point, hub.rent, hub.servers
+  - Members: hub.experiences, hub.point, hub.rent
 
 *Engine*
 
@@ -224,6 +224,7 @@ How to use this file:
 - [BodyRotation type](#ref-BodyRotation)
 - [Breaker type](#ref-Breaker)
   - Members: breaker.cause, breaker.creative, breaker.tool
+- [BrowseEntry type](#ref-BrowseEntry)
 - [Budget type](#ref-Budget)
   - Members: budget.asks, budget.dropped, budget.of, budget.peak, budget.skipped, budget.slowest, budget.used
 - [Builder type](#ref-Builder)
@@ -295,7 +296,7 @@ How to use this file:
 - [HttpResponse type](#ref-HttpResponse)
   - Members: httpResponse.body, httpResponse.error, httpResponse.headers, httpResponse:image, httpResponse:json, httpResponse.ok, httpResponse.status
 - [Hud type](#ref-Hud)
-  - Members: hud:destroy, hud:set
+  - Members: hud.cursor, hud:destroy, hud.hover, hud.on_click, hud.on_hover, hud:set
 - [HudPart type](#ref-HudPart)
   - Members: hudPart.color, hudPart.fill, hudPart.text, hudPart.visible
 - [Ink type](#ref-Ink)
@@ -330,7 +331,7 @@ How to use this file:
   - Members: modelPart:box, modelPart:hitbox, modelPart:mirror, modelPart:part
 - [ModelSkin type](#ref-ModelSkin)
 - [ModelTexture type](#ref-ModelTexture)
-  - Members: modelTexture:fill, modelTexture:pixel, modelTexture:rect
+  - Members: modelTexture:draw, modelTexture:fill, modelTexture:pixel, modelTexture:rect
 - [MountTarget type](#ref-MountTarget)
 - [NetworkInstance type](#ref-NetworkInstance)
   - Members: networkInstance.id, networkInstance.label, networkInstance.member, networkInstance.meta, networkInstance.open, networkInstance.players, networkInstance.state, networkInstance.status
@@ -355,7 +356,7 @@ How to use this file:
 - [PlantRule type](#ref-PlantRule)
   - Members: plantRule.afloat, plantRule.biome, plantRule.block, plantRule.blocks, plantRule.chance, plantRule.clear, plantRule.height, plantRule.place, plantRule.sink, plantRule.tip, plantRule.when, plantRule.y
 - [Player type](#ref-Player)
-  - Members: player:add_group, player.camera, player.can_fly, player:can_see, player:clear_effect, player:connect, player:count, player:damage, player:dismount, player:effect, player.gamemode, player:give, player:groups, player:has, player:held, player:hide, player:hotbar, player:inventory, player:kick, player:kill, player.level, player:look, player:look_at, player.max_health, player:message, player:move_to, player:push, player.reach, player:remove_group, player:ride, player.scale, player:set_held, player:set_slot, player:show, player:sound, player.spawn_point, player.speed, player:stop_sound, player:supports, player:take, player:teleport, player:travel, player.visible, player:wear, player.xp
+  - Members: player:add_group, player.camera, player.can_fly, player:can_see, player:clear_effect, player:connect, player:count, player:damage, player:dismount, player:effect, player.gamemode, player:give, player:groups, player:has, player:held, player:hide, player:hotbar, player:inventory, player:kick, player:kill, player.level, player:look, player:look_at, player.max_health, player:message, player:move_to, player:push, player.reach, player:remove_group, player:ride, player.scale, player:set_held, player:set_slot, player:show, player:sound, player.spawn_point, player.speed, player:stop_sound, player:supports, player:take, player:teleport, player.time, player:travel, player.visible, player:wear, player.xp
 - [PlayerUi type](#ref-PlayerUi)
   - Members: playerUi.dialog, playerUi.menu, playerUi.overlay, playerUi.show
 - [Puppet type](#ref-Puppet)
@@ -7637,6 +7638,13 @@ permission. **The first shape the line fits runs.**
 
 ## Per room
 
+- [`commands.run(player, line)`](#ref-Commands-run) runs a line for a player
+  as if they typed it, so one pack opens what another declared: a compass
+  runs `"/servers"`, whichever pack owns it. The player's own permissions
+  apply. Only a command a pack declared in the player's room runs; `false`
+  means none did, and the engine's and the game's commands are never run
+  this way.
+
 `commands` is the main room's, `room.commands` another room's. Destroying a
 room removes its commands (see
 [Rooms and dimensions](#concepts-rooms-and-dimensions)).
@@ -7967,13 +7975,13 @@ commands.add("join <label:word>", function(player, args)
     end
 end)
 
-network.on_instance(function(instance)
+network.on_instance_change(function(instance)
     if instance.state ~= "online" then return end
     for _, player in waiting[instance.id] or {} do player:connect(instance.id) end
     waiting[instance.id] = nil
 end)
 
-network.on_gone(function(id) waiting[id] = nil end)
+network.on_instance_stop(function(id) waiting[id] = nil end)
 ```
 
 ## The member's side: saying where it is
@@ -8000,12 +8008,15 @@ end)
 | --- | --- | --- |
 | `network.start{ member, label, slots, data? }` | `{id, state}` | Starts an instance; answers at once with `state = "starting"`. |
 | `network.find{ label, players?, party?, start? }` | `{id, state}` or nil | The instance to send `players` players to. |
-| `network.list(label?)` | list of instances | The network's instances, or only those with `label`. |
+| `network.instances(label?)` | list | Everything this network runs: its always-on servers, then its games started on demand. |
+| `network.online(label?)` | number | How many play on this network; the answer is kept 5 seconds. |
+| `network.browse(view, options?)` | rows, total | Finds other networks. **The platform's hub only.** |
 | `network.stop(id)` | boolean | Stops an instance of this network; true when accepted. |
 | `network.info()` | `{network, id?, ...}` | This server's network, and the instance it runs on. |
 | `network.status{ open, status?, meta? }` | — | Says where this instance is. Does not yield. |
-| `network.on_instance(fn)` | Connection | Calls `fn(instance)` when an instance starts or changes. |
-| `network.on_gone(fn)` | Connection | Calls `fn(id)` when an instance is gone. |
+| `network.on_instance_start(fn)` | Connection | Calls `fn(instance)` when an instance is first seen. |
+| `network.on_instance_change(fn)` | Connection | Calls `fn(instance)` when an instance's `state`, `open`, `status` or `meta` changes. |
+| `network.on_instance_stop(fn)` | Connection | Calls `fn(id)` when an instance is gone. |
 
 `network.start` returns `{id, state}` at once, with `state = "starting"`: the
 instance comes online later. `slots` is the number of players the instance
@@ -8038,6 +8049,42 @@ the instance to send `players` players to, or nil when no instance has room.
 > runs on many servers, and each would start its own instance.
 
 
+## `instances`, `online` and `browse`
+
+`network.instances(label?)` returns everything this network runs, as this
+experience sees it: first its own servers that run all the time, online and
+taking players, as `{id, name, state, players, region}` — on the platform's
+hub, the hubs — then the network's games started on demand, each the
+instance table below. With `label`, only that mode's games:
+`network.instances('4v4v4v4')`. `id` is what [`player:connect`](#ref-Player-connect)
+takes; never another network's. It returns nil and why when Minefort did not
+answer.
+
+`network.online(label?)` returns how many play on this network: on the
+platform's hub, everyone on Minefort; on any other network, its members and
+their instances. With `label`, only the players in that mode's games, every
+region's. An answer is kept for **5 seconds**, so a scoreboard can ask on
+every redraw. It returns nil and why when Minefort did not answer.
+
+`network.browse(view, options?)` finds **other networks**, and only the
+platform's hub may ask:
+
+- `view` is `"search"` (what matches `query`: names as they are typed, and
+  domains), `"for-you"` (more of what `player` plays, busiest first, none of
+  their recent ones), `"recent"` (where `player` played last, newest first)
+  or `"featured"` (the busiest). A network is one row, however many servers
+  it has: `{id, name, category, motd, icon, players, maxPlayers, state}`.
+- `options` is `{player?, query?, page?, category?, online?, ids?, sort?,
+  also?}`. `page` is from 1; `sort` is `"players"` or `"name"`. It returns
+  one page of **6 rows** and how many there are in all:
+  `local rows, total = network.browse('featured', { page = 2 })`.
+- `also = { recent = true, favorites = ids }` brings a board's sidebar in the
+  same round trip, as a third value: `side.recent` and `side.favorites` are
+  each `{rows, total}`.
+- On a refusal it returns nil and why: `"unsupported"` anywhere but the
+  platform's hub, `"not-here"` for a player who is not on this hub,
+  `"unavailable"` when Minefort's search is down, or `"timeout"`.
+
 ## `status` in detail
 
 `network.status{ open, status?, meta? }` says where this instance is. It
@@ -8052,8 +8099,8 @@ returns nothing and does not yield.
 
 ## The instance table
 
-Every instance — from `list`, `on_instance` or a `find`/`start` answer — is
-the same shape:
+Every instance — from `instances`, the `on_instance_*` events, or a
+`find`/`start` answer — is the same shape:
 
 | Field | Set by | Meaning |
 | --- | --- | --- |
@@ -8077,16 +8124,18 @@ until the instance is `"online"` — the default-member example above shows the
 
 ## Events, and repairing the list
 
-**Events come to the default member's servers only.** Call `network.list()`
-once at the start, then keep the list from `on_instance` and `on_gone`. An
-event can be lost — call `network.list()` again, **once a minute at most**,
-to repair the list.
+**Events come to the default member's servers only.** Call
+`network.instances()` once at the start, then keep the list from
+`on_instance_start`, `on_instance_change` and `on_instance_stop`. An event
+can be lost — call `network.instances()` again, **once a minute at most**, to
+repair the list.
 
 ## Failures
 
 **A failed call returns nil and a reason.** `start`, `find` and `info` return
-`nil, reason`; `list` returns `{}, reason`; `stop` returns `false, reason`.
-The reason is Minefort's word, or one of these:
+`nil, reason`; `instances`, `online` and `browse` return `nil, reason` too;
+`stop` returns `false, reason`. The reason is Minefort's word, or one of
+these:
 
 | Reason | Meaning |
 | --- | --- |
@@ -8122,13 +8171,14 @@ A value out of these is an error, and nothing is sent:
 
 ## Calling rules
 
-Calls yield, like `stores`, but for `status` and the two events. Call from
+Calls yield, like `stores`, but for `status` and the three events. Call from
 scripts, callbacks or tasks — the same rules as
 [Shared stores](#systems-shared-stores--calling-rules).
 
 ## See also
 
-- [Hub](#systems-hub) — the hub's server lists, also travelled with
+- [Hub](#systems-hub) — the hub browses networks with `network.browse` and
+  lists its hubs with `network.instances`, all travelled with
   `player:connect`.
 - [Shared stores](#systems-shared-stores) — the store every instance of the
   experience shares.
@@ -8452,55 +8502,40 @@ player's own live portal for free. See [Hub](#systems-hub--portals-rent-and-poin
 ## Hub
 
 > **In short:**
-> `hub` is what Minefort tells its own hub: the servers that
-> are online, the experience portals of the grounds, the other hubs, player
-> ranks and the network's online count. The lists refresh every minute; the
-> first call waits up to two seconds for them, so call it from a task. This
-> page covers the three list calls with their exact fields, ranks, banners
-> and the portal calls `hub.rent` and `hub.point`.
+> `hub` is what Minefort tells its own hub: the experience
+> portals of the grounds, player ranks, and the `rent` and `point` calls for
+> live portals. The server lists are not the hub's any more — the hub browses
+> them with [`network.browse`](#ref-network-browse), its hubs and always-on
+> servers with [`network.instances`](#ref-network-instances), and asks the
+> player count with [`network.online`](#ref-network-online). The lists refresh
+> every minute; the first call of `experiences` waits up to two seconds for
+> them, so call it from a task. This page covers the calls with their exact
+> fields, ranks, banners and the portal calls `hub.rent` and `hub.point`.
 
 
 ## The calls
 
 ```luau
 task.spawn(function()
-    for _, s in hub.servers() do print(s.name, s.players) end
+    for _, s in network.browse('featured') or {} do print(s.name, s.players) end
     for _, e in hub.experiences() do print(e.slot, e.experience) end
-    for _, h in hub.hubs() do print(h.name, h.players) end
-    print(hub.online())
+    for _, h in network.instances() or {} do print(h.name, h.players) end
+    print(network.online())
 end)
 ```
 
 | Call | Returns | Purpose |
 | --- | --- | --- |
-| `hub.servers()` | list | The players' servers that are online, and published experiences. |
 | `hub.experiences()` | list | The portals of the experience grounds. |
-| `hub.hubs()` | list | Every hub that is online, this one included. |
 | `hub.role(player)` | string | The player's rank on Minefort, or nil. |
-| `hub.online()` | number | How many players are online on the whole of Minefort, or nil. |
 | `hub.rent(player, slot, product, experience?)` | request id | Offers a portal of the grounds for Gems. |
 | `hub.point(player, slot, experience)` | boolean | Turns the player's own live portal. |
+| `network.browse(view, options?)` | rows, total | Finds other networks. Hub only. |
+| `network.instances(label?)` | list | The network's always-on servers and hubs. |
+| `network.online(label?)` | number | How many play on this network. |
 
-**Anywhere but a hub, the lists are empty and both the ranks and the total
-are nil** — the calls work, they just have nothing to say.
-
-## `hub.servers()`
-
-Returns a list of the servers that are online:
-
-| Field | Meaning |
-| --- | --- |
-| `id` | What `player:connect` takes. |
-| `name` | The server's name. |
-| `category` | Its category; `"experience"` marks a published experience. |
-| `motd` | Its message of the day; for an experience, its pitch. |
-| `icon` | Its icon, or nil. |
-| `banner` | The URL of its banner, or nil. |
-| `players`, `maxPlayers` | Who is on it, and its cap. |
-
-A field Minefort does not know is nil. **An entry with
-`category = "experience"` is a published experience**: its `id` is the name
-`/play` takes, `motd` its pitch, and `banner` the URL of its banner, or nil.
+**Anywhere but a hub, the lists are empty and the ranks are nil** — the calls
+work, they just have nothing to say.
 
 ## `hub.experiences()`
 
@@ -8517,20 +8552,30 @@ the portals of the experience grounds:
 
 A slot that is not in the list has no experience.
 
-## `hub.hubs()`
+## The server lists live on `network`
 
-Returns a list of `{id, name, players, region}`, one per hub that is online,
-this one included. `player:connect(id)` sends a player to that hub.
+`hub` no longer lists servers or hubs. The hub reads them through the
+`network` calls — all documented on [Network](#systems-network):
 
-## Ranks and the online count
+- [`network.browse(view, options?)`](#ref-network-browse) finds other
+  networks: `"featured"` (the busiest), `"search"`, `"for-you"` and
+  `"recent"`. Each row is a network — `{id, name, category, motd, icon,
+  players, maxPlayers, state}` — and `id` is what `player:connect` takes.
+- [`network.instances()`](#ref-network-instances) returns this network's
+  servers that run all the time — on the platform's hub, the hubs — each
+  `{id, name, state, players, region}`, then the network's games started on
+  demand.
+- [`network.online()`](#ref-network-online) returns how many play on this
+  network: on the platform's hub, everyone on Minefort.
+
+## Ranks
 
 `hub.role(player)` returns the player's rank on Minefort — `"owner"`,
 `"admin"`, `"moderator"` or `"builder"` — and nil for everyone else. It also
-takes a uuid, with or without dashes. `hub.online()` returns how many players
-are online on the whole of Minefort, or nil before Minefort has said.
+takes a uuid, with or without dashes.
 
-Minefort sends the ranks and the total **every minute**. Anywhere but a hub,
-both are nil. A new rank reaches the hub within one minute.
+Minefort sends the ranks **every minute**, so a new rank reaches the hub
+within one. Anywhere but a hub, they are nil.
 
 > **Note:**
 > `hub.role` is Minefort-wide — the ranks of the platform, not of
@@ -8571,16 +8616,16 @@ every answer is no.
 
 ## Calling from a task
 
-Minefort keeps the lists up to date. **The first call of `servers`,
-`experiences` or `hubs` waits at most two seconds for them, so call it from a
-task** — the opening example wraps all four calls in `task.spawn`.
+Minefort keeps the lists up to date. **The first call of `experiences` waits
+at most two seconds for them, so call it from a task** — the opening example
+wraps the list calls in `task.spawn`.
 
 ## See also
 
 - [Shop](#systems-shop) — `on_paid` delivers what `hub.rent` sells.
 - [HTTP](#systems-http) — banners through the cache and `:image()`.
-- [Network](#systems-network) — instances, the other kind of server
-  `player:connect` reaches.
+- [Network](#systems-network) — `browse`, `instances`, `online` and the
+  instance events; the other kind of server `player:connect` reaches.
 - [Permissions](#players-permissions) — the server's own operator and
   permission model.
 
@@ -11498,7 +11543,7 @@ archive backups.
 > [The event model](#concepts-events).
 
 
-62 events across 12 types.
+65 events across 13 types.
 
 ## `BlockAmendSpec`
 
@@ -11567,12 +11612,20 @@ archive backups.
 | [`on_think`](#ref-EntitySpec-on_think) | `entitySpec.on_think((b: Think) -> ()) → ?` | define only. The brain: one call for all due bodies of the kind, with their numbers in columns. The engine never waits for it; the answer lands on the next t... |
 | [`on_tick`](#ref-EntitySpec-on_tick) | `entitySpec.on_tick((e: EntityHandle, base: () -> ()) -> ()) → ?` | Runs after the physics each tick to react to where it ended up; call `base(e)` to extend. |
 
+## `Hud`
+
+| Event | Signature | Fires when |
+| --- | --- | --- |
+| [`on_click`](#ref-Hud-on_click) | `hud.on_click((id: string ?, button: "left" \| "right") -> ()) → ?` |  |
+| [`on_hover`](#ref-Hud-on_hover) | `hud.on_hover((id: string ?) -> ()) → ?` |  |
+
 ## `network`
 
 | Event | Signature | Fires when |
 | --- | --- | --- |
-| [`on_gone`](#ref-network-on_gone) | `network.on_gone(handler: (id: string) -> ()) → Connection` | Called with the id of an instance that is gone. |
-| [`on_instance`](#ref-network-on_instance) | `network.on_instance(handler: (instance: NetworkInstance) -> ()) → Connection` | Called when an instance starts or changes. |
+| [`on_instance_change`](#ref-network-on_instance_change) | `network.on_instance_change(handler: (instance: NetworkInstance) -> ()) → Connection` | Called when an instance's state, open, status or meta changes. |
+| [`on_instance_start`](#ref-network-on_instance_start) | `network.on_instance_start(handler: (instance: NetworkInstance) -> ()) → Connection` | Called when an instance is first seen: started, or already running. |
+| [`on_instance_stop`](#ref-network-on_instance_stop) | `network.on_instance_stop(handler: (id: string) -> ()) → Connection` | Called with the id of an instance that is gone. |
 
 ## `Players`
 
@@ -11948,7 +12001,7 @@ or browse the types.
 
 ## Types A–Z
 
-[`AskCount`](#ref-AskCount) · [`Asks`](#ref-Asks) · [`Bar`](#ref-Bar) · [`BarColor`](#ref-BarColor) · [`Billboard`](#ref-Billboard) · [`BiomeDefinition`](#ref-BiomeDefinition) · [`Biomes`](#ref-Biomes) · [`Block`](#ref-Block) · [`BlockAmendSpec`](#ref-BlockAmendSpec) · [`BlockAt`](#ref-BlockAt) · [`BlockDef`](#ref-BlockDef) · [`BlockPick`](#ref-BlockPick) · [`BlockRef`](#ref-BlockRef) · [`Blocks`](#ref-Blocks) · [`BlockSpec`](#ref-BlockSpec) · [`Body`](#ref-Body) · [`BodyRotation`](#ref-BodyRotation) · [`Breaker`](#ref-Breaker) · [`Budget`](#ref-Budget) · [`Builder`](#ref-Builder) · [`Camera`](#ref-Camera) · [`Canvas`](#ref-Canvas) · [`ChaseCamera`](#ref-ChaseCamera) · [`Chunk`](#ref-Chunk) · [`Color`](#ref-Color) · [`ColorName`](#ref-ColorName) · [`Command`](#ref-Command) · [`CommandOpts`](#ref-CommandOpts) · [`Connection`](#ref-Connection) · [`Container`](#ref-Container) · [`Context`](#ref-Context) · [`DamageHit`](#ref-DamageHit) · [`DataView`](#ref-DataView) · [`Dialog`](#ref-Dialog) · [`DialogNode`](#ref-DialogNode) · [`Display`](#ref-Display) · [`Drops`](#ref-Drops) · [`DurableStore`](#ref-DurableStore) · [`Easing`](#ref-Easing) · [`Effect`](#ref-Effect) · [`Entities`](#ref-Entities) · [`EntityAmendOptions`](#ref-EntityAmendOptions) · [`EntityAmendSpec`](#ref-EntityAmendSpec) · [`EntityCamera`](#ref-EntityCamera) · [`EntityDef`](#ref-EntityDef) · [`EntityHandle`](#ref-EntityHandle) · [`EntityKind`](#ref-EntityKind) · [`EntitySpec`](#ref-EntitySpec) · [`Face`](#ref-Face) · [`Faces`](#ref-Faces) · [`Facing`](#ref-Facing) · [`Feature`](#ref-Feature) · [`Field`](#ref-Field) · [`FixedCamera`](#ref-FixedCamera) · [`FluidRule`](#ref-FluidRule) · [`FreeCamera`](#ref-FreeCamera) · [`Generated`](#ref-Generated) · [`GeneratorRules`](#ref-GeneratorRules) · [`GroundItem`](#ref-GroundItem) · [`GroundRule`](#ref-GroundRule) · [`HeadSkin`](#ref-HeadSkin) · [`Hit`](#ref-Hit) · [`Hitbox`](#ref-Hitbox) · [`HttpResponse`](#ref-HttpResponse) · [`Hud`](#ref-Hud) · [`HudPart`](#ref-HudPart) · [`Ink`](#ref-Ink) · [`InventorySlot`](#ref-InventorySlot) · [`Item`](#ref-Item) · [`ItemMatch`](#ref-ItemMatch) · [`ItemMeta`](#ref-ItemMeta) · [`Items`](#ref-Items) · [`ItemSpec`](#ref-ItemSpec) · [`ItemTable`](#ref-ItemTable) · [`Layout`](#ref-Layout) · [`LayoutAlign`](#ref-LayoutAlign) · [`LayoutNode`](#ref-LayoutNode) · [`LetterStyle`](#ref-LetterStyle) · [`LightSource`](#ref-LightSource) · [`Looks`](#ref-Looks) · [`Material`](#ref-Material) · [`Menu`](#ref-Menu) · [`Model`](#ref-Model) · [`ModelBuild`](#ref-ModelBuild) · [`ModelDisplay`](#ref-ModelDisplay) · [`ModelMaterial`](#ref-ModelMaterial) · [`ModelPart`](#ref-ModelPart) · [`ModelSkin`](#ref-ModelSkin) · [`ModelTexture`](#ref-ModelTexture) · [`MountTarget`](#ref-MountTarget) · [`NetworkInstance`](#ref-NetworkInstance) · [`NetworkStarted`](#ref-NetworkStarted) · [`Noise`](#ref-Noise) · [`Npc`](#ref-Npc) · [`NpcPose`](#ref-NpcPose) · [`Occupant`](#ref-Occupant) · [`OrbitCamera`](#ref-OrbitCamera) · [`Orientation`](#ref-Orientation) · [`Overlay`](#ref-Overlay) · [`PartDefinition`](#ref-PartDefinition) · [`Persist`](#ref-Persist) · [`Physics`](#ref-Physics) · [`Picture`](#ref-Picture) · [`PlantRule`](#ref-PlantRule) · [`Player`](#ref-Player) · [`PlayerUi`](#ref-PlayerUi) · [`Puppet`](#ref-Puppet) · [`RayHit`](#ref-RayHit) · [`Recipes`](#ref-Recipes) · [`Room`](#ref-Room) · [`Rotation`](#ref-Rotation) · [`Rules`](#ref-Rules) · [`Schematic`](#ref-Schematic) · [`Screen`](#ref-Screen) · [`ScreenFacing`](#ref-ScreenFacing) · [`ShopPurchase`](#ref-ShopPurchase) · [`Slow`](#ref-Slow) · [`Socket`](#ref-Socket) · [`SocketMessage`](#ref-SocketMessage) · [`SoundSpeaker`](#ref-SoundSpeaker) · [`SoundStream`](#ref-SoundStream) · [`Suggester`](#ref-Suggester) · [`Suggestion`](#ref-Suggestion) · [`TerrainStep`](#ref-TerrainStep) · [`Text`](#ref-Text) · [`TextRuns`](#ref-TextRuns) · [`Texture`](#ref-Texture) · [`TextureRef`](#ref-TextureRef) · [`ThingGrid`](#ref-ThingGrid) · [`ThingRule`](#ref-ThingRule) · [`Think`](#ref-Think) · [`TimeName`](#ref-TimeName) · [`Trigger`](#ref-Trigger) · [`Tween`](#ref-Tween) · [`Used`](#ref-Used) · [`Vec3`](#ref-Vec3) · [`Video`](#ref-Video) · [`View`](#ref-View) · [`WorldTarget`](#ref-WorldTarget) · [`Worn`](#ref-Worn) · [`Zone`](#ref-Zone)
+[`AskCount`](#ref-AskCount) · [`Asks`](#ref-Asks) · [`Bar`](#ref-Bar) · [`BarColor`](#ref-BarColor) · [`Billboard`](#ref-Billboard) · [`BiomeDefinition`](#ref-BiomeDefinition) · [`Biomes`](#ref-Biomes) · [`Block`](#ref-Block) · [`BlockAmendSpec`](#ref-BlockAmendSpec) · [`BlockAt`](#ref-BlockAt) · [`BlockDef`](#ref-BlockDef) · [`BlockPick`](#ref-BlockPick) · [`BlockRef`](#ref-BlockRef) · [`Blocks`](#ref-Blocks) · [`BlockSpec`](#ref-BlockSpec) · [`Body`](#ref-Body) · [`BodyRotation`](#ref-BodyRotation) · [`Breaker`](#ref-Breaker) · [`BrowseEntry`](#ref-BrowseEntry) · [`Budget`](#ref-Budget) · [`Builder`](#ref-Builder) · [`Camera`](#ref-Camera) · [`Canvas`](#ref-Canvas) · [`ChaseCamera`](#ref-ChaseCamera) · [`Chunk`](#ref-Chunk) · [`Color`](#ref-Color) · [`ColorName`](#ref-ColorName) · [`Command`](#ref-Command) · [`CommandOpts`](#ref-CommandOpts) · [`Connection`](#ref-Connection) · [`Container`](#ref-Container) · [`Context`](#ref-Context) · [`DamageHit`](#ref-DamageHit) · [`DataView`](#ref-DataView) · [`Dialog`](#ref-Dialog) · [`DialogNode`](#ref-DialogNode) · [`Display`](#ref-Display) · [`Drops`](#ref-Drops) · [`DurableStore`](#ref-DurableStore) · [`Easing`](#ref-Easing) · [`Effect`](#ref-Effect) · [`Entities`](#ref-Entities) · [`EntityAmendOptions`](#ref-EntityAmendOptions) · [`EntityAmendSpec`](#ref-EntityAmendSpec) · [`EntityCamera`](#ref-EntityCamera) · [`EntityDef`](#ref-EntityDef) · [`EntityHandle`](#ref-EntityHandle) · [`EntityKind`](#ref-EntityKind) · [`EntitySpec`](#ref-EntitySpec) · [`Face`](#ref-Face) · [`Faces`](#ref-Faces) · [`Facing`](#ref-Facing) · [`Feature`](#ref-Feature) · [`Field`](#ref-Field) · [`FixedCamera`](#ref-FixedCamera) · [`FluidRule`](#ref-FluidRule) · [`FreeCamera`](#ref-FreeCamera) · [`Generated`](#ref-Generated) · [`GeneratorRules`](#ref-GeneratorRules) · [`GroundItem`](#ref-GroundItem) · [`GroundRule`](#ref-GroundRule) · [`HeadSkin`](#ref-HeadSkin) · [`Hit`](#ref-Hit) · [`Hitbox`](#ref-Hitbox) · [`HttpResponse`](#ref-HttpResponse) · [`Hud`](#ref-Hud) · [`HudPart`](#ref-HudPart) · [`Ink`](#ref-Ink) · [`InventorySlot`](#ref-InventorySlot) · [`Item`](#ref-Item) · [`ItemMatch`](#ref-ItemMatch) · [`ItemMeta`](#ref-ItemMeta) · [`Items`](#ref-Items) · [`ItemSpec`](#ref-ItemSpec) · [`ItemTable`](#ref-ItemTable) · [`Layout`](#ref-Layout) · [`LayoutAlign`](#ref-LayoutAlign) · [`LayoutNode`](#ref-LayoutNode) · [`LetterStyle`](#ref-LetterStyle) · [`LightSource`](#ref-LightSource) · [`Looks`](#ref-Looks) · [`Material`](#ref-Material) · [`Menu`](#ref-Menu) · [`Model`](#ref-Model) · [`ModelBuild`](#ref-ModelBuild) · [`ModelDisplay`](#ref-ModelDisplay) · [`ModelMaterial`](#ref-ModelMaterial) · [`ModelPart`](#ref-ModelPart) · [`ModelSkin`](#ref-ModelSkin) · [`ModelTexture`](#ref-ModelTexture) · [`MountTarget`](#ref-MountTarget) · [`NetworkInstance`](#ref-NetworkInstance) · [`NetworkStarted`](#ref-NetworkStarted) · [`Noise`](#ref-Noise) · [`Npc`](#ref-Npc) · [`NpcPose`](#ref-NpcPose) · [`Occupant`](#ref-Occupant) · [`OrbitCamera`](#ref-OrbitCamera) · [`Orientation`](#ref-Orientation) · [`Overlay`](#ref-Overlay) · [`PartDefinition`](#ref-PartDefinition) · [`Persist`](#ref-Persist) · [`Physics`](#ref-Physics) · [`Picture`](#ref-Picture) · [`PlantRule`](#ref-PlantRule) · [`Player`](#ref-Player) · [`PlayerUi`](#ref-PlayerUi) · [`Puppet`](#ref-Puppet) · [`RayHit`](#ref-RayHit) · [`Recipes`](#ref-Recipes) · [`Room`](#ref-Room) · [`Rotation`](#ref-Rotation) · [`Rules`](#ref-Rules) · [`Schematic`](#ref-Schematic) · [`Screen`](#ref-Screen) · [`ScreenFacing`](#ref-ScreenFacing) · [`ShopPurchase`](#ref-ShopPurchase) · [`Slow`](#ref-Slow) · [`Socket`](#ref-Socket) · [`SocketMessage`](#ref-SocketMessage) · [`SoundSpeaker`](#ref-SoundSpeaker) · [`SoundStream`](#ref-SoundStream) · [`Suggester`](#ref-Suggester) · [`Suggestion`](#ref-Suggestion) · [`TerrainStep`](#ref-TerrainStep) · [`Text`](#ref-Text) · [`TextRuns`](#ref-TextRuns) · [`Texture`](#ref-Texture) · [`TextureRef`](#ref-TextureRef) · [`ThingGrid`](#ref-ThingGrid) · [`ThingRule`](#ref-ThingRule) · [`Think`](#ref-Think) · [`TimeName`](#ref-TimeName) · [`Trigger`](#ref-Trigger) · [`Tween`](#ref-Tween) · [`Used`](#ref-Used) · [`Vec3`](#ref-Vec3) · [`Video`](#ref-Video) · [`View`](#ref-View) · [`WorldTarget`](#ref-WorldTarget) · [`Worn`](#ref-Worn) · [`Zone`](#ref-Zone)
 
 ---
 
@@ -13287,7 +13340,7 @@ Part of the [Terrain generation](#world-terrain-generation) article.
 | --- | --- |
 | [`block`](#ref-Game-block) | Returns one block in this version's numbers, or nil for a name this game has no word for. |
 | [`item`](#ref-Game-item) | Returns an item this game has, or nil for a name it does not; never an error. |
-| [`texture`](#ref-Game-texture) | Returns a new texture of width by height pixels, see-through until drawn on, for a pack's block or item. |
+| [`texture`](#ref-Game-texture) | Returns a new texture of width by height pixels, see-through until drawn on, for a pack's block or item. A texture to draw on (512 at most a side), or a PNG file in the pack (4096 at most a side). |
 
 ## Fields
 
@@ -14278,7 +14331,7 @@ Part of the [Player lifecycle](#players-player-lifecycle) article.
 | [`on_drop`](#ref-Players-on_drop) | Calls `fn` when a stack lands on the ground; `player` is nil where the world dropped it or they have left. |
 | [`on_death`](#ref-Players-on_death) | Calls `fn` when a player dies, with the cause (fall, drown, void, lava, ...) and the line broadcast; `player` is nil once they have left. |
 | [`on_respawn`](#ref-Players-on_respawn) | Calls `fn` when a player respawns; `player` is nil once they have left. |
-| [`on_break`](#ref-Players-on_break) | Cancellable. Return `false` to stop it; return nothing to let it through. These are asked *before* the world changes and the engine waits milliseconds for the answer, so they must be quick and must never `task.wait`. Timeout, error, overflow and disabled handlers deny the action. Across packs any `false` wins. See docs/luau-api.md, "saying no". |
+| [`on_break`](#ref-Players-on_break) | Cancellable. Return `false` to stop it; return nothing to let it through. These are asked *before* the world changes and the engine waits milliseconds for the answer, so they must be quick and must never `task.wait`.  Timeout, error, overflow and disabled handlers deny the action. Across packs any `false` wins. See docs/luau-api.md, "saying no". |
 | [`on_place`](#ref-Players-on_place) | Asks `fn` before a player puts a block down; return false to cancel it. A missed deadline denies the place. |
 | [`on_damage`](#ref-Players-on_damage) | Asks `fn` before damage lands on a player; return false to refuse it. A missed deadline denies it. A pack's own `player:damage` is not asked about. |
 
@@ -15455,7 +15508,7 @@ A live stream (MP3, or an FLV's sound) or a pack's sound file (OGG, MP3, WAV), h
 
 A chat line to everyone in the main room.
 
-`(text: Text, color: Ink ?) -> ()`
+`(text: Text, color: Ink?) -> ()`
 
 Part of the [Storage](#systems-storage) article.
 
@@ -15469,7 +15522,7 @@ Part of the [Storage](#systems-storage) article.
 
 Any live field eased over time — numbers, vec3 and color values.
 
-`(target: any, to: { [string]: any }, opts: { duration: number ?, easing: Easing ?, on_done: (() -> ())? }?) -> Tween`
+`(target: any, to: { [string]: any }, opts: { duration: number?, easing: Easing?, on_done: (() -> ())? }?) -> Tween`
 
 Part of the [Terrain generation](#world-terrain-generation) article.
 
@@ -16050,6 +16103,7 @@ Part of the [Player lifecycle](#players-player-lifecycle) article.
 | Call | Purpose |
 | --- | --- |
 | [`add`](#ref-Commands-add) | usage: "bet <amount:integer 1..10000> [color:red\|black]". Types: word, integer, number (with an optional min..max), player, a\|b\|c, text... (the rest of the line as a string), words... (as a list). args holds each argument by name; an optional one not typed is nil. Return a string and the player reads it in red. |
+| [`run`](#ref-Commands-run) | Runs a pack's command for player as if they typed it ("/servers"), with their permissions. false when no pack in their room declared it. |
 
 ---
 
@@ -16087,6 +16141,38 @@ usage: "bet <amount:integer 1..10000> [color:red|black]". Types: word, integer, 
 > "commands.add("play", function(player)" — [Guide: Parkour, a room each](#guides-guide-parkour-a-room-each)
 > "`commands.add`." — [Guide: A dungeon dimension](#guides-guide-a-dungeon-dimension)
 > "commands.add("leave", function(player)" — [Guide: A dungeon dimension](#guides-guide-a-dungeon-dimension)
+
+---
+
+<!-- /ref/Commands/run/ -->
+
+<a id="ref-Commands-run"></a>
+
+## commands.run
+
+Part of [`commands`](#ref-Commands).
+
+```luau
+commands.run(player: Player, line: string) → boolean
+```
+
+Runs a pack's command for player as if they typed it ("/servers"), with their permissions. false when no pack in their room declared it.
+
+## Parameters
+
+| Name | Type | Required |
+| --- | --- | --- |
+| `player` | [`Player`](#ref-Player) | yes |
+| `line` | `string` | yes |
+
+## Returns
+
+- `boolean`
+
+## Used in
+
+> "commands.run(player, line) -> boolean   -- runs a pack's command for player, as if they typed it" — [Commands](#systems-commands)
+> "- **`commands.run`** runs a line for a player as if they typed it, so one" — [Commands](#systems-commands)
 
 ---
 
@@ -16762,12 +16848,49 @@ Part of the [Storage](#systems-storage) article.
 | --- | --- |
 | [`start`](#ref-network-start) | Starts an instance of `member`. Answers at once; it is online later. |
 | [`find`](#ref-network-find) | The instance to send `players` players to (1 unless set), or nil when none has room. With `start`, one is started when none has room. |
-| [`list`](#ref-network-list) | The network's instances, or only those with `label`. |
 | [`stop`](#ref-network-stop) | Stops an instance of this network. |
 | [`info`](#ref-network-info) | This server's network, by name, and the instance this pack runs on: `id` and the fields after it are nil on a server that is not one. |
 | [`status`](#ref-network-status) | Says where this instance is. At most one a second is sent: the first at once, then the last of those that came after. |
-| [`on_instance`](#ref-network-on_instance) | Called when an instance starts or changes. |
-| [`on_gone`](#ref-network-on_gone) | Called with the id of an instance that is gone. |
+| [`on_instance_start`](#ref-network-on_instance_start) | Called when an instance is first seen: started, or already running. |
+| [`on_instance_change`](#ref-network-on_instance_change) | Called when an instance's state, open, status or meta changes. |
+| [`on_instance_stop`](#ref-network-on_instance_stop) | Called with the id of an instance that is gone. |
+| [`online`](#ref-network-online) | How many play on this network (everyone on Minefort on the platform's hub), or in one mode's games. An answer is kept for 5 seconds. |
+| [`browse`](#ref-network-browse) | The platform's hub finding every network, in the order to show them. nil and why on a refusal, and anywhere but that hub. One page of 6 rows (page from 1), and how many there are in all; nil and why on a refusal. |
+| [`instances`](#ref-network-instances) | Everything this network runs: this experience's own always-on servers (on the platform's hub, the hubs), then its games started on demand. With `label`, only that mode's games. |
+
+---
+
+<!-- /ref/network/browse/ -->
+
+<a id="ref-network-browse"></a>
+
+## network.browse
+
+Part of [`network`](#ref-network).
+
+```luau
+network.browse(view: "search" | "for-you" | "recent" | "featured", options: {player: (Player | string)?, query: string ?, page: number ?, category: string ?, online: boolean ?, ids: {string}?, sort: ("players" | "name")?, also: {recent: boolean ?, favorites: {string}?}?}?) → ({BrowseEntry}?, (number | string)?, {recent: {rows: {BrowseEntry}, total: number} | false | nil, favorites: {rows: {BrowseEntry}, total: number} | false | nil}?)
+```
+
+The platform's hub finding every network, in the order to show them. nil and why on a refusal, and anywhere but that hub. One page of 6 rows (page from 1), and how many there are in all; nil and why on a refusal.
+
+## Parameters
+
+| Name | Type | Required |
+| --- | --- | --- |
+| `view` | `"search" \| "for-you" \| "recent" \| "featured"` | yes |
+| `options` | `{player: (Player \| string)?, query: string ?, page: number ?, category: string ?, online: boolean ?, ids: {string}?, sort: ("players" \| "name")?, also: {recent: boolean ?, favorites: {string}?}?}` | no |
+
+## Returns
+
+- `({BrowseEntry}?, (number | string)?, {recent: {rows: {BrowseEntry}, total: number} | false | nil, favorites: {rows: {BrowseEntry}, total: number} | false | nil}?)`
+
+## Used in
+
+> "- `network.browse(view, options?)` finds other networks, and only the platform's hub may ask:" — [Network](#systems-network)
+> "- `view` is `"search"` (what matches `query`: names as they are typed, and domains), `"for-you"` (more of what `player` plays, busiest first, none of their recent ones), `"recent"` (where `player` played last, newest first) or `"featured"` (the busiest). Each row is a network: `{id, name, category, motd, icon, players, maxPlayers, state}`, and `id` is what `player:connect` takes. A network is one row, however many servers it has. It returns one page of 6 rows and how many there are in all: `local rows, total = network.browse('featured', { page = 2 })`." — [Network](#systems-network)
+> "with `network.browse`, and its hubs with `network.instances`, and asks the" — [Hub](#systems-hub)
+> "for _, s in network.browse('featured') or {} do print(s.name, s.players) end" — [Hub](#systems-hub)
 
 ---
 
@@ -16828,19 +16951,19 @@ This server's network, by name, and the instance this pack runs on: `id` and the
 
 ---
 
-<!-- /ref/network/list/ -->
+<!-- /ref/network/instances/ -->
 
-<a id="ref-network-list"></a>
+<a id="ref-network-instances"></a>
 
-## network.list
+## network.instances
 
 Part of [`network`](#ref-network).
 
 ```luau
-network.list(label: string ?) → ({ NetworkInstance }, string ?)
+network.instances(label: string ?) → ({BrowseEntry | NetworkInstance}?, string ?)
 ```
 
-The network's instances, or only those with `label`.
+Everything this network runs: this experience's own always-on servers (on the platform's hub, the hubs), then its games started on demand. With `label`, only that mode's games.
 
 ## Parameters
 
@@ -16850,25 +16973,88 @@ The network's instances, or only those with `label`.
 
 ## Returns
 
-- `({ NetworkInstance }, string ?)`
+- `({BrowseEntry | NetworkInstance}?, string ?)`
 
 ## Used in
 
-> "- `network.list(label?)` returns a list of the network's instances. Each one is the instance table below." — [Network](#systems-network)
-> "**Events come to the default member's servers only.** Call `network.list()` once at the start, then keep the list from `on_instance` and `on_gone`. An event can be lost. Call `network.list()` again, once a minute at most, to repair the list." — [Network](#systems-network)
+> "- `network.instances(label?)` returns everything this network runs, as this experience sees it: first its own servers that run all the time, online and taking players, as `{id, name, state, players, region}` (on the platform's hub, the hubs), then the network's games started on demand, each the instance table below. With `label`, only that mode's games: `network.instances('4v4v4v4')`. `id` is what `player:connect` takes. Never another network's. It returns nil and why when Minefort did not answer." — [Network](#systems-network)
+> "**Events come to the default member's servers only.** Call `network.instances()` once at the start, then keep the list from `on_instance_start`, `on_instance_change` and `on_instance_stop`. An event can be lost. Call `network.instances()` again, once a minute at most, to repair the list." — [Network](#systems-network)
+> "with `network.browse`, and its hubs with `network.instances`, and asks the" — [Hub](#systems-hub)
+> "for _, h in network.instances() or {} do print(h.name, h.players) end" — [Hub](#systems-hub)
 
 ---
 
-<!-- /ref/network/on_gone/ -->
+<!-- /ref/network/on_instance_change/ -->
 
-<a id="ref-network-on_gone"></a>
+<a id="ref-network-on_instance_change"></a>
 
-## network.on_gone
+## network.on_instance_change
 
 Part of [`network`](#ref-network).
 
 ```luau
-network.on_gone(handler: (id: string) -> ()) → Connection
+network.on_instance_change(handler: (instance: NetworkInstance) -> ()) → Connection
+```
+
+Called when an instance's state, open, status or meta changes.
+
+## Parameters
+
+| Name | Type | Required |
+| --- | --- | --- |
+| `handler` | `(instance: NetworkInstance) -> ()` | yes |
+
+## Returns
+
+- [`Connection`](#ref-Connection)
+
+## Used in
+
+> "network.on_instance_change(function(instance)" — [Network](#systems-network)
+> "- `network.on_instance_change(fn)` calls `fn(instance)` when an instance's `state`, `open`, `status` or `meta` changes. It returns a connection." — [Network](#systems-network)
+
+---
+
+<!-- /ref/network/on_instance_start/ -->
+
+<a id="ref-network-on_instance_start"></a>
+
+## network.on_instance_start
+
+Part of [`network`](#ref-network).
+
+```luau
+network.on_instance_start(handler: (instance: NetworkInstance) -> ()) → Connection
+```
+
+Called when an instance is first seen: started, or already running.
+
+## Parameters
+
+| Name | Type | Required |
+| --- | --- | --- |
+| `handler` | `(instance: NetworkInstance) -> ()` | yes |
+
+## Returns
+
+- [`Connection`](#ref-Connection)
+
+## Used in
+
+> "- `network.on_instance_start(fn)` calls `fn(instance)` when an instance is first seen: started, or running when this server began to listen. It returns a connection." — [Network](#systems-network)
+
+---
+
+<!-- /ref/network/on_instance_stop/ -->
+
+<a id="ref-network-on_instance_stop"></a>
+
+## network.on_instance_stop
+
+Part of [`network`](#ref-network).
+
+```luau
+network.on_instance_stop(handler: (id: string) -> ()) → Connection
 ```
 
 Called with the id of an instance that is gone.
@@ -16877,7 +17063,7 @@ Called with the id of an instance that is gone.
 
 | Name | Type | Required |
 | --- | --- | --- |
-| `handler` | `(id: string ) -> ()` | yes |
+| `handler` | `(id: string) -> ()` | yes |
 
 ## Returns
 
@@ -16885,39 +17071,40 @@ Called with the id of an instance that is gone.
 
 ## Used in
 
-> "network.on_gone(function(id) waiting[id] = nil end)" — [Network](#systems-network)
-> "- `network.on_gone(fn)` calls `fn(id)` when an instance is gone. It returns a connection." — [Network](#systems-network)
+> "network.on_instance_stop(function(id) waiting[id] = nil end)" — [Network](#systems-network)
+> "- `network.on_instance_stop(fn)` calls `fn(id)` when an instance is gone. It returns a connection." — [Network](#systems-network)
 
 ---
 
-<!-- /ref/network/on_instance/ -->
+<!-- /ref/network/online/ -->
 
-<a id="ref-network-on_instance"></a>
+<a id="ref-network-online"></a>
 
-## network.on_instance
+## network.online
 
 Part of [`network`](#ref-network).
 
 ```luau
-network.on_instance(handler: (instance: NetworkInstance) -> ()) → Connection
+network.online(label: string ?) → (number ?, string ?)
 ```
 
-Called when an instance starts or changes.
+How many play on this network (everyone on Minefort on the platform's hub), or in one mode's games. An answer is kept for 5 seconds.
 
 ## Parameters
 
 | Name | Type | Required |
 | --- | --- | --- |
-| `handler` | `(instance: NetworkInstance ) -> ()` | yes |
+| `label` | `string` | no |
 
 ## Returns
 
-- [`Connection`](#ref-Connection)
+- `(number ?, string ?)`
 
 ## Used in
 
-> "network.on_instance(function(instance)" — [Network](#systems-network)
-> "- `network.on_instance(fn)` calls `fn(instance)` when an instance starts or changes. It returns a connection." — [Network](#systems-network)
+> "- `network.online(label?)` returns how many play on this network: on the platform's hub, everyone on Minefort; on any other network, its members and their instances. With `label`, only the players in that mode's games, every region's. An answer is kept for 5 seconds, so a scoreboard can ask on every redraw. It returns nil and why when Minefort did not answer." — [Network](#systems-network)
+> "count with `network.online`. On a server that is not a hub, every" — [Hub](#systems-hub)
+> "print(network.online())" — [Hub](#systems-hub)
 
 ---
 
@@ -17171,9 +17358,7 @@ Part of the [Storage](#systems-storage) article.
 
 | Call | Purpose |
 | --- | --- |
-| [`servers`](#ref-hub-servers) | The players' servers that are online, and the published experiences (`category == "experience"`). `id` is what `player:connect` takes. |
 | [`experiences`](#ref-hub-experiences) | The portals of the experience grounds. `experience` is what `/play` takes. |
-| [`hubs`](#ref-hub-hubs) | Every hub that is online, this one included. `id` is what `player:connect` takes. |
 | [`rent`](#ref-hub-rent) | Offers portal `slot` for Gems, to lead to `experience` (what `/play` takes). Returns the request id, or nil. More time on your own portal may leave `experience` out. |
 | [`point`](#ref-hub-point) | Turns the player's own live portal to another published experience. |
 
@@ -17201,31 +17386,6 @@ The portals of the experience grounds. `experience` is what `/play` takes.
 
 > "for _, e in hub.experiences() do print(e.slot, e.experience) end" — [Hub](#systems-hub)
 > "- `hub.experiences()` returns a list of `{slot, experience, title, pitch, icon, banner, players}`. `experience` is the name `/play` takes. A slot that is not in the list has no experience." — [Hub](#systems-hub)
-
----
-
-<!-- /ref/hub/hubs/ -->
-
-<a id="ref-hub-hubs"></a>
-
-## hub.hubs
-
-Part of [`hub`](#ref-hub).
-
-```luau
-hub.hubs() → { {id: string, name: string, players: number ?, region: string ?} }
-```
-
-Every hub that is online, this one included. `id` is what `player:connect` takes.
-
-## Returns
-
-- `{ {id: string , name: string , players: number ?, region: string ?} }`
-
-## Used in
-
-> "for _, h in hub.hubs() do print(h.name, h.players) end" — [Hub](#systems-hub)
-> "- `hub.hubs()` returns a list of `{id, name, players, region}`, one per hub that is online, this one included. `player:connect(id)` sends a player to that hub." — [Hub](#systems-hub)
 
 ---
 
@@ -17291,31 +17451,6 @@ Offers portal `slot` for Gems, to lead to `experience` (what `/play` takes). Ret
 ## Used in
 
 > "- `hub.rent(player, slot, product, experience)` offers a portal of the grounds for Gems, like `shop.prompt`: `product` is one of the hub's rentals, such as `portal_24h`, and `experience` the name `/play` takes of any published experience, which the portal then leads to. It returns a request id, or nil; `shop.on_paid` hands the purchase over. Renting your own portal again adds time, and may leave `experience` out to keep what it shows." — [Hub](#systems-hub)
-
----
-
-<!-- /ref/hub/servers/ -->
-
-<a id="ref-hub-servers"></a>
-
-## hub.servers
-
-Part of [`hub`](#ref-hub).
-
-```luau
-hub.servers() → { {id: string, name: string, category: string, motd: string ?, icon: string ?, banner: string ?, players: number ?, maxPlayers: number ?} }
-```
-
-The players' servers that are online, and the published experiences (`category == "experience"`). `id` is what `player:connect` takes.
-
-## Returns
-
-- `{ {id: string , name: string , category: string , motd: string ?, icon: string ?, banner: string ?, players: number ?, maxPlayers: number ?} }`
-
-## Used in
-
-> "for _, s in hub.servers() do print(s.name, s.players) end" — [Hub](#systems-hub)
-> "- `hub.servers()` returns a list of `{id, name, category, motd, icon, banner, players, maxPlayers}`. `id` is what `player:connect` takes. A field Minefort does not know is nil. An entry with `category = "experience"` is a published experience: its `id` is the name `/play` takes, `motd` its pitch, and `banner` the URL of its banner, or nil." — [Hub](#systems-hub)
 
 ---
 
@@ -18287,7 +18422,7 @@ The three the block-update tables own: nil in a game that has none.
 
 ## BlockAmendSpec type
 
-What `game.blocks.amend` takes: **hooks only**. Every tnt in every world already looks like tnt and is as hard as tnt, so a data column here is refused by name. For a block of your own with different numbers, `game.blocks.define { extends = "tnt" }`.
+What `game.blocks.amend` takes: **hooks only**.  Every tnt in every world already looks like tnt and is as hard as tnt, so a data column here is refused by name. For a block of your own with different numbers, `game.blocks.define { extends = "tnt" }`.
 
 ## Functions
 
@@ -18599,7 +18734,7 @@ Somebody right-clicked it; `held` is the item in hand. Answers "used" or "pass";
 
 ## BlockAt type
 
-The block a hook was called about. Reads are fields and acts are methods. The reads are **live** — the world as it is right now — and everything that changes the world is carried out by the engine the moment the hook returns, in the order it was asked for.
+The block a hook was called about.  Reads are fields and acts are methods. The reads are **live** — the world as it is right now — and everything that changes the world is carried out by the engine the moment the hook returns, in the order it was asked for.
 
 ## Functions
 
@@ -19055,7 +19190,7 @@ Load-time only: a world may already be holding blocks of a definition, so one th
 
 ## BlockSpec type
 
-What a definition says a block *is*. Every hook takes `base` as its **last** argument: call it and you extended what is under you, leave it out and you replaced it. `base` is a decision rather than a reentrant call — its effects land when your hook returns, and calling it twice happens once.
+What a definition says a block *is*.  Every hook takes `base` as its **last** argument: call it and you extended what is under you, leave it out and you replaced it. `base` is a decision rather than a reentrant call — its effects land when your hook returns, and calling it twice happens once.
 
 ## Functions
 
@@ -19658,7 +19793,7 @@ Whatever is standing on one. `kind` is `"mob"` for a cow or a zombie.
 
 Degrees: 0 yaw faces south, 90 west; positive pitch tips down. Constructors default missing angles to zero; later writes preserve them.
 
-`{ read yaw: number ?, read pitch: number ? }`
+`{ read yaw: number?, read pitch: number? }`
 
 ---
 
@@ -19725,6 +19860,18 @@ breaker.tool: string ?
 ```
 
 The item in hand, or nil for a bare hand and for the four causes that have none.
+
+---
+
+<!-- /ref/BrowseEntry/ -->
+
+<a id="ref-BrowseEntry"></a>
+
+## BrowseEntry type
+
+A row of network.browse: a network on the platform's hub, or one of this experience's own servers. `id` is what `player:connect` takes.
+
+`{id: string, name: string?, category: string?, motd: string?, icon: string?, players: number?, maxPlayers: number?, state: string?, region: string?}`
 
 ---
 
@@ -21438,7 +21585,7 @@ How a tween moves over its duration: "linear" (the default) at one speed, "in" s
 
 A function called for every letter each frame a text shows, handing back how that letter looks; `i` of `n` is the letter's place, `t` is `time.now()`.
 
-`(letter: string, i: number, n: number, t: number) -> LetterStyle ?`
+`(letter: string, i: number, n: number, t: number) -> LetterStyle?`
 
 ---
 
@@ -21563,7 +21710,7 @@ Every kind by name: the pack's own and the game's, mob or not. `mob = true` give
 
 A pack's hooks on one of the game's own entities. Hooks only: every pig already looks like a pig, so the data columns are refused by name.
 
-`{ priority: number ?, replace: boolean ? }`
+`{ priority: number?, replace: boolean? }`
 
 ---
 
@@ -21572,8 +21719,6 @@ A pack's hooks on one of the game's own entities. Hooks only: every pig already 
 <a id="ref-EntityAmendSpec"></a>
 
 ## EntityAmendSpec type
-
-Called when a new entity of this kind spawns; told, never waited on.
 
 ## Functions
 
@@ -21772,7 +21917,7 @@ What `define{}` hands back. Usable anywhere the name is, so an author rarely typ
 
 ## EntityHandle type
 
-A body the world moves: a pack's own entity, a mob, a stack on the ground. Every read is a fresh look at the world, so a handle to something that has died reads `nil`. Inside a hook the same handle reads the entity as it was at the top of the tick, and its writes land at that hook's own slot.
+A body the world moves: a pack's own entity, a mob, a stack on the ground.  Every read is a fresh look at the world, so a handle to something that has died reads `nil`. Inside a hook the same handle reads the entity as it was at the top of the tick, and its writes land at that hook's own slot.
 
 ## Functions
 
@@ -23462,7 +23607,7 @@ Camera modes expose only the fields they use. Values shared across players updat
 
 The carved air under `below` becomes `block` (a lake, lava): the first rule that holds at each block. Never the open sky over the land.
 
-`{ block: string, below: number, biome: string ?, when: (Field` | `number)? }`
+`{ block: string, below: number, biome: string?, when: (Field` | `number)? }`
 
 ---
 
@@ -23794,7 +23939,7 @@ One stack lying on the ground.
 
 A layer of ground: `block` for the top `depth` blocks (1) of a surface. The first rule that holds wins.
 
-`{ block: BlockPick, biome: string ?, when: (Field` | `number)?, depth: number ? }`
+`{ block: BlockPick, biome: string?, when: (Field` | `number)?, depth: number? }`
 
 ---
 
@@ -23806,7 +23951,7 @@ A layer of ground: `block` for the top `depth` blocks (1) of a surface. The firs
 
 Whose face a player head shows: a Minecraft account's name, or the `textures` profile property of a skin no account wears.
 
-`string` | `{ value: string, signature: string ? }`
+`string` | `{ value: string, signature: string? }`
 
 ---
 
@@ -24075,7 +24220,7 @@ What `http.get` returns. A failed request is not an error: read `ok`.
 | [`httpResponse.status: number`](#ref-HttpResponse-status) | The HTTP status; 0 when no answer came. |
 | [`httpResponse.error: string ?`](#ref-HttpResponse-error) | Why no answer came, or nil. |
 | [`httpResponse.body: string`](#ref-HttpResponse-body) | The answer as bytes. |
-| [`httpResponse.headers: {[string]: string }`](#ref-HttpResponse-headers) | The answer's headers, names in lower case. |
+| [`httpResponse.headers: {[string]: string}`](#ref-HttpResponse-headers) | The answer's headers, names in lower case. |
 
 ---
 
@@ -24213,6 +24358,31 @@ A layout on one player's screen, from `player.ui.show`. `hud.<id>` is the item w
 | --- | --- |
 | [`set`](#ref-Hud-set) | A value per id: a number is a fill, a string a label's words, true or false whether it shows. An unknown id is an error that lists the ids. |
 | [`destroy`](#ref-Hud-destroy) | Takes it off the player's screen. |
+| [`on_hover`](#ref-Hud-on_hover) |  |
+| [`on_click`](#ref-Hud-on_click) |  |
+
+## Fields
+
+| Field | Purpose |
+| --- | --- |
+| [`hud.hover: string ?`](#ref-Hud-hover) | With `cursor = true`: the id under the pointer, and what fires when it changes and on a click. |
+| [`hud.cursor: { x: number, y: number }?`](#ref-Hud-cursor) | Where the pointer is, in the layout's pixels from its top left. |
+
+---
+
+<!-- /ref/Hud/cursor/ -->
+
+<a id="ref-Hud-cursor"></a>
+
+## hud.cursor
+
+Part of [`hud`](#ref-Hud).
+
+```luau
+hud.cursor: { x: number, y: number }?
+```
+
+Where the pointer is, in the layout's pixels from its top left.
 
 ---
 
@@ -24233,6 +24403,70 @@ Takes it off the player's screen.
 ## Used in
 
 > "player.data.hud = hud                            -- hud:destroy() takes it off the screen" — [Layouts](#ui-screens)
+
+---
+
+<!-- /ref/Hud/hover/ -->
+
+<a id="ref-Hud-hover"></a>
+
+## hud.hover
+
+Part of [`hud`](#ref-Hud).
+
+```luau
+hud.hover: string ?
+```
+
+With `cursor = true`: the id under the pointer, and what fires when it changes and on a click.
+
+---
+
+<!-- /ref/Hud/on_click/ -->
+
+<a id="ref-Hud-on_click"></a>
+
+## hud.on_click
+
+Part of [`hud`](#ref-Hud).
+
+```luau
+hud.on_click((id: string ?, button: "left" | "right") -> ()) → ?
+```
+
+## Parameters
+
+| Name | Type | Required |
+| --- | --- | --- |
+| `(id` | `string ?, button: "left" \| "right") -> ()` | yes |
+
+## Returns
+
+- `?`
+
+---
+
+<!-- /ref/Hud/on_hover/ -->
+
+<a id="ref-Hud-on_hover"></a>
+
+## hud.on_hover
+
+Part of [`hud`](#ref-Hud).
+
+```luau
+hud.on_hover((id: string ?) -> ()) → ?
+```
+
+## Parameters
+
+| Name | Type | Required |
+| --- | --- | --- |
+| `(id` | `string ?) -> ()` | yes |
+
+## Returns
+
+- `?`
 
 ---
 
@@ -24366,7 +24600,7 @@ Anywhere a colour is asked for, every spelling works: a `color` value, a name, o
 
 A stack as a script reads it. `id` is there for a pack item, `damage` for a worn tool.
 
-`{ item: string, count: number, id: string ?, damage: number ? }`
+`{ item: string, count: number, id: string?, damage: number? }`
 
 ---
 
@@ -24390,7 +24624,7 @@ An item the game version has, from `game.item(name)`: its name and stack size.
 
 An item to find — `take`, `count`, a recipe's ingredient. A name is the plain item and never a pack item made of it; a table matches the fields it names.
 
-`string` | `{ id: string ?, item: string ? }`
+`string` | `{ id: string?, item: string? }`
 
 ---
 
@@ -24712,7 +24946,7 @@ A piece of a layout's tree: what `ui.box`, `ui.image`, `ui.label`, `ui.row`, `ui
 
 What an effect hands back for one letter; `text` shows something else in its place ("" hides it).
 
-`{ color: Ink ?, bold: boolean ?, italic: boolean ?, underline: boolean ?, strike: boolean ?, text: string ? }`
+`{ color: Ink?, bold: boolean?, italic: boolean?, underline: boolean?, strike: boolean?, text: string? }`
 
 ---
 
@@ -24724,7 +24958,7 @@ What an effect hands back for one letter; `text` shows something else in its pla
 
 One spot of light no block makes, for `world.light`: a position and a level from 1 to 15.
 
-`{ at: Vec3, level: number ? }`
+`{ at: Vec3, level: number? }`
 
 ---
 
@@ -25385,6 +25619,31 @@ Pixel art for one face of a box: plain RGBA, and never repainted.
 | [`fill`](#ref-ModelTexture-fill) | Paints every pixel one colour. |
 | [`pixel`](#ref-ModelTexture-pixel) | Paints the pixel at x, y; `colors.transparent` makes it see-through. |
 | [`rect`](#ref-ModelTexture-rect) | Paints a rectangle `w` by `h` pixels from x, y. |
+| [`draw`](#ref-ModelTexture-draw) | A game.texture over this one, its top left at x, y; see-through pixels skipped, what falls outside cut. |
+
+---
+
+<!-- /ref/ModelTexture/draw/ -->
+
+<a id="ref-ModelTexture-draw"></a>
+
+## modelTexture:draw
+
+Part of [`ModelTexture`](#ref-ModelTexture).
+
+```luau
+modelTexture:draw(picture: Texture, x: number ?, y: number ?)
+```
+
+A game.texture over this one, its top left at x, y; see-through pixels skipped, what falls outside cut.
+
+## Parameters
+
+| Name | Type | Required |
+| --- | --- | --- |
+| `picture` | [`Texture`](#ref-Texture) | yes |
+| `x` | `number` | no |
+| `y` | `number` | no |
 
 ---
 
@@ -27019,6 +27278,7 @@ A player in the room: what `players.on_join` and every player event hand you.
 | [`player.level: number`](#ref-Player-level) | The experience bar: the number over it, and how full it is (0..1). |
 | [`player.xp: number`](#ref-Player-xp) | How full the experience bar is, 0..1. |
 | [`player.camera: (Camera \| false)?`](#ref-Player-camera) | What they look out of: a camera from camera.fixed/free/orbit/chase, or nil or false for their own eyes. No delay is needed after creating its target. Ends when the target is destroyed or the player leaves the room. |
+| [`player.time: (number \| TimeName \| false)?`](#ref-Player-time) | This player's sky alone, held at a time of day; nil or false gives them the room's again, as does moving rooms. Reads back in ticks. |
 
 ---
 
@@ -28121,6 +28381,26 @@ Yaw and pitch left out keep the way they face.
 
 ---
 
+<!-- /ref/Player/time/ -->
+
+<a id="ref-Player-time"></a>
+
+## player.time
+
+Part of [`player`](#ref-Player).
+
+```luau
+player.time: (number | TimeName | false)?
+```
+
+This player's sky alone, held at a time of day; nil or false gives them the room's again, as does moving rooms. Reads back in ticks.
+
+## Used in
+
+> "player.time = "midnight"       -- this player's sky alone, held there (ticks or a world.time name);" — [Body and movement](#players-movement)
+
+---
+
 <!-- /ref/Player/travel/ -->
 
 <a id="ref-Player-travel"></a>
@@ -28647,7 +28927,7 @@ The room's number. Rooms also compare by identity with `==`. Where players arriv
 
 ## Rotation type
 
-`BodyRotation & { read roll: number ? }`
+`BodyRotation & { read roll: number? }`
 
 ---
 
@@ -29318,7 +29598,7 @@ Called as the player types; must answer at once (no task.wait). `args` holds the
 
 One word offered as a player types a command argument: a string, or a text with a tooltip.
 
-`string` | `{ text: string, tooltip: string ? }`
+`string` | `{ text: string, tooltip: string? }`
 
 ---
 
@@ -29930,7 +30210,7 @@ A block or item picture: a `Texture` drawn in code with `game.texture`, or the n
 
 Things that share one grid of `cell` blocks (8): a cell holds at most one, at a place that is the cell's own, so a thing over a chunk border is whole.
 
-`{ [number]: ThingRule, cell: number ?, seed: number ? }`
+`{ [number]: ThingRule, cell: number?, seed: number? }`
 
 ---
 
@@ -29942,7 +30222,7 @@ Things that share one grid of `cell` blocks (8): a cell holds at most one, at a 
 
 A thing that stands on a grid cell: one of `shapes`, its `(0, 0, 0)` on the block above the ground. `afloat` stands it on the water where the ground is under water; without it, nothing stands there. `place = "floor"` puts its `(0, 0, 0)` on the air block over a cave floor, `"ceiling"` on the air block under a ceiling (build it down from there).
 
-`{ shapes: { Schematic }, chance: (Field` | `number)?, biome: string ?, when: (Field` | `number)?, afloat: boolean ?, place: ("top"` | `"floor"` | `"ceiling")?, y: { number }? }`
+`{ shapes: { Schematic }, chance: (Field` | `number)?, biome: string?, when: (Field` | `number)?, afloat: boolean?, place: ("top"` | `"floor"` | `"ceiling")?, y: { number }? }`
 
 ---
 
@@ -29964,7 +30244,7 @@ What `on_think` gets: `n` bodies, and one buffer for each column with one f64 pe
 
 A named time of day that `world.time` holds the sky at: sunrise, day, noon, sunset, night or midnight.
 
-`"sunrise"` | `"day"` | `"noon"` | `"sunset"` | `"night"` | `"midnight" x: number, y: number, z: number, magnitude: (self: Vec3) -> number, unit: (self: Vec3) -> Vec3, dot: (self: Vec3, other: Vec3) -> number, cross: (self: Vec3, other: Vec3) -> Vec3, distance: (self: Vec3, other: Vec3) -> number, lerp: (self: Vec3, other: Vec3, t: number) -> Vec3, floor: (self: Vec3) -> Vec3, with: (self: Vec3, fields: { x: number ?, y: number ?, z: number ? }) -> Vec3,`
+`"sunrise"` | `"day"` | `"noon"` | `"sunset"` | `"night"` | `"midnight" x: number, y: number, z: number, magnitude: (self: Vec3) -> number, unit: (self: Vec3) -> Vec3, dot: (self: Vec3, other: Vec3) -> number, cross: (self: Vec3, other: Vec3) -> Vec3, distance: (self: Vec3, other: Vec3) -> number, lerp: (self: Vec3, other: Vec3, t: number) -> Vec3, floor: (self: Vec3) -> Vec3, with: (self: Vec3, fields: { x: number?, y: number?, z: number? }) -> Vec3,`
 
 ---
 
@@ -30100,7 +30380,7 @@ Removes this player's view; they see the shared picture again.
 
 Armour, head first; each piece is an item like any other.
 
-`{ head: ItemSpec ?, chest: ItemSpec ?, legs: ItemSpec ?, feet: ItemSpec ? }`
+`{ head: ItemSpec?, chest: ItemSpec?, legs: ItemSpec?, feet: ItemSpec? }`
 
 ---
 

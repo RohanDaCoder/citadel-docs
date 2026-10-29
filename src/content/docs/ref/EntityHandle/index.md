@@ -3,7 +3,7 @@ title: 'EntityHandle type'
 description: 'A body the world moves: a pack''s own entity, a mob, a stack on the ground'
 ---
 
-A body the world moves: a pack's own entity, a mob, a stack on the ground. Every read is a fresh look at the world, so a handle to something that has died reads `nil`. Inside a hook the same handle reads the entity as it was at the top of the tick, and its writes land at that hook's own slot.
+A body the world moves: a pack's own entity, a mob, a stack on the ground.  Every read is a fresh look at the world, so a handle to something that has died reads `nil`. Inside a hook the same handle reads the entity as it was at the top of the tick, and its writes land at that hook's own slot.
 
 ## Functions
 

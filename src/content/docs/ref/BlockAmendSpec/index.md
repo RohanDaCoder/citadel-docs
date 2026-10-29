@@ -3,7 +3,7 @@ title: 'BlockAmendSpec type'
 description: 'What game.blocks.amend takes: hooks only'
 ---
 
-What `game.blocks.amend` takes: **hooks only**. Every tnt in every world already looks like tnt and is as hard as tnt, so a data column here is refused by name. For a block of your own with different numbers, `game.blocks.define { extends = "tnt" }`.
+What `game.blocks.amend` takes: **hooks only**.  Every tnt in every world already looks like tnt and is as hard as tnt, so a data column here is refused by name. For a block of your own with different numbers, `game.blocks.define { extends = "tnt" }`.
 
 ## Functions
 

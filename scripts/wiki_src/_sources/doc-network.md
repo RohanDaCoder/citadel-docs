@@ -23,13 +23,13 @@ commands.add("join <label:word>", function(player, args)
     end
 end)
 
-network.on_instance(function(instance)
+network.on_instance_change(function(instance)
     if instance.state ~= "online" then return end
     for _, player in waiting[instance.id] or {} do player:connect(instance.id) end
     waiting[instance.id] = nil
 end)
 
-network.on_gone(function(id) waiting[id] = nil end)
+network.on_instance_stop(function(id) waiting[id] = nil end)
 ```
 ```luau
 -- The member "bedwars-arena": it says how much room it has.
@@ -52,7 +52,6 @@ The calls:
   - `party` is a player, or their uuid. When they lead a `/party`, Minefort holds room for every member. Connect the leader, and the party follows them there. A player who leads no party needs room for one.
   - With `start = { member, slots, data? }`, Minefort starts an instance when none has room, and holds the room on it. The `state` is then `"starting"`.
   - Use `find` with `start`, not `find` and then `start`. The default runs on many servers, and each would start its own instance.
-- `network.list(label?)` returns a list of the network’s instances. Each one is the instance table below.
 - `network.stop(id)` stops an instance of this network. It returns `true` when Minefort accepted it.
 - `network.info()` returns `{network}` on every server of a network. `network` is the name of the network.
   - On an instance it returns `{network, id, member, label, slots, data}`.
@@ -62,8 +61,17 @@ The calls:
   - `status` is the pack’s own word, such as `"waiting"` or `"playing"`.
   - `meta` is the pack’s own value. Other servers of the network read it.
   - Minefort takes one status a second. The first call goes at once. Of the calls in the second after it, only the last goes.
-- `network.on_instance(fn)` calls `fn(instance)` when an instance starts or changes. It returns a connection.
-- `network.on_gone(fn)` calls `fn(id)` when an instance is gone. It returns a connection.
+- `network.on_instance_start(fn)` calls `fn(instance)` when an instance is first seen: started, or running when this server began to listen. It returns a connection.
+- `network.on_instance_change(fn)` calls `fn(instance)` when an instance’s `state`, `open`, `status` or `meta` changes. It returns a connection.
+- `network.on_instance_stop(fn)` calls `fn(id)` when an instance is gone. It returns a connection.
+- `network.online(label?)` returns how many play on this network: on the platform’s hub, everyone on Minefort; on any other network, its members and their instances. With `label`, only the players in that mode’s games, every region’s. An answer is kept for 5 seconds, so a scoreboard can ask on every redraw. It returns nil and why when Minefort did not answer.
+- `network.instances(label?)` returns everything this network runs, as this experience sees it: first its own servers that run all the time, online and taking players, as `{id, name, state, players, region}` (on the platform’s hub, the hubs), then the network’s games started on demand, each the instance table below. With `label`, only that mode’s games: `network.instances('4v4v4v4')`. `id` is what `player:connect` takes. Never another network’s. It returns nil and why when Minefort did not answer.
+- `network.browse(view, options?)` finds other networks, and only the platform’s hub may ask:
+  - `view` is `"search"` (what matches `query`: names as they are typed, and domains), `"for-you"` (more of what `player` plays, busiest first, none of their recent ones), `"recent"` (where `player` played last, newest first) or `"featured"` (the busiest). Each row is a network: `{id, name, category, motd, icon, players, maxPlayers, state}`, and `id` is what `player:connect` takes. A network is one row, however many servers it has. It returns one page of 6 rows and how many there are in all: `local rows, total = network.browse('featured', { page = 2 })`.
+  - `options` is `{ player?, query?, page?, category?, online?, ids?, sort?, also? }`. `player` is a player or a uuid, and only `"for-you"` and `"recent"` need it. `page` is from 1, and 1 when left out.
+  - Minefort narrows and orders before it pages, so a page and the total always agree: `category` (`"pvp"`, `"survival"`…), `online = true` for what is up now, `ids` (at most 64 row ids, such as a player’s favorites) and `sort` (`"players"` or `"name"`; the view’s own order when left out). `"recent"` takes none of these.
+  - `also = { recent = true, favorites = ids }` brings a board’s sidebar in the same round trip, as a third value: `local rows, total, side = network.browse('for-you', { player = p, also = { recent = true, favorites = saved } })`. `side.recent` and `side.favorites` are each `{ rows, total }`; `side.recent` is `false` for a player who is not on this hub.
+  - On a refusal it returns nil and why: `"unsupported"` anywhere but the platform’s hub, `"not-here"` for a player who is not on this hub, `"unavailable"` when Minefort’s search is down, or `"timeout"`. It is a round trip to Minefort, so call it from a script or callback.
 An instance table:
 | Field | Set by | Meaning |
 | --- | --- | --- |
@@ -75,7 +83,7 @@ An instance table:
 | `players` | Minefort | The number of players on it. |
 | `meta` | the instance | Its own value, or nil. |
 **`network` does not move players. `player:connect(id)` does.** The instance’s `id` is the server name it takes. The name of the network, `network.info().network`, sends a player back to the default member. Do not send a player to an instance that is `"starting"`: keep the player until the instance is `"online"`.
-**Events come to the default member’s servers only.** Call `network.list()` once at the start, then keep the list from `on_instance` and `on_gone`. An event can be lost. Call `network.list()` again, once a minute at most, to repair the list.
+**Events come to the default member’s servers only.** Call `network.instances()` once at the start, then keep the list from `on_instance_start`, `on_instance_change` and `on_instance_stop`. An event can be lost. Call `network.instances()` again, once a minute at most, to repair the list.
 **A failed call returns nil and a reason.** `start`, `find` and `info` return `nil, reason`. `list` returns `{}, reason`. `stop` returns `false, reason`. The reason is Minefort’s word, or one of these:
 - `"unavailable"`: there is no network here. Every local run answers this.
 - `"io"`: the request was not sent.
@@ -90,4 +98,4 @@ Limits. A value out of these is an error, and nothing is sent:
 - An unknown field in a table is an error.
 - A network has at most 20 instances in a region, and one `start` a second.
 - Minefort removes an instance with no players for 60 seconds after its first player, or for 5 minutes without one.
-Calls yield, like `stores`, but for `status` and the two events. Call from scripts, callbacks or tasks.
+Calls yield, like `stores`, but for `status` and the three events. Call from scripts, callbacks or tasks.

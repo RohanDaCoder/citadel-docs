@@ -10,7 +10,8 @@
     "start": "astro preview --port 3000",
     "astro": "astro",
     "generate": "python3 scripts/gen_starlight.py",
-    "generate:llms": "python3 scripts/gen_llms_full.py"
+    "generate:llms": "python3 scripts/gen_llms_full.py",
+    "sync": "python3 scripts/sync_official.py"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.36.0",

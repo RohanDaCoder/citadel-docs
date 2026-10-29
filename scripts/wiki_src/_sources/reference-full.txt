@@ -1,4 +1,3 @@
-
 ===== REF: AskCount =====
 {
  "title": "AskCount type",
@@ -362,84 +361,84 @@
 {
  "title": "BlockAmendSpec type",
  "url": "/docs/citadel/reference/BlockAmendSpec",
- "lead": "What `game.blocks.amend` takes: **hooks only**. Every tnt in every world already looks like tnt and is as hard as tnt, so a data column here is refused by name. For a block of your own with different numbers, `game.blocks.define { extends = \"tnt\" }`.",
+ "lead": "What `game.blocks.amend` takes: **hooks only**.  Every tnt in every world already looks like tnt and is as hard as tnt, so a data column here is refused by name. For a block of your own with different numbers, `game.blocks.define { extends = \"tnt\" }`.",
  "typedef": "",
  "docs_link": null,
  "members": [
   {
    "name": "on_use",
    "section": "functions",
-   "signature": "blockAmendSpec.on_use((block: BlockAt, player: Player ?, held: string ?, base: (... any) -> any) -> Used ?) \u2192 ?",
+   "signature": "blockAmendSpec.on_use((block: BlockAt, player: Player ?, held: string ?, base: (...any) -> any) -> Used ?) \u2192 ?",
    "description": "Somebody right-clicked it; `held` is the item in hand. Answers \"used\" or \"pass\"; a missed deadline passes the click through.",
    "href": "/docs/citadel/reference/BlockAmendSpec/on_use"
   },
   {
    "name": "on_break",
    "section": "functions",
-   "signature": "blockAmendSpec.on_break((block: BlockAt, player: Player ?, by: Breaker, base: (... any) -> any) -> Drops ?) \u2192 ?",
+   "signature": "blockAmendSpec.on_break((block: BlockAt, player: Player ?, by: Breaker, base: (...any) -> any) -> Drops ?) \u2192 ?",
    "description": "Something broke it; `by` says what. Answers \"none\", \"table\" or a drops list.",
    "href": "/docs/citadel/reference/BlockAmendSpec/on_break"
   },
   {
    "name": "on_step",
    "section": "functions",
-   "signature": "blockAmendSpec.on_step((block: BlockAt, body: Body, base: (... any) -> any) -> ()) \u2192 ?",
+   "signature": "blockAmendSpec.on_step((block: BlockAt, body: Body, base: (...any) -> any) -> ()) \u2192 ?",
    "description": "A body (a player, mob, item or other) is standing on it.",
    "href": "/docs/citadel/reference/BlockAmendSpec/on_step"
   },
   {
    "name": "on_tick",
    "section": "functions",
-   "signature": "blockAmendSpec.on_tick((block: BlockAt, base: (... any) -> any) -> ()) \u2192 ?",
+   "signature": "blockAmendSpec.on_tick((block: BlockAt, base: (...any) -> any) -> ()) \u2192 ?",
    "description": "A scheduled tick this block asked for came due.",
    "href": "/docs/citadel/reference/BlockAmendSpec/on_tick"
   },
   {
    "name": "on_random_tick",
    "section": "functions",
-   "signature": "blockAmendSpec.on_random_tick((block: BlockAt, base: (... any) -> any) -> ()) \u2192 ?",
+   "signature": "blockAmendSpec.on_random_tick((block: BlockAt, base: (...any) -> any) -> ()) \u2192 ?",
    "description": "The random pass landed on it.",
    "href": "/docs/citadel/reference/BlockAmendSpec/on_random_tick"
   },
   {
    "name": "on_place",
    "section": "functions",
-   "signature": "blockAmendSpec.on_place((block: BlockAt, player: Player ?, base: (... any) -> any) -> ()) \u2192 ?",
+   "signature": "blockAmendSpec.on_place((block: BlockAt, player: Player ?, base: (...any) -> any) -> ()) \u2192 ?",
    "description": "A player put it down.",
    "href": "/docs/citadel/reference/BlockAmendSpec/on_place"
   },
   {
    "name": "on_neighbour",
    "section": "functions",
-   "signature": "blockAmendSpec.on_neighbour((block: BlockAt, from: Vec3, announced: string, base: (... any) -> any) -> ()) \u2192 ?",
+   "signature": "blockAmendSpec.on_neighbour((block: BlockAt, from: Vec3, announced: string, base: (...any) -> any) -> ()) \u2192 ?",
    "description": "A neighbour at `from` changed; `announced` is the block the notifier announced itself as.",
    "href": "/docs/citadel/reference/BlockAmendSpec/on_neighbour"
   },
   {
    "name": "on_trigger",
    "section": "functions",
-   "signature": "blockAmendSpec.on_trigger((block: BlockAt, cause: Trigger, base: (... any) -> any) -> ()) \u2192 ?",
+   "signature": "blockAmendSpec.on_trigger((block: BlockAt, cause: Trigger, base: (...any) -> any) -> ()) \u2192 ?",
    "description": "It was lit, blasted or burnt; `cause` is \"ignite\", \"explosion\" or \"fire\".",
    "href": "/docs/citadel/reference/BlockAmendSpec/on_trigger"
   },
   {
    "name": "on_power",
    "section": "functions",
-   "signature": "blockAmendSpec.on_power((block: BlockAt, powered: boolean, base: (... any) -> any) -> ()) \u2192 ?",
+   "signature": "blockAmendSpec.on_power((block: BlockAt, powered: boolean, base: (...any) -> any) -> ()) \u2192 ?",
    "description": "A redstone signal started (`powered` is true) or stopped reaching it. Called once for each, not for every change beside it.",
    "href": "/docs/citadel/reference/BlockAmendSpec/on_power"
   },
   {
    "name": "on_added",
    "section": "functions",
-   "signature": "blockAmendSpec.on_added((block: BlockAt, base: (... any) -> any) -> ()) \u2192 ?",
+   "signature": "blockAmendSpec.on_added((block: BlockAt, base: (...any) -> any) -> ()) \u2192 ?",
    "description": "It has just been stored, whatever stored it.",
    "href": "/docs/citadel/reference/BlockAmendSpec/on_added"
   },
   {
    "name": "on_removed",
    "section": "functions",
-   "signature": "blockAmendSpec.on_removed((block: BlockAt, base: (... any) -> any) -> ()) \u2192 ?",
+   "signature": "blockAmendSpec.on_removed((block: BlockAt, base: (...any) -> any) -> ()) \u2192 ?",
    "description": "It has just gone.",
    "href": "/docs/citadel/reference/BlockAmendSpec/on_removed"
   }
@@ -456,7 +455,7 @@
 {
  "title": "BlockAt type",
  "url": "/docs/citadel/reference/BlockAt",
- "lead": "The block a hook was called about. Reads are fields and acts are methods. The reads are **live** \u2014 the world as it is right now \u2014 and everything that changes the world is carried out by the engine the moment the hook returns, in the order it was asked for.",
+ "lead": "The block a hook was called about.  Reads are fields and acts are methods. The reads are **live** \u2014 the world as it is right now \u2014 and everything that changes the world is carried out by the engine the moment the hook returns, in the order it was asked for.",
  "typedef": "",
  "docs_link": null,
  "members": [
@@ -635,84 +634,84 @@
 {
  "title": "BlockSpec type",
  "url": "/docs/citadel/reference/BlockSpec",
- "lead": "What a definition says a block *is*. Every hook takes `base` as its **last** argument: call it and you extended what is under you, leave it out and you replaced it. `base` is a decision rather than a reentrant call \u2014 its effects land when your hook returns, and calling it twice happens once.",
+ "lead": "What a definition says a block *is*.  Every hook takes `base` as its **last** argument: call it and you extended what is under you, leave it out and you replaced it. `base` is a decision rather than a reentrant call \u2014 its effects land when your hook returns, and calling it twice happens once.",
  "typedef": "",
  "docs_link": null,
  "members": [
   {
    "name": "on_use",
    "section": "functions",
-   "signature": "blockSpec.on_use((block: BlockAt, player: Player ?, held: string ?, base: (... any) -> any) -> Used ?) \u2192 ?",
+   "signature": "blockSpec.on_use((block: BlockAt, player: Player ?, held: string ?, base: (...any) -> any) -> Used ?) \u2192 ?",
    "description": "The hooks. Writing one is what asks for it \u2014 there is no flag beside `on_random_tick` saying the random pass may land here.",
    "href": "/docs/citadel/reference/BlockSpec/on_use"
   },
   {
    "name": "on_break",
    "section": "functions",
-   "signature": "blockSpec.on_break((block: BlockAt, player: Player ?, by: Breaker, base: (... any) -> any) -> Drops ?) \u2192 ?",
+   "signature": "blockSpec.on_break((block: BlockAt, player: Player ?, by: Breaker, base: (...any) -> any) -> Drops ?) \u2192 ?",
    "description": "Something broke it. Answers \"none\", \"table\" or a drops list; fails closed to the definition's `drops`.",
    "href": "/docs/citadel/reference/BlockSpec/on_break"
   },
   {
    "name": "on_step",
    "section": "functions",
-   "signature": "blockSpec.on_step((block: BlockAt, body: Body, base: (... any) -> any) -> ()) \u2192 ?",
+   "signature": "blockSpec.on_step((block: BlockAt, body: Body, base: (...any) -> any) -> ()) \u2192 ?",
    "description": "A body is standing on it; `body` is `{ id, kind }`.",
    "href": "/docs/citadel/reference/BlockSpec/on_step"
   },
   {
    "name": "on_tick",
    "section": "functions",
-   "signature": "blockSpec.on_tick((block: BlockAt, base: (... any) -> any) -> ()) \u2192 ?",
+   "signature": "blockSpec.on_tick((block: BlockAt, base: (...any) -> any) -> ()) \u2192 ?",
    "description": "A scheduled tick this block asked for came due.",
    "href": "/docs/citadel/reference/BlockSpec/on_tick"
   },
   {
    "name": "on_random_tick",
    "section": "functions",
-   "signature": "blockSpec.on_random_tick((block: BlockAt, base: (... any) -> any) -> ()) \u2192 ?",
+   "signature": "blockSpec.on_random_tick((block: BlockAt, base: (...any) -> any) -> ()) \u2192 ?",
    "description": "The random pass landed on it. Not the same thing as `on_tick`, which is why it has the longer name.",
    "href": "/docs/citadel/reference/BlockSpec/on_random_tick"
   },
   {
    "name": "on_place",
    "section": "functions",
-   "signature": "blockSpec.on_place((block: BlockAt, player: Player ?, base: (... any) -> any) -> ()) \u2192 ?",
+   "signature": "blockSpec.on_place((block: BlockAt, player: Player ?, base: (...any) -> any) -> ()) \u2192 ?",
    "description": "A player put it down; `block.data` is empty then, ready to be filled.",
    "href": "/docs/citadel/reference/BlockSpec/on_place"
   },
   {
    "name": "on_neighbour",
    "section": "functions",
-   "signature": "blockSpec.on_neighbour((block: BlockAt, from: Vec3, announced: string, base: (... any) -> any) -> ()) \u2192 ?",
+   "signature": "blockSpec.on_neighbour((block: BlockAt, from: Vec3, announced: string, base: (...any) -> any) -> ()) \u2192 ?",
    "description": "A neighbour changed; `from` is its position and `announced` the block name the notifier announced itself as.",
    "href": "/docs/citadel/reference/BlockSpec/on_neighbour"
   },
   {
    "name": "on_trigger",
    "section": "functions",
-   "signature": "blockSpec.on_trigger((block: BlockAt, cause: Trigger, base: (... any) -> any) -> ()) \u2192 ?",
+   "signature": "blockSpec.on_trigger((block: BlockAt, cause: Trigger, base: (...any) -> any) -> ()) \u2192 ?",
    "description": "It was lit, blasted or burnt; `cause` is \"ignite\", \"explosion\" or \"fire\".",
    "href": "/docs/citadel/reference/BlockSpec/on_trigger"
   },
   {
    "name": "on_power",
    "section": "functions",
-   "signature": "blockSpec.on_power((block: BlockAt, powered: boolean, base: (... any) -> any) -> ()) \u2192 ?",
+   "signature": "blockSpec.on_power((block: BlockAt, powered: boolean, base: (...any) -> any) -> ()) \u2192 ?",
    "description": "A redstone signal started (`powered` is true) or stopped reaching it. Called once for each, not for every change beside it.",
    "href": "/docs/citadel/reference/BlockSpec/on_power"
   },
   {
    "name": "on_added",
    "section": "functions",
-   "signature": "blockSpec.on_added((block: BlockAt, base: (... any) -> any) -> ()) \u2192 ?",
+   "signature": "blockSpec.on_added((block: BlockAt, base: (...any) -> any) -> ()) \u2192 ?",
    "description": "It has just been stored, whatever stored it.",
    "href": "/docs/citadel/reference/BlockSpec/on_added"
   },
   {
    "name": "on_removed",
    "section": "functions",
-   "signature": "blockSpec.on_removed((block: BlockAt, base: (... any) -> any) -> ()) \u2192 ?",
+   "signature": "blockSpec.on_removed((block: BlockAt, base: (...any) -> any) -> ()) \u2192 ?",
    "description": "It has just gone from the world.",
    "href": "/docs/citadel/reference/BlockSpec/on_removed"
   },
@@ -888,7 +887,7 @@
  "title": "BodyRotation type",
  "url": "/docs/citadel/reference/BodyRotation",
  "lead": "Degrees: 0 yaw faces south, 90 west; positive pitch tips down. Constructors default missing angles to zero; later writes preserve them.",
- "typedef": "{ read yaw: number ?, read pitch: number ? }",
+ "typedef": "{ read yaw: number?, read pitch: number? }",
  "docs_link": null,
  "members": [],
  "sections": []
@@ -1277,11 +1276,18 @@
    "signature": "commands.add(usage: string, fn: (player: Player, args: { [string]: any }) -> string ?, opts: CommandOpts ?) \u2192 Command",
    "description": "usage: \"bet <amount:integer 1..10000> [color:red|black]\". Types: word, integer, number (with an optional min..max), player, a|b|c, text... (the rest of the line as a string), words... (as a list). args holds each argument by name; an optional one not typed is nil. Return a string and the player reads it in red.",
    "href": "/docs/citadel/reference/Commands/add"
+  },
+  {
+   "name": "run",
+   "section": "functions",
+   "signature": "commands.run(player: Player, line: string) \u2192 boolean",
+   "description": "Runs a pack's command for player as if they typed it (\"/servers\"), with their permissions. false when no pack in their room declared it.",
+   "href": "/docs/citadel/reference/Commands/run"
   }
  ],
  "sections": [
   {
-   "title": "Functions 1",
+   "title": "Functions 2",
    "type": "functions"
   }
  ]
@@ -1680,7 +1686,7 @@
   {
    "name": "list",
    "section": "functions",
-   "signature": "durableStore:list(prefix: string ?, cursor: string ?, limit: number ?) \u2192 ({ string }, string ?)",
+   "signature": "durableStore:list(prefix: string ?, cursor: string ?, limit: number ?) \u2192 ({string}, string ?)",
    "description": "Returns fact keys with this prefix and the cursor for the next page, or nil at the end.",
    "href": "/docs/citadel/reference/DurableStore/list"
   },
@@ -1730,7 +1736,7 @@
  "title": "Effect type",
  "url": "/docs/citadel/reference/Effect",
  "lead": "A function called for every letter each frame a text shows, handing back how that letter looks; `i` of `n` is the letter's place, `t` is `time.now()`.",
- "typedef": "(letter: string, i: number, n: number, t: number) -> LetterStyle ?",
+ "typedef": "(letter: string, i: number, n: number, t: number) -> LetterStyle?",
  "docs_link": null,
  "members": [],
  "sections": []
@@ -1779,7 +1785,7 @@
  "title": "EntityAmendOptions type",
  "url": "/docs/citadel/reference/EntityAmendOptions",
  "lead": "A pack's hooks on one of the game's own entities. Hooks only: every pig already looks like a pig, so the data columns are refused by name.",
- "typedef": "{ priority: number ?, replace: boolean ? }",
+ "typedef": "{ priority: number?, replace: boolean? }",
  "docs_link": null,
  "members": [],
  "sections": []
@@ -1789,7 +1795,7 @@
 {
  "title": "EntityAmendSpec type",
  "url": "/docs/citadel/reference/EntityAmendSpec",
- "lead": "Called when a new entity of this kind spawns; told, never waited on.",
+ "lead": "",
  "typedef": "",
  "docs_link": null,
  "members": [
@@ -1870,7 +1876,7 @@
 {
  "title": "EntityHandle type",
  "url": "/docs/citadel/reference/EntityHandle",
- "lead": "A body the world moves: a pack's own entity, a mob, a stack on the ground. Every read is a fresh look at the world, so a handle to something that has died reads `nil`. Inside a hook the same handle reads the entity as it was at the top of the tick, and its writes land at that hook's own slot.",
+ "lead": "A body the world moves: a pack's own entity, a mob, a stack on the ground.  Every read is a fresh look at the world, so a handle to something that has died reads `nil`. Inside a hook the same handle reads the entity as it was at the top of the tick, and its writes land at that hook's own slot.",
  "typedef": "",
  "docs_link": null,
  "members": [
@@ -2565,7 +2571,7 @@
  "title": "FluidRule type",
  "url": "/docs/citadel/reference/FluidRule",
  "lead": "The carved air under `below` becomes `block` (a lake, lava): the first rule that holds at each block. Never the open sky over the land.",
- "typedef": "{ block: string, below: number, biome: string ?, when: (Field | number)? }",
+ "typedef": "{ block: string, below: number, biome: string?, when: (Field | number)? }",
  "docs_link": null,
  "members": [],
  "sections": []
@@ -2637,8 +2643,8 @@
   {
    "name": "texture",
    "section": "functions",
-   "signature": "game.texture(width: number, height: number) \u2192 Texture",
-   "description": "Returns a new texture of width by height pixels, see-through until drawn on, for a pack's block or item.",
+   "signature": "game.texture((width: number, height: number) -> Texture) \u2192 & ((file: string) -> Texture)",
+   "description": "Returns a new texture of width by height pixels, see-through until drawn on, for a pack's block or item. A texture to draw on (512 at most a side), or a PNG file in the pack (4096 at most a side).",
    "href": "/docs/citadel/reference/Game/texture"
   },
   {
@@ -2872,7 +2878,7 @@
  "title": "GroundRule type",
  "url": "/docs/citadel/reference/GroundRule",
  "lead": "A layer of ground: `block` for the top `depth` blocks (1) of a surface. The first rule that holds wins.",
- "typedef": "{ block: BlockPick, biome: string ?, when: (Field | number)?, depth: number ? }",
+ "typedef": "{ block: BlockPick, biome: string?, when: (Field | number)?, depth: number? }",
  "docs_link": null,
  "members": [],
  "sections": []
@@ -2883,7 +2889,7 @@
  "title": "HeadSkin type",
  "url": "/docs/citadel/reference/HeadSkin",
  "lead": "Whose face a player head shows: a Minecraft account's name, or the `textures` profile property of a skin no account wears.",
- "typedef": "string | { value: string, signature: string ? }",
+ "typedef": "string | { value: string, signature: string? }",
  "docs_link": null,
  "members": [],
  "sections": []
@@ -3050,7 +3056,7 @@
   {
    "name": "headers",
    "section": "fields",
-   "signature": "httpResponse.headers: {[string]: string }",
+   "signature": "httpResponse.headers: {[string]: string}",
    "description": "The answer's headers, names in lower case.",
    "href": "/docs/citadel/reference/HttpResponse/headers"
   }
@@ -3088,12 +3094,44 @@
    "signature": "hud:destroy()",
    "description": "Takes it off the player's screen.",
    "href": "/docs/citadel/reference/Hud/destroy"
+  },
+  {
+   "name": "on_hover",
+   "section": "functions",
+   "signature": "hud.on_hover((id: string ?) -> ()) \u2192 ?",
+   "description": "",
+   "href": "/docs/citadel/reference/Hud/on_hover"
+  },
+  {
+   "name": "on_click",
+   "section": "functions",
+   "signature": "hud.on_click((id: string ?, button: \"left\" | \"right\") -> ()) \u2192 ?",
+   "description": "",
+   "href": "/docs/citadel/reference/Hud/on_click"
+  },
+  {
+   "name": "hover",
+   "section": "fields",
+   "signature": "hud.hover: string ?",
+   "description": "With `cursor = true`: the id under the pointer, and what fires when it changes and on a click.",
+   "href": "/docs/citadel/reference/Hud/hover"
+  },
+  {
+   "name": "cursor",
+   "section": "fields",
+   "signature": "hud.cursor: { x: number, y: number }?",
+   "description": "Where the pointer is, in the layout's pixels from its top left.",
+   "href": "/docs/citadel/reference/Hud/cursor"
   }
  ],
  "sections": [
   {
-   "title": "Functions 2",
+   "title": "Functions 4",
    "type": "functions"
+  },
+  {
+   "title": "Fields 2",
+   "type": "fields"
   }
  ]
 }
@@ -3159,7 +3197,7 @@
  "title": "InventorySlot type",
  "url": "/docs/citadel/reference/InventorySlot",
  "lead": "A stack as a script reads it. `id` is there for a pack item, `damage` for a worn tool.",
- "typedef": "{ item: string, count: number, id: string ?, damage: number ? }",
+ "typedef": "{ item: string, count: number, id: string?, damage: number? }",
  "docs_link": null,
  "members": [],
  "sections": []
@@ -3181,7 +3219,7 @@
  "title": "ItemMatch type",
  "url": "/docs/citadel/reference/ItemMatch",
  "lead": "An item to find \u2014 `take`, `count`, a recipe's ingredient. A name is the plain item and never a pack item made of it; a table matches the fields it names.",
- "typedef": "string | { id: string ?, item: string ? }",
+ "typedef": "string | { id: string?, item: string? }",
  "docs_link": null,
  "members": [],
  "sections": []
@@ -3365,7 +3403,7 @@
  "title": "LetterStyle type",
  "url": "/docs/citadel/reference/LetterStyle",
  "lead": "What an effect hands back for one letter; `text` shows something else in its place (\"\" hides it).",
- "typedef": "{ color: Ink ?, bold: boolean ?, italic: boolean ?, underline: boolean ?, strike: boolean ?, text: string ? }",
+ "typedef": "{ color: Ink?, bold: boolean?, italic: boolean?, underline: boolean?, strike: boolean?, text: string? }",
  "docs_link": null,
  "members": [],
  "sections": []
@@ -3376,7 +3414,7 @@
  "title": "LightSource type",
  "url": "/docs/citadel/reference/LightSource",
  "lead": "One spot of light no block makes, for `world.light`: a position and a level from 1 to 15.",
- "typedef": "{ at: Vec3, level: number ? }",
+ "typedef": "{ at: Vec3, level: number? }",
  "docs_link": null,
  "members": [],
  "sections": []
@@ -3716,11 +3754,18 @@
    "signature": "modelTexture:rect(x: number, y: number, w: number, h: number, color: Ink)",
    "description": "Paints a rectangle `w` by `h` pixels from x, y.",
    "href": "/docs/citadel/reference/ModelTexture/rect"
+  },
+  {
+   "name": "draw",
+   "section": "functions",
+   "signature": "modelTexture:draw(picture: Texture, x: number ?, y: number ?)",
+   "description": "A game.texture over this one, its top left at x, y; see-through pixels skipped, what falls outside cut.",
+   "href": "/docs/citadel/reference/ModelTexture/draw"
   }
  ],
  "sections": [
   {
-   "title": "Functions 3",
+   "title": "Functions 4",
    "type": "functions"
   }
  ]
@@ -4700,6 +4745,13 @@
    "signature": "player.camera: (Camera | false)?",
    "description": "What they look out of: a camera from camera.fixed/free/orbit/chase, or nil or false for their own eyes. No delay is needed after creating its target. Ends when the target is destroyed or the player leaves the room.",
    "href": "/docs/citadel/reference/Player/camera"
+  },
+  {
+   "name": "time",
+   "section": "fields",
+   "signature": "player.time: (number | TimeName | false)?",
+   "description": "This player's sky alone, held at a time of day; nil or false gives them the room's again, as does moving rooms. Reads back in ticks.",
+   "href": "/docs/citadel/reference/Player/time"
   }
  ],
  "sections": [
@@ -4708,7 +4760,7 @@
    "type": "functions"
   },
   {
-   "title": "Fields 11",
+   "title": "Fields 12",
    "type": "fields"
   }
  ]
@@ -4879,7 +4931,7 @@
    "name": "on_break",
    "section": "functions",
    "signature": "players.on_break(fn: (player: Player ?, pos: Vec3, block: string) -> boolean ?) \u2192 Connection",
-   "description": "Cancellable. Return `false` to stop it; return nothing to let it through. These are asked *before* the world changes and the engine waits milliseconds for the answer, so they must be quick and must never `task.wait`. Timeout, error, overflow and disabled handlers deny the action. Across packs any `false` wins. See docs/luau-api.md, \"saying no\".",
+   "description": "Cancellable. Return `false` to stop it; return nothing to let it through. These are asked *before* the world changes and the engine waits milliseconds for the answer, so they must be quick and must never `task.wait`.  Timeout, error, overflow and disabled handlers deny the action. Across packs any `false` wins. See docs/luau-api.md, \"saying no\".",
    "href": "/docs/citadel/reference/Players/on_break"
   },
   {
@@ -5050,7 +5102,7 @@
  "title": "Rotation type",
  "url": "/docs/citadel/reference/Rotation",
  "lead": "",
- "typedef": "BodyRotation & { read roll: number ? }",
+ "typedef": "BodyRotation & { read roll: number? }",
  "docs_link": null,
  "members": [],
  "sections": []
@@ -5434,7 +5486,7 @@
  "title": "Suggestion type",
  "url": "/docs/citadel/reference/Suggestion",
  "lead": "One word offered as a player types a command argument: a string, or a text with a tooltip.",
- "typedef": "string | { text: string, tooltip: string ? }",
+ "typedef": "string | { text: string, tooltip: string? }",
  "docs_link": null,
  "members": [],
  "sections": []
@@ -5711,7 +5763,7 @@
  "title": "ThingGrid type",
  "url": "/docs/citadel/reference/ThingGrid",
  "lead": "Things that share one grid of `cell` blocks (8): a cell holds at most one, at a place that is the cell's own, so a thing over a chunk border is whole.",
- "typedef": "{ [number]: ThingRule, cell: number ?, seed: number ? }",
+ "typedef": "{ [number]: ThingRule, cell: number?, seed: number? }",
  "docs_link": null,
  "members": [],
  "sections": []
@@ -5722,7 +5774,7 @@
  "title": "ThingRule type",
  "url": "/docs/citadel/reference/ThingRule",
  "lead": "A thing that stands on a grid cell: one of `shapes`, its `(0, 0, 0)` on the block above the ground. `afloat` stands it on the water where the ground is under water; without it, nothing stands there. `place = \"floor\"` puts its `(0, 0, 0)` on the air block over a cave floor, `\"ceiling\"` on the air block under a ceiling (build it down from there).",
- "typedef": "{ shapes: { Schematic }, chance: (Field | number)?, biome: string ?, when: (Field | number)?, afloat: boolean ?, place: (\"top\" | \"floor\" | \"ceiling\")?, y: { number }? }",
+ "typedef": "{ shapes: { Schematic }, chance: (Field | number)?, biome: string?, when: (Field | number)?, afloat: boolean?, place: (\"top\" | \"floor\" | \"ceiling\")?, y: { number }? }",
  "docs_link": null,
  "members": [],
  "sections": []
@@ -5744,7 +5796,7 @@
  "title": "TimeName type",
  "url": "/docs/citadel/reference/TimeName",
  "lead": "A named time of day that `world.time` holds the sky at: sunrise, day, noon, sunset, night or midnight.",
- "typedef": "\"sunrise\" | \"day\" | \"noon\" | \"sunset\" | \"night\" | \"midnight\" x: number, y: number, z: number, magnitude: (self: Vec3) -> number, unit: (self: Vec3) -> Vec3, dot: (self: Vec3, other: Vec3) -> number, cross: (self: Vec3, other: Vec3) -> Vec3, distance: (self: Vec3, other: Vec3) -> number, lerp: (self: Vec3, other: Vec3, t: number) -> Vec3, floor: (self: Vec3) -> Vec3, with: (self: Vec3, fields: { x: number ?, y: number ?, z: number ? }) -> Vec3,",
+ "typedef": "\"sunrise\" | \"day\" | \"noon\" | \"sunset\" | \"night\" | \"midnight\" x: number, y: number, z: number, magnitude: (self: Vec3) -> number, unit: (self: Vec3) -> Vec3, dot: (self: Vec3, other: Vec3) -> number, cross: (self: Vec3, other: Vec3) -> Vec3, distance: (self: Vec3, other: Vec3) -> number, lerp: (self: Vec3, other: Vec3, t: number) -> Vec3, floor: (self: Vec3) -> Vec3, with: (self: Vec3, fields: { x: number?, y: number?, z: number? }) -> Vec3,",
  "docs_link": null,
  "members": [],
  "sections": []
@@ -5835,7 +5887,7 @@
   {
    "name": "label",
    "section": "functions",
-   "signature": "ui.label(opts: { id: string ?, text: string ?, width: number ?, align: LayoutAlign ?, color: Ink ? }) \u2192 LayoutNode",
+   "signature": "ui.label(opts: { id: string ?, text: string ?, width: number ?, align: LayoutAlign ?, color: Ink ?, bold: boolean ? }) \u2192 LayoutNode",
    "description": "Words in the client's own letters, space to `~`. Give a label whose words change a `width`.",
    "href": "/docs/citadel/reference/Ui/label"
   },
@@ -5863,7 +5915,7 @@
   {
    "name": "define",
    "section": "functions",
-   "signature": "ui.define(name: string, opts: { anchor: \"bottom\" ?, margin: number ?, [number]: LayoutNode }) \u2192 Layout",
+   "signature": "ui.define(name: string, opts: { anchor: (\"bottom\" | \"top\")?, margin: number ?, cursor: boolean ?, [number]: LayoutNode }) \u2192 Layout",
    "description": "A layout of one child, centred over the hotbar with its bottom edge `margin` pixels above the screen's (40, or 25 when `hide_hud` takes the hearts and the food away). While the pack loads only.",
    "href": "/docs/citadel/reference/Ui/define"
   },
@@ -6277,7 +6329,7 @@
  "title": "Worn type",
  "url": "/docs/citadel/reference/Worn",
  "lead": "Armour, head first; each piece is an item like any other.",
- "typedef": "{ head: ItemSpec ?, chest: ItemSpec ?, legs: ItemSpec ?, feet: ItemSpec ? }",
+ "typedef": "{ head: ItemSpec?, chest: ItemSpec?, legs: ItemSpec?, feet: ItemSpec? }",
  "docs_link": null,
  "members": [],
  "sections": []
@@ -6349,7 +6401,7 @@
   {
    "name": "log",
    "section": "functions",
-   "signature": "citadel.log(... any)",
+   "signature": "citadel.log(...any)",
    "description": "Writes its arguments to the server log, under this pack's name.",
    "href": "/docs/citadel/reference/citadel/log"
   },
@@ -6640,11 +6692,18 @@
    "signature": "commands.add(usage: string, fn: (player: Player, args: { [string]: any }) -> string ?, opts: CommandOpts ?) \u2192 Command",
    "description": "usage: \"bet <amount:integer 1..10000> [color:red|black]\". Types: word, integer, number (with an optional min..max), player, a|b|c, text... (the rest of the line as a string), words... (as a list). args holds each argument by name; an optional one not typed is nil. Return a string and the player reads it in red.",
    "href": "/docs/citadel/reference/Commands/add"
+  },
+  {
+   "name": "run",
+   "section": "functions",
+   "signature": "commands.run(player: Player, line: string) \u2192 boolean",
+   "description": "Runs a pack's command for player as if they typed it (\"/servers\"), with their permissions. false when no pack in their room declared it.",
+   "href": "/docs/citadel/reference/Commands/run"
   }
  ],
  "sections": [
   {
-   "title": "Functions 1",
+   "title": "Functions 2",
    "type": "functions"
   }
  ]
@@ -6861,8 +6920,8 @@
   {
    "name": "texture",
    "section": "functions",
-   "signature": "game.texture(width: number, height: number) \u2192 Texture",
-   "description": "Returns a new texture of width by height pixels, see-through until drawn on, for a pack's block or item.",
+   "signature": "game.texture((width: number, height: number) -> Texture) \u2192 & ((file: string) -> Texture)",
+   "description": "Returns a new texture of width by height pixels, see-through until drawn on, for a pack's block or item. A texture to draw on (512 at most a side), or a PNG file in the pack (4096 at most a side).",
    "href": "/docs/citadel/reference/Game/texture"
   },
   {
@@ -6955,14 +7014,14 @@
   {
    "name": "get",
    "section": "functions",
-   "signature": "http.get(url: string, options: {query: {[string]: string }?, headers: {[string]: string }?, timeout: number ?, cache: number ?}?) \u2192 HttpResponse",
+   "signature": "http.get(url: string, options: {query: {[string]: string}?, headers: {[string]: string}?, timeout: number ?, cache: number ?}?) \u2192 HttpResponse",
    "description": "GET a URL. `cache` is the seconds a 200 answer is kept on disk; `timeout` is 1 to 60 seconds, 15 by default.",
    "href": "/docs/citadel/reference/http/get"
   },
   {
    "name": "socket",
    "section": "functions",
-   "signature": "http.socket(url: string, options: {headers: {[string]: string }?, on_message: (message: SocketMessage) -> ()}) \u2192 Socket",
+   "signature": "http.socket(url: string, options: {headers: {[string]: string}?, on_message: (message: SocketMessage) -> ()}) \u2192 Socket",
    "description": "Opens a WebSocket (`ws` or `wss`) and keeps it open: when the connection ends, the engine dials again. `on_message` gets each message on a tick.",
    "href": "/docs/citadel/reference/http/socket"
   }
@@ -6979,7 +7038,7 @@
 {
  "title": "hub global",
  "url": "/docs/citadel/reference/hub",
- "lead": "What Minefort tells its own hub. Empty lists on every other server. The first call of servers, experiences or hubs waits up to two seconds for Minefort's lists.",
+ "lead": "What Minefort tells its own hub: never the servers or the hubs, which it browses with network.browse. Empty lists on every other server. The first call of experiences waits up to two seconds for Minefort's list.",
  "typedef": "",
  "docs_link": {
   "title": "Data",
@@ -6987,25 +7046,11 @@
  },
  "members": [
   {
-   "name": "servers",
-   "section": "functions",
-   "signature": "hub.servers() \u2192 { {id: string, name: string, category: string, motd: string ?, icon: string ?, banner: string ?, players: number ?, maxPlayers: number ?} }",
-   "description": "The players' servers that are online, and the published experiences (`category == \"experience\"`). `id` is what `player:connect` takes.",
-   "href": "/docs/citadel/reference/hub/servers"
-  },
-  {
    "name": "experiences",
    "section": "functions",
    "signature": "hub.experiences() \u2192 { {slot: number, experience: string, title: string, pitch: string ?, icon: string ?, banner: string ?, players: number ?} }",
    "description": "The portals of the experience grounds. `experience` is what `/play` takes.",
    "href": "/docs/citadel/reference/hub/experiences"
-  },
-  {
-   "name": "hubs",
-   "section": "functions",
-   "signature": "hub.hubs() \u2192 { {id: string, name: string, players: number ?, region: string ?} }",
-   "description": "Every hub that is online, this one included. `id` is what `player:connect` takes.",
-   "href": "/docs/citadel/reference/hub/hubs"
   },
   {
    "name": "rent",
@@ -7024,7 +7069,7 @@
  ],
  "sections": [
   {
-   "title": "Functions 5",
+   "title": "Functions 3",
    "type": "functions"
   }
  ]
@@ -7035,7 +7080,7 @@
  "title": "message global",
  "url": "/docs/citadel/reference/message",
  "lead": "Sends a chat line to everyone in the main room; `color` is for the words that did not pick one.",
- "typedef": "(text: Text, color: Ink ?) -> ()",
+ "typedef": "(text: Text, color: Ink?) -> ()",
  "docs_link": {
   "title": "Data",
   "href": "/docs/citadel/storage"
@@ -7085,23 +7130,16 @@
   {
    "name": "start",
    "section": "functions",
-   "signature": "network.start(options: {member: string, label: string, slots: number, data: any }) \u2192 (NetworkStarted ?, string ?)",
+   "signature": "network.start(options: {member: string, label: string, slots: number, data: any}) \u2192 (NetworkStarted ?, string ?)",
    "description": "Starts an instance of `member`. Answers at once; it is online later.",
    "href": "/docs/citadel/reference/network/start"
   },
   {
    "name": "find",
    "section": "functions",
-   "signature": "network.find(options: {label: string, players: number ?, party: (Player | string)?, start: {member: string, slots: number, data: any }?}) \u2192 (NetworkStarted ?, string ?)",
+   "signature": "network.find(options: {label: string, players: number ?, party: (Player | string)?, start: {member: string, slots: number, data: any}?}) \u2192 (NetworkStarted ?, string ?)",
    "description": "The instance to send `players` players to (1 unless set), or nil when none has room. With `start`, one is started when none has room.",
    "href": "/docs/citadel/reference/network/find"
-  },
-  {
-   "name": "list",
-   "section": "functions",
-   "signature": "network.list(label: string ?) \u2192 ({ NetworkInstance }, string ?)",
-   "description": "The network's instances, or only those with `label`.",
-   "href": "/docs/citadel/reference/network/list"
   },
   {
    "name": "stop",
@@ -7113,35 +7151,63 @@
   {
    "name": "info",
    "section": "functions",
-   "signature": "network.info() \u2192 ({network: string, id: string ?, member: string ?, label: string ?, slots: number ?, data: any }?, string ?)",
+   "signature": "network.info() \u2192 ({network: string, id: string ?, member: string ?, label: string ?, slots: number ?, data: any}?, string ?)",
    "description": "This server's network, by name, and the instance this pack runs on: `id` and the fields after it are nil on a server that is not one.",
    "href": "/docs/citadel/reference/network/info"
   },
   {
    "name": "status",
    "section": "functions",
-   "signature": "network.status(options: {open: number, status: string ?, meta: any })",
+   "signature": "network.status(options: {open: number, status: string ?, meta: any})",
    "description": "Says where this instance is. At most one a second is sent: the first at once, then the last of those that came after.",
    "href": "/docs/citadel/reference/network/status"
   },
   {
-   "name": "on_instance",
+   "name": "on_instance_start",
    "section": "functions",
-   "signature": "network.on_instance(handler: (instance: NetworkInstance) -> ()) \u2192 Connection",
-   "description": "Called when an instance starts or changes.",
-   "href": "/docs/citadel/reference/network/on_instance"
+   "signature": "network.on_instance_start(handler: (instance: NetworkInstance) -> ()) \u2192 Connection",
+   "description": "Called when an instance is first seen: started, or already running.",
+   "href": "/docs/citadel/reference/network/on_instance_start"
   },
   {
-   "name": "on_gone",
+   "name": "on_instance_change",
    "section": "functions",
-   "signature": "network.on_gone(handler: (id: string) -> ()) \u2192 Connection",
+   "signature": "network.on_instance_change(handler: (instance: NetworkInstance) -> ()) \u2192 Connection",
+   "description": "Called when an instance's state, open, status or meta changes.",
+   "href": "/docs/citadel/reference/network/on_instance_change"
+  },
+  {
+   "name": "on_instance_stop",
+   "section": "functions",
+   "signature": "network.on_instance_stop(handler: (id: string) -> ()) \u2192 Connection",
    "description": "Called with the id of an instance that is gone.",
-   "href": "/docs/citadel/reference/network/on_gone"
+   "href": "/docs/citadel/reference/network/on_instance_stop"
+  },
+  {
+   "name": "online",
+   "section": "functions",
+   "signature": "network.online(label: string ?) \u2192 (number ?, string ?)",
+   "description": "How many play on this network (everyone on Minefort on the platform's hub), or in one mode's games. An answer is kept for 5 seconds.",
+   "href": "/docs/citadel/reference/network/online"
+  },
+  {
+   "name": "browse",
+   "section": "functions",
+   "signature": "network.browse(view: \"search\" | \"for-you\" | \"recent\" | \"featured\", options: {player: (Player | string)?, query: string ?, page: number ?, category: string ?, online: boolean ?, ids: {string}?, sort: (\"players\" | \"name\")?, also: {recent: boolean ?, favorites: {string}?}?}?) \u2192 ({BrowseEntry}?, (number | string)?, {recent: {rows: {BrowseEntry}, total: number} | false | nil, favorites: {rows: {BrowseEntry}, total: number} | false | nil}?)",
+   "description": "The platform's hub finding every network, in the order to show them. nil and why on a refusal, and anywhere but that hub. One page of 6 rows (page from 1), and how many there are in all; nil and why on a refusal.",
+   "href": "/docs/citadel/reference/network/browse"
+  },
+  {
+   "name": "instances",
+   "section": "functions",
+   "signature": "network.instances(label: string ?) \u2192 ({BrowseEntry | NetworkInstance}?, string ?)",
+   "description": "Everything this network runs: this experience's own always-on servers (on the platform's hub, the hubs), then its games started on demand. With `label`, only that mode's games.",
+   "href": "/docs/citadel/reference/network/instances"
   }
  ],
  "sections": [
   {
-   "title": "Functions 8",
+   "title": "Functions 11",
    "type": "functions"
   }
  ]
@@ -7321,7 +7387,7 @@
    "name": "on_break",
    "section": "functions",
    "signature": "players.on_break(fn: (player: Player ?, pos: Vec3, block: string) -> boolean ?) \u2192 Connection",
-   "description": "Cancellable. Return `false` to stop it; return nothing to let it through. These are asked *before* the world changes and the engine waits milliseconds for the answer, so they must be quick and must never `task.wait`. Timeout, error, overflow and disabled handlers deny the action. Across packs any `false` wins. See docs/luau-api.md, \"saying no\".",
+   "description": "Cancellable. Return `false` to stop it; return nothing to let it through. These are asked *before* the world changes and the engine waits milliseconds for the answer, so they must be quick and must never `task.wait`.  Timeout, error, overflow and disabled handlers deny the action. Across packs any `false` wins. See docs/luau-api.md, \"saying no\".",
    "href": "/docs/citadel/reference/Players/on_break"
   },
   {
@@ -7577,7 +7643,7 @@
   {
    "name": "request",
    "section": "functions",
-   "signature": "stores.request(query: {[string]: any }, bytes: string ?) \u2192 ({[string]: any }, string ?)",
+   "signature": "stores.request(query: {[string]: any}, bytes: string ?) \u2192 ({[string]: any}, string ?)",
    "description": "Sends one raw query to the store and yields until it answers; returns the answer table and any blob bytes.",
    "href": "/docs/citadel/reference/stores/request"
   },
@@ -7605,7 +7671,7 @@
   {
    "name": "blob_list",
    "section": "functions",
-   "signature": "stores.blob_list(owner: string) \u2192 {{store: string, key: string, version: number, size: number }}",
+   "signature": "stores.blob_list(owner: string) \u2192 {{store: string, key: string, version: number, size: number}}",
    "description": "Lists a player's blobs across all blob stores in this scope, each with its store, key, version and size.",
    "href": "/docs/citadel/reference/stores/blob_list"
   }
@@ -7678,7 +7744,7 @@
  "title": "tween global",
  "url": "/docs/citadel/reference/tween",
  "lead": "Any live field eased over time: numbers, vec3 and color values tween; a table field is replaced when it lands.",
- "typedef": "(target: any, to: { [string]: any }, opts: { duration: number ?, easing: Easing ?, on_done: (() -> ())? }?) -> Tween",
+ "typedef": "(target: any, to: { [string]: any }, opts: { duration: number?, easing: Easing?, on_done: (() -> ())? }?) -> Tween",
  "docs_link": {
   "title": "World",
   "href": "/docs/citadel/blocks-and-terrain"
@@ -7750,7 +7816,7 @@
   {
    "name": "label",
    "section": "functions",
-   "signature": "ui.label(opts: { id: string ?, text: string ?, width: number ?, align: LayoutAlign ?, color: Ink ? }) \u2192 LayoutNode",
+   "signature": "ui.label(opts: { id: string ?, text: string ?, width: number ?, align: LayoutAlign ?, color: Ink ?, bold: boolean ? }) \u2192 LayoutNode",
    "description": "Words in the client's own letters, space to `~`. Give a label whose words change a `width`.",
    "href": "/docs/citadel/reference/Ui/label"
   },
@@ -7778,7 +7844,7 @@
   {
    "name": "define",
    "section": "functions",
-   "signature": "ui.define(name: string, opts: { anchor: \"bottom\" ?, margin: number ?, [number]: LayoutNode }) \u2192 Layout",
+   "signature": "ui.define(name: string, opts: { anchor: (\"bottom\" | \"top\")?, margin: number ?, cursor: boolean ?, [number]: LayoutNode }) \u2192 Layout",
    "description": "A layout of one child, centred over the hotbar with its bottom edge `margin` pixels above the screen's (40, or 25 when `hide_hud` takes the hearts and the food away). While the pack loads only.",
    "href": "/docs/citadel/reference/Ui/define"
   },
@@ -8138,4 +8204,15 @@
    "type": "fields"
   }
  ]
+}
+
+===== REF: BrowseEntry =====
+{
+ "title": "BrowseEntry type",
+ "url": "/docs/citadel/reference/BrowseEntry",
+ "lead": "A row of network.browse: a network on the platform's hub, or one of this experience's own servers. `id` is what `player:connect` takes.",
+ "typedef": "{id: string, name: string?, category: string?, motd: string?, icon: string?, players: number?, maxPlayers: number?, state: string?, region: string?}",
+ "docs_link": null,
+ "members": [],
+ "sections": []
 }

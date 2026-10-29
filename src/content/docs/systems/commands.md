@@ -1,6 +1,6 @@
 ---
 title: 'Commands'
-description: 'commands.add builds slash commands from a usage line — the argument types and ranges, permission nodes, aliases, tab-completion suggestions with tooltips, one name with several shapes, and what /help shows.'
+description: 'commands.add builds slash commands from a usage line — the argument types and ranges, permission nodes, aliases, tab-completion suggestions with tooltips, one name with several shapes; and commands.run fires a pack''s command for a player as if they typed it.'
 ---
 
 :::note[In short]
@@ -137,6 +137,13 @@ aliases claim the name too — adding `/spawn` with the alias
 :::
 
 ## Per room
+
+- [`commands.run(player, line)`](/ref/Commands/run/) runs a line for a player
+  as if they typed it, so one pack opens what another declared: a compass
+  runs `"/servers"`, whichever pack owns it. The player's own permissions
+  apply. Only a command a pack declared in the player's room runs; `false`
+  means none did, and the engine's and the game's commands are never run
+  this way.
 
 `commands` is the main room's, `room.commands` another room's. Destroying a
 room removes its commands (see

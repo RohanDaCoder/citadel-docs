@@ -13,7 +13,7 @@ Part of the [Terrain generation](/world/terrain-generation/) article.
 | --- | --- |
 | [`block`](/ref/Game/block/) | Returns one block in this version's numbers, or nil for a name this game has no word for. |
 | [`item`](/ref/Game/item/) | Returns an item this game has, or nil for a name it does not; never an error. |
-| [`texture`](/ref/Game/texture/) | Returns a new texture of width by height pixels, see-through until drawn on, for a pack's block or item. |
+| [`texture`](/ref/Game/texture/) | Returns a new texture of width by height pixels, see-through until drawn on, for a pack's block or item. A texture to draw on (512 at most a side), or a PNG file in the pack (4096 at most a side). |
 
 ## Fields
 

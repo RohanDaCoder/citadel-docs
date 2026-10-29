@@ -6,6 +6,7 @@ commands.add(usage, function(player, args) end, opts?) -> command
 --            suggest = { place = { "roulette", "arcade" }, item = function(player, typed, args) return { ... } end } }
 command:suggest(arg, words)   -- a list, a function, or nil or false for nothing: what `arg` offers from now on
 command:cancel()              -- takes the command away
+commands.run(player, line) -> boolean   -- runs a pack's command for player, as if they typed it
 
 commands.add("bet <amount:integer 1..10000> [color:red|black]", function(player, args)
     bank.bet(player, args.amount, args.color or "red")   -- args.amount is a number
@@ -63,3 +64,8 @@ alias of it gets an error. `/help` and `/world` belong to the engine. A
 pack command replaces a game command of the same name.
 - **Per room**: `commands` is the main room’s, `room.commands` another
 room’s. Destroying a room removes its commands.
+- **`commands.run`** runs a line for a player as if they typed it, so one
+pack opens what another declared: a compass runs `"/servers"`, whichever
+pack owns it. The player’s own permissions apply. Only a command a pack
+declared in the player’s room runs; `false` means none did, and the
+engine’s and the game’s commands are never run this way.

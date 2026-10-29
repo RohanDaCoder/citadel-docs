@@ -3,7 +3,7 @@ title: 'BlockAt type'
 description: 'The block a hook was called about'
 ---
 
-The block a hook was called about. Reads are fields and acts are methods. The reads are **live** — the world as it is right now — and everything that changes the world is carried out by the engine the moment the hook returns, in the order it was asked for.
+The block a hook was called about.  Reads are fields and acts are methods. The reads are **live** — the world as it is right now — and everything that changes the world is carried out by the engine the moment the hook returns, in the order it was asked for.
 
 ## Functions
 

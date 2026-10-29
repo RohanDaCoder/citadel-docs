@@ -58,6 +58,10 @@ origin, with parts, animations and seats.
 is up, and the front is `-z`.
 - A box reaches `-24 .. 24` on every axis: three blocks. For a bigger thing,
 set the display’s `scale`.
+- A model texture is 128 at most a side, and draws with `pixel`, `rect`,
+`fill` and `draw(picture, x, y)`: a `game.texture` over it, its corner
+at `(x, y)`. A bigger picture goes on several boxes: `t:draw(map, -128, 0)`
+takes the second square of 128 from a PNG loaded with `game.texture`.
 - `m:texture(w, h, { scroll = "up", speed = 2 })` is a texture that moves
 when a block is drawn from the model. See “blocks drawn from a model”.
 - A box turns on **one** axis only, in steps of 22.5 degrees, up to 45

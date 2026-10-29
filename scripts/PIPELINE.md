@@ -83,8 +83,11 @@ BeautifulSoup turns the HTML into one structured JSON file with four sections:
 |---|---|---|
 | `guides` | 5 | `{slug: {title, markdown}}` |
 | `docs` | 56 | `{slug: {title, markdown}}` (incl. the `/reference` listing) |
-| `reference_parents` | 177 | `{Name: {title, url, lead, typedef, docs_link, members[], sections[]}}` |
-| `reference_members` | 674 | `{Parent: {member: {title, url, kind, lead, signature, params[], returns[], used_in[]}}}` |
+| `reference_parents` | 178 | `{Name: {title, url, lead, typedef, docs_link, members[], sections[]}}` |
+| `reference_members` | 682 | `{Parent: {member: {title, url, kind, lead, signature, params[], returns[], used_in[]}}}` |
+| `_meta` | – | sync history: one record per `sync_official.py` run (see Stage 3b) |
+
+(Counts reflect the dataset after the 2026-10-29 live sync — Stage 3b.)
 
 The DOM rules the extractor relies on (all verified against the live markup):
 
@@ -109,6 +112,46 @@ The DOM rules the extractor relies on (all verified against the live markup):
 `dataset_smoke.json`) and compares them against the original `dataset.json`:
 **12/12 entries byte-identical**, covering every page type plus the
 `world`/`World` case-twin. Run it: `python3 scripts/diff_smoke.py`.
+
+## Stage 3b — Live re-sync: `scripts/sync_official.py`
+
+One command refreshes `dataset.json` from the **live** official pages, so
+drifted docs (new members, removed members, changed signatures/leads) flow
+into every generated artifact without any hand-typing. Run: `npm run sync`.
+
+What it does (nothing is guessed; the live HTML is the only source):
+
+1. **self-heal** `crawl_html/manifest.json` from `all_urls.json` (forward map
+   url → filename, the exact naming convention of the existing files).
+2. **parent discovery**: fetch the `/reference` index, diff its parent links
+   against the dataset. A **new** parent page is fetched, staged
+   (`extract_parent`) and committed with its members; a parent missing from
+   the index is pruned **only when its own page answers 404**.
+3. **member diff per parent** (default: all parents; `--sections a,b` to
+   limit): fetch the parent page, parse its member links, then
+   - **added** members: fetch each member page and `extract_member` it;
+   - **removed** members: HEAD-check the member URL, prune **only on a
+     definitive 404** (dead HTML files move to `crawl_html/removed/`);
+   - the parent entry itself is refreshed when its cards, lead, typedef or
+     sections moved on.
+4. **`--doc-pages a,b`**: refresh prose doc pages into `dataset["docs"]` and
+   the `wiki_src/_sources/doc-<slug>.md` provenance copies.
+5. Write `dataset.json` (+ `_meta.history` sync record), the manifest, and
+   `all_urls.json`; print a sync report. `--dry-run` reports only;
+   `--deep` re-fetches every member page too.
+
+**2026-10-29 sync** (Citadel 0.1.0): +13 members (`network.browse`,
+`network.instances`, `network.online`, `network.on_instance_start/change/stop`,
+`Commands.run`, `Hud.cursor/hover/on_click/on_hover`, `Player.time`,
+`ModelTexture.draw`), −5 (`network.list/on_instance/on_gone`,
+`hub.hubs/servers` — the hub browses via `network` now), +1 parent
+(`BrowseEntry`), 41 parents' content refreshed, 6 doc pages refreshed.
+After it: 178 parents / 682 members, d.ts conversion notes **0**, site link
+sweep **0 broken / 0 anchor misses** over 220,408 links.
+
+Companion: `scripts/gen_reference_full.py` regenerates
+`wiki_src/_sources/reference-full.txt` (the reference provenance dump) from
+the dataset after any sync.
 
 ## Stage 4 — The wiki itself: `scripts/wiki_src/`
 
@@ -188,6 +231,10 @@ multi-returns and spec literals.
 ## Regeneration cookbook
 
 ```sh
+# refresh the dataset from the LIVE official docs (fast, targeted diff):
+npm run sync                               # -> scripts/dataset.json
+python3 scripts/gen_reference_full.py      # -> wiki_src/_sources/reference-full.txt
+
 # full rebuild from the live site (crawl ~215 MB):
 python3 scripts/discover_all.py
 python3 scripts/crawl_citadel.py
@@ -196,7 +243,7 @@ python3 scripts/extract_final.py            # -> scripts/dataset.json
 # rebuild site content + llms files from the existing dataset:
 python3 scripts/gen_starlight.py            # -> src/content/docs/**
 python3 scripts/gen_llms_full.py            # -> public/llms*.txt
-npm install && npm run build                # -> dist/ (907 pages)
+npm install && npm run build                # -> dist/ (916 pages)
 python3 scripts/check_dist_links.py         # sweep built HTML
 
 # rebuild the TS declarations + verify the transpile chain:
@@ -219,7 +266,10 @@ python3 scripts/diff_smoke.py               # 12/12 byte-identical
 | `scripts/inspect_dataset.py` | print the dataset schema | original (Task 7) |
 | `scripts/diff_smoke.py` | extractor verification harness | original (Task 7) |
 | `scripts/crawl_html_smoke/` | 14-page verification fixture | original (Task 7) |
-| `scripts/dataset.json` | structured crawl (1.0 MB) | original (Task 1) |
+| `scripts/dataset.json` | structured crawl (1.0 MB) | original (Task 1) + live-synced 2026-10-29 (`sync_official.py`) |
+| `scripts/sync_official.py` | live re-sync: parents, members, doc pages | original (2026-10-29 sync stage) |
+| `scripts/gen_reference_full.py` | dataset → `reference-full.txt` dump | original (2026-10-29 sync stage) |
+| `scripts/official_llms/` | the official `llms-full.txt` snapshot + diff work files | fetched 2026-10-29 |
 | `scripts/wiki_src/**` | authored wiki sources + `_sources/` raw crawl | original (Tasks 1–2) |
 | `scripts/gen_starlight.py` | wiki + dataset → Starlight site | original (Task 3) |
 | `scripts/gen_llms_full.py` | site content → llms.txt / llms-full.txt | original (Task 5) |

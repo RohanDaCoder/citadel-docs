@@ -10,7 +10,7 @@ model itself — deadlines, asks, ordering — is in
 [The event model](/concepts/events/).
 :::
 
-62 events across 12 types.
+65 events across 13 types.
 
 ## `BlockAmendSpec`
 
@@ -79,12 +79,20 @@ model itself — deadlines, asks, ordering — is in
 | [`on_think`](/ref/EntitySpec/on_think/) | `entitySpec.on_think((b: Think) -> ()) → ?` | define only. The brain: one call for all due bodies of the kind, with their numbers in columns. The engine never waits for it; the answer lands on the next t... |
 | [`on_tick`](/ref/EntitySpec/on_tick/) | `entitySpec.on_tick((e: EntityHandle, base: () -> ()) -> ()) → ?` | Runs after the physics each tick to react to where it ended up; call `base(e)` to extend. |
 
+## `Hud`
+
+| Event | Signature | Fires when |
+| --- | --- | --- |
+| [`on_click`](/ref/Hud/on_click/) | `hud.on_click((id: string ?, button: "left" \| "right") -> ()) → ?` |  |
+| [`on_hover`](/ref/Hud/on_hover/) | `hud.on_hover((id: string ?) -> ()) → ?` |  |
+
 ## `network`
 
 | Event | Signature | Fires when |
 | --- | --- | --- |
-| [`on_gone`](/ref/network/on_gone/) | `network.on_gone(handler: (id: string) -> ()) → Connection` | Called with the id of an instance that is gone. |
-| [`on_instance`](/ref/network/on_instance/) | `network.on_instance(handler: (instance: NetworkInstance) -> ()) → Connection` | Called when an instance starts or changes. |
+| [`on_instance_change`](/ref/network/on_instance_change/) | `network.on_instance_change(handler: (instance: NetworkInstance) -> ()) → Connection` | Called when an instance's state, open, status or meta changes. |
+| [`on_instance_start`](/ref/network/on_instance_start/) | `network.on_instance_start(handler: (instance: NetworkInstance) -> ()) → Connection` | Called when an instance is first seen: started, or already running. |
+| [`on_instance_stop`](/ref/network/on_instance_stop/) | `network.on_instance_stop(handler: (id: string) -> ()) → Connection` | Called with the id of an instance that is gone. |
 
 ## `Players`
 

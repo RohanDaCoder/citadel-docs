@@ -228,6 +228,8 @@ declare const colors: Colors;
 interface Commands {
         /** usage: "bet <amount:integer 1..10000> [color:red|black]". */
     add(this: void, usage: string, fn?: (this: void, player: Player, args: { [key: string]: any }) => string, opts?: CommandOpts): Command
+        /** Runs a pack's command for player as if they typed it ("/servers"), with their permissions. */
+    run(this: void, player: Player, line: string): boolean
 }
 /** The `commands` global. */
 declare const commands: Commands;
@@ -323,18 +325,14 @@ interface Http {
 /** The `http` global. */
 declare const http: Http;
 
-/** What Minefort tells its own hub. Empty lists on every other server. The first call of servers, experiences or hubs waits up to two seconds for Minefort's lists. */
+/** What Minefort tells its own hub: never the servers or the hubs, which it browses with network.browse. Empty lists on every other server. The first call of experiences waits up to two seconds for Minefort's list. */
 interface Hub {
         /** The portals of the experience grounds. */
     experiences(this: void): ({ slot: number; experience: string; title: string; pitch?: string; icon?: string; banner?: string; players?: number })[]
-        /** Every hub that is online, this one included. */
-    hubs(this: void): ({ id: string; name: string; players?: number; region?: string })[]
         /** Turns the player's own live portal to another published experience. */
     point(this: void, player: Player | string, slot: number, experience: string): boolean
         /** Offers portal `slot` for Gems, to lead to `experience` (what `/play` takes). */
     rent(this: void, player: Player | string, slot: number, product: string, experience?: string): string | undefined
-        /** The players' servers that are online, and the published experiences (`category == "experience"`). */
-    servers(this: void): ({ id: string; name: string; category: string; motd?: string; icon?: string; banner?: string; players?: number; maxPlayers?: number })[]
 }
 /** The `hub` global. */
 declare const hub: Hub;
@@ -349,16 +347,22 @@ declare const models: Models;
 
 /** An experience made of more than one server: asks for instances of its members and is told about them. A failed call answers nil and a reason. Calls yield, but for `status`. Without a network every answer is no. */
 interface Network {
+        /** The platform's hub finding every network, in the order to show them. */
+    browse(this: void, view: "search" | "for-you" | "recent" | "featured", options?: { player?: Player | string; query?: string; page?: number; category?: string; online?: boolean; ids?: string[]; sort?: "players" | "name"; also?: { recent?: boolean; favorites?: string[] } }): LuaMultiReturn<[BrowseEntry[] | undefined, number | string | undefined, { recent: { rows: BrowseEntry[]; total: number } | false | undefined; favorites: { rows: BrowseEntry[]; total: number } | false | undefined } | undefined]>
         /** The instance to send `players` players to (1 unless set), or nil when none has room. */
     find(this: void, options: { label: string; players?: number; party?: Player | string; start?: { member: string; slots: number; data: any } }): LuaMultiReturn<[NetworkStarted | undefined, string | undefined]>
         /** This server's network, by name, and the instance this pack runs on: `id` and the fields after it are nil on a server that is not one. */
     info(this: void): LuaMultiReturn<[{ network: string; id?: string; member?: string; label?: string; slots?: number; data: any } | undefined, string | undefined]>
-        /** The network's instances, or only those with `label`. */
-    list(this: void, label?: string): LuaMultiReturn<[NetworkInstance[], string | undefined]>
+        /** Everything this network runs: this experience's own always-on servers (on the platform's hub, the hubs), then its games started on demand. */
+    instances(this: void, label?: string): LuaMultiReturn<[BrowseEntry | NetworkInstance[] | undefined, string | undefined]>
+        /** Called when an instance's state, open, status or meta changes. */
+    on_instance_change(this: void, handler: (this: void, instance: NetworkInstance) => void): Connection
+        /** Called when an instance is first seen: started, or already running. */
+    on_instance_start(this: void, handler: (this: void, instance: NetworkInstance) => void): Connection
         /** Called with the id of an instance that is gone. */
-    on_gone(this: void, handler: (this: void, id: string) => void): Connection
-        /** Called when an instance starts or changes. */
-    on_instance(this: void, handler: (this: void, instance: NetworkInstance) => void): Connection
+    on_instance_stop(this: void, handler: (this: void, id: string) => void): Connection
+        /** How many play on this network (everyone on Minefort on the platform's hub), or in one mode's games. */
+    online(this: void, label?: string): LuaMultiReturn<[number | undefined, string | undefined]>
         /** Starts an instance of `member`. */
     start(this: void, options: { member: string; label: string; slots: number; data: any }): LuaMultiReturn<[NetworkStarted | undefined, string | undefined]>
         /** Says where this instance is. */
@@ -722,7 +726,7 @@ interface Block {
     resistance?: number
 }
 
-/** What `game.blocks.amend` takes: **hooks only**. Every tnt in every world already looks like tnt and is as hard as tnt, so a data column here is refused by name. For a block of your own with different numbers, `game.blocks.define { extends = "tnt" }`. */
+/** What `game.blocks.amend` takes: **hooks only**.  Every tnt in every world already looks like tnt and is as hard as tnt, so a data column here is refused by name. For a block of your own with different numbers, `game.blocks.define { extends = "tnt" }`. */
 interface BlockAmendSpec {
         /** It has just been stored, whatever stored it. */
     on_added?: (this: void, block: BlockAt, base: (this: void, ...args: any[]) => any) => void
@@ -748,7 +752,7 @@ interface BlockAmendSpec {
     on_use?: (this: void, block: BlockAt, player: Player | undefined, held: string, base: (this: void, ...args: any[]) => any) => Used | undefined
 }
 
-/** The block a hook was called about. Reads are fields and acts are methods. The reads are **live** — the world as it is right now — and everything that changes the world is carried out by the engine the moment the hook returns, in the order it was asked for. */
+/** The block a hook was called about.  Reads are fields and acts are methods. The reads are **live** — the world as it is right now — and everything that changes the world is carried out by the engine the moment the hook returns, in the order it was asked for. */
 interface BlockAt {
         /** The block's position; a live read. */
     at: Vec3
@@ -798,7 +802,7 @@ interface Blocks {
     define(this: void, spec: BlockSpec): BlockDef
 }
 
-/** What a definition says a block *is*. Every hook takes `base` as its **last** argument: call it and you extended what is under you, leave it out and you replaced it. `base` is a decision rather than a reentrant call — its effects land when your hook returns, and calling it twice happens once. */
+/** What a definition says a block *is*.  Every hook takes `base` as its **last** argument: call it and you extended what is under you, leave it out and you replaced it. `base` is a decision rather than a reentrant call — its effects land when your hook returns, and calling it twice happens once. */
 interface BlockSpec {
         /** What a break leaves — and, because `on_break` fails closed, what it leaves when this pack is too slow to answer. */
     drops?: Drops | false
@@ -1057,7 +1061,6 @@ interface Entities {
     names(this: void, query?: { mob?: boolean }): string[]
 }
 
-/** Called when a new entity of this kind spawns; told, never waited on. */
 interface EntityAmendSpec {
         /** Asked when it takes damage; return "ignore" to cancel it. */
     on_damage?: (this: void, e: EntityHandle, amount: number) => "take" | "ignore" | undefined
@@ -1077,7 +1080,7 @@ interface EntityAmendSpec {
 interface EntityCamera {
 }
 
-/** A body the world moves: a pack's own entity, a mob, a stack on the ground. Every read is a fresh look at the world, so a handle to something that has died reads `nil`. Inside a hook the same handle reads the entity as it was at the top of the tick, and its writes land at that hook's own slot. */
+/** A body the world moves: a pack's own entity, a mob, a stack on the ground.  Every read is a fresh look at the world, so a handle to something that has died reads `nil`. Inside a hook the same handle reads the entity as it was at the top of the tick, and its writes land at that hook's own slot. */
 interface EntityHandle {
         /** Ticks lived. */
     age?: number
@@ -1328,8 +1331,14 @@ interface HttpResponse {
 
 /** A layout on one player's screen, from `player.ui.show`. `hud.<id>` is the item with that id. */
 interface Hud {
+        /** Where the pointer is, in the layout's pixels from its top left. */
+    cursor?: { x: number; y: number }
         /** Takes it off the player's screen. */
     destroy(): void
+        /** With `cursor = true`: the id under the pointer, and what fires when it changes and on a click. */
+    hover?: string
+    on_click(this: void, arg0: (this: void, id: string, button: "left" | "right") => void): unknown
+    on_hover(this: void, arg0: (this: void, id: string) => void): unknown
         /** A value per id: a number is a fill, a string a label's words, true or false whether it shows. */
     set(values: { [key: string]: number | string | boolean }): void
 }
@@ -1454,6 +1463,8 @@ interface ModelPart {
 
 /** Pixel art for one face of a box: plain RGBA, and never repainted. */
 interface ModelTexture {
+        /** A game.texture over this one, its top left at x, y; see-through pixels skipped, what falls outside cut. */
+    draw(picture: Texture, x?: number, y?: number): void
         /** Paints every pixel one colour. */
     fill(color: Ink): void
         /** Paints the pixel at x, y; `colors.transparent` makes it see-through. */
@@ -1699,6 +1710,8 @@ interface Player {
     take(item: ItemMatch, count?: number): number
         /** Yaw and pitch left out keep the way they face. */
     teleport(pos: Vec3, rotation?: BodyRotation): void
+        /** This player's sky alone, held at a time of day; nil or false gives them the room's again, as does moving rooms. */
+    time?: number | TimeName | false
         /** Sends the player to another world of the group, at `pos` or its spawn. */
     travel(dimension: string, pos?: Vec3): void
         /** false: no other player is sent this body. */
@@ -1935,6 +1948,9 @@ type Body = { id: number; kind: "player" | "mob" | "item" | "other" };
 
 /** BodyRotation — from the documented typedef. */
 type BodyRotation = { yaw?: number; pitch?: number };
+
+/** BrowseEntry — from the documented typedef. */
+type BrowseEntry = { id: string; name?: string; category?: string; motd?: string; icon?: string; players?: number; maxPlayers?: number; state?: string; region?: string };
 
 /** Camera — from the documented typedef. */
 type Camera = FixedCamera | EntityCamera | FreeCamera | OrbitCamera | ChaseCamera;

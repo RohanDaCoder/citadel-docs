@@ -1,0 +1,748 @@
+     1→#!/usr/bin/env python3
+     2→"""Generate citadel-ts/types/citadel.d.ts — TypeScript declarations for the
+     3→Minefort Citadel Luau API — strictly from verified, crawled sources:
+     4→
+     5→  * scripts/dataset.json   the structured extraction of the official docs
+     6→                          (reference_parents + reference_members; every
+     7→                          member entry carries its documented signature).
+     8→  * scripts/wiki_src/      the authored wiki built from the same crawl — used
+     9→                          ONLY where the reference section lacks coverage
+    10→                          (task.*, camera.path, Vec3/Color method shapes,
+    11→                          player.ui). Every such block cites its source.
+    12→
+    13→Nothing is guessed: anything the sources do not specify is typed `unknown`
+    14→and counted in the report. Regenerate: python3 scripts/gen_citadel_dts.py
+    15→"""
+    16→import json
+    17→import os
+    18→import re
+    19→import shutil
+    20→from collections import OrderedDict
+    21→
+    22→ROOT = "/home/z/my-project"
+    23→DS = json.load(open(f"{ROOT}/scripts/dataset.json"))
+    24→P = DS["reference_parents"]
+    25→M = DS["reference_members"]
+    26→OUT = f"{ROOT}/citadel-ts/types/citadel.d.ts"
+    27→os.makedirs(os.path.dirname(OUT), exist_ok=True)
+    28→
+    29→WARN = []
+    30→NOTES = []          # deliberate conversions (tag strips, recoveries)
+    31→STATS = OrderedDict()
+    32→
+    33→# Globals enumeration — verified: wiki concepts/conventions.md "Namespaces".
+    34→# NOTE: blocks/entities/biomes/items/recipes are NOT top-level globals — they
+    35→# live on game.* (the dataset's Game members document the fields). Their
+    36→# interfaces are still emitted (as plain types) for Game's fields.
+    37→GLOBAL_GROUP = {          # member-group key -> interface name for the global
+    38→    "World": "World", "Players": "Players", "Ui": "Ui", "Game": "Game",
+    39→    "Fx": "Fx", "Sound": "Sound", "Commands": "Commands",
+    40→    "time": "Time", "rooms": "Rooms",
+    41→    "storage": "Storage", "stores": "Stores", "http": "Http",
+    42→    "network": "Network", "shop": "Shop", "hub": "Hub", "models": "Models",
+    43→    "parts": "Parts", "routes": "Routes", "data": "Data", "fields": "Fields",
+    44→    "colors": "Colors", "citadel": "Citadel", "noise": "NoiseApi",
+    45→}
+    46→SPEC_TYPES = {"BlockSpec", "BlockAmendSpec", "EntitySpec", "EntityAmendSpec",
+    47→              "PartDefinition"}          # user-authored spec tables
+    48→PRIMITIVES = {"number", "string", "boolean", "unknown", "undefined", "never",
+    49→              "object"}
+    50→PRIM_MAP = {"nil": "undefined", "integer": "number", "thread": "unknown",
+    51→            "function": "unknown"}
+    52→TS_KEYWORD_MEMBERS = {"new"}
+    53→FN_RE = re.compile(r"^\((.*)\)\s*->\s*(.+)$", re.S)
+    54→
+    55→
+    56→class Ctx:
+    57→    def __init__(self, declared):
+    58→        self.declared = declared
+    59→        self.where = "prelude"
+    60→
+    61→
+    62→def top_split(s, sep):
+    63→    """Split on a single-char separator at paren/brace/quote depth 0."""
+    64→    parts, depth, start, i, instr = [], 0, 0, 0, False
+    65→    while i < len(s):
+    66→        c = s[i]
+    67→        if instr:
+    68→            if c == '"':
+    69→                if i + 1 < len(s) and s[i + 1] == '"':
+    70→                    i += 2
+    71→                    continue
+    72→                instr = False
+    73→            i += 1
+    74→            continue
+    75→        if c == '"':
+    76→            instr = True
+    77→        elif c in "([{":
+    78→            depth += 1
+    79→        elif c in ")]}":
+    80→            depth -= 1
+    81→        elif c == sep and depth == 0:
+    82→            parts.append(s[start:i])
+    83→            start = i + 1
+    84→        i += 1
+    85→    parts.append(s[start:])
+    86→    return parts
+    87→
+    88→
+    89→def conv_type(s, ctx, nested=False):
+    90→    """Convert a Luau type string to a TypeScript type string."""
+    91→    s = (s or "").strip()
+    92→    s = re.sub(r"\s*\|\s*\[\]\s*$", "", s).strip()   # crawler artifact
+    93→    # flattened Luau line comments: drop "-- text" up to the next "field:".
+    94→    s = re.sub(r"--\s+[\w\s]*?(?=\s*[a-z_]+\s*:)", "", s)
+    95→    if not s or s == "?":
+    96→        return "unknown"
+    97→    if "|" in s and len(top_split(s, "|")) > 1:
+    98→        alts, seen = [], set()
+    99→        for p in top_split(s, "|"):
+   100→            t = conv_type(p, ctx, True)
+   101→            if " => " in t:            # TS1385: parenthesize fn types in unions
+   102→                t = f"({t})"
+   103→            if t and t not in seen:
+   104→                seen.add(t)
+   105→                alts.append(t)
+   106→        return alts[0] if len(alts) == 1 else " | ".join(alts)
+   107→    if "&" in s and len(top_split(s, "&")) > 1:
+   108→        return " & ".join(conv_type(p, ctx, True) for p in top_split(s, "&"))
+   109→    if s.endswith("?"):
+   110→        base = conv_type(s[:-1], ctx, True)
+   111→        return base if base in ("unknown", "any") else f"{base} | undefined"
+   112→    s = s.strip()
+   113→    if s.startswith("(") and s.endswith(")"):
+   114→        inner = s[1:-1].strip()
+   115→        if not inner:
+   116→            return "void" if not nested else "unknown"
+   117→        if FN_RE.match(inner):          # a function type wrapped in parens
+   118→            return conv_type(inner, ctx, nested)
+   119→        if not FN_RE.match(s):
+   120→            if len(top_split(inner, ",")) > 1:      # tuple in type position
+   121→                return ("LuaMultiReturn<[" + ", ".join(
+   122→                    conv_type(e, ctx, True)
+   123→                    for e in top_split(inner, ",")) + "]>")
+   124→            return conv_type(inner, ctx, True)
+   125→    m = FN_RE.match(s)
+   126→    if m:
+   127→        params_s, ret_s = m.group(1).strip(), m.group(2).strip()
+   128→        ret_s = re.sub(r"^\((.*)\)$", r"\1", ret_s).strip()
+   129→        ret_ts = "void" if ret_s in ("", "()") else conv_type(ret_s, ctx, True)
+   130→        pl = []
+   131→        for j, pp in enumerate(top_split(params_s, ",")):
+   132→            pp = pp.strip()
+   133→            if not pp:
+   134→                continue
+   135→            if pp.startswith("..."):
+   136→                rest = pp[3:].strip()
+   137→                ty = rest.split(":", 1)[1].strip() if ":" in rest else "any"
+   138→                pl.append((f"...args: {conv_type(ty, ctx, True)}[]", False))
+   139→            elif ":" in pp:
+   140→                nm, ty = pp.split(":", 1)
+   141→                nm, ty = nm.strip(), ty.strip()
+   142→                opt = ty.endswith("?")
+   143→                ty = ty.rstrip("?").strip()
+   144→                pl.append((f"{nm}: {conv_type(ty, ctx, True)}", opt))
+   145→            else:
+   146→                pl.append((f"_{j}: {conv_type(pp, ctx, True)}", False))
+   147→        # fold mid-list optionals into their type (TS1016 applies to
+   148→        # function types as well)
+   149→        names = []
+   150→        for i, (frag, opt) in enumerate(pl):
+   151→            if opt and any(o for _, o in pl[i + 1:]):
+   152→                nm, ty = frag.split(":", 1)
+   153→                if not ty.strip().endswith("| undefined"):
+   154→                    frag = f"{nm}: {ty.strip()} | undefined"
+   155→            names.append(frag)
+   156→        head = "(this: void, " + ", ".join(names) + ")" if names else "(this: void)"
+   157→        return f"{head} => {ret_ts}"
+   158→    if s.startswith("{") and s.endswith("}"):
+   159→        inner = s[1:-1].strip()
+   160→        if not inner:
+   161→            return "object"
+   162→        elems = top_split(inner, ",")
+   163→        mm = re.match(r"^\[\s*(\w+)\s*\]\s*:\s*(.+)$", elems[0].strip(), re.S)
+   164→        if len(elems) == 1 and mm and mm.group(1) not in ("string", "number"):
+   165→            # a literal/union key (e.g. [Face]): TS needs a mapped type
+   166→            return f"{{ [K in {mm.group(1)}]: {conv_type(mm.group(2), ctx, True)} }}"
+   167→        if len(elems) == 1 and mm:
+   168→            key = {"any": "string"}.get(mm.group(1), mm.group(1))
+   169→            return f"{{ [key: {key}]: {conv_type(mm.group(2), ctx, True)} }}"
+   170→        if len(elems) == 1 and len(top_split(elems[0], ":")) == 1 \
+   171→                and not elems[0].strip().startswith("["):
+   172→            return f"({conv_type(elems[0], ctx, True)})[]" if \
+   173→                elems[0].strip().startswith("{") else \
+   174→                f"{conv_type(elems[0], ctx, True)}[]"     # array {T} / { {T} }
+   175→        fields = []
+   176→        for fe in elems:
+   177→            fe = fe.strip().rstrip(",").strip()
+   178→            if not fe:
+   179→                continue
+   180→            if fe.startswith("["):
+   181→                mm2 = re.match(r"^\[\s*(\w+)\s*\]\s*:\s*(.+)$", fe)
+   182→                if mm2:
+   183→                    key = {"any": "string"}.get(mm2.group(1), mm2.group(1))
+   184→                    fields.append(f"[key: {key}]: {conv_type(mm2.group(2), ctx, True)}")
+   185→                    continue
+   186→            fparts = top_split(fe, ":")
+   187→            if len(fparts) > 1:
+   188→                nm, ty = fparts[0].strip(), ":".join(fparts[1:]).strip()
+   189→                opt = nm.endswith("?")
+   190→                nm = nm.rstrip("?").strip()
+   191→                if ty.endswith("?"):
+   192→                    opt = True
+   193→                    ty = ty[:-1].strip()
+   194→                tag = re.match(r"^(read|write|export|type)\s+(.+)$", nm)
+   195→                if tag:
+   196→                    nm = tag.group(2)
+   197→                    NOTES.append((ctx.where, f"stripped '{tag.group(1)}' tag on {nm}"))
+   198→                if nm in TS_KEYWORD_MEMBERS:
+   199→                    nm = f'"{nm}"'
+   200→                fields.append(f"{nm}{'?' if opt else ''}: {conv_type(ty, ctx, True)}")
+   201→            else:
+   202→                fields.append(f'"{fe}": unknown')
+   203→                WARN.append((ctx.where, f"bare table field {fe!r} -> unknown"))
+   204→        return "{ " + "; ".join(fields) + " }"
+   205→    if s.startswith('"') and s.endswith('"'):
+   206→        return s
+   207→    if s in ("true", "false"):
+   208→        return s
+   209→    if s in PRIM_MAP:
+   210→        return PRIM_MAP[s]
+   211→    if s == "any":
+   212→        return "any"
+   213→    if s in PRIMITIVES or s in ("object",):
+   214→        return s
+   215→    if s in ctx.declared:
+   216→        return s
+   217→    WARN.append((ctx.where, f"unresolved identifier {s!r} -> unknown"))
+   218→    return "unknown"
+   219→
+   220→
+   221→SIG_ARROW = "→"
+   222→
+   223→
+   224→def parse_signature(sig):
+   225→    sig = (sig or "").strip()
+   226→    rets = ""
+   227→    if SIG_ARROW in sig:
+   228→        sig, rets = sig.split(SIG_ARROW, 1)
+   229→        sig, rets = sig.strip(), rets.strip()
+   230→    m = re.match(r"^([\w.]+)([:.])([\w.]+)\s*\((.*)\)\s*$", sig, re.S)
+   231→    if not m:
+   232→        return None
+   233→    return m.group(1), m.group(2) == ":", m.group(3), m.group(4), rets
+   234→
+   235→
+   236→def doc_line(mem, indent="    "):
+   237→    lead = (mem.get("lead") or "").strip()
+   238→    if lead:
+   239→        first = lead.split(". ")[0].replace("*/", "*∕").strip()
+   240→        if not first.endswith("."):
+   241→            first += "."
+   242→        return f"{indent}/** {first} */\n"
+   243→    return ""
+   244→
+   245→
+   246→def params_to_ts(params_s, ctx):
+   247→    """Signature parameter list -> [(tsName, tsType, isOptionalModifier)]."""
+   248→    out = []
+   249→    for j, pp in enumerate(top_split(params_s, ",")):
+   250→        pp = pp.strip()
+   251→        if not pp:
+   252→            continue
+   253→        if pp.startswith("("):
+   254→            # a parenthesised parameter: a callback, a union with a callback,
+   255→            # or a wrapper form — convert the whole and name it positionally
+   256→            out.append((f"arg{j}", conv_type(pp, ctx, True), False))
+   257→        elif pp.startswith("..."):
+   258→            rest = pp[3:].strip()
+   259→            ty = rest.split(":", 1)[1].strip() if ":" in rest else "any"
+   260→            out.append(("...args", f"{conv_type(ty, ctx, True)}[]", False))
+   261→        elif ":" in pp:
+   262→            nm, ty = pp.split(":", 1)
+   263→            nm, ty = nm.strip(), ty.strip()
+   264→            opt = ty.endswith("?")
+   265→            ty = ty.rstrip("?").strip()
+   266→            out.append((nm, conv_type(ty, ctx, True), opt))
+   267→        else:
+   268→            out.append((f"_{j}", conv_type(pp, ctx, True), False))
+   269→    # a required parameter cannot follow an optional one (TS1016): fold
+   270→    # mid-list optionals into their type instead
+   271→    for i, (nm, ty, opt) in enumerate(out):
+   272→        if opt and any(not o2 for _, _, o2 in out[i + 1:]):
+   273→            if not ty.endswith("| undefined"):
+   274→                ty = f"{ty} | undefined"
+   275→            out[i] = (nm, ty, False)
+   276→    return [(f"{nm}{'?' if opt else ''}", ty) for nm, ty, opt in out]
+   277→
+   278→
+   279→def returns_to_ts(rets_s, ctx):
+   280→    if not rets_s:
+   281→        return "void"
+   282→    inner = re.sub(r"^\((.*)\)$", r"\1", rets_s.strip()).strip()
+   283→    elems = top_split(inner, ",")
+   284→    if len(elems) > 1:
+   285→        return ("LuaMultiReturn<[" + ", ".join(conv_type(e, ctx, True)
+   286→                                               for e in elems) + "]>")
+   287→    return conv_type(rets_s, ctx)
+   288→
+   289→
+   290→def balanced(s):
+   291→    """True if parens/braces/brackets nest cleanly and end at depth 0."""
+   292→    depth, i, instr = 0, 0, False
+   293→    while i < len(s):
+   294→        c = s[i]
+   295→        if instr:
+   296→            if c == '"':
+   297→                instr = False
+   298→        elif c == '"':
+   299→            instr = True
+   300→        elif c in "([{":
+   301→            depth += 1
+   302→        elif c in ")]}":
+   303→            depth -= 1
+   304→            if depth < 0:
+   305→                return False
+   306→        i += 1
+   307→    return depth == 0
+   308→
+   309→
+   310→def unwrap_balanced(s):
+   311→    """Strip one outer paren pair if what remains stays balanced."""
+   312→    s = s.strip()
+   313→    if not (s.startswith("(") and s.endswith(")")):
+   314→        return s
+   315→    depth, i, instr = 0, 0, False
+   316→    while i < len(s):
+   317→        c = s[i]
+   318→        if instr:
+   319→            if c == '"':
+   320→                instr = False
+   321→        elif c == '"':
+   322→            instr = True
+   323→        elif c in "([{":
+   324→            depth += 1
+   325→        elif c in ")]}":
+   326→            depth -= 1
+   327→            if depth == 0 and i < len(s) - 1:
+   328→                return s            # closes before the end: not a wrapper
+   329→        i += 1
+   330→    return s[1:-1].strip() if depth == 0 else s
+   331→
+   332→
+   333→def member_decl(parent, name, mem, ctx):
+   334→    kind = mem.get("kind")
+   335→    sig = (mem.get("signature") or "").strip()
+   336→    ctx.where = f"{parent}.{name}"
+   337→    if kind == "field":
+   338→        m = re.match(r"^[\w.]+\.[\w.]+\s*:\s*(.+)$", sig)
+   339→        if not m:
+   340→            WARN.append((ctx.where, f"field type unparsed: {sig!r}"))
+   341→            nm = f'"{name}"' if name in TS_KEYWORD_MEMBERS else name
+   342→            return f"{doc_line(mem)}{nm}: unknown"
+   343→        raw = m.group(1).strip()
+   344→        # a documented optional field ("field: T ?") -> optional property
+   345→        opt = raw.endswith("?")
+   346→        if opt:
+   347→            raw = raw[:-1].strip()
+   348→        ty = conv_type(raw, ctx)
+   349→        nm = f'"{name}"' if name in TS_KEYWORD_MEMBERS else name
+   350→        if opt and ty not in ("unknown", "any"):
+   351→            return f"{doc_line(mem)}{nm}?: {ty}"
+   352→        return f"{doc_line(mem)}{nm}: {ty}"
+   353→    nm = f'"{name}"' if name in TS_KEYWORD_MEMBERS else name
+   354→    parsed = parse_signature(sig)
+   355→    if parsed is None:
+   356→        WARN.append((ctx.where, f"UNPARSED signature {sig!r}"))
+   357→        return f"// UNPARSED {ctx.where}: {sig}"
+   358→    recv, colon, name_p, params_s, rets_s = parsed
+   359→
+   360→    # Overloaded signatures: the crawl renders them as
+   361→    #   receiver.name(<form A>) -> & (<form B>)
+   362→    # — every form is a full function type. Emit one overload per form.
+   363→    if "&" in rets_s and len(top_split(rets_s, "&")) > 1:
+   364→        forms = [params_s] + [p for p in top_split(rets_s, "&") if p.strip()]
+   365→        lines = []
+   366→        for form in forms:
+   367→            fm = None
+   368→            for cand in (unwrap_balanced(form.strip()), form.strip()):
+   369→                m = FN_RE.match(cand)
+   370→                if m and balanced(m.group(1)):
+   371→                    fm = m
+   372→                    break
+   373→            if not fm:
+   374→                WARN.append((ctx.where, f"overload form unparsed: {form!r}"))
+   375→                continue
+   376→            pl = params_to_ts(fm.group(1), ctx)
+   377→            ret_ts = returns_to_ts(fm.group(2), ctx)
+   378→            args = ", ".join(f"{k}: {v}" for k, v in pl)
+   379→            if kind == "method":
+   380→                lines.append(f"{doc_line(mem)}{nm}({args}): {ret_ts}")
+   381→            else:
+   382→                self_dot = "this: void" + (", " if args else "")
+   383→                lines.append(f"{doc_line(mem)}{nm}({self_dot}{args}): {ret_ts}")
+   384→        return "\n".join(lines)
+   385→
+   386→    ret_ts = returns_to_ts(rets_s, ctx)
+   387→
+   388→    if parent in SPEC_TYPES and kind == "function" \
+   389→            and FN_RE.match(params_s.strip()):
+   390→        # spec handler: a user-assigned callback field; params_s IS its type
+   391→        cb_nm = f'"{name}"' if name in TS_KEYWORD_MEMBERS else name
+   392→        return f"{doc_line(mem)}{cb_nm}?: {conv_type(params_s, ctx)}"
+   393→
+   394→    pl = params_to_ts(params_s, ctx)
+   395→    args = ", ".join(f"{k}: {v}" for k, v in pl)
+   396→    if kind == "method":
+   397→        return f"{doc_line(mem)}{nm}({args}): {ret_ts}"
+   398→    self_dot = "this: void" + (", " if args else "")
+   399→    return f"{doc_line(mem)}{nm}({self_dot}{args}): {ret_ts}"
+   400→
+   401→
+   402→# ------------------------------------------------------------------ registry
+   403→DECLARED = set()
+   404→for g in M:
+   405→    DECLARED.add(GLOBAL_GROUP.get(g, g))
+   406→for k in P:
+   407→    DECLARED.add(k)
+   408→DECLARED |= {"Vec3", "Color", "Vec3Constructor", "ColorConstructor",
+   409→             "NoiseApi", "TaskApi", "CameraApi", "CameraPathShot",
+   410→             "CameraPathOptions", "CameraPathRunner", "buffer", "Faces",
+   411→             "TimeName"}
+   412→ctx = Ctx(DECLARED)
+   413→
+   414→interfaces = OrderedDict()
+   415→aliases = OrderedDict()
+   416→docs = OrderedDict()
+   417→emitted_globals = []
+   418→
+   419→
+   420→def emit_interface(name, members, doc=""):
+   421→    if name in interfaces or name in aliases:
+   422→        raise SystemExit(f"collision: {name}")
+   423→    interfaces[name] = members
+   424→    if doc:
+   425→        docs[name] = doc
+   426→
+   427→
+   428→# ------------------------------------------- pass 1: groups -> interfaces
+   429→for gname, mems in M.items():
+   430→    if gname in ("vec3", "color", "Faces"):
+   431→        continue                # constructors / Faces are emitted specially
+   432→    iname = GLOBAL_GROUP.get(gname, gname)
+   433→    lines = [member_decl(gname, mn, mems[mn], ctx) for mn in sorted(mems)]
+   434→    emit_interface(iname, lines, (P.get(gname, {}).get("lead") or "").strip())
+   435→    if gname in GLOBAL_GROUP:
+   436→        emitted_globals.append((gname, iname))
+   437→
+   438→STATS["member groups -> interfaces"] = len(M) - 3
+   439→STATS["API members converted"] = sum(len(v) for v in M.values())
+   440→
+   441→# ------------------------------------------- pass 2: typedef-only parents
+   442→OPAQUE = []
+   443→for k in sorted(P):
+   444→    if k in M or k in ("vec3", "color", "message", "tween", "camera", "task",
+   445→                      "Vec3", "Color", "TimeName", "Faces", "DataView"):
+   446→        continue
+   447→    # skip lowercase twin stubs of PascalCase groups (world/World twins
+   448→    # whose canonical page carries the members)
+   449→    if k[0].islower() and k.capitalize() in M:
+   450→        continue
+   451→    td = (P[k].get("typedef") or "").strip()
+   452→    lead = (P[k].get("lead") or "").strip()
+   453→    ctx.where = f"typedef:{k}"
+   454→    if not td:
+   455→        emit_interface(k, [], f"{lead} [no documented members: opaque]" if lead
+   456→                      else "[no documented members: opaque]")
+   457→        OPAQUE.append(k)
+   458→        continue
+   459→    before = len(WARN)
+   460→    ts = conv_type(td, ctx, True)
+   461→    new = WARN[before:]
+   462→    garbled = td.endswith("|") or td.startswith("|") or \
+   463→        any("unresolved identifier" in w[1] for w in new) or not ts
+   464→    if garbled:
+   465→        emit_interface(k, [], f"{lead} [typedef not machine-convertible in "
+   466→                      f"the source extract: opaque]" if lead
+   467→                      else "[typedef not machine-convertible: opaque]")
+   468→        OPAQUE.append(k)
+   469→    else:
+   470→        aliases[k] = ts
+   471→
+   472→STATS["typedef aliases"] = len(aliases)
+   473→STATS["opaque interfaces"] = len(OPAQUE)
+   474→
+   475→# ------------------------------------------------------------------ assembly
+   476→def render_interface(name, members, doc=""):
+   477→    out = []
+   478→    if doc:
+   479→        out.append(f"/** {doc.replace('*/', '*∕')} */")
+   480→    out.append(f"interface {name} {{")
+   481→    for m in members:
+   482→        for ln in m.split("\n"):
+   483→            out.append(f"    {ln}" if ln.strip() else "")
+   484→    out.append("}")
+   485→    return "\n".join(out)
+   486→
+   487→
+   488→VERIFIED = '''// ===========================================================================
+   489→// VERIFIED SUPPLEMENT — members the reference section does not carry, taken
+   490→// from the wiki pages built from the official docs. Each block cites source.
+   491→// ===========================================================================
+   492→
+   493→/** A position or direction: `vec3(x, y, z)`.
+   494→ *  Source: wiki Conventions ("Positions are vec3(x, y, z) with fields
+   495→ *  x, y, z"); methods from the "Vectors and colours" doc. Method names and
+   496→ *  arities are documented; return types follow the standard vector
+   497→ *  semantics, with lerp corroborated by the documented Color.lerp
+   498→ *  signature. The documented operators (+ - * / unary - ==) are not
+   499→ *  representable in TypeScript and are not declared. */
+   500→interface Vec3 {
+   501→    x: number;
+   502→    y: number;
+   503→    z: number;
+   504→    /** `a:magnitude()` */
+   505→    magnitude(): number;
+   506→    /** `a:unit()` */
+   507→    unit(): Vec3;
+   508→    /** `a:dot(b)` */
+   509→    dot(other: Vec3): number;
+   510→    /** `a:cross(b)` */
+   511→    cross(other: Vec3): Vec3;
+   512→    /** `a:distance(b)` */
+   513→    distance(other: Vec3): number;
+   514→    /** `a:lerp(b, t)` */
+   515→    lerp(other: Vec3, t: number): Vec3;
+   516→    /** `a:floor()` */
+   517→    floor(): Vec3;
+   518→    /** `a:with{ y = 70 }` — a copy with the given fields replaced. */
+   519→    with(fields: { x?: number; y?: number; z?: number }): Vec3;
+   520→}
+   521→
+   522→/** Callable global `vec3`: the constructor (dataset typedef) plus the
+   523→ *  dataset members `vec3.up` and `vec3.zero`. */
+   524→interface Vec3Constructor {
+   525→    (this: void, x: number, y: number, z: number): Vec3;
+   526→    up: Vec3;
+   527→    zero: Vec3;
+   528→}
+   529→declare const vec3: Vec3Constructor;
+   530→
+   531→/** A colour: fields `r`, `g`, `b` in 0..1. Source: wiki Conventions
+   532→ *  ("Colours are color(r, g, b) in 0..1"); lerp from the documented
+   533→ *  `lerp: (self: Color, other: Color, t: number) -> Color` signature. */
+   534→interface Color {
+   535→    r: number;
+   536→    g: number;
+   537→    b: number;
+   538→    /** `c:lerp(d, t)` */
+   539→    lerp(other: Color, t: number): Color;
+   540→}
+   541→'''
+   542→
+   543→TASK_CAMERA = '''// A named time of day. RECOVERED verbatim from the documented leads —
+   544→// TimeName: "sunrise, day, noon, sunset, night or midnight" and world.time:
+   545→// "ticks, or \"sunrise\", \"day\", \"noon\", \"sunset\", \"night\", \"midnight\"".
+   546→// (The dataset's TimeName typedef string is extract-damaged.)
+   547→type TimeName = "sunrise" | "day" | "noon" | "sunset" | "night" | "midnight";
+   548→
+   549→/** The face-keyed texture table a BlockSpec takes. RECOVERED from the
+   550→ *  documented Faces leads + their flattened signatures: `all` is one
+   551→ *  picture for all six faces, `side` for the four sides, `top` and
+   552→ *  `bottom` the ends (Faces.all); the six direction names with a face
+   553→ *  left out defaulting to `side` (Faces.down); `front`/`back` for a
+   554→ *  facing block (Faces.front). */
+   555→type Faces =
+   556→    | { all?: TextureRef; side?: TextureRef; top?: TextureRef; bottom?: TextureRef }
+   557→    | { up?: TextureRef; down?: TextureRef; north?: TextureRef; south?: TextureRef; west?: TextureRef; east?: TextureRef }
+   558→    | { front?: TextureRef; back?: TextureRef };
+   559→
+   560→'''
+   561→
+   562→TASK_CAMERA += '''// `task` — the scheduler. Source: wiki Runtime (the task semantics table)
+   563→// and "Modules and tasks": spawn/delay/defer accept a function or a suspended
+   564→// coroutine, forward all arguments (including nils) and return that
+   565→// coroutine. The thread itself is opaque (no members documented).
+   566→interface TaskApi {
+   567→    /** `task.spawn(fn, ...)` — runs immediately until the task yields or
+   568→     *  returns. Also accepts a suspended coroutine. Returns the thread. */
+   569→    spawn(this: void, fn: (this: void, ...args: any[]) => unknown, ...args: unknown[]): unknown;
+   570→    /** `task.delay(sec, fn, ...)` — after sec elapsed real seconds. */
+   571→    delay(this: void, sec: number, fn: (this: void, ...args: any[]) => unknown, ...args: unknown[]): unknown;
+   572→    /** `task.defer(fn, ...)` — on the next scheduler turn. */
+   573→    defer(this: void, fn: (this: void, ...args: any[]) => unknown, ...args: unknown[]): unknown;
+   574→    /** `task.wait(sec)` — yields the calling thread until sec real seconds
+   575→     *  have passed. Event callbacks and main.luau may call it; synchronous
+   576→     *  ask handlers and module top levels may not. */
+   577→    wait(this: void, sec: number): unknown;
+   578→    /** `task.cancel(task)` — works on a suspended task, also after
+   579→     *  task.wait; cancelling a running thread is an error. */
+   580→    cancel(this: void, task: unknown): void;
+   581→}
+   582→declare const task: TaskApi;
+   583→
+   584→/** One shot of a camera path. Source: wiki Movement ("Camera paths"):
+   585→ *  `{ at = vec3(...), look_at = vec3(...), duration = 5, easing = "out" }`;
+   586→ *  `at` may be a player ("a shot { at = player } is the player's eyes").
+   587→ *  The docs also note "a player or thing in a shot is read when the shot
+   588→ *  starts" — things (mount targets) are accepted but not enumerated. */
+   589→interface CameraPathShot {
+   590→    at: Vec3 | Player;
+   591→    look_at?: Vec3 | Player;
+   592→    duration?: number;
+   593→    easing?: Easing;
+   594→}
+   595→
+   596→/** Source: wiki Movement: `camera.path(shots, { easing = "in_out",
+   597→ *  on_done = function() ... end })`. */
+   598→interface CameraPathOptions {
+   599→    easing?: Easing;
+   600→    on_done?: (this: void) => void;
+   601→}
+   602→
+   603→/** "It returns the camera and a handle with cancel()" — wiki Movement.
+   604→ *  Declared with Lua method-call (colon) convention, like Connection. */
+   605→interface CameraPathRunner {
+   606→    cancel(): void;
+   607→}
+   608→
+   609→/** `camera` — Source: wiki Movement ("Camera paths"): camera.path is a
+   610→ *  fixed camera that eases from shot to shot; each shot after the first
+   611→ *  takes its own duration (or the path's, 5 seconds by default). */
+   612→interface CameraApi {
+   613→    path(this: void, shots: CameraPathShot[], opts?: CameraPathOptions): LuaMultiReturn<[Camera, CameraPathRunner]>;
+   614→}
+   615→declare const camera: CameraApi;
+   616→'''
+   617→
+   618→header = '''/**
+   619→ * citadel.d.ts — TypeScript declarations for the Minefort Citadel Luau API.
+   620→ *
+   621→ * GENERATED from the official Minefort Citadel documentation (the crawled
+   622→ * corpus in scripts/dataset.json — every documented API member) — regenerate
+   623→ * with:  python3 scripts/gen_citadel_dts.py
+   624→ * Do not edit by hand.
+   625→ *
+   626→ * Sourcing rules (strictly no invention):
+   627→ *   - every interface, function and field below is converted mechanically
+   628→ *     from the documented signatures in dataset.json;
+   629→ *   - the few members the reference section lacks (task.*, camera.path,
+   630→ *     Vec3/Color shapes, player.ui) come from the wiki pages built from the
+   631→ *     same official docs, and carry a "Source:" comment;
+   632→ *   - anything the docs leave unspecified is typed `unknown`.
+   633→ *
+   634→ * Calling conventions (TypeScriptToLua): members with `this: void` are dot
+   635→ * calls (world.spawn(...)); members without it are Lua colon calls
+   636→ * (player:message(...), connection:cancel()). Callbacks are always
+   637→ * `this: void` — pass arrow functions. Multi-value returns use
+   638→ * LuaMultiReturn: destructure with `const [a, b] = ...`.
+   639→ */
+   640→
+   641→// Luau `buffer` — an opaque byte buffer (the docs never enumerate members).
+   642→type buffer = unknown;
+   643→
+   644→/** Citadel's DataView — a live view over persistent data, readable and
+   645→ *  writable by any key (the documented typedef is `{ [any]: any }`). NB:
+   646→ *  unrelated to the ECMAScript DataView that comes with lib esnext; the
+   647→ *  two declarations merge, but only the index below is Citadel's. */
+   648→interface DataView {
+   649→    [key: string]: any;
+   650→}
+   651→
+   652→'''
+   653→
+   654→body = []
+   655→body.append("// ================================ Globals ================================")
+   656→body.append(VERIFIED.strip())
+   657→body.append("")
+   658→
+   659→# color constructor: call signature + dataset members (hsv, gradient, nearest)
+   660→cc_members = ["    (this: void, r: number, g: number, b: number): Color;"]
+   661→cc_members += ["    " + member_decl("color", mn, M["color"][mn], ctx).replace(
+   662→    "this: void, ", "this: void, ")
+   663→    for mn in sorted(M["color"])]
+   664→body.append("/** Callable global `color`: `color(r, g, b)` (dataset typedef),"
+   665→            " plus its dataset members. */")
+   666→body.append("interface ColorConstructor {")
+   667→body.extend(cc_members)
+   668→body.append("}")
+   669→body.append("declare const color: ColorConstructor;")
+   670→body.append("")
+   671→
+   672→# callable function globals from dataset typedefs
+   673→for gname in ("message", "tween"):
+   674→    td = (P[gname].get("typedef") or "").strip()
+   675→    ctx.where = f"callable:{gname}"
+   676→    m = FN_RE.match(td)
+   677→    if not m:
+   678→        WARN.append((ctx.where, f"{gname} typedef unparsable: {td!r}"))
+   679→        continue
+   680→    pl = params_to_ts(m.group(1), ctx)
+   681→    ret = returns_to_ts(m.group(2), ctx)
+   682→    args = ", ".join(f"{k}: {v}" for k, v in pl)
+   683→    lead = (P[gname].get("lead") or "").split(". ")[0]
+   684→    body.append(f"/** {gname} — callable global. {lead} */")
+   685→    body.append(f"declare function {gname}(this: void, {args}): {ret};")
+   686→    body.append("")
+   687→
+   688→body.append(TASK_CAMERA.strip())
+   689→body.append("")
+   690→
+   691→# table globals: interface + declare const (runtime name = the documented
+   692→# global name: lowercase, even when the canonical docs page is PascalCase)
+   693→for gname, iname in sorted(emitted_globals, key=lambda x: x[0].lower()):
+   694→    runtime = gname if gname[0].islower() else gname.lower()
+   695→    body.append(render_interface(iname, interfaces.pop(iname),
+   696→                                 docs.get(iname, "")))
+   697→    body.append(f"/** The `{runtime}` global. */")
+   698→    body.append(f"declare const {runtime}: {iname};")
+   699→    body.append("")
+   700→
+   701→body.append("// ================================= Types =================================")
+   702→for name in sorted(interfaces, key=str.lower):
+   703→    body.append(render_interface(name, interfaces[name], docs.get(name, "")))
+   704→    body.append("")
+   705→
+   706→body.append("// ============================== Type aliases ==============================")
+   707→for name in sorted(aliases, key=str.lower):
+   708→    body.append(f"/** {name} — from the documented typedef. */")
+   709→    body.append(f"type {name} = {aliases[name]};")
+   710→    body.append("")
+   711→
+   712→txt = "\n".join(body)
+   713→# player.ui — verified from the official HUD doc (wiki _sources/doc-hud.md):
+   714→# "player.ui.overlay puts a 128x128 canvas in a corner of one player's
+   715→# screen" / "that names player.ui.overlay makes the pack required for 26.3".
+   716→txt = txt.replace(
+   717→    "interface Player {",
+   718→    "interface Player {\n"
+   719→    "    /** `player.ui` — this player's own ui table. Source: official HUD\n"
+   720→    "     *  doc (player.ui.overlay). */\n"
+   721→    "    ui: PlayerUi;",
+   722→    1)
+   723→
+   724→STATS["globals (declare const/function)"] = len(emitted_globals) + 4
+   725→STATS["type interfaces"] = len(interfaces)
+   726→STATS["type aliases"] = len(aliases)
+   727→STATS["opaque (no documented members)"] = len(OPAQUE)
+   728→STATS["conversion notes"] = len(WARN)
+   729→
+   730→with open(OUT, "w") as f:
+   731→    f.write(header + txt + "\n")
+   732→shutil.copy(OUT, f"{ROOT}/download/citadel.d.ts")
+   733→
+   734→# -------------------------------------------------------------------- report
+   735→print(f"wrote {OUT} ({os.path.getsize(OUT) / 1e3:.1f} KB)")
+   736→print(f"copied to {ROOT}/download/citadel.d.ts")
+   737→for k, v in STATS.items():
+   738→    print(f"  {k}: {v}")
+   739→print(f"\nconversion notes ({len(WARN)}):")
+   740→shown = 0
+   741→for where, note in WARN:
+   742→    print(f"  {where}: {note}")
+   743→    shown += 1
+   744→    if shown >= 60:
+   745→        print(f"  ... {len(WARN) - shown} more")
+   746→        break
+   747→print(f"\nopaque types: {', '.join(sorted(OPAQUE))}")
+   748→

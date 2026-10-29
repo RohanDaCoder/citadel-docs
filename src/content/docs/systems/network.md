@@ -1,6 +1,6 @@
 ---
 title: 'Network'
-description: 'An experience of more than one server — members, labels and instances; network.start/find/status, on_instance and on_gone, the instance table, how player:connect moves players, failures with reasons, and every limit.'
+description: 'An experience of more than one server — members, labels and instances; network.start/find/status, the on_instance_start/change/stop events, network.instances/online/browse, the instance table, how player:connect moves players, failures with reasons, and every limit.'
 ---
 
 :::note[In short]
@@ -49,13 +49,13 @@ commands.add("join <label:word>", function(player, args)
     end
 end)
 
-network.on_instance(function(instance)
+network.on_instance_change(function(instance)
     if instance.state ~= "online" then return end
     for _, player in waiting[instance.id] or {} do player:connect(instance.id) end
     waiting[instance.id] = nil
 end)
 
-network.on_gone(function(id) waiting[id] = nil end)
+network.on_instance_stop(function(id) waiting[id] = nil end)
 ```
 
 ## The member's side: saying where it is
@@ -82,12 +82,15 @@ end)
 | --- | --- | --- |
 | `network.start{ member, label, slots, data? }` | `{id, state}` | Starts an instance; answers at once with `state = "starting"`. |
 | `network.find{ label, players?, party?, start? }` | `{id, state}` or nil | The instance to send `players` players to. |
-| `network.list(label?)` | list of instances | The network's instances, or only those with `label`. |
+| `network.instances(label?)` | list | Everything this network runs: its always-on servers, then its games started on demand. |
+| `network.online(label?)` | number | How many play on this network; the answer is kept 5 seconds. |
+| `network.browse(view, options?)` | rows, total | Finds other networks. **The platform's hub only.** |
 | `network.stop(id)` | boolean | Stops an instance of this network; true when accepted. |
 | `network.info()` | `{network, id?, ...}` | This server's network, and the instance it runs on. |
 | `network.status{ open, status?, meta? }` | — | Says where this instance is. Does not yield. |
-| `network.on_instance(fn)` | Connection | Calls `fn(instance)` when an instance starts or changes. |
-| `network.on_gone(fn)` | Connection | Calls `fn(id)` when an instance is gone. |
+| `network.on_instance_start(fn)` | Connection | Calls `fn(instance)` when an instance is first seen. |
+| `network.on_instance_change(fn)` | Connection | Calls `fn(instance)` when an instance's `state`, `open`, `status` or `meta` changes. |
+| `network.on_instance_stop(fn)` | Connection | Calls `fn(id)` when an instance is gone. |
 
 `network.start` returns `{id, state}` at once, with `state = "starting"`: the
 instance comes online later. `slots` is the number of players the instance
@@ -120,6 +123,42 @@ use `find` with `start`, not `find` and then `start`. The default
 runs on many servers, and each would start its own instance.
 :::
 
+## `instances`, `online` and `browse`
+
+`network.instances(label?)` returns everything this network runs, as this
+experience sees it: first its own servers that run all the time, online and
+taking players, as `{id, name, state, players, region}` — on the platform's
+hub, the hubs — then the network's games started on demand, each the
+instance table below. With `label`, only that mode's games:
+`network.instances('4v4v4v4')`. `id` is what [`player:connect`](/ref/Player/connect/)
+takes; never another network's. It returns nil and why when Minefort did not
+answer.
+
+`network.online(label?)` returns how many play on this network: on the
+platform's hub, everyone on Minefort; on any other network, its members and
+their instances. With `label`, only the players in that mode's games, every
+region's. An answer is kept for **5 seconds**, so a scoreboard can ask on
+every redraw. It returns nil and why when Minefort did not answer.
+
+`network.browse(view, options?)` finds **other networks**, and only the
+platform's hub may ask:
+
+- `view` is `"search"` (what matches `query`: names as they are typed, and
+  domains), `"for-you"` (more of what `player` plays, busiest first, none of
+  their recent ones), `"recent"` (where `player` played last, newest first)
+  or `"featured"` (the busiest). A network is one row, however many servers
+  it has: `{id, name, category, motd, icon, players, maxPlayers, state}`.
+- `options` is `{player?, query?, page?, category?, online?, ids?, sort?,
+  also?}`. `page` is from 1; `sort` is `"players"` or `"name"`. It returns
+  one page of **6 rows** and how many there are in all:
+  `local rows, total = network.browse('featured', { page = 2 })`.
+- `also = { recent = true, favorites = ids }` brings a board's sidebar in the
+  same round trip, as a third value: `side.recent` and `side.favorites` are
+  each `{rows, total}`.
+- On a refusal it returns nil and why: `"unsupported"` anywhere but the
+  platform's hub, `"not-here"` for a player who is not on this hub,
+  `"unavailable"` when Minefort's search is down, or `"timeout"`.
+
 ## `status` in detail
 
 `network.status{ open, status?, meta? }` says where this instance is. It
@@ -134,8 +173,8 @@ returns nothing and does not yield.
 
 ## The instance table
 
-Every instance — from `list`, `on_instance` or a `find`/`start` answer — is
-the same shape:
+Every instance — from `instances`, the `on_instance_*` events, or a
+`find`/`start` answer — is the same shape:
 
 | Field | Set by | Meaning |
 | --- | --- | --- |
@@ -159,16 +198,18 @@ until the instance is `"online"` — the default-member example above shows the
 
 ## Events, and repairing the list
 
-**Events come to the default member's servers only.** Call `network.list()`
-once at the start, then keep the list from `on_instance` and `on_gone`. An
-event can be lost — call `network.list()` again, **once a minute at most**,
-to repair the list.
+**Events come to the default member's servers only.** Call
+`network.instances()` once at the start, then keep the list from
+`on_instance_start`, `on_instance_change` and `on_instance_stop`. An event
+can be lost — call `network.instances()` again, **once a minute at most**, to
+repair the list.
 
 ## Failures
 
 **A failed call returns nil and a reason.** `start`, `find` and `info` return
-`nil, reason`; `list` returns `{}, reason`; `stop` returns `false, reason`.
-The reason is Minefort's word, or one of these:
+`nil, reason`; `instances`, `online` and `browse` return `nil, reason` too;
+`stop` returns `false, reason`. The reason is Minefort's word, or one of
+these:
 
 | Reason | Meaning |
 | --- | --- |
@@ -202,13 +243,14 @@ A value out of these is an error, and nothing is sent:
 
 ## Calling rules
 
-Calls yield, like `stores`, but for `status` and the two events. Call from
+Calls yield, like `stores`, but for `status` and the three events. Call from
 scripts, callbacks or tasks — the same rules as
 [Shared stores](/systems/shared-stores/#calling-rules).
 
 ## See also
 
-- [Hub](/systems/hub/) — the hub's server lists, also travelled with
+- [Hub](/systems/hub/) — the hub browses networks with `network.browse` and
+  lists its hubs with `network.instances`, all travelled with
   `player:connect`.
 - [Shared stores](/systems/shared-stores/) — the store every instance of the
   experience shares.

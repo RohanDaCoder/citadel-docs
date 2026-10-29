@@ -24,7 +24,7 @@
  "docs": {
   "3d-models": {
    "title": "3D models",
-   "markdown": "```luau\nlocal car = models.new(\"car\", function(m)\n    local paint = m:material(\"paint\", colors.red, { grain = 0.1 })   -- a colour a display may repaint\n    local glass = m:material(\"glass\", \"dark_aqua\", { alpha = 0.45 }) -- what is behind shows through\n    local door = m:texture(30, 16, { tint = paint })                 -- drawn in greys, coloured by paint\n    local grille = m:texture(8, 4)                  -- pixel art for one face, drawn as it is\n    grille:fill(colors.black)\n    grille:rect(1, 1, 6, 2, colors.gray)            -- x, y, w, h, colour\n    grille:pixel(0, 0, colors.transparent)          -- a see-through pixel\n\n    local body = m:part(\"body\", { pivot = vec3(0, 6, 0) })\n    body:box(vec3(0, 4, -20), vec3(8, 12, 20), paint, {\n        faces = { north = grille },                 -- one side wears something else\n    })\n    local screen = body:part(\"windscreen\")\n    screen:box(vec3(0, 12, -6), vec3(8, 18, 2), glass, { rotation = vec3(22.5, 0, 0) })\n    local wheel = body:part(\"wheel_front\", { pivot = vec3(8, 4, -12) })\n    wheel:box(vec3(6, 0, -16), vec3(10, 8, -8), paint)\n    wheel:box(vec3(6, 0, -16), vec3(10, 8, -8), paint, { rotation = vec3(45, 0, 0) })\n    body:mirror(\"x\")                                -- the left half, from the right one\n\n    m:animation(\"drive\", {\n        length = 1, loop = true,\n        wheel_front = { rotation = { [0] = vec3(0, 0, 0), [0.25] = vec3(-90, 0, 0), [0.5] = vec3(-180, 0, 0),\n            [0.75] = vec3(-270, 0, 0), [1] = vec3(-360, 0, 0) } },   -- quarter turns: see the rules\n        wheel_front_mirrored = { rotation = { [0] = vec3(0, 0, 0), [0.25] = vec3(-90, 0, 0), [0.5] = vec3(-180, 0, 0),\n            [0.75] = vec3(-270, 0, 0), [1] = vec3(-360, 0, 0) } },\n    })\nend)\n\nlocal d = world.display{\n    kind = \"model\", model = car,\n    at = vec3(10.5, 65, 4.5), rotation = { yaw = 90 },      -- degrees, as every entity turns: 0 faces south, 90 west\n    scale = 3.5,                             -- 1 draws it at 16 units to the block\n    paint = { paint = colors.blue },         -- keys are material names\n    fallback = \"minecart\",                   -- what a client that cannot show it sees; nil shows nothing\n    seats = { vec3(0, 7, 2) },               -- optional: where riders sit, in model units; see \"vehicles\"\n}\nd:move(vec3(12.5, 65, 4.5), { yaw = 180 })   -- place and turn it in one step, every part together\nd:move(at, { forward = forward, up = up })                      -- pointed: nose along forward, roof toward up (a car on a wall)\nd.at, d.rotation                             -- live too; each write is a move of its own\nd.scale = 2                                  -- live\nd.paint = { paint = colors.red }             -- live\nd:play(\"drive\")                              -- from the beginning; an unknown name is an error\nd:play(\"drive\", { speed = 2 })               -- twice as fast; on the one already playing, the new speed at once\nd:stop(\"drive\")                              -- the parts stay where they are\nd:destroy()\n```\nThe rules:\n- Make models while the pack loads. `models.new` in a callback is an error.\n- `rotation.pitch` and `rotation.roll` tip the whole model about its\norigin, with parts, animations and seats.\n- A rider stays upright. For a car on a wall, hide the driver\n(`invisibility`) and use `camera.fixed`.\n- **16 units are one block.** The origin is the model\u2019s bottom centre, `+y`\nis up, and the front is `-z`.\n- A box reaches `-24 .. 24` on every axis: three blocks. For a bigger thing,\nset the display\u2019s `scale`.\n- `m:texture(w, h, { scroll = \"up\", speed = 2 })` is a texture that moves\nwhen a block is drawn from the model. See \u201cblocks drawn from a model\u201d.\n- A box turns on **one** axis only, in steps of 22.5 degrees, up to 45\neither way. Anything else is an error. An octagonal wheel is two boxes,\none turned 45.\n- Box corners go in any order and can be fractional. A box\u2019s `pivot`\ndefaults to its centre.\n- Every box is in a part; there is no `m:box`. A part turns around its\n`pivot` (default: the model\u2019s origin). `m:part` makes a child of the root,\n`part:part` a child of that part.\n- `part:mirror(\"x\")` mirrors what the part has so far, pivots, turns and\nhitboxes too. A child\u2019s twin is `<name>_mirrored`. Only `\"x\"` works in this version.\n- `part:hitbox(from, to)` is a box a player can hit on a living body that\nwears the model. See \u201ca living body\u201d.\n- Between two keys, a part turns **the short way round**. Keep each step\nunder 180 degrees. A wheel is `[0] = 0, [0.1] = -90, [0.2] = -180, ...`:\none key from 0 to 360 does not turn. A `tween` of `rotation` is not like\nthis: it turns as written, so there `roll = 360` is a full turn.\n- `speed` is 0.01 to 100; a value outside is taken as the nearest end. A\nspeed of 0 does not pause: use `stop`. A new speed applies at once.\n- An animation is keys per part: `{ [seconds] = vec3 }` for `rotation`\n(degrees about the pivot) and `position` (an offset in model units).\n  - Keys can be in any order.\n  - An unknown part name is an error that lists the model\u2019s parts.\n  - Parts cannot share a track. Write a loop.\n- A material is flat unless it has a `grain` (`0..1`: how much darker its\ndarkest pixel is). `0.1` is a painted panel, `0.4` a tyre. A grained face\nhas four tones, one pixel per unit. `alpha` below 1 is glass.\n- A texture stretches over its face. For fine detail, draw two pixels per\nunit.\n- With `tint = material`, draw in greys. White is the material\u2019s colour;\ndarker is a seam or a shadow.\n- A mirrored box shows a side texture from the other end. Draw an\nasymmetric texture once per side, after the `mirror`.\n- `paint` repaints materials by name, and every texture they tint. An\nunknown material name is an error that lists the model\u2019s materials.\n- Only Java clients from 1.21.4 see a model. Older clients and Bedrock see\n`fallback`. A client that loads the resource pack after it joined gets\nits models again when the pack is in; the pack does nothing for this.\n- A client that turns the resource pack down, or cannot load it, sees\n`fallback` from then on, also for the models it already sees.\n- `citadel model render <pack dir> <name> --out car.png` draws a model.\nAdd `--animation drive --at 0.25` for mid-move. No name lists the models.\n"
+   "markdown": "```luau\nlocal car = models.new(\"car\", function(m)\n    local paint = m:material(\"paint\", colors.red, { grain = 0.1 })   -- a colour a display may repaint\n    local glass = m:material(\"glass\", \"dark_aqua\", { alpha = 0.45 }) -- what is behind shows through\n    local door = m:texture(30, 16, { tint = paint })                 -- drawn in greys, coloured by paint\n    local grille = m:texture(8, 4)                  -- pixel art for one face, drawn as it is\n    grille:fill(colors.black)\n    grille:rect(1, 1, 6, 2, colors.gray)            -- x, y, w, h, colour\n    grille:pixel(0, 0, colors.transparent)          -- a see-through pixel\n\n    local body = m:part(\"body\", { pivot = vec3(0, 6, 0) })\n    body:box(vec3(0, 4, -20), vec3(8, 12, 20), paint, {\n        faces = { north = grille },                 -- one side wears something else\n    })\n    local screen = body:part(\"windscreen\")\n    screen:box(vec3(0, 12, -6), vec3(8, 18, 2), glass, { rotation = vec3(22.5, 0, 0) })\n    local wheel = body:part(\"wheel_front\", { pivot = vec3(8, 4, -12) })\n    wheel:box(vec3(6, 0, -16), vec3(10, 8, -8), paint)\n    wheel:box(vec3(6, 0, -16), vec3(10, 8, -8), paint, { rotation = vec3(45, 0, 0) })\n    body:mirror(\"x\")                                -- the left half, from the right one\n\n    m:animation(\"drive\", {\n        length = 1, loop = true,\n        wheel_front = { rotation = { [0] = vec3(0, 0, 0), [0.25] = vec3(-90, 0, 0), [0.5] = vec3(-180, 0, 0),\n            [0.75] = vec3(-270, 0, 0), [1] = vec3(-360, 0, 0) } },   -- quarter turns: see the rules\n        wheel_front_mirrored = { rotation = { [0] = vec3(0, 0, 0), [0.25] = vec3(-90, 0, 0), [0.5] = vec3(-180, 0, 0),\n            [0.75] = vec3(-270, 0, 0), [1] = vec3(-360, 0, 0) } },\n    })\nend)\n\nlocal d = world.display{\n    kind = \"model\", model = car,\n    at = vec3(10.5, 65, 4.5), rotation = { yaw = 90 },      -- degrees, as every entity turns: 0 faces south, 90 west\n    scale = 3.5,                             -- 1 draws it at 16 units to the block\n    paint = { paint = colors.blue },         -- keys are material names\n    fallback = \"minecart\",                   -- what a client that cannot show it sees; nil shows nothing\n    seats = { vec3(0, 7, 2) },               -- optional: where riders sit, in model units; see \"vehicles\"\n}\nd:move(vec3(12.5, 65, 4.5), { yaw = 180 })   -- place and turn it in one step, every part together\nd:move(at, { forward = forward, up = up })                      -- pointed: nose along forward, roof toward up (a car on a wall)\nd.at, d.rotation                             -- live too; each write is a move of its own\nd.scale = 2                                  -- live\nd.paint = { paint = colors.red }             -- live\nd:play(\"drive\")                              -- from the beginning; an unknown name is an error\nd:play(\"drive\", { speed = 2 })               -- twice as fast; on the one already playing, the new speed at once\nd:stop(\"drive\")                              -- the parts stay where they are\nd:destroy()\n```\nThe rules:\n- Make models while the pack loads. `models.new` in a callback is an error.\n- `rotation.pitch` and `rotation.roll` tip the whole model about its\norigin, with parts, animations and seats.\n- A rider stays upright. For a car on a wall, hide the driver\n(`invisibility`) and use `camera.fixed`.\n- **16 units are one block.** The origin is the model\u2019s bottom centre, `+y`\nis up, and the front is `-z`.\n- A box reaches `-24 .. 24` on every axis: three blocks. For a bigger thing,\nset the display\u2019s `scale`.\n- A model texture is 128 at most a side, and draws with `pixel`, `rect`,\n`fill` and `draw(picture, x, y)`: a `game.texture` over it, its corner\nat `(x, y)`. A bigger picture goes on several boxes: `t:draw(map, -128, 0)`\ntakes the second square of 128 from a PNG loaded with `game.texture`.\n- `m:texture(w, h, { scroll = \"up\", speed = 2 })` is a texture that moves\nwhen a block is drawn from the model. See \u201cblocks drawn from a model\u201d.\n- A box turns on **one** axis only, in steps of 22.5 degrees, up to 45\neither way. Anything else is an error. An octagonal wheel is two boxes,\none turned 45.\n- Box corners go in any order and can be fractional. A box\u2019s `pivot`\ndefaults to its centre.\n- Every box is in a part; there is no `m:box`. A part turns around its\n`pivot` (default: the model\u2019s origin). `m:part` makes a child of the root,\n`part:part` a child of that part.\n- `part:mirror(\"x\")` mirrors what the part has so far, pivots, turns and\nhitboxes too. A child\u2019s twin is `<name>_mirrored`. Only `\"x\"` works in this version.\n- `part:hitbox(from, to)` is a box a player can hit on a living body that\nwears the model. See \u201ca living body\u201d.\n- Between two keys, a part turns **the short way round**. Keep each step\nunder 180 degrees. A wheel is `[0] = 0, [0.1] = -90, [0.2] = -180, ...`:\none key from 0 to 360 does not turn. A `tween` of `rotation` is not like\nthis: it turns as written, so there `roll = 360` is a full turn.\n- `speed` is 0.01 to 100; a value outside is taken as the nearest end. A\nspeed of 0 does not pause: use `stop`. A new speed applies at once.\n- An animation is keys per part: `{ [seconds] = vec3 }` for `rotation`\n(degrees about the pivot) and `position` (an offset in model units).\n  - Keys can be in any order.\n  - An unknown part name is an error that lists the model\u2019s parts.\n  - Parts cannot share a track. Write a loop.\n- A material is flat unless it has a `grain` (`0..1`: how much darker its\ndarkest pixel is). `0.1` is a painted panel, `0.4` a tyre. A grained face\nhas four tones, one pixel per unit. `alpha` below 1 is glass.\n- A texture stretches over its face. For fine detail, draw two pixels per\nunit.\n- With `tint = material`, draw in greys. White is the material\u2019s colour;\ndarker is a seam or a shadow.\n- A mirrored box shows a side texture from the other end. Draw an\nasymmetric texture once per side, after the `mirror`.\n- `paint` repaints materials by name, and every texture they tint. An\nunknown material name is an error that lists the model\u2019s materials.\n- Only Java clients from 1.21.4 see a model. Older clients and Bedrock see\n`fallback`. A client that loads the resource pack after it joined gets\nits models again when the pack is in; the pack does nothing for this.\n- A client that turns the resource pack down, or cannot load it, sees\n`fallback` from then on, also for the models it already sees.\n- `citadel model render <pack dir> <name> --out car.png` draws a model.\nAdd `--animation drive --at 0.25` for mid-move. No name lists the models.\n"
   },
   "a-world-per-player": {
    "title": "A world per player",
@@ -68,7 +68,7 @@
   },
   "commands": {
    "title": "Commands",
-   "markdown": "```luau\ncommands.add(usage, function(player, args) end, opts?) -> command\n--   opts = { permission = \"casino.play\", aliases = { \"hub\" }, help = \"Set your bet\",\n--            suggest = { place = { \"roulette\", \"arcade\" }, item = function(player, typed, args) return { ... } end } }\ncommand:suggest(arg, words)   -- a list, a function, or nil or false for nothing: what `arg` offers from now on\ncommand:cancel()              -- takes the command away\n\ncommands.add(\"bet <amount:integer 1..10000> [color:red|black]\", function(player, args)\n    bank.bet(player, args.amount, args.color or \"red\")   -- args.amount is a number\nend, { permission = \"casino.play\", help = \"Bet on the wheel\" })\n\ncommands.add(\"spawn\", function(player) player:teleport(SPAWN) end, { aliases = { \"hub\" } })\ncommands.add(\"tekkit give <item:word> [count:integer 1..64]\", give, {\n    permission = \"tekkit.give\",\n    suggest = { item = function(player, typed) return item_names() end },\n})\n\n-- A tooltip shows beside a suggestion; `args` holds what was typed before.\ncommands.add(\"pay <to:player> <amount:integer 1..>\", pay, {\n    suggest = { amount = function(player, typed, args)\n        return { { text = tostring(bank.of(player)), tooltip = \"Everything you have\" }, \"10\", \"100\" }\n    end },\n})\n\n-- The handle changes a list while the pack runs.\nlocal go = commands.add(\"go <place:word>\", go_to, { suggest = { place = { \"lobby\" } } })\ngo:suggest(\"place\", open_places())\n```\nA usage is the name, any fixed words, then the arguments. `<name:type>` is\nrequired and `[name:type]` is optional. A required argument never follows an\noptional one. The types:\n| type | the player types | `args.name` is |\n| --- | --- | --- |\n| `word` | one word | a string |\n| `integer`, `integer 1..64` | a whole number, in the range if there is one | a number |\n| `number`, `number 0..1` | any number, in the range if there is one | a number |\n| `player` | the name of someone in this room | that player |\n| `red|black` | one of the listed words | the word, in lower case |\n| `text...` | the rest of the line | a string |\n| `words...` | the rest of the line | a list of words |\nA range may leave out either end: `integer 1..` or `integer ..64`.\n`text...` and `words...` come last. An optional argument not typed is `nil`.\n- **The function** may `task.wait`. A returned string shows to the player in red, such as\n`return \"Finish this match first\"`.\n- **`permission`**: without the node, a player does not see or run the\ncommand.\n- **One name, several shapes.** Calls with one name, such as `\"tekkit\"` and\n`\"tekkit give <item:word>\"`, make one command. Each shape has its own\npermission. The first shape the line fits runs.\n- **`suggest`**, per argument: a list of words, or a function\n`(player, typed, args)` that returns one. `args` holds the earlier\narguments that parse. It runs as the player types: no `task.wait`. A word may be `{ text = \"arcade\", tooltip = \"Games\" }`; 1.13+\nclients show the tooltip. Only words that start with the typed text are\nkept. `player` arguments and word lists (`red|black`) suggest themselves.\n- **The command** handle: `command:suggest` sends the new list to every\nplayer.\n- **`help`** is the text `/help` shows after the usage. The engine\u2019s `/help`\nlists every command the player may run.\n- **One pack owns a name** in a room. A second pack that adds the name or an\nalias of it gets an error. `/help` and `/world` belong to the engine. A\npack command replaces a game command of the same name.\n- **Per room**: `commands` is the main room\u2019s, `room.commands` another\nroom\u2019s. Destroying a room removes its commands.\n"
+   "markdown": "```luau\ncommands.add(usage, function(player, args) end, opts?) -> command\n--   opts = { permission = \"casino.play\", aliases = { \"hub\" }, help = \"Set your bet\",\n--            suggest = { place = { \"roulette\", \"arcade\" }, item = function(player, typed, args) return { ... } end } }\ncommand:suggest(arg, words)   -- a list, a function, or nil or false for nothing: what `arg` offers from now on\ncommand:cancel()              -- takes the command away\ncommands.run(player, line) -> boolean   -- runs a pack's command for player, as if they typed it\n\ncommands.add(\"bet <amount:integer 1..10000> [color:red|black]\", function(player, args)\n    bank.bet(player, args.amount, args.color or \"red\")   -- args.amount is a number\nend, { permission = \"casino.play\", help = \"Bet on the wheel\" })\n\ncommands.add(\"spawn\", function(player) player:teleport(SPAWN) end, { aliases = { \"hub\" } })\ncommands.add(\"tekkit give <item:word> [count:integer 1..64]\", give, {\n    permission = \"tekkit.give\",\n    suggest = { item = function(player, typed) return item_names() end },\n})\n\n-- A tooltip shows beside a suggestion; `args` holds what was typed before.\ncommands.add(\"pay <to:player> <amount:integer 1..>\", pay, {\n    suggest = { amount = function(player, typed, args)\n        return { { text = tostring(bank.of(player)), tooltip = \"Everything you have\" }, \"10\", \"100\" }\n    end },\n})\n\n-- The handle changes a list while the pack runs.\nlocal go = commands.add(\"go <place:word>\", go_to, { suggest = { place = { \"lobby\" } } })\ngo:suggest(\"place\", open_places())\n```\nA usage is the name, any fixed words, then the arguments. `<name:type>` is\nrequired and `[name:type]` is optional. A required argument never follows an\noptional one. The types:\n| type | the player types | `args.name` is |\n| --- | --- | --- |\n| `word` | one word | a string |\n| `integer`, `integer 1..64` | a whole number, in the range if there is one | a number |\n| `number`, `number 0..1` | any number, in the range if there is one | a number |\n| `player` | the name of someone in this room | that player |\n| `red|black` | one of the listed words | the word, in lower case |\n| `text...` | the rest of the line | a string |\n| `words...` | the rest of the line | a list of words |\nA range may leave out either end: `integer 1..` or `integer ..64`.\n`text...` and `words...` come last. An optional argument not typed is `nil`.\n- **The function** may `task.wait`. A returned string shows to the player in red, such as\n`return \"Finish this match first\"`.\n- **`permission`**: without the node, a player does not see or run the\ncommand.\n- **One name, several shapes.** Calls with one name, such as `\"tekkit\"` and\n`\"tekkit give <item:word>\"`, make one command. Each shape has its own\npermission. The first shape the line fits runs.\n- **`suggest`**, per argument: a list of words, or a function\n`(player, typed, args)` that returns one. `args` holds the earlier\narguments that parse. It runs as the player types: no `task.wait`. A word may be `{ text = \"arcade\", tooltip = \"Games\" }`; 1.13+\nclients show the tooltip. Only words that start with the typed text are\nkept. `player` arguments and word lists (`red|black`) suggest themselves.\n- **The command** handle: `command:suggest` sends the new list to every\nplayer.\n- **`help`** is the text `/help` shows after the usage. The engine\u2019s `/help`\nlists every command the player may run.\n- **One pack owns a name** in a room. A second pack that adds the name or an\nalias of it gets an error. `/help` and `/world` belong to the engine. A\npack command replaces a game command of the same name.\n- **Per room**: `commands` is the main room\u2019s, `room.commands` another\nroom\u2019s. Destroying a room removes its commands.\n- **`commands.run`** runs a line for a player as if they typed it, so one\npack opens what another declared: a compass runs `\"/servers\"`, whichever\npack owns it. The player\u2019s own permissions apply. Only a command a pack\ndeclared in the player\u2019s room runs; `false` means none did, and the\nengine\u2019s and the game\u2019s commands are never run this way.\n"
   },
   "custom-blocks": {
    "title": "Custom blocks",
@@ -108,7 +108,7 @@
   },
   "hub": {
    "title": "Hub",
-   "markdown": "```luau\ntask.spawn(function()\n    for _, s in hub.servers() do print(s.name, s.players) end\n    for _, e in hub.experiences() do print(e.slot, e.experience) end\n    for _, h in hub.hubs() do print(h.name, h.players) end\n    print(hub.online())\nend)\n```\n- `hub.servers()` returns a list of `{id, name, category, motd, icon, banner, players, maxPlayers}`. `id` is what `player:connect` takes. A field Minefort does not know is nil. An entry with `category = \"experience\"` is a published experience: its `id` is the name `/play` takes, `motd` its pitch, and `banner` the URL of its banner, or nil.\n- `hub.hubs()` returns a list of `{id, name, players, region}`, one per hub that is online, this one included. `player:connect(id)` sends a player to that hub.\n- `hub.role(player)` returns the player\u2019s rank on Minefort: `\"owner\"`, `\"admin\"`, `\"moderator\"` or `\"builder\"`, and nil for everyone else. It also takes a uuid, with or without dashes.\n- `hub.online()` returns how many players are online on the whole of Minefort, or nil before Minefort has said.\n- Minefort sends the ranks and the total every minute. Anywhere but a hub, both are nil.\n- `hub.role(player)` returns the player\u2019s rank on Minefort: `\"owner\"`, `\"admin\"`, `\"moderator\"` or `\"builder\"`, and nil for everyone else. It also takes a uuid, with or without dashes. Minefort sends the list every minute, so a new rank reaches the hub within one. Anywhere but a hub, it is nil.\n- `hub.experiences()` returns a list of `{slot, experience, title, pitch, icon, banner, players}`. `experience` is the name `/play` takes. A slot that is not in the list has no experience.\n- A `banner` is a 1024\u00d7512 PNG its creator uploaded and Minefort checked: 8 by 4 maps. Read it with `http.get(banner, { cache = 86400 }):image()`; a new banner has a new URL, so the cache never shows an old one.\n- `hub.rent(player, slot, product, experience)` offers a portal of the grounds for Gems, like `shop.prompt`: `product` is one of the hub\u2019s rentals, such as `portal_24h`, and `experience` the name `/play` takes of any published experience, which the portal then leads to. It returns a request id, or nil; `shop.on_paid` hands the purchase over. Renting your own portal again adds time, and may leave `experience` out to keep what it shows.\n- `hub.point(player, slot, experience)` turns the player\u2019s own live portal to another published experience, as often as they like. It returns whether it did.\n- Minefort decides who may rent or point what: a stand someone else holds, or a name that is no published experience, is a no. Anywhere but its hub, every answer is no.\n- Minefort keeps the lists up to date. The first call of `servers`, `experiences` or `hubs` waits at most two seconds for them, so call it from a task.\n"
+   "markdown": "```luau\ntask.spawn(function()\n    for _, s in network.browse('featured') or {} do print(s.name, s.players) end\n    for _, e in hub.experiences() do print(e.slot, e.experience) end\n    for _, h in network.instances() or {} do print(h.name, h.players) end\n    print(network.online())\nend)\n```\n- `hub.role(player)` returns the player\u2019s rank on Minefort: `\"owner\"`, `\"admin\"`, `\"moderator\"` or `\"builder\"`, and nil for everyone else. It also takes a uuid, with or without dashes.\n- Minefort sends the ranks every minute. Anywhere but a hub, they are nil.\n- `hub.role(player)` returns the player\u2019s rank on Minefort: `\"owner\"`, `\"admin\"`, `\"moderator\"` or `\"builder\"`, and nil for everyone else. It also takes a uuid, with or without dashes. Minefort sends the list every minute, so a new rank reaches the hub within one. Anywhere but a hub, it is nil.\n- `hub.experiences()` returns a list of `{slot, experience, title, pitch, icon, banner, players}`. `experience` is the name `/play` takes. A slot that is not in the list has no experience.\n- A `banner` is a 1024\u00d7512 PNG its creator uploaded and Minefort checked: 8 by 4 maps. Read it with `http.get(banner, { cache = 86400 }):image()`; a new banner has a new URL, so the cache never shows an old one.\n- `hub.rent(player, slot, product, experience)` offers a portal of the grounds for Gems, like `shop.prompt`: `product` is one of the hub\u2019s rentals, such as `portal_24h`, and `experience` the name `/play` takes of any published experience, which the portal then leads to. It returns a request id, or nil; `shop.on_paid` hands the purchase over. Renting your own portal again adds time, and may leave `experience` out to keep what it shows.\n- `hub.point(player, slot, experience)` turns the player\u2019s own live portal to another published experience, as often as they like. It returns whether it did.\n- Minefort decides who may rent or point what: a stand someone else holds, or a name that is no published experience, is a no. Anywhere but its hub, every answer is no.\n- Minefort keeps the lists up to date. The first call of `experiences` waits at most two seconds for them, so call it from a task.\n"
   },
   "hud": {
    "title": "HUD",
@@ -156,7 +156,7 @@
   },
   "network": {
    "title": "Network",
-   "markdown": "An instance has a **label**. One member can run in several ways, such as `2v2` and `4v4`. The label says which. Minefort stores the label and filters on it, and does nothing else with it.\n**Any server of the network can call `network`.** The pack names a member and a label. Minefort decides the network, the instance\u2019s id and where the instance runs.\n```luau\n-- The default member: a place where players pick how to play.\n-- This author calls an instance of \"bedwars-arena\" an arena.\nlocal waiting = {} -- instance id -> the players who go there when it is online\n\ncommands.add(\"join <label:word>\", function(player, args)\n    local arena, why = network.find{\n        label = args.label,   -- \"2v2\"\n        party = player,       -- room for the player's whole party\n        start = { member = \"bedwars-arena\", slots = 8, data = { map = \"castle\" } },\n    }\n    if not arena then return \"No arena now: \" .. tostring(why) end\n    if arena.state == \"online\" then\n        player:connect(arena.id)\n    else\n        -- It is still starting. Keep the player here until it is online.\n        waiting[arena.id] = waiting[arena.id] or {}\n        table.insert(waiting[arena.id], player)\n    end\nend)\n\nnetwork.on_instance(function(instance)\n    if instance.state ~= \"online\" then return end\n    for _, player in waiting[instance.id] or {} do player:connect(instance.id) end\n    waiting[instance.id] = nil\nend)\n\nnetwork.on_gone(function(id) waiting[id] = nil end)\n```\n```luau\n-- The member \"bedwars-arena\": it says how much room it has.\nlocal me = network.info()                 -- `me.id` is nil on a server that is not an instance\nlocal map = me and me.data and me.data.map or \"castle\"\n\nplayers.on_join(function()\n    if me and me.id then network.status{ open = math.max(0, me.slots - #players.list()), status = \"waiting\" } end\nend)\n-- When the round starts: network.status{ open = 0, status = \"playing\" }\n-- When the round ends, each player goes back to the default member:\n--   player:connect(me.network)     -- the name of the network\n```\nThe calls:\n- `network.start{ member, label, slots, data? }` starts an instance of `member`. It returns `{id, state}` at once, with `state = \"starting\"`: the instance comes online later. `slots` is the number of players the instance takes. `data` is the pack\u2019s own value for the instance, read there with `network.info()`.\n- `network.find{ label, players?, party?, start? }` returns `{id, state}` for the instance to send `players` players to, or nil when no instance has room.\n  - It picks an `online` instance with that label and that much `open`, the fullest first.\n  - The room is held for 10 seconds, so two calls do not both get the last place.\n  - `players` is 1 unless you set it.\n  - `party` is a player, or their uuid. When they lead a `/party`, Minefort holds room for every member. Connect the leader, and the party follows them there. A player who leads no party needs room for one.\n  - With `start = { member, slots, data? }`, Minefort starts an instance when none has room, and holds the room on it. The `state` is then `\"starting\"`.\n  - Use `find` with `start`, not `find` and then `start`. The default runs on many servers, and each would start its own instance.\n- `network.list(label?)` returns a list of the network\u2019s instances. Each one is the instance table below.\n- `network.stop(id)` stops an instance of this network. It returns `true` when Minefort accepted it.\n- `network.info()` returns `{network}` on every server of a network. `network` is the name of the network.\n  - On an instance it returns `{network, id, member, label, slots, data}`.\n  - `id` is nil on a server that is not an instance.\n- `network.status{ open, status?, meta? }` says where this instance is. It returns nothing and does not yield.\n  - `open` is the number of players the instance takes now. `0` closes it to `find`.\n  - `status` is the pack\u2019s own word, such as `\"waiting\"` or `\"playing\"`.\n  - `meta` is the pack\u2019s own value. Other servers of the network read it.\n  - Minefort takes one status a second. The first call goes at once. Of the calls in the second after it, only the last goes.\n- `network.on_instance(fn)` calls `fn(instance)` when an instance starts or changes. It returns a connection.\n- `network.on_gone(fn)` calls `fn(id)` when an instance is gone. It returns a connection.\nAn instance table:\n| Field | Set by | Meaning |\n| --- | --- | --- |\n| `id` | Minefort | The instance\u2019s name. `player:connect` takes it. |\n| `member`, `label` | the pack that started it | Which member, and which label. |\n| `state` | Minefort | `\"starting\"`, then `\"online\"`, then `\"stopping\"`. |\n| `open` | the instance | The number of players it takes now. |\n| `status` | the instance | Its own word, or nil. |\n| `players` | Minefort | The number of players on it. |\n| `meta` | the instance | Its own value, or nil. |\n**`network` does not move players. `player:connect(id)` does.** The instance\u2019s `id` is the server name it takes. The name of the network, `network.info().network`, sends a player back to the default member. Do not send a player to an instance that is `\"starting\"`: keep the player until the instance is `\"online\"`.\n**Events come to the default member\u2019s servers only.** Call `network.list()` once at the start, then keep the list from `on_instance` and `on_gone`. An event can be lost. Call `network.list()` again, once a minute at most, to repair the list.\n**A failed call returns nil and a reason.** `start`, `find` and `info` return `nil, reason`. `list` returns `{}, reason`. `stop` returns `false, reason`. The reason is Minefort\u2019s word, or one of these:\n- `\"unavailable\"`: there is no network here. Every local run answers this.\n- `\"io\"`: the request was not sent.\n- `\"timeout\"`: no answer came in 35 seconds. A `start` may have happened.\n`find` returns `nil` with no reason when no instance has room.\nLimits. A value out of these is an error, and nothing is sent:\n- `label`: 1 to 32 characters of `a-z`, `0-9` and `-`.\n- `member`: 1 to 40 characters of `a-z`, `0-9` and `-`.\n- `slots`: 1 to 200. `players`: 1 to 64. `open`: 0 to 200.\n- `data`: at most 4096 bytes as JSON. `meta`: at most 512 bytes as JSON.\n- `status`: at most 32 characters.\n- An unknown field in a table is an error.\n- A network has at most 20 instances in a region, and one `start` a second.\n- Minefort removes an instance with no players for 60 seconds after its first player, or for 5 minutes without one.\nCalls yield, like `stores`, but for `status` and the two events. Call from scripts, callbacks or tasks.\n"
+   "markdown": "An instance has a **label**. One member can run in several ways, such as `2v2` and `4v4`. The label says which. Minefort stores the label and filters on it, and does nothing else with it.\n**Any server of the network can call `network`.** The pack names a member and a label. Minefort decides the network, the instance\u2019s id and where the instance runs.\n```luau\n-- The default member: a place where players pick how to play.\n-- This author calls an instance of \"bedwars-arena\" an arena.\nlocal waiting = {} -- instance id -> the players who go there when it is online\n\ncommands.add(\"join <label:word>\", function(player, args)\n    local arena, why = network.find{\n        label = args.label,   -- \"2v2\"\n        party = player,       -- room for the player's whole party\n        start = { member = \"bedwars-arena\", slots = 8, data = { map = \"castle\" } },\n    }\n    if not arena then return \"No arena now: \" .. tostring(why) end\n    if arena.state == \"online\" then\n        player:connect(arena.id)\n    else\n        -- It is still starting. Keep the player here until it is online.\n        waiting[arena.id] = waiting[arena.id] or {}\n        table.insert(waiting[arena.id], player)\n    end\nend)\n\nnetwork.on_instance_change(function(instance)\n    if instance.state ~= \"online\" then return end\n    for _, player in waiting[instance.id] or {} do player:connect(instance.id) end\n    waiting[instance.id] = nil\nend)\n\nnetwork.on_instance_stop(function(id) waiting[id] = nil end)\n```\n```luau\n-- The member \"bedwars-arena\": it says how much room it has.\nlocal me = network.info()                 -- `me.id` is nil on a server that is not an instance\nlocal map = me and me.data and me.data.map or \"castle\"\n\nplayers.on_join(function()\n    if me and me.id then network.status{ open = math.max(0, me.slots - #players.list()), status = \"waiting\" } end\nend)\n-- When the round starts: network.status{ open = 0, status = \"playing\" }\n-- When the round ends, each player goes back to the default member:\n--   player:connect(me.network)     -- the name of the network\n```\nThe calls:\n- `network.start{ member, label, slots, data? }` starts an instance of `member`. It returns `{id, state}` at once, with `state = \"starting\"`: the instance comes online later. `slots` is the number of players the instance takes. `data` is the pack\u2019s own value for the instance, read there with `network.info()`.\n- `network.find{ label, players?, party?, start? }` returns `{id, state}` for the instance to send `players` players to, or nil when no instance has room.\n  - It picks an `online` instance with that label and that much `open`, the fullest first.\n  - The room is held for 10 seconds, so two calls do not both get the last place.\n  - `players` is 1 unless you set it.\n  - `party` is a player, or their uuid. When they lead a `/party`, Minefort holds room for every member. Connect the leader, and the party follows them there. A player who leads no party needs room for one.\n  - With `start = { member, slots, data? }`, Minefort starts an instance when none has room, and holds the room on it. The `state` is then `\"starting\"`.\n  - Use `find` with `start`, not `find` and then `start`. The default runs on many servers, and each would start its own instance.\n- `network.stop(id)` stops an instance of this network. It returns `true` when Minefort accepted it.\n- `network.info()` returns `{network}` on every server of a network. `network` is the name of the network.\n  - On an instance it returns `{network, id, member, label, slots, data}`.\n  - `id` is nil on a server that is not an instance.\n- `network.status{ open, status?, meta? }` says where this instance is. It returns nothing and does not yield.\n  - `open` is the number of players the instance takes now. `0` closes it to `find`.\n  - `status` is the pack\u2019s own word, such as `\"waiting\"` or `\"playing\"`.\n  - `meta` is the pack\u2019s own value. Other servers of the network read it.\n  - Minefort takes one status a second. The first call goes at once. Of the calls in the second after it, only the last goes.\n- `network.on_instance_start(fn)` calls `fn(instance)` when an instance is first seen: started, or running when this server began to listen. It returns a connection.\n- `network.on_instance_change(fn)` calls `fn(instance)` when an instance\u2019s `state`, `open`, `status` or `meta` changes. It returns a connection.\n- `network.on_instance_stop(fn)` calls `fn(id)` when an instance is gone. It returns a connection.\n- `network.online(label?)` returns how many play on this network: on the platform\u2019s hub, everyone on Minefort; on any other network, its members and their instances. With `label`, only the players in that mode\u2019s games, every region\u2019s. An answer is kept for 5 seconds, so a scoreboard can ask on every redraw. It returns nil and why when Minefort did not answer.\n- `network.instances(label?)` returns everything this network runs, as this experience sees it: first its own servers that run all the time, online and taking players, as `{id, name, state, players, region}` (on the platform\u2019s hub, the hubs), then the network\u2019s games started on demand, each the instance table below. With `label`, only that mode\u2019s games: `network.instances('4v4v4v4')`. `id` is what `player:connect` takes. Never another network\u2019s. It returns nil and why when Minefort did not answer.\n- `network.browse(view, options?)` finds other networks, and only the platform\u2019s hub may ask:\n  - `view` is `\"search\"` (what matches `query`: names as they are typed, and domains), `\"for-you\"` (more of what `player` plays, busiest first, none of their recent ones), `\"recent\"` (where `player` played last, newest first) or `\"featured\"` (the busiest). Each row is a network: `{id, name, category, motd, icon, players, maxPlayers, state}`, and `id` is what `player:connect` takes. A network is one row, however many servers it has. It returns one page of 6 rows and how many there are in all: `local rows, total = network.browse('featured', { page = 2 })`.\n  - `options` is `{ player?, query?, page?, category?, online?, ids?, sort?, also? }`. `player` is a player or a uuid, and only `\"for-you\"` and `\"recent\"` need it. `page` is from 1, and 1 when left out.\n  - Minefort narrows and orders before it pages, so a page and the total always agree: `category` (`\"pvp\"`, `\"survival\"`\u2026), `online = true` for what is up now, `ids` (at most 64 row ids, such as a player\u2019s favorites) and `sort` (`\"players\"` or `\"name\"`; the view\u2019s own order when left out). `\"recent\"` takes none of these.\n  - `also = { recent = true, favorites = ids }` brings a board\u2019s sidebar in the same round trip, as a third value: `local rows, total, side = network.browse('for-you', { player = p, also = { recent = true, favorites = saved } })`. `side.recent` and `side.favorites` are each `{ rows, total }`; `side.recent` is `false` for a player who is not on this hub.\n  - On a refusal it returns nil and why: `\"unsupported\"` anywhere but the platform\u2019s hub, `\"not-here\"` for a player who is not on this hub, `\"unavailable\"` when Minefort\u2019s search is down, or `\"timeout\"`. It is a round trip to Minefort, so call it from a script or callback.\nAn instance table:\n| Field | Set by | Meaning |\n| --- | --- | --- |\n| `id` | Minefort | The instance\u2019s name. `player:connect` takes it. |\n| `member`, `label` | the pack that started it | Which member, and which label. |\n| `state` | Minefort | `\"starting\"`, then `\"online\"`, then `\"stopping\"`. |\n| `open` | the instance | The number of players it takes now. |\n| `status` | the instance | Its own word, or nil. |\n| `players` | Minefort | The number of players on it. |\n| `meta` | the instance | Its own value, or nil. |\n**`network` does not move players. `player:connect(id)` does.** The instance\u2019s `id` is the server name it takes. The name of the network, `network.info().network`, sends a player back to the default member. Do not send a player to an instance that is `\"starting\"`: keep the player until the instance is `\"online\"`.\n**Events come to the default member\u2019s servers only.** Call `network.instances()` once at the start, then keep the list from `on_instance_start`, `on_instance_change` and `on_instance_stop`. An event can be lost. Call `network.instances()` again, once a minute at most, to repair the list.\n**A failed call returns nil and a reason.** `start`, `find` and `info` return `nil, reason`. `list` returns `{}, reason`. `stop` returns `false, reason`. The reason is Minefort\u2019s word, or one of these:\n- `\"unavailable\"`: there is no network here. Every local run answers this.\n- `\"io\"`: the request was not sent.\n- `\"timeout\"`: no answer came in 35 seconds. A `start` may have happened.\n`find` returns `nil` with no reason when no instance has room.\nLimits. A value out of these is an error, and nothing is sent:\n- `label`: 1 to 32 characters of `a-z`, `0-9` and `-`.\n- `member`: 1 to 40 characters of `a-z`, `0-9` and `-`.\n- `slots`: 1 to 200. `players`: 1 to 64. `open`: 0 to 200.\n- `data`: at most 4096 bytes as JSON. `meta`: at most 512 bytes as JSON.\n- `status`: at most 32 characters.\n- An unknown field in a table is an error.\n- A network has at most 20 instances in a region, and one `start` a second.\n- Minefort removes an instance with no players for 60 seconds after its first player, or for 5 minutes without one.\nCalls yield, like `stores`, but for `status` and the three events. Call from scripts, callbacks or tasks.\n"
   },
   "npcs": {
    "title": "NPCs",
@@ -594,84 +594,84 @@
   "BlockAmendSpec": {
    "title": "BlockAmendSpec type",
    "url": "/docs/citadel/reference/BlockAmendSpec",
-   "lead": "What `game.blocks.amend` takes: **hooks only**. Every tnt in every world already looks like tnt and is as hard as tnt, so a data column here is refused by name. For a block of your own with different numbers, `game.blocks.define { extends = \"tnt\" }`.",
+   "lead": "What `game.blocks.amend` takes: **hooks only**.  Every tnt in every world already looks like tnt and is as hard as tnt, so a data column here is refused by name. For a block of your own with different numbers, `game.blocks.define { extends = \"tnt\" }`.",
    "typedef": "",
    "docs_link": null,
    "members": [
     {
      "name": "on_use",
      "section": "functions",
-     "signature": "blockAmendSpec.on_use((block: BlockAt, player: Player ?, held: string ?, base: (... any) -> any) -> Used ?) \u2192 ?",
+     "signature": "blockAmendSpec.on_use((block: BlockAt, player: Player ?, held: string ?, base: (...any) -> any) -> Used ?) \u2192 ?",
      "description": "Somebody right-clicked it; `held` is the item in hand. Answers \"used\" or \"pass\"; a missed deadline passes the click through.",
      "href": "/docs/citadel/reference/BlockAmendSpec/on_use"
     },
     {
      "name": "on_break",
      "section": "functions",
-     "signature": "blockAmendSpec.on_break((block: BlockAt, player: Player ?, by: Breaker, base: (... any) -> any) -> Drops ?) \u2192 ?",
+     "signature": "blockAmendSpec.on_break((block: BlockAt, player: Player ?, by: Breaker, base: (...any) -> any) -> Drops ?) \u2192 ?",
      "description": "Something broke it; `by` says what. Answers \"none\", \"table\" or a drops list.",
      "href": "/docs/citadel/reference/BlockAmendSpec/on_break"
     },
     {
      "name": "on_step",
      "section": "functions",
-     "signature": "blockAmendSpec.on_step((block: BlockAt, body: Body, base: (... any) -> any) -> ()) \u2192 ?",
+     "signature": "blockAmendSpec.on_step((block: BlockAt, body: Body, base: (...any) -> any) -> ()) \u2192 ?",
      "description": "A body (a player, mob, item or other) is standing on it.",
      "href": "/docs/citadel/reference/BlockAmendSpec/on_step"
     },
     {
      "name": "on_tick",
      "section": "functions",
-     "signature": "blockAmendSpec.on_tick((block: BlockAt, base: (... any) -> any) -> ()) \u2192 ?",
+     "signature": "blockAmendSpec.on_tick((block: BlockAt, base: (...any) -> any) -> ()) \u2192 ?",
      "description": "A scheduled tick this block asked for came due.",
      "href": "/docs/citadel/reference/BlockAmendSpec/on_tick"
     },
     {
      "name": "on_random_tick",
      "section": "functions",
-     "signature": "blockAmendSpec.on_random_tick((block: BlockAt, base: (... any) -> any) -> ()) \u2192 ?",
+     "signature": "blockAmendSpec.on_random_tick((block: BlockAt, base: (...any) -> any) -> ()) \u2192 ?",
      "description": "The random pass landed on it.",
      "href": "/docs/citadel/reference/BlockAmendSpec/on_random_tick"
     },
     {
      "name": "on_place",
      "section": "functions",
-     "signature": "blockAmendSpec.on_place((block: BlockAt, player: Player ?, base: (... any) -> any) -> ()) \u2192 ?",
+     "signature": "blockAmendSpec.on_place((block: BlockAt, player: Player ?, base: (...any) -> any) -> ()) \u2192 ?",
      "description": "A player put it down.",
      "href": "/docs/citadel/reference/BlockAmendSpec/on_place"
     },
     {
      "name": "on_neighbour",
      "section": "functions",
-     "signature": "blockAmendSpec.on_neighbour((block: BlockAt, from: Vec3, announced: string, base: (... any) -> any) -> ()) \u2192 ?",
+     "signature": "blockAmendSpec.on_neighbour((block: BlockAt, from: Vec3, announced: string, base: (...any) -> any) -> ()) \u2192 ?",
      "description": "A neighbour at `from` changed; `announced` is the block the notifier announced itself as.",
      "href": "/docs/citadel/reference/BlockAmendSpec/on_neighbour"
     },
     {
      "name": "on_trigger",
      "section": "functions",
-     "signature": "blockAmendSpec.on_trigger((block: BlockAt, cause: Trigger, base: (... any) -> any) -> ()) \u2192 ?",
+     "signature": "blockAmendSpec.on_trigger((block: BlockAt, cause: Trigger, base: (...any) -> any) -> ()) \u2192 ?",
      "description": "It was lit, blasted or burnt; `cause` is \"ignite\", \"explosion\" or \"fire\".",
      "href": "/docs/citadel/reference/BlockAmendSpec/on_trigger"
     },
     {
      "name": "on_power",
      "section": "functions",
-     "signature": "blockAmendSpec.on_power((block: BlockAt, powered: boolean, base: (... any) -> any) -> ()) \u2192 ?",
+     "signature": "blockAmendSpec.on_power((block: BlockAt, powered: boolean, base: (...any) -> any) -> ()) \u2192 ?",
      "description": "A redstone signal started (`powered` is true) or stopped reaching it. Called once for each, not for every change beside it.",
      "href": "/docs/citadel/reference/BlockAmendSpec/on_power"
     },
     {
      "name": "on_added",
      "section": "functions",
-     "signature": "blockAmendSpec.on_added((block: BlockAt, base: (... any) -> any) -> ()) \u2192 ?",
+     "signature": "blockAmendSpec.on_added((block: BlockAt, base: (...any) -> any) -> ()) \u2192 ?",
      "description": "It has just been stored, whatever stored it.",
      "href": "/docs/citadel/reference/BlockAmendSpec/on_added"
     },
     {
      "name": "on_removed",
      "section": "functions",
-     "signature": "blockAmendSpec.on_removed((block: BlockAt, base: (... any) -> any) -> ()) \u2192 ?",
+     "signature": "blockAmendSpec.on_removed((block: BlockAt, base: (...any) -> any) -> ()) \u2192 ?",
      "description": "It has just gone.",
      "href": "/docs/citadel/reference/BlockAmendSpec/on_removed"
     }
@@ -686,7 +686,7 @@
   "BlockAt": {
    "title": "BlockAt type",
    "url": "/docs/citadel/reference/BlockAt",
-   "lead": "The block a hook was called about. Reads are fields and acts are methods. The reads are **live** \u2014 the world as it is right now \u2014 and everything that changes the world is carried out by the engine the moment the hook returns, in the order it was asked for.",
+   "lead": "The block a hook was called about.  Reads are fields and acts are methods. The reads are **live** \u2014 the world as it is right now \u2014 and everything that changes the world is carried out by the engine the moment the hook returns, in the order it was asked for.",
    "typedef": "",
    "docs_link": null,
    "members": [
@@ -857,84 +857,84 @@
   "BlockSpec": {
    "title": "BlockSpec type",
    "url": "/docs/citadel/reference/BlockSpec",
-   "lead": "What a definition says a block *is*. Every hook takes `base` as its **last** argument: call it and you extended what is under you, leave it out and you replaced it. `base` is a decision rather than a reentrant call \u2014 its effects land when your hook returns, and calling it twice happens once.",
+   "lead": "What a definition says a block *is*.  Every hook takes `base` as its **last** argument: call it and you extended what is under you, leave it out and you replaced it. `base` is a decision rather than a reentrant call \u2014 its effects land when your hook returns, and calling it twice happens once.",
    "typedef": "",
    "docs_link": null,
    "members": [
     {
      "name": "on_use",
      "section": "functions",
-     "signature": "blockSpec.on_use((block: BlockAt, player: Player ?, held: string ?, base: (... any) -> any) -> Used ?) \u2192 ?",
+     "signature": "blockSpec.on_use((block: BlockAt, player: Player ?, held: string ?, base: (...any) -> any) -> Used ?) \u2192 ?",
      "description": "The hooks. Writing one is what asks for it \u2014 there is no flag beside `on_random_tick` saying the random pass may land here.",
      "href": "/docs/citadel/reference/BlockSpec/on_use"
     },
     {
      "name": "on_break",
      "section": "functions",
-     "signature": "blockSpec.on_break((block: BlockAt, player: Player ?, by: Breaker, base: (... any) -> any) -> Drops ?) \u2192 ?",
+     "signature": "blockSpec.on_break((block: BlockAt, player: Player ?, by: Breaker, base: (...any) -> any) -> Drops ?) \u2192 ?",
      "description": "Something broke it. Answers \"none\", \"table\" or a drops list; fails closed to the definition's `drops`.",
      "href": "/docs/citadel/reference/BlockSpec/on_break"
     },
     {
      "name": "on_step",
      "section": "functions",
-     "signature": "blockSpec.on_step((block: BlockAt, body: Body, base: (... any) -> any) -> ()) \u2192 ?",
+     "signature": "blockSpec.on_step((block: BlockAt, body: Body, base: (...any) -> any) -> ()) \u2192 ?",
      "description": "A body is standing on it; `body` is `{ id, kind }`.",
      "href": "/docs/citadel/reference/BlockSpec/on_step"
     },
     {
      "name": "on_tick",
      "section": "functions",
-     "signature": "blockSpec.on_tick((block: BlockAt, base: (... any) -> any) -> ()) \u2192 ?",
+     "signature": "blockSpec.on_tick((block: BlockAt, base: (...any) -> any) -> ()) \u2192 ?",
      "description": "A scheduled tick this block asked for came due.",
      "href": "/docs/citadel/reference/BlockSpec/on_tick"
     },
     {
      "name": "on_random_tick",
      "section": "functions",
-     "signature": "blockSpec.on_random_tick((block: BlockAt, base: (... any) -> any) -> ()) \u2192 ?",
+     "signature": "blockSpec.on_random_tick((block: BlockAt, base: (...any) -> any) -> ()) \u2192 ?",
      "description": "The random pass landed on it. Not the same thing as `on_tick`, which is why it has the longer name.",
      "href": "/docs/citadel/reference/BlockSpec/on_random_tick"
     },
     {
      "name": "on_place",
      "section": "functions",
-     "signature": "blockSpec.on_place((block: BlockAt, player: Player ?, base: (... any) -> any) -> ()) \u2192 ?",
+     "signature": "blockSpec.on_place((block: BlockAt, player: Player ?, base: (...any) -> any) -> ()) \u2192 ?",
      "description": "A player put it down; `block.data` is empty then, ready to be filled.",
      "href": "/docs/citadel/reference/BlockSpec/on_place"
     },
     {
      "name": "on_neighbour",
      "section": "functions",
-     "signature": "blockSpec.on_neighbour((block: BlockAt, from: Vec3, announced: string, base: (... any) -> any) -> ()) \u2192 ?",
+     "signature": "blockSpec.on_neighbour((block: BlockAt, from: Vec3, announced: string, base: (...any) -> any) -> ()) \u2192 ?",
      "description": "A neighbour changed; `from` is its position and `announced` the block name the notifier announced itself as.",
      "href": "/docs/citadel/reference/BlockSpec/on_neighbour"
     },
     {
      "name": "on_trigger",
      "section": "functions",
-     "signature": "blockSpec.on_trigger((block: BlockAt, cause: Trigger, base: (... any) -> any) -> ()) \u2192 ?",
+     "signature": "blockSpec.on_trigger((block: BlockAt, cause: Trigger, base: (...any) -> any) -> ()) \u2192 ?",
      "description": "It was lit, blasted or burnt; `cause` is \"ignite\", \"explosion\" or \"fire\".",
      "href": "/docs/citadel/reference/BlockSpec/on_trigger"
     },
     {
      "name": "on_power",
      "section": "functions",
-     "signature": "blockSpec.on_power((block: BlockAt, powered: boolean, base: (... any) -> any) -> ()) \u2192 ?",
+     "signature": "blockSpec.on_power((block: BlockAt, powered: boolean, base: (...any) -> any) -> ()) \u2192 ?",
      "description": "A redstone signal started (`powered` is true) or stopped reaching it. Called once for each, not for every change beside it.",
      "href": "/docs/citadel/reference/BlockSpec/on_power"
     },
     {
      "name": "on_added",
      "section": "functions",
-     "signature": "blockSpec.on_added((block: BlockAt, base: (... any) -> any) -> ()) \u2192 ?",
+     "signature": "blockSpec.on_added((block: BlockAt, base: (...any) -> any) -> ()) \u2192 ?",
      "description": "It has just been stored, whatever stored it.",
      "href": "/docs/citadel/reference/BlockSpec/on_added"
     },
     {
      "name": "on_removed",
      "section": "functions",
-     "signature": "blockSpec.on_removed((block: BlockAt, base: (... any) -> any) -> ()) \u2192 ?",
+     "signature": "blockSpec.on_removed((block: BlockAt, base: (...any) -> any) -> ()) \u2192 ?",
      "description": "It has just gone from the world.",
      "href": "/docs/citadel/reference/BlockSpec/on_removed"
     },
@@ -1104,7 +1104,7 @@
    "title": "BodyRotation type",
    "url": "/docs/citadel/reference/BodyRotation",
    "lead": "Degrees: 0 yaw faces south, 90 west; positive pitch tips down. Constructors default missing angles to zero; later writes preserve them.",
-   "typedef": "{ read yaw: number ?, read pitch: number ? }",
+   "typedef": "{ read yaw: number?, read pitch: number? }",
    "docs_link": null,
    "members": [],
    "sections": []
@@ -1469,11 +1469,18 @@
      "signature": "commands.add(usage: string, fn: (player: Player, args: { [string]: any }) -> string ?, opts: CommandOpts ?) \u2192 Command",
      "description": "usage: \"bet <amount:integer 1..10000> [color:red|black]\". Types: word, integer, number (with an optional min..max), player, a|b|c, text... (the rest of the line as a string), words... (as a list). args holds each argument by name; an optional one not typed is nil. Return a string and the player reads it in red.",
      "href": "/docs/citadel/reference/Commands/add"
+    },
+    {
+     "name": "run",
+     "section": "functions",
+     "signature": "commands.run(player: Player, line: string) \u2192 boolean",
+     "description": "Runs a pack's command for player as if they typed it (\"/servers\"), with their permissions. false when no pack in their room declared it.",
+     "href": "/docs/citadel/reference/Commands/run"
     }
    ],
    "sections": [
     {
-     "title": "Functions 1",
+     "title": "Functions 2",
      "type": "functions"
     }
    ]
@@ -1852,7 +1859,7 @@
     {
      "name": "list",
      "section": "functions",
-     "signature": "durableStore:list(prefix: string ?, cursor: string ?, limit: number ?) \u2192 ({ string }, string ?)",
+     "signature": "durableStore:list(prefix: string ?, cursor: string ?, limit: number ?) \u2192 ({string}, string ?)",
      "description": "Returns fact keys with this prefix and the cursor for the next page, or nil at the end.",
      "href": "/docs/citadel/reference/DurableStore/list"
     },
@@ -1898,7 +1905,7 @@
    "title": "Effect type",
    "url": "/docs/citadel/reference/Effect",
    "lead": "A function called for every letter each frame a text shows, handing back how that letter looks; `i` of `n` is the letter's place, `t` is `time.now()`.",
-   "typedef": "(letter: string, i: number, n: number, t: number) -> LetterStyle ?",
+   "typedef": "(letter: string, i: number, n: number, t: number) -> LetterStyle?",
    "docs_link": null,
    "members": [],
    "sections": []
@@ -1943,7 +1950,7 @@
    "title": "EntityAmendOptions type",
    "url": "/docs/citadel/reference/EntityAmendOptions",
    "lead": "A pack's hooks on one of the game's own entities. Hooks only: every pig already looks like a pig, so the data columns are refused by name.",
-   "typedef": "{ priority: number ?, replace: boolean ? }",
+   "typedef": "{ priority: number?, replace: boolean? }",
    "docs_link": null,
    "members": [],
    "sections": []
@@ -1951,7 +1958,7 @@
   "EntityAmendSpec": {
    "title": "EntityAmendSpec type",
    "url": "/docs/citadel/reference/EntityAmendSpec",
-   "lead": "Called when a new entity of this kind spawns; told, never waited on.",
+   "lead": "",
    "typedef": "",
    "docs_link": null,
    "members": [
@@ -2026,7 +2033,7 @@
   "EntityHandle": {
    "title": "EntityHandle type",
    "url": "/docs/citadel/reference/EntityHandle",
-   "lead": "A body the world moves: a pack's own entity, a mob, a stack on the ground. Every read is a fresh look at the world, so a handle to something that has died reads `nil`. Inside a hook the same handle reads the entity as it was at the top of the tick, and its writes land at that hook's own slot.",
+   "lead": "A body the world moves: a pack's own entity, a mob, a stack on the ground.  Every read is a fresh look at the world, so a handle to something that has died reads `nil`. Inside a hook the same handle reads the entity as it was at the top of the tick, and its writes land at that hook's own slot.",
    "typedef": "",
    "docs_link": null,
    "members": [
@@ -2703,7 +2710,7 @@
    "title": "FluidRule type",
    "url": "/docs/citadel/reference/FluidRule",
    "lead": "The carved air under `below` becomes `block` (a lake, lava): the first rule that holds at each block. Never the open sky over the land.",
-   "typedef": "{ block: string, below: number, biome: string ?, when: (Field | number)? }",
+   "typedef": "{ block: string, below: number, biome: string?, when: (Field | number)? }",
    "docs_link": null,
    "members": [],
    "sections": []
@@ -2769,8 +2776,8 @@
     {
      "name": "texture",
      "section": "functions",
-     "signature": "game.texture(width: number, height: number) \u2192 Texture",
-     "description": "Returns a new texture of width by height pixels, see-through until drawn on, for a pack's block or item.",
+     "signature": "game.texture((width: number, height: number) -> Texture) \u2192 & ((file: string) -> Texture)",
+     "description": "Returns a new texture of width by height pixels, see-through until drawn on, for a pack's block or item. A texture to draw on (512 at most a side), or a PNG file in the pack (4096 at most a side).",
      "href": "/docs/citadel/reference/Game/texture"
     },
     {
@@ -2996,7 +3003,7 @@
    "title": "GroundRule type",
    "url": "/docs/citadel/reference/GroundRule",
    "lead": "A layer of ground: `block` for the top `depth` blocks (1) of a surface. The first rule that holds wins.",
-   "typedef": "{ block: BlockPick, biome: string ?, when: (Field | number)?, depth: number ? }",
+   "typedef": "{ block: BlockPick, biome: string?, when: (Field | number)?, depth: number? }",
    "docs_link": null,
    "members": [],
    "sections": []
@@ -3005,7 +3012,7 @@
    "title": "HeadSkin type",
    "url": "/docs/citadel/reference/HeadSkin",
    "lead": "Whose face a player head shows: a Minecraft account's name, or the `textures` profile property of a skin no account wears.",
-   "typedef": "string | { value: string, signature: string ? }",
+   "typedef": "string | { value: string, signature: string? }",
    "docs_link": null,
    "members": [],
    "sections": []
@@ -3166,7 +3173,7 @@
     {
      "name": "headers",
      "section": "fields",
-     "signature": "httpResponse.headers: {[string]: string }",
+     "signature": "httpResponse.headers: {[string]: string}",
      "description": "The answer's headers, names in lower case.",
      "href": "/docs/citadel/reference/HttpResponse/headers"
     }
@@ -3202,12 +3209,44 @@
      "signature": "hud:destroy()",
      "description": "Takes it off the player's screen.",
      "href": "/docs/citadel/reference/Hud/destroy"
+    },
+    {
+     "name": "on_hover",
+     "section": "functions",
+     "signature": "hud.on_hover((id: string ?) -> ()) \u2192 ?",
+     "description": "",
+     "href": "/docs/citadel/reference/Hud/on_hover"
+    },
+    {
+     "name": "on_click",
+     "section": "functions",
+     "signature": "hud.on_click((id: string ?, button: \"left\" | \"right\") -> ()) \u2192 ?",
+     "description": "",
+     "href": "/docs/citadel/reference/Hud/on_click"
+    },
+    {
+     "name": "hover",
+     "section": "fields",
+     "signature": "hud.hover: string ?",
+     "description": "With `cursor = true`: the id under the pointer, and what fires when it changes and on a click.",
+     "href": "/docs/citadel/reference/Hud/hover"
+    },
+    {
+     "name": "cursor",
+     "section": "fields",
+     "signature": "hud.cursor: { x: number, y: number }?",
+     "description": "Where the pointer is, in the layout's pixels from its top left.",
+     "href": "/docs/citadel/reference/Hud/cursor"
     }
    ],
    "sections": [
     {
-     "title": "Functions 2",
+     "title": "Functions 4",
      "type": "functions"
+    },
+    {
+     "title": "Fields 2",
+     "type": "fields"
     }
    ]
   },
@@ -3267,7 +3306,7 @@
    "title": "InventorySlot type",
    "url": "/docs/citadel/reference/InventorySlot",
    "lead": "A stack as a script reads it. `id` is there for a pack item, `damage` for a worn tool.",
-   "typedef": "{ item: string, count: number, id: string ?, damage: number ? }",
+   "typedef": "{ item: string, count: number, id: string?, damage: number? }",
    "docs_link": null,
    "members": [],
    "sections": []
@@ -3285,7 +3324,7 @@
    "title": "ItemMatch type",
    "url": "/docs/citadel/reference/ItemMatch",
    "lead": "An item to find \u2014 `take`, `count`, a recipe's ingredient. A name is the plain item and never a pack item made of it; a table matches the fields it names.",
-   "typedef": "string | { id: string ?, item: string ? }",
+   "typedef": "string | { id: string?, item: string? }",
    "docs_link": null,
    "members": [],
    "sections": []
@@ -3453,7 +3492,7 @@
    "title": "LetterStyle type",
    "url": "/docs/citadel/reference/LetterStyle",
    "lead": "What an effect hands back for one letter; `text` shows something else in its place (\"\" hides it).",
-   "typedef": "{ color: Ink ?, bold: boolean ?, italic: boolean ?, underline: boolean ?, strike: boolean ?, text: string ? }",
+   "typedef": "{ color: Ink?, bold: boolean?, italic: boolean?, underline: boolean?, strike: boolean?, text: string? }",
    "docs_link": null,
    "members": [],
    "sections": []
@@ -3462,7 +3501,7 @@
    "title": "LightSource type",
    "url": "/docs/citadel/reference/LightSource",
    "lead": "One spot of light no block makes, for `world.light`: a position and a level from 1 to 15.",
-   "typedef": "{ at: Vec3, level: number ? }",
+   "typedef": "{ at: Vec3, level: number? }",
    "docs_link": null,
    "members": [],
    "sections": []
@@ -3782,11 +3821,18 @@
      "signature": "modelTexture:rect(x: number, y: number, w: number, h: number, color: Ink)",
      "description": "Paints a rectangle `w` by `h` pixels from x, y.",
      "href": "/docs/citadel/reference/ModelTexture/rect"
+    },
+    {
+     "name": "draw",
+     "section": "functions",
+     "signature": "modelTexture:draw(picture: Texture, x: number ?, y: number ?)",
+     "description": "A game.texture over this one, its top left at x, y; see-through pixels skipped, what falls outside cut.",
+     "href": "/docs/citadel/reference/ModelTexture/draw"
     }
    ],
    "sections": [
     {
-     "title": "Functions 3",
+     "title": "Functions 4",
      "type": "functions"
     }
    ]
@@ -4734,6 +4780,13 @@
      "signature": "player.camera: (Camera | false)?",
      "description": "What they look out of: a camera from camera.fixed/free/orbit/chase, or nil or false for their own eyes. No delay is needed after creating its target. Ends when the target is destroyed or the player leaves the room.",
      "href": "/docs/citadel/reference/Player/camera"
+    },
+    {
+     "name": "time",
+     "section": "fields",
+     "signature": "player.time: (number | TimeName | false)?",
+     "description": "This player's sky alone, held at a time of day; nil or false gives them the room's again, as does moving rooms. Reads back in ticks.",
+     "href": "/docs/citadel/reference/Player/time"
     }
    ],
    "sections": [
@@ -4742,7 +4795,7 @@
      "type": "functions"
     },
     {
-     "title": "Fields 11",
+     "title": "Fields 12",
      "type": "fields"
     }
    ]
@@ -4909,7 +4962,7 @@
      "name": "on_break",
      "section": "functions",
      "signature": "players.on_break(fn: (player: Player ?, pos: Vec3, block: string) -> boolean ?) \u2192 Connection",
-     "description": "Cancellable. Return `false` to stop it; return nothing to let it through. These are asked *before* the world changes and the engine waits milliseconds for the answer, so they must be quick and must never `task.wait`. Timeout, error, overflow and disabled handlers deny the action. Across packs any `false` wins. See docs/luau-api.md, \"saying no\".",
+     "description": "Cancellable. Return `false` to stop it; return nothing to let it through. These are asked *before* the world changes and the engine waits milliseconds for the answer, so they must be quick and must never `task.wait`.  Timeout, error, overflow and disabled handlers deny the action. Across packs any `false` wins. See docs/luau-api.md, \"saying no\".",
      "href": "/docs/citadel/reference/Players/on_break"
     },
     {
@@ -5070,7 +5123,7 @@
    "title": "Rotation type",
    "url": "/docs/citadel/reference/Rotation",
    "lead": "",
-   "typedef": "BodyRotation & { read roll: number ? }",
+   "typedef": "BodyRotation & { read roll: number? }",
    "docs_link": null,
    "members": [],
    "sections": []
@@ -5428,7 +5481,7 @@
    "title": "Suggestion type",
    "url": "/docs/citadel/reference/Suggestion",
    "lead": "One word offered as a player types a command argument: a string, or a text with a tooltip.",
-   "typedef": "string | { text: string, tooltip: string ? }",
+   "typedef": "string | { text: string, tooltip: string? }",
    "docs_link": null,
    "members": [],
    "sections": []
@@ -5693,7 +5746,7 @@
    "title": "ThingGrid type",
    "url": "/docs/citadel/reference/ThingGrid",
    "lead": "Things that share one grid of `cell` blocks (8): a cell holds at most one, at a place that is the cell's own, so a thing over a chunk border is whole.",
-   "typedef": "{ [number]: ThingRule, cell: number ?, seed: number ? }",
+   "typedef": "{ [number]: ThingRule, cell: number?, seed: number? }",
    "docs_link": null,
    "members": [],
    "sections": []
@@ -5702,7 +5755,7 @@
    "title": "ThingRule type",
    "url": "/docs/citadel/reference/ThingRule",
    "lead": "A thing that stands on a grid cell: one of `shapes`, its `(0, 0, 0)` on the block above the ground. `afloat` stands it on the water where the ground is under water; without it, nothing stands there. `place = \"floor\"` puts its `(0, 0, 0)` on the air block over a cave floor, `\"ceiling\"` on the air block under a ceiling (build it down from there).",
-   "typedef": "{ shapes: { Schematic }, chance: (Field | number)?, biome: string ?, when: (Field | number)?, afloat: boolean ?, place: (\"top\" | \"floor\" | \"ceiling\")?, y: { number }? }",
+   "typedef": "{ shapes: { Schematic }, chance: (Field | number)?, biome: string?, when: (Field | number)?, afloat: boolean?, place: (\"top\" | \"floor\" | \"ceiling\")?, y: { number }? }",
    "docs_link": null,
    "members": [],
    "sections": []
@@ -5720,7 +5773,7 @@
    "title": "TimeName type",
    "url": "/docs/citadel/reference/TimeName",
    "lead": "A named time of day that `world.time` holds the sky at: sunrise, day, noon, sunset, night or midnight.",
-   "typedef": "\"sunrise\" | \"day\" | \"noon\" | \"sunset\" | \"night\" | \"midnight\" x: number, y: number, z: number, magnitude: (self: Vec3) -> number, unit: (self: Vec3) -> Vec3, dot: (self: Vec3, other: Vec3) -> number, cross: (self: Vec3, other: Vec3) -> Vec3, distance: (self: Vec3, other: Vec3) -> number, lerp: (self: Vec3, other: Vec3, t: number) -> Vec3, floor: (self: Vec3) -> Vec3, with: (self: Vec3, fields: { x: number ?, y: number ?, z: number ? }) -> Vec3,",
+   "typedef": "\"sunrise\" | \"day\" | \"noon\" | \"sunset\" | \"night\" | \"midnight\" x: number, y: number, z: number, magnitude: (self: Vec3) -> number, unit: (self: Vec3) -> Vec3, dot: (self: Vec3, other: Vec3) -> number, cross: (self: Vec3, other: Vec3) -> Vec3, distance: (self: Vec3, other: Vec3) -> number, lerp: (self: Vec3, other: Vec3, t: number) -> Vec3, floor: (self: Vec3) -> Vec3, with: (self: Vec3, fields: { x: number?, y: number?, z: number? }) -> Vec3,",
    "docs_link": null,
    "members": [],
    "sections": []
@@ -5805,7 +5858,7 @@
     {
      "name": "label",
      "section": "functions",
-     "signature": "ui.label(opts: { id: string ?, text: string ?, width: number ?, align: LayoutAlign ?, color: Ink ? }) \u2192 LayoutNode",
+     "signature": "ui.label(opts: { id: string ?, text: string ?, width: number ?, align: LayoutAlign ?, color: Ink ?, bold: boolean ? }) \u2192 LayoutNode",
      "description": "Words in the client's own letters, space to `~`. Give a label whose words change a `width`.",
      "href": "/docs/citadel/reference/Ui/label"
     },
@@ -5833,7 +5886,7 @@
     {
      "name": "define",
      "section": "functions",
-     "signature": "ui.define(name: string, opts: { anchor: \"bottom\" ?, margin: number ?, [number]: LayoutNode }) \u2192 Layout",
+     "signature": "ui.define(name: string, opts: { anchor: (\"bottom\" | \"top\")?, margin: number ?, cursor: boolean ?, [number]: LayoutNode }) \u2192 Layout",
      "description": "A layout of one child, centred over the hotbar with its bottom edge `margin` pixels above the screen's (40, or 25 when `hide_hud` takes the hearts and the food away). While the pack loads only.",
      "href": "/docs/citadel/reference/Ui/define"
     },
@@ -6233,7 +6286,7 @@
    "title": "Worn type",
    "url": "/docs/citadel/reference/Worn",
    "lead": "Armour, head first; each piece is an item like any other.",
-   "typedef": "{ head: ItemSpec ?, chest: ItemSpec ?, legs: ItemSpec ?, feet: ItemSpec ? }",
+   "typedef": "{ head: ItemSpec?, chest: ItemSpec?, legs: ItemSpec?, feet: ItemSpec? }",
    "docs_link": null,
    "members": [],
    "sections": []
@@ -6299,7 +6352,7 @@
     {
      "name": "log",
      "section": "functions",
-     "signature": "citadel.log(... any)",
+     "signature": "citadel.log(...any)",
      "description": "Writes its arguments to the server log, under this pack's name.",
      "href": "/docs/citadel/reference/citadel/log"
     },
@@ -6584,11 +6637,18 @@
      "signature": "commands.add(usage: string, fn: (player: Player, args: { [string]: any }) -> string ?, opts: CommandOpts ?) \u2192 Command",
      "description": "usage: \"bet <amount:integer 1..10000> [color:red|black]\". Types: word, integer, number (with an optional min..max), player, a|b|c, text... (the rest of the line as a string), words... (as a list). args holds each argument by name; an optional one not typed is nil. Return a string and the player reads it in red.",
      "href": "/docs/citadel/reference/Commands/add"
+    },
+    {
+     "name": "run",
+     "section": "functions",
+     "signature": "commands.run(player: Player, line: string) \u2192 boolean",
+     "description": "Runs a pack's command for player as if they typed it (\"/servers\"), with their permissions. false when no pack in their room declared it.",
+     "href": "/docs/citadel/reference/Commands/run"
     }
    ],
    "sections": [
     {
-     "title": "Functions 1",
+     "title": "Functions 2",
      "type": "functions"
     }
    ]
@@ -6797,8 +6857,8 @@
     {
      "name": "texture",
      "section": "functions",
-     "signature": "game.texture(width: number, height: number) \u2192 Texture",
-     "description": "Returns a new texture of width by height pixels, see-through until drawn on, for a pack's block or item.",
+     "signature": "game.texture((width: number, height: number) -> Texture) \u2192 & ((file: string) -> Texture)",
+     "description": "Returns a new texture of width by height pixels, see-through until drawn on, for a pack's block or item. A texture to draw on (512 at most a side), or a PNG file in the pack (4096 at most a side).",
      "href": "/docs/citadel/reference/Game/texture"
     },
     {
@@ -6889,14 +6949,14 @@
     {
      "name": "get",
      "section": "functions",
-     "signature": "http.get(url: string, options: {query: {[string]: string }?, headers: {[string]: string }?, timeout: number ?, cache: number ?}?) \u2192 HttpResponse",
+     "signature": "http.get(url: string, options: {query: {[string]: string}?, headers: {[string]: string}?, timeout: number ?, cache: number ?}?) \u2192 HttpResponse",
      "description": "GET a URL. `cache` is the seconds a 200 answer is kept on disk; `timeout` is 1 to 60 seconds, 15 by default.",
      "href": "/docs/citadel/reference/http/get"
     },
     {
      "name": "socket",
      "section": "functions",
-     "signature": "http.socket(url: string, options: {headers: {[string]: string }?, on_message: (message: SocketMessage) -> ()}) \u2192 Socket",
+     "signature": "http.socket(url: string, options: {headers: {[string]: string}?, on_message: (message: SocketMessage) -> ()}) \u2192 Socket",
      "description": "Opens a WebSocket (`ws` or `wss`) and keeps it open: when the connection ends, the engine dials again. `on_message` gets each message on a tick.",
      "href": "/docs/citadel/reference/http/socket"
     }
@@ -6911,7 +6971,7 @@
   "hub": {
    "title": "hub global",
    "url": "/docs/citadel/reference/hub",
-   "lead": "What Minefort tells its own hub. Empty lists on every other server. The first call of servers, experiences or hubs waits up to two seconds for Minefort's lists.",
+   "lead": "What Minefort tells its own hub: never the servers or the hubs, which it browses with network.browse. Empty lists on every other server. The first call of experiences waits up to two seconds for Minefort's list.",
    "typedef": "",
    "docs_link": {
     "title": "Data",
@@ -6919,25 +6979,11 @@
    },
    "members": [
     {
-     "name": "servers",
-     "section": "functions",
-     "signature": "hub.servers() \u2192 { {id: string, name: string, category: string, motd: string ?, icon: string ?, banner: string ?, players: number ?, maxPlayers: number ?} }",
-     "description": "The players' servers that are online, and the published experiences (`category == \"experience\"`). `id` is what `player:connect` takes.",
-     "href": "/docs/citadel/reference/hub/servers"
-    },
-    {
      "name": "experiences",
      "section": "functions",
      "signature": "hub.experiences() \u2192 { {slot: number, experience: string, title: string, pitch: string ?, icon: string ?, banner: string ?, players: number ?} }",
      "description": "The portals of the experience grounds. `experience` is what `/play` takes.",
      "href": "/docs/citadel/reference/hub/experiences"
-    },
-    {
-     "name": "hubs",
-     "section": "functions",
-     "signature": "hub.hubs() \u2192 { {id: string, name: string, players: number ?, region: string ?} }",
-     "description": "Every hub that is online, this one included. `id` is what `player:connect` takes.",
-     "href": "/docs/citadel/reference/hub/hubs"
     },
     {
      "name": "rent",
@@ -6956,7 +7002,7 @@
    ],
    "sections": [
     {
-     "title": "Functions 5",
+     "title": "Functions 3",
      "type": "functions"
     }
    ]
@@ -6965,7 +7011,7 @@
    "title": "message global",
    "url": "/docs/citadel/reference/message",
    "lead": "Sends a chat line to everyone in the main room; `color` is for the words that did not pick one.",
-   "typedef": "(text: Text, color: Ink ?) -> ()",
+   "typedef": "(text: Text, color: Ink?) -> ()",
    "docs_link": {
     "title": "Data",
     "href": "/docs/citadel/storage"
@@ -7011,23 +7057,16 @@
     {
      "name": "start",
      "section": "functions",
-     "signature": "network.start(options: {member: string, label: string, slots: number, data: any }) \u2192 (NetworkStarted ?, string ?)",
+     "signature": "network.start(options: {member: string, label: string, slots: number, data: any}) \u2192 (NetworkStarted ?, string ?)",
      "description": "Starts an instance of `member`. Answers at once; it is online later.",
      "href": "/docs/citadel/reference/network/start"
     },
     {
      "name": "find",
      "section": "functions",
-     "signature": "network.find(options: {label: string, players: number ?, party: (Player | string)?, start: {member: string, slots: number, data: any }?}) \u2192 (NetworkStarted ?, string ?)",
+     "signature": "network.find(options: {label: string, players: number ?, party: (Player | string)?, start: {member: string, slots: number, data: any}?}) \u2192 (NetworkStarted ?, string ?)",
      "description": "The instance to send `players` players to (1 unless set), or nil when none has room. With `start`, one is started when none has room.",
      "href": "/docs/citadel/reference/network/find"
-    },
-    {
-     "name": "list",
-     "section": "functions",
-     "signature": "network.list(label: string ?) \u2192 ({ NetworkInstance }, string ?)",
-     "description": "The network's instances, or only those with `label`.",
-     "href": "/docs/citadel/reference/network/list"
     },
     {
      "name": "stop",
@@ -7039,35 +7078,63 @@
     {
      "name": "info",
      "section": "functions",
-     "signature": "network.info() \u2192 ({network: string, id: string ?, member: string ?, label: string ?, slots: number ?, data: any }?, string ?)",
+     "signature": "network.info() \u2192 ({network: string, id: string ?, member: string ?, label: string ?, slots: number ?, data: any}?, string ?)",
      "description": "This server's network, by name, and the instance this pack runs on: `id` and the fields after it are nil on a server that is not one.",
      "href": "/docs/citadel/reference/network/info"
     },
     {
      "name": "status",
      "section": "functions",
-     "signature": "network.status(options: {open: number, status: string ?, meta: any })",
+     "signature": "network.status(options: {open: number, status: string ?, meta: any})",
      "description": "Says where this instance is. At most one a second is sent: the first at once, then the last of those that came after.",
      "href": "/docs/citadel/reference/network/status"
     },
     {
-     "name": "on_instance",
+     "name": "on_instance_start",
      "section": "functions",
-     "signature": "network.on_instance(handler: (instance: NetworkInstance) -> ()) \u2192 Connection",
-     "description": "Called when an instance starts or changes.",
-     "href": "/docs/citadel/reference/network/on_instance"
+     "signature": "network.on_instance_start(handler: (instance: NetworkInstance) -> ()) \u2192 Connection",
+     "description": "Called when an instance is first seen: started, or already running.",
+     "href": "/docs/citadel/reference/network/on_instance_start"
     },
     {
-     "name": "on_gone",
+     "name": "on_instance_change",
      "section": "functions",
-     "signature": "network.on_gone(handler: (id: string) -> ()) \u2192 Connection",
+     "signature": "network.on_instance_change(handler: (instance: NetworkInstance) -> ()) \u2192 Connection",
+     "description": "Called when an instance's state, open, status or meta changes.",
+     "href": "/docs/citadel/reference/network/on_instance_change"
+    },
+    {
+     "name": "on_instance_stop",
+     "section": "functions",
+     "signature": "network.on_instance_stop(handler: (id: string) -> ()) \u2192 Connection",
      "description": "Called with the id of an instance that is gone.",
-     "href": "/docs/citadel/reference/network/on_gone"
+     "href": "/docs/citadel/reference/network/on_instance_stop"
+    },
+    {
+     "name": "online",
+     "section": "functions",
+     "signature": "network.online(label: string ?) \u2192 (number ?, string ?)",
+     "description": "How many play on this network (everyone on Minefort on the platform's hub), or in one mode's games. An answer is kept for 5 seconds.",
+     "href": "/docs/citadel/reference/network/online"
+    },
+    {
+     "name": "browse",
+     "section": "functions",
+     "signature": "network.browse(view: \"search\" | \"for-you\" | \"recent\" | \"featured\", options: {player: (Player | string)?, query: string ?, page: number ?, category: string ?, online: boolean ?, ids: {string}?, sort: (\"players\" | \"name\")?, also: {recent: boolean ?, favorites: {string}?}?}?) \u2192 ({BrowseEntry}?, (number | string)?, {recent: {rows: {BrowseEntry}, total: number} | false | nil, favorites: {rows: {BrowseEntry}, total: number} | false | nil}?)",
+     "description": "The platform's hub finding every network, in the order to show them. nil and why on a refusal, and anywhere but that hub. One page of 6 rows (page from 1), and how many there are in all; nil and why on a refusal.",
+     "href": "/docs/citadel/reference/network/browse"
+    },
+    {
+     "name": "instances",
+     "section": "functions",
+     "signature": "network.instances(label: string ?) \u2192 ({BrowseEntry | NetworkInstance}?, string ?)",
+     "description": "Everything this network runs: this experience's own always-on servers (on the platform's hub, the hubs), then its games started on demand. With `label`, only that mode's games.",
+     "href": "/docs/citadel/reference/network/instances"
     }
    ],
    "sections": [
     {
-     "title": "Functions 8",
+     "title": "Functions 11",
      "type": "functions"
     }
    ]
@@ -7241,7 +7308,7 @@
      "name": "on_break",
      "section": "functions",
      "signature": "players.on_break(fn: (player: Player ?, pos: Vec3, block: string) -> boolean ?) \u2192 Connection",
-     "description": "Cancellable. Return `false` to stop it; return nothing to let it through. These are asked *before* the world changes and the engine waits milliseconds for the answer, so they must be quick and must never `task.wait`. Timeout, error, overflow and disabled handlers deny the action. Across packs any `false` wins. See docs/luau-api.md, \"saying no\".",
+     "description": "Cancellable. Return `false` to stop it; return nothing to let it through. These are asked *before* the world changes and the engine waits milliseconds for the answer, so they must be quick and must never `task.wait`.  Timeout, error, overflow and disabled handlers deny the action. Across packs any `false` wins. See docs/luau-api.md, \"saying no\".",
      "href": "/docs/citadel/reference/Players/on_break"
     },
     {
@@ -7485,7 +7552,7 @@
     {
      "name": "request",
      "section": "functions",
-     "signature": "stores.request(query: {[string]: any }, bytes: string ?) \u2192 ({[string]: any }, string ?)",
+     "signature": "stores.request(query: {[string]: any}, bytes: string ?) \u2192 ({[string]: any}, string ?)",
      "description": "Sends one raw query to the store and yields until it answers; returns the answer table and any blob bytes.",
      "href": "/docs/citadel/reference/stores/request"
     },
@@ -7513,7 +7580,7 @@
     {
      "name": "blob_list",
      "section": "functions",
-     "signature": "stores.blob_list(owner: string) \u2192 {{store: string, key: string, version: number, size: number }}",
+     "signature": "stores.blob_list(owner: string) \u2192 {{store: string, key: string, version: number, size: number}}",
      "description": "Lists a player's blobs across all blob stores in this scope, each with its store, key, version and size.",
      "href": "/docs/citadel/reference/stores/blob_list"
     }
@@ -7580,7 +7647,7 @@
    "title": "tween global",
    "url": "/docs/citadel/reference/tween",
    "lead": "Any live field eased over time: numbers, vec3 and color values tween; a table field is replaced when it lands.",
-   "typedef": "(target: any, to: { [string]: any }, opts: { duration: number ?, easing: Easing ?, on_done: (() -> ())? }?) -> Tween",
+   "typedef": "(target: any, to: { [string]: any }, opts: { duration: number?, easing: Easing?, on_done: (() -> ())? }?) -> Tween",
    "docs_link": {
     "title": "World",
     "href": "/docs/citadel/blocks-and-terrain"
@@ -7650,7 +7717,7 @@
     {
      "name": "label",
      "section": "functions",
-     "signature": "ui.label(opts: { id: string ?, text: string ?, width: number ?, align: LayoutAlign ?, color: Ink ? }) \u2192 LayoutNode",
+     "signature": "ui.label(opts: { id: string ?, text: string ?, width: number ?, align: LayoutAlign ?, color: Ink ?, bold: boolean ? }) \u2192 LayoutNode",
      "description": "Words in the client's own letters, space to `~`. Give a label whose words change a `width`.",
      "href": "/docs/citadel/reference/Ui/label"
     },
@@ -7678,7 +7745,7 @@
     {
      "name": "define",
      "section": "functions",
-     "signature": "ui.define(name: string, opts: { anchor: \"bottom\" ?, margin: number ?, [number]: LayoutNode }) \u2192 Layout",
+     "signature": "ui.define(name: string, opts: { anchor: (\"bottom\" | \"top\")?, margin: number ?, cursor: boolean ?, [number]: LayoutNode }) \u2192 Layout",
      "description": "A layout of one child, centred over the hotbar with its bottom edge `margin` pixels above the screen's (40, or 25 when `hide_hud` takes the hearts and the food away). While the pack loads only.",
      "href": "/docs/citadel/reference/Ui/define"
     },
@@ -8034,6 +8101,15 @@
      "type": "fields"
     }
    ]
+  },
+  "BrowseEntry": {
+   "title": "BrowseEntry type",
+   "url": "/docs/citadel/reference/BrowseEntry",
+   "lead": "A row of network.browse: a network on the platform's hub, or one of this experience's own servers. `id` is what `player:connect` takes.",
+   "typedef": "{id: string, name: string?, category: string?, motd: string?, icon: string?, players: number?, maxPlayers: number?, state: string?, region: string?}",
+   "docs_link": null,
+   "members": [],
+   "sections": []
   }
  },
  "reference_members": {
@@ -10017,6 +10093,40 @@
       "quote": "- `commands.add` registers `spawn` without a slash. When a player types",
       "source": "Your first pack",
       "href": "/docs/citadel/your-first-pack"
+     }
+    ]
+   },
+   "run": {
+    "title": "commands.run",
+    "url": "/docs/citadel/reference/Commands/run",
+    "kind": "function",
+    "lead": "Runs a pack's command for player as if they typed it (\"/servers\"), with their permissions. false when no pack in their room declared it.",
+    "signature": "commands.run(player: Player, line: string) \u2192 boolean",
+    "params": [
+     {
+      "name": "player",
+      "type": "Player",
+      "required": true
+     },
+     {
+      "name": "line",
+      "type": "string",
+      "required": true
+     }
+    ],
+    "returns": [
+     "boolean"
+    ],
+    "used_in": [
+     {
+      "quote": "commands.run(player, line) -> boolean   -- runs a pack's command for player, as if they typed it",
+      "source": "Commands",
+      "href": "/docs/citadel/commands"
+     },
+     {
+      "quote": "- **`commands.run`** runs a line for a player as if they typed it, so one",
+      "source": "Commands",
+      "href": "/docs/citadel/commands"
      }
     ]
    }
@@ -12709,6 +12819,16 @@
    }
   },
   "Hud": {
+   "cursor": {
+    "title": "hud.cursor",
+    "url": "/docs/citadel/reference/Hud/cursor",
+    "kind": "field",
+    "lead": "Where the pointer is, in the layout's pixels from its top left.",
+    "signature": "hud.cursor: { x: number, y: number }?",
+    "params": [],
+    "returns": [],
+    "used_in": []
+   },
    "destroy": {
     "title": "hud:destroy",
     "url": "/docs/citadel/reference/Hud/destroy",
@@ -12724,6 +12844,52 @@
       "href": "/docs/citadel/layouts"
      }
     ]
+   },
+   "hover": {
+    "title": "hud.hover",
+    "url": "/docs/citadel/reference/Hud/hover",
+    "kind": "field",
+    "lead": "With `cursor = true`: the id under the pointer, and what fires when it changes and on a click.",
+    "signature": "hud.hover: string ?",
+    "params": [],
+    "returns": [],
+    "used_in": []
+   },
+   "on_click": {
+    "title": "hud.on_click",
+    "url": "/docs/citadel/reference/Hud/on_click",
+    "kind": "function",
+    "lead": "",
+    "signature": "hud.on_click((id: string ?, button: \"left\" | \"right\") -> ()) \u2192 ?",
+    "params": [
+     {
+      "name": "(id",
+      "type": "string ?, button: \"left\" | \"right\") -> ()",
+      "required": true
+     }
+    ],
+    "returns": [
+     "?"
+    ],
+    "used_in": []
+   },
+   "on_hover": {
+    "title": "hud.on_hover",
+    "url": "/docs/citadel/reference/Hud/on_hover",
+    "kind": "function",
+    "lead": "",
+    "signature": "hud.on_hover((id: string ?) -> ()) \u2192 ?",
+    "params": [
+     {
+      "name": "(id",
+      "type": "string ?) -> ()",
+      "required": true
+     }
+    ],
+    "returns": [
+     "?"
+    ],
+    "used_in": []
    },
    "set": {
     "title": "hud:set",
@@ -13353,6 +13519,32 @@
    }
   },
   "ModelTexture": {
+   "draw": {
+    "title": "modelTexture:draw",
+    "url": "/docs/citadel/reference/ModelTexture/draw",
+    "kind": "method",
+    "lead": "A game.texture over this one, its top left at x, y; see-through pixels skipped, what falls outside cut.",
+    "signature": "modelTexture:draw(picture: Texture, x: number ?, y: number ?)",
+    "params": [
+     {
+      "name": "picture",
+      "type": "Texture",
+      "required": true
+     },
+     {
+      "name": "x",
+      "type": "number",
+      "required": false
+     },
+     {
+      "name": "y",
+      "type": "number",
+      "required": false
+     }
+    ],
+    "returns": [],
+    "used_in": []
+   },
    "fill": {
     "title": "modelTexture:fill",
     "url": "/docs/citadel/reference/ModelTexture/fill",
@@ -15777,6 +15969,22 @@
       "quote": "- `player:push` and a movement effect (`speed`, `jump_boost`, `levitation`, `slow_falling`, `dolphins_grace`) exempt the player while they last. `player:teleport` is always allowed.",
       "source": "Room rules",
       "href": "/docs/citadel/room-rules"
+     }
+    ]
+   },
+   "time": {
+    "title": "player.time",
+    "url": "/docs/citadel/reference/Player/time",
+    "kind": "field",
+    "lead": "This player's sky alone, held at a time of day; nil or false gives them the room's again, as does moving rooms. Reads back in ticks.",
+    "signature": "player.time: (number | TimeName | false)?",
+    "params": [],
+    "returns": [],
+    "used_in": [
+     {
+      "quote": "player.time = \"midnight\"       -- this player's sky alone, held there (ticks or a world.time name);",
+      "source": "Body and movement",
+      "href": "/docs/citadel/body-and-movement"
      }
     ]
    },
@@ -21074,29 +21282,6 @@
      }
     ]
    },
-   "hubs": {
-    "title": "hub.hubs",
-    "url": "/docs/citadel/reference/hub/hubs",
-    "kind": "function",
-    "lead": "Every hub that is online, this one included. `id` is what `player:connect` takes.",
-    "signature": "hub.hubs() \u2192 { {id: string, name: string, players: number ?, region: string ?} }",
-    "params": [],
-    "returns": [
-     "{ {id: string , name: string , players: number ?, region: string ?} }"
-    ],
-    "used_in": [
-     {
-      "quote": "for _, h in hub.hubs() do print(h.name, h.players) end",
-      "source": "Hub",
-      "href": "/docs/citadel/hub"
-     },
-     {
-      "quote": "- `hub.hubs()` returns a list of `{id, name, players, region}`, one per hub that is online, this one included. `player:connect(id)` sends a player to that hub.",
-      "source": "Hub",
-      "href": "/docs/citadel/hub"
-     }
-    ]
-   },
    "point": {
     "title": "hub.point",
     "url": "/docs/citadel/reference/hub/point",
@@ -21169,29 +21354,6 @@
       "href": "/docs/citadel/hub"
      }
     ]
-   },
-   "servers": {
-    "title": "hub.servers",
-    "url": "/docs/citadel/reference/hub/servers",
-    "kind": "function",
-    "lead": "The players' servers that are online, and the published experiences (`category == \"experience\"`). `id` is what `player:connect` takes.",
-    "signature": "hub.servers() \u2192 { {id: string, name: string, category: string, motd: string ?, icon: string ?, banner: string ?, players: number ?, maxPlayers: number ?} }",
-    "params": [],
-    "returns": [
-     "{ {id: string , name: string , category: string , motd: string ?, icon: string ?, banner: string ?, players: number ?, maxPlayers: number ?} }"
-    ],
-    "used_in": [
-     {
-      "quote": "for _, s in hub.servers() do print(s.name, s.players) end",
-      "source": "Hub",
-      "href": "/docs/citadel/hub"
-     },
-     {
-      "quote": "- `hub.servers()` returns a list of `{id, name, category, motd, icon, banner, players, maxPlayers}`. `id` is what `player:connect` takes. A field Minefort does not know is nil. An entry with `category = \"experience\"` is a published experience: its `id` is the name `/play` takes, `motd` its pitch, and `banner` the URL of its banner, or nil.",
-      "source": "Hub",
-      "href": "/docs/citadel/hub"
-     }
-    ]
    }
   },
   "models": {
@@ -21251,6 +21413,50 @@
    }
   },
   "network": {
+   "browse": {
+    "title": "network.browse",
+    "url": "/docs/citadel/reference/network/browse",
+    "kind": "function",
+    "lead": "The platform's hub finding every network, in the order to show them. nil and why on a refusal, and anywhere but that hub. One page of 6 rows (page from 1), and how many there are in all; nil and why on a refusal.",
+    "signature": "network.browse(view: \"search\" | \"for-you\" | \"recent\" | \"featured\", options: {player: (Player | string)?, query: string ?, page: number ?, category: string ?, online: boolean ?, ids: {string}?, sort: (\"players\" | \"name\")?, also: {recent: boolean ?, favorites: {string}?}?}?) \u2192 ({BrowseEntry}?, (number | string)?, {recent: {rows: {BrowseEntry}, total: number} | false | nil, favorites: {rows: {BrowseEntry}, total: number} | false | nil}?)",
+    "params": [
+     {
+      "name": "view",
+      "type": "\"search\" | \"for-you\" | \"recent\" | \"featured\"",
+      "required": true
+     },
+     {
+      "name": "options",
+      "type": "{player: (Player | string)?, query: string ?, page: number ?, category: string ?, online: boolean ?, ids: {string}?, sort: (\"players\" | \"name\")?, also: {recent: boolean ?, favorites: {string}?}?}",
+      "required": false
+     }
+    ],
+    "returns": [
+     "({BrowseEntry}?, (number | string)?, {recent: {rows: {BrowseEntry}, total: number} | false | nil, favorites: {rows: {BrowseEntry}, total: number} | false | nil}?)"
+    ],
+    "used_in": [
+     {
+      "quote": "- `network.browse(view, options?)` finds other networks, and only the platform's hub may ask:",
+      "source": "Network",
+      "href": "/docs/citadel/network"
+     },
+     {
+      "quote": "- `view` is `\"search\"` (what matches `query`: names as they are typed, and domains), `\"for-you\"` (more of what `player` plays, busiest first, none of their recent ones), `\"recent\"` (where `player` played last, newest first) or `\"featured\"` (the busiest). Each row is a network: `{id, name, category, motd, icon, players, maxPlayers, state}`, and `id` is what `player:connect` takes. A network is one row, however many servers it has. It returns one page of 6 rows and how many there are in all: `local rows, total = network.browse('featured', { page = 2 })`.",
+      "source": "Network",
+      "href": "/docs/citadel/network"
+     },
+     {
+      "quote": "with `network.browse`, and its hubs with `network.instances`, and asks the",
+      "source": "Hub",
+      "href": "/docs/citadel/hub"
+     },
+     {
+      "quote": "for _, s in network.browse('featured') or {} do print(s.name, s.players) end",
+      "source": "Hub",
+      "href": "/docs/citadel/hub"
+     }
+    ]
+   },
    "find": {
     "title": "network.find",
     "url": "/docs/citadel/reference/network/find",
@@ -21308,12 +21514,12 @@
      }
     ]
    },
-   "list": {
-    "title": "network.list",
-    "url": "/docs/citadel/reference/network/list",
+   "instances": {
+    "title": "network.instances",
+    "url": "/docs/citadel/reference/network/instances",
     "kind": "function",
-    "lead": "The network's instances, or only those with `label`.",
-    "signature": "network.list(label: string ?) \u2192 ({ NetworkInstance }, string ?)",
+    "lead": "Everything this network runs: this experience's own always-on servers (on the platform's hub, the hubs), then its games started on demand. With `label`, only that mode's games.",
+    "signature": "network.instances(label: string ?) \u2192 ({BrowseEntry | NetworkInstance}?, string ?)",
     "params": [
      {
       "name": "label",
@@ -21322,31 +21528,94 @@
      }
     ],
     "returns": [
-     "({ NetworkInstance }, string ?)"
+     "({BrowseEntry | NetworkInstance}?, string ?)"
     ],
     "used_in": [
      {
-      "quote": "- `network.list(label?)` returns a list of the network's instances. Each one is the instance table below.",
+      "quote": "- `network.instances(label?)` returns everything this network runs, as this experience sees it: first its own servers that run all the time, online and taking players, as `{id, name, state, players, region}` (on the platform's hub, the hubs), then the network's games started on demand, each the instance table below. With `label`, only that mode's games: `network.instances('4v4v4v4')`. `id` is what `player:connect` takes. Never another network's. It returns nil and why when Minefort did not answer.",
       "source": "Network",
       "href": "/docs/citadel/network"
      },
      {
-      "quote": "**Events come to the default member's servers only.** Call `network.list()` once at the start, then keep the list from `on_instance` and `on_gone`. An event can be lost. Call `network.list()` again, once a minute at most, to repair the list.",
+      "quote": "**Events come to the default member's servers only.** Call `network.instances()` once at the start, then keep the list from `on_instance_start`, `on_instance_change` and `on_instance_stop`. An event can be lost. Call `network.instances()` again, once a minute at most, to repair the list.",
+      "source": "Network",
+      "href": "/docs/citadel/network"
+     },
+     {
+      "quote": "with `network.browse`, and its hubs with `network.instances`, and asks the",
+      "source": "Hub",
+      "href": "/docs/citadel/hub"
+     },
+     {
+      "quote": "for _, h in network.instances() or {} do print(h.name, h.players) end",
+      "source": "Hub",
+      "href": "/docs/citadel/hub"
+     }
+    ]
+   },
+   "on_instance_change": {
+    "title": "network.on_instance_change",
+    "url": "/docs/citadel/reference/network/on_instance_change",
+    "kind": "function",
+    "lead": "Called when an instance's state, open, status or meta changes.",
+    "signature": "network.on_instance_change(handler: (instance: NetworkInstance) -> ()) \u2192 Connection",
+    "params": [
+     {
+      "name": "handler",
+      "type": "(instance: NetworkInstance) -> ()",
+      "required": true
+     }
+    ],
+    "returns": [
+     "Connection"
+    ],
+    "used_in": [
+     {
+      "quote": "network.on_instance_change(function(instance)",
+      "source": "Network",
+      "href": "/docs/citadel/network"
+     },
+     {
+      "quote": "- `network.on_instance_change(fn)` calls `fn(instance)` when an instance's `state`, `open`, `status` or `meta` changes. It returns a connection.",
       "source": "Network",
       "href": "/docs/citadel/network"
      }
     ]
    },
-   "on_gone": {
-    "title": "network.on_gone",
-    "url": "/docs/citadel/reference/network/on_gone",
+   "on_instance_start": {
+    "title": "network.on_instance_start",
+    "url": "/docs/citadel/reference/network/on_instance_start",
+    "kind": "function",
+    "lead": "Called when an instance is first seen: started, or already running.",
+    "signature": "network.on_instance_start(handler: (instance: NetworkInstance) -> ()) \u2192 Connection",
+    "params": [
+     {
+      "name": "handler",
+      "type": "(instance: NetworkInstance) -> ()",
+      "required": true
+     }
+    ],
+    "returns": [
+     "Connection"
+    ],
+    "used_in": [
+     {
+      "quote": "- `network.on_instance_start(fn)` calls `fn(instance)` when an instance is first seen: started, or running when this server began to listen. It returns a connection.",
+      "source": "Network",
+      "href": "/docs/citadel/network"
+     }
+    ]
+   },
+   "on_instance_stop": {
+    "title": "network.on_instance_stop",
+    "url": "/docs/citadel/reference/network/on_instance_stop",
     "kind": "function",
     "lead": "Called with the id of an instance that is gone.",
-    "signature": "network.on_gone(handler: (id: string) -> ()) \u2192 Connection",
+    "signature": "network.on_instance_stop(handler: (id: string) -> ()) \u2192 Connection",
     "params": [
      {
       "name": "handler",
-      "type": "(id: string ) -> ()",
+      "type": "(id: string) -> ()",
       "required": true
      }
     ],
@@ -21355,43 +21624,48 @@
     ],
     "used_in": [
      {
-      "quote": "network.on_gone(function(id) waiting[id] = nil end)",
+      "quote": "network.on_instance_stop(function(id) waiting[id] = nil end)",
       "source": "Network",
       "href": "/docs/citadel/network"
      },
      {
-      "quote": "- `network.on_gone(fn)` calls `fn(id)` when an instance is gone. It returns a connection.",
+      "quote": "- `network.on_instance_stop(fn)` calls `fn(id)` when an instance is gone. It returns a connection.",
       "source": "Network",
       "href": "/docs/citadel/network"
      }
     ]
    },
-   "on_instance": {
-    "title": "network.on_instance",
-    "url": "/docs/citadel/reference/network/on_instance",
+   "online": {
+    "title": "network.online",
+    "url": "/docs/citadel/reference/network/online",
     "kind": "function",
-    "lead": "Called when an instance starts or changes.",
-    "signature": "network.on_instance(handler: (instance: NetworkInstance) -> ()) \u2192 Connection",
+    "lead": "How many play on this network (everyone on Minefort on the platform's hub), or in one mode's games. An answer is kept for 5 seconds.",
+    "signature": "network.online(label: string ?) \u2192 (number ?, string ?)",
     "params": [
      {
-      "name": "handler",
-      "type": "(instance: NetworkInstance ) -> ()",
-      "required": true
+      "name": "label",
+      "type": "string",
+      "required": false
      }
     ],
     "returns": [
-     "Connection"
+     "(number ?, string ?)"
     ],
     "used_in": [
      {
-      "quote": "network.on_instance(function(instance)",
+      "quote": "- `network.online(label?)` returns how many play on this network: on the platform's hub, everyone on Minefort; on any other network, its members and their instances. With `label`, only the players in that mode's games, every region's. An answer is kept for 5 seconds, so a scoreboard can ask on every redraw. It returns nil and why when Minefort did not answer.",
       "source": "Network",
       "href": "/docs/citadel/network"
      },
      {
-      "quote": "- `network.on_instance(fn)` calls `fn(instance)` when an instance starts or changes. It returns a connection.",
-      "source": "Network",
-      "href": "/docs/citadel/network"
+      "quote": "count with `network.online`. On a server that is not a hub, every",
+      "source": "Hub",
+      "href": "/docs/citadel/hub"
+     },
+     {
+      "quote": "print(network.online())",
+      "source": "Hub",
+      "href": "/docs/citadel/hub"
      }
     ]
    },
@@ -22338,5 +22612,104 @@
     ]
    }
   }
+ },
+ "_meta": {
+  "history": [
+   {
+    "synced_at": "2026-10-29T04:38:48+00:00",
+    "source": "https://minefort.com/docs/citadel (live reference pages, SSR HTML)",
+    "official_llms": "https://minefort.com/docs/citadel/llms-full.txt",
+    "changes": {
+     "parents_scanned": 177,
+     "parents_refreshed": [
+      "BlockAmendSpec",
+      "BlockAt",
+      "BlockSpec",
+      "BodyRotation",
+      "citadel",
+      "Commands",
+      "commands",
+      "DurableStore",
+      "Effect",
+      "EntityAmendOptions",
+      "EntityAmendSpec",
+      "EntityHandle",
+      "FluidRule",
+      "Game",
+      "game",
+      "GroundRule",
+      "HeadSkin",
+      "http",
+      "HttpResponse",
+      "hub",
+      "Hud",
+      "InventorySlot",
+      "ItemMatch",
+      "LetterStyle",
+      "LightSource",
+      "message",
+      "ModelTexture",
+      "network",
+      "Player",
+      "Players",
+      "players",
+      "Rotation",
+      "stores",
+      "Suggestion",
+      "ThingGrid",
+      "ThingRule",
+      "TimeName",
+      "tween",
+      "Ui",
+      "ui",
+      "Worn"
+     ],
+     "members_added": [
+      "Commands.run",
+      "Hud.cursor",
+      "Hud.hover",
+      "Hud.on_click",
+      "Hud.on_hover",
+      "ModelTexture.draw",
+      "network.browse",
+      "network.instances",
+      "network.on_instance_change",
+      "network.on_instance_start",
+      "network.on_instance_stop",
+      "network.online",
+      "Player.time"
+     ],
+     "members_pruned": [
+      "hub.hubs",
+      "hub.servers",
+      "network.list",
+      "network.on_gone",
+      "network.on_instance"
+     ],
+     "doc_pages_refreshed": [
+      "network",
+      "commands",
+      "hub",
+      "hud",
+      "body-and-movement",
+      "3d-models"
+     ]
+    }
+   },
+   {
+    "synced_at": "2026-10-29T04:50:27+00:00",
+    "source": "https://minefort.com/docs/citadel (live reference pages, SSR HTML)",
+    "official_llms": "https://minefort.com/docs/citadel/llms-full.txt",
+    "changes": {
+     "parents_scanned": 178,
+     "parents_added": [
+      "BrowseEntry"
+     ],
+     "parents_refreshed": [
+      "BrowseEntry"
+     ]
+    }
+   }
+  ]
  }
 }

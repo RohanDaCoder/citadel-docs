@@ -1,58 +1,43 @@
 ---
 title: 'Hub'
-description: 'What Minefort tells its own hub — hub.servers, hub.experiences and hub.hubs with their fields, hub.role ranks and hub.online, banners read through the http cache, and the rent/point portal calls.'
+description: 'What Minefort tells its own hub — hub.experiences and the banner fields, hub.role ranks, and the rent/point portal calls; the server lists moved to network.browse, network.instances and network.online.'
 ---
 
 :::note[In short]
-`hub` is what Minefort tells its own hub: the servers that
-are online, the experience portals of the grounds, the other hubs, player
-ranks and the network's online count. The lists refresh every minute; the
-first call waits up to two seconds for them, so call it from a task. This
-page covers the three list calls with their exact fields, ranks, banners
-and the portal calls `hub.rent` and `hub.point`.
+`hub` is what Minefort tells its own hub: the experience
+portals of the grounds, player ranks, and the `rent` and `point` calls for
+live portals. The server lists are not the hub's any more — the hub browses
+them with [`network.browse`](/ref/network/browse/), its hubs and always-on
+servers with [`network.instances`](/ref/network/instances/), and asks the
+player count with [`network.online`](/ref/network/online/). The lists refresh
+every minute; the first call of `experiences` waits up to two seconds for
+them, so call it from a task. This page covers the calls with their exact
+fields, ranks, banners and the portal calls `hub.rent` and `hub.point`.
 :::
 
 ## The calls
 
 ```luau
 task.spawn(function()
-    for _, s in hub.servers() do print(s.name, s.players) end
+    for _, s in network.browse('featured') or {} do print(s.name, s.players) end
     for _, e in hub.experiences() do print(e.slot, e.experience) end
-    for _, h in hub.hubs() do print(h.name, h.players) end
-    print(hub.online())
+    for _, h in network.instances() or {} do print(h.name, h.players) end
+    print(network.online())
 end)
 ```
 
 | Call | Returns | Purpose |
 | --- | --- | --- |
-| `hub.servers()` | list | The players' servers that are online, and published experiences. |
 | `hub.experiences()` | list | The portals of the experience grounds. |
-| `hub.hubs()` | list | Every hub that is online, this one included. |
 | `hub.role(player)` | string | The player's rank on Minefort, or nil. |
-| `hub.online()` | number | How many players are online on the whole of Minefort, or nil. |
 | `hub.rent(player, slot, product, experience?)` | request id | Offers a portal of the grounds for Gems. |
 | `hub.point(player, slot, experience)` | boolean | Turns the player's own live portal. |
+| `network.browse(view, options?)` | rows, total | Finds other networks. Hub only. |
+| `network.instances(label?)` | list | The network's always-on servers and hubs. |
+| `network.online(label?)` | number | How many play on this network. |
 
-**Anywhere but a hub, the lists are empty and both the ranks and the total
-are nil** — the calls work, they just have nothing to say.
-
-## `hub.servers()`
-
-Returns a list of the servers that are online:
-
-| Field | Meaning |
-| --- | --- |
-| `id` | What `player:connect` takes. |
-| `name` | The server's name. |
-| `category` | Its category; `"experience"` marks a published experience. |
-| `motd` | Its message of the day; for an experience, its pitch. |
-| `icon` | Its icon, or nil. |
-| `banner` | The URL of its banner, or nil. |
-| `players`, `maxPlayers` | Who is on it, and its cap. |
-
-A field Minefort does not know is nil. **An entry with
-`category = "experience"` is a published experience**: its `id` is the name
-`/play` takes, `motd` its pitch, and `banner` the URL of its banner, or nil.
+**Anywhere but a hub, the lists are empty and the ranks are nil** — the calls
+work, they just have nothing to say.
 
 ## `hub.experiences()`
 
@@ -69,20 +54,30 @@ the portals of the experience grounds:
 
 A slot that is not in the list has no experience.
 
-## `hub.hubs()`
+## The server lists live on `network`
 
-Returns a list of `{id, name, players, region}`, one per hub that is online,
-this one included. `player:connect(id)` sends a player to that hub.
+`hub` no longer lists servers or hubs. The hub reads them through the
+`network` calls — all documented on [Network](/systems/network/):
 
-## Ranks and the online count
+- [`network.browse(view, options?)`](/ref/network/browse/) finds other
+  networks: `"featured"` (the busiest), `"search"`, `"for-you"` and
+  `"recent"`. Each row is a network — `{id, name, category, motd, icon,
+  players, maxPlayers, state}` — and `id` is what `player:connect` takes.
+- [`network.instances()`](/ref/network/instances/) returns this network's
+  servers that run all the time — on the platform's hub, the hubs — each
+  `{id, name, state, players, region}`, then the network's games started on
+  demand.
+- [`network.online()`](/ref/network/online/) returns how many play on this
+  network: on the platform's hub, everyone on Minefort.
+
+## Ranks
 
 `hub.role(player)` returns the player's rank on Minefort — `"owner"`,
 `"admin"`, `"moderator"` or `"builder"` — and nil for everyone else. It also
-takes a uuid, with or without dashes. `hub.online()` returns how many players
-are online on the whole of Minefort, or nil before Minefort has said.
+takes a uuid, with or without dashes.
 
-Minefort sends the ranks and the total **every minute**. Anywhere but a hub,
-both are nil. A new rank reaches the hub within one minute.
+Minefort sends the ranks **every minute**, so a new rank reaches the hub
+within one. Anywhere but a hub, they are nil.
 
 :::note
 `hub.role` is Minefort-wide — the ranks of the platform, not of
@@ -121,15 +116,15 @@ every answer is no.
 
 ## Calling from a task
 
-Minefort keeps the lists up to date. **The first call of `servers`,
-`experiences` or `hubs` waits at most two seconds for them, so call it from a
-task** — the opening example wraps all four calls in `task.spawn`.
+Minefort keeps the lists up to date. **The first call of `experiences` waits
+at most two seconds for them, so call it from a task** — the opening example
+wraps the list calls in `task.spawn`.
 
 ## See also
 
 - [Shop](/systems/shop/) — `on_paid` delivers what `hub.rent` sells.
 - [HTTP](/systems/http/) — banners through the cache and `:image()`.
-- [Network](/systems/network/) — instances, the other kind of server
-  `player:connect` reaches.
+- [Network](/systems/network/) — `browse`, `instances`, `online` and the
+  instance events; the other kind of server `player:connect` reaches.
 - [Permissions](/players/permissions/) — the server's own operator and
   permission model.

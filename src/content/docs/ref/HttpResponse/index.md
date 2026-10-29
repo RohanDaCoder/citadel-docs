@@ -20,4 +20,4 @@ What `http.get` returns. A failed request is not an error: read `ok`.
 | [`httpResponse.status: number`](/ref/HttpResponse/status/) | The HTTP status; 0 when no answer came. |
 | [`httpResponse.error: string ?`](/ref/HttpResponse/error/) | Why no answer came, or nil. |
 | [`httpResponse.body: string`](/ref/HttpResponse/body/) | The answer as bytes. |
-| [`httpResponse.headers: {[string]: string }`](/ref/HttpResponse/headers/) | The answer's headers, names in lower case. |
+| [`httpResponse.headers: {[string]: string}`](/ref/HttpResponse/headers/) | The answer's headers, names in lower case. |

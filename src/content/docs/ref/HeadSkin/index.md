@@ -5,4 +5,4 @@ description: 'Whose face a player head shows: a Minecraft account''s name, or th
 
 Whose face a player head shows: a Minecraft account's name, or the `textures` profile property of a skin no account wears.
 
-`string` | `{ value: string, signature: string ? }`
+`string` | `{ value: string, signature: string? }`
