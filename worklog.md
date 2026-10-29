@@ -280,3 +280,21 @@ Work Log:
 Stage Summary:
 - Deliverables: scripts/{discover_all,crawl_citadel,extract_final,inspect_dataset,diff_smoke}.py (new), scripts/PIPELINE.md (new), refreshed download/citadel-wiki-starlight.zip; full pipeline now reproducible: discover -> crawl -> extract -> dataset.json -> gen_starlight/gen_citadel_dts/gen_llms_full -> build.
 - Reconstruction is verified, not approximate: byte-identical dataset entries for every page type.
+
+---
+Task ID: 8
+Agent: main (Z.ai)
+Task: Sync project to a git repo / add a pushable remote
+
+Work Log:
+- Confirmed /home/z/my-project is already a git repo (branch main, 12 commits, 4,163 tracked files, 10.7 MiB pack, fsck clean); prior commits were platform auto-snapshots.
+- Repo hygiene: untracked scripts/__pycache__ (9 files), extended .gitignore with __pycache__/, *.pyc, *.bundle; committed as da602ee.
+- Remote blocker audit: no gh CLI, no openssh-client, no sudo, no SSH keys, no tokens; github.com reachable (HTTP 200, TCP 22 + ssh.github.com:443 open).
+- Built a paramiko-based SSH transport (scripts/git_ssh.py) since the container has no ssh binary: parses ssh-style args, connects with auto-add host keys and ~/.ssh/id_ed25519, falls back to ssh.github.com:443, execs git-upload-pack/receive-pack and pumps stdio bidirectionally; verified end-to-end via GIT_SSH_COMMAND git ls-remote (reaches auth stage, rejected only because the key is not yet registered on GitHub).
+- Built scripts/gen_deploy_key.py (ed25519 keypair via cryptography; paramiko 5.x dropped Ed25519Key.generate) and generated ~/.ssh/id_ed25519 for the user to authorize as a GitHub deploy key with write access.
+- Created download/citadel-wiki.bundle (git bundle --all, 12 MB, complete history, verified) as a portable single-file repo the user can clone/push from anywhere.
+- Committed the SSH tooling as 1a03e75; working tree clean.
+
+Stage Summary:
+- Deliverables: download/citadel-wiki.bundle (full-history portable repo), scripts/git_ssh.py + scripts/gen_deploy_key.py (in-container SSH push transport), deploy public key printed in chat for authorization.
+- Pending one user input: the GitHub repo URL (after adding the deploy key); then `git remote add origin git@github.com:<user>/<repo>.git && git push -u origin main` completes the sync from here.
