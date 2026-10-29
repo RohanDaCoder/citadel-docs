@@ -1,17 +1,21 @@
 # SOURCE: Coin rush
 
 ## What you build
+
 - A round grass arena with a fence on its rim.
 - Five gold pressure plates, the coins, at random places on the floor.
-Walk onto one to take it; a new one appears somewhere else.
+  Walk onto one to take it; a new one appears somewhere else.
 - A boss bar that counts down the round, and a sidebar with every
-player’s score.
+  player’s score.
 - At the end: the winner’s name on screen, fireworks, and a message to
-each player who beat their best.
-Read **Your first pack** first: this guide uses what it explains.
+  each player who beat their best.
+  Read **Your first pack** first: this guide uses what it explains.
+
 ## 1. The pack
+
 Three Luau files this time. `main.luau` runs the game, and it loads two
 modules: `arena.luau` for the ground, `coins.luau` for the coins.
+
 ```yaml
 # citadel.yml
 name: coins
@@ -22,10 +26,13 @@ gamemode: 2
 mode: lite
 world: script
 ```
+
 ## 2. The arena
+
 A module is a file that returns a table. `require("arena")` runs
 `arena.luau` once and hands back what it returned, so every file that
 requires it shares one arena.
+
 ```luau
 -- arena.luau
 world.on_generate(function(chunk)
@@ -42,11 +49,13 @@ world.on_generate(function(chunk)
     end
 end)
 ```
+
 `math.sqrt(x * x + z * z)` is the distance from the middle. Inside the
 radius is grass; a ring just outside it gets a stone floor and a fence.
 Fences join their neighbours on their own: write `"oak_fence"`, and the
 ring closes.
 The coins need random places on the floor, away from the fence:
+
 ```luau
 -- arena.luau
 -- A random block on the floor, two blocks in from the fence.
@@ -60,11 +69,15 @@ function arena.spot(): vector
     end
 end
 ```
+
 It picks a random square around the middle, and tries again until the
 spot is inside the circle.
+
 ## 3. The coins
+
 A coin is two things: a gold pressure plate that players see, and a
 **zone** that notices a player walking onto it.
+
 ```luau
 -- coins.luau
 function coins.place(on_take: (player: any) -> ())
@@ -89,13 +102,15 @@ function coins.place(on_take: (player: any) -> ())
     table.insert(placed, coin)
 end
 ```
+
 - A spot that already has a coin is not `"air"`, so `place` picks again.
 - `world.zone` is a box of blocks. Here it is one block, and `on_enter`
-runs when a player’s feet enter it.
+  runs when a player’s feet enter it.
 - Taking a coin removes it, plays a sound and a burst of particles at
-it, and calls `on_take`: the game decides what a coin is worth, not the
-coin.
-Removing a coin puts the floor back and forgets the zone:
+  it, and calls `on_take`: the game decides what a coin is worth, not the
+  coin.
+  Removing a coin puts the floor back and forgets the zone:
+
 ```luau
 -- coins.luau
 function coins.remove(coin)
@@ -110,9 +125,12 @@ function coins.clear()
     end
 end
 ```
+
 ## 4. Scores
+
 Each player carries their own score in `player.data`, a table that lives
 as long as the player is connected. The sidebar shows everyone’s:
+
 ```luau
 -- main.luau
 -- The sidebar lists every player, most coins first.
@@ -135,11 +153,13 @@ local function take(player)
     coins.place(take)
 end
 ```
+
 `take` counts the coin and places a new one, so there are always five on
 the floor. It passes itself to `coins.place`: the new coin calls `take`
 again when someone walks onto it.
 When a player joins, their score starts at 0, and `storage` tells them
 their best:
+
 ```luau
 -- main.luau
 players.on_join(function(player)
@@ -149,11 +169,15 @@ players.on_join(function(player)
     show_scores()
 end)
 ```
+
 `storage` keeps values across restarts. The key uses `player.uuid`, not
 the name: a player can change their name, never their id.
+
 ## 5. A round
+
 One round sends everyone to the middle, puts five coins down, and counts
 down sixty seconds on a boss bar:
+
 ```luau
 -- main.luau
 local bar = ui.bossbar{ title = "Coin rush", color = "yellow", progress = 1 }
@@ -195,9 +219,11 @@ local function round()
     end
 end
 ```
+
 `task.wait(1)` inside the loop pauses the round, not the server: coins
 are taken, sounds play and other players join while it waits.
 At the end the round finds the winner and saves each best score:
+
 ```luau
 -- main.luau
 local function coins_text(n: number): string
@@ -219,7 +245,9 @@ if winner then
     fx.particle("firework", arena.CENTER + vec3(0, 2, 0), { count = 60, spread = 2, speed = 0.1 })
 end
 ```
+
 ## 6. Rounds forever
+
 ```luau
 -- main.luau
 -- Rounds run forever: a round, a five-second break, the next round.
@@ -234,10 +262,13 @@ task.spawn(function()
     end
 end)
 ```
+
 `task.spawn` runs the loop as its own script, so `main.luau` finishes
 loading while the rounds go on. With nobody online it waits; otherwise
 it plays a round, rests five seconds, and plays the next.
+
 ## The whole pack
+
 ```luau
 -- main.luau
 --!strict
@@ -327,6 +358,7 @@ task.spawn(function()
     end
 end)
 ```
+
 ```luau
 -- coins.luau
 --!strict
@@ -373,6 +405,7 @@ end
 
 return coins
 ```
+
 ```luau
 -- arena.luau
 --!strict
@@ -409,11 +442,13 @@ end
 
 return arena
 ```
+
 ## Try this next
+
 - Make one coin in ten a diamond plate worth five coins: pick the block
-in `coins.place`, and pass the value to `on_take`.
+  in `coins.place`, and pass the value to `on_take`.
 - Show the three best scores of all time on the sidebar under the live
-scores, with `storage.keys("best.")`.
+  scores, with `storage.keys("best.")`.
 - Give the winner a golden title in chat for the next round with
-`player.data`.
-Next, **Parkour, a room each** gives every player a world of their own.
+  `player.data`.
+  Next, **Parkour, a room each** gives every player a world of their own.

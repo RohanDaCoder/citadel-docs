@@ -5,6 +5,7 @@ order: 2
 description: Three leaderboard patterns — the live sidebar for a running game, the world.screen board that persists with storage, and the experience-wide best score with stores:increment.
 tags: [leaderboard, sidebar, screen, storage, stores, pattern]
 ---
+
 # Leaderboards
 
 > **In short:** a leaderboard needs a score, a sort, and a place to draw.

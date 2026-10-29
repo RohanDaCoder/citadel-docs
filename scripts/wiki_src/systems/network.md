@@ -5,6 +5,7 @@ order: 4
 description: An experience of more than one server — members, labels and instances; network.start/find/status, the on_instance_start/change/stop events, network.instances/online/browse, the instance table, how player:connect moves players, failures with reasons, and every limit.
 tags: [network, instances, members, labels, find, connect, scaling, browse]
 ---
+
 # Network
 
 > **In short:** `network` is for an experience made of more than one server:
@@ -80,19 +81,19 @@ end)
 
 ## The calls
 
-| Call | Returns | Purpose |
-| --- | --- | --- |
-| `network.start{ member, label, slots, data? }` | `{id, state}` | Starts an instance; answers at once with `state = "starting"`. |
-| `network.find{ label, players?, party?, start? }` | `{id, state}` or nil | The instance to send `players` players to. |
-| `network.instances(label?)` | list | Everything this network runs: its always-on servers, then its games started on demand. |
-| `network.online(label?)` | number | How many play on this network; the answer is kept 5 seconds. |
-| `network.browse(view, options?)` | rows, total | Finds other networks. **The platform's hub only.** |
-| `network.stop(id)` | boolean | Stops an instance of this network; true when accepted. |
-| `network.info()` | `{network, id?, ...}` | This server's network, and the instance it runs on. |
-| `network.status{ open, status?, meta? }` | — | Says where this instance is. Does not yield. |
-| `network.on_instance_start(fn)` | Connection | Calls `fn(instance)` when an instance is first seen. |
-| `network.on_instance_change(fn)` | Connection | Calls `fn(instance)` when an instance's `state`, `open`, `status` or `meta` changes. |
-| `network.on_instance_stop(fn)` | Connection | Calls `fn(id)` when an instance is gone. |
+| Call                                              | Returns               | Purpose                                                                                |
+| ------------------------------------------------- | --------------------- | -------------------------------------------------------------------------------------- |
+| `network.start{ member, label, slots, data? }`    | `{id, state}`         | Starts an instance; answers at once with `state = "starting"`.                         |
+| `network.find{ label, players?, party?, start? }` | `{id, state}` or nil  | The instance to send `players` players to.                                             |
+| `network.instances(label?)`                       | list                  | Everything this network runs: its always-on servers, then its games started on demand. |
+| `network.online(label?)`                          | number                | How many play on this network; the answer is kept 5 seconds.                           |
+| `network.browse(view, options?)`                  | rows, total           | Finds other networks. **The platform's hub only.**                                     |
+| `network.stop(id)`                                | boolean               | Stops an instance of this network; true when accepted.                                 |
+| `network.info()`                                  | `{network, id?, ...}` | This server's network, and the instance it runs on.                                    |
+| `network.status{ open, status?, meta? }`          | —                     | Says where this instance is. Does not yield.                                           |
+| `network.on_instance_start(fn)`                   | Connection            | Calls `fn(instance)` when an instance is first seen.                                   |
+| `network.on_instance_change(fn)`                  | Connection            | Calls `fn(instance)` when an instance's `state`, `open`, `status` or `meta` changes.   |
+| `network.on_instance_stop(fn)`                    | Connection            | Calls `fn(id)` when an instance is gone.                                               |
 
 `network.start` returns `{id, state}` at once, with `state = "starting"`: the
 instance comes online later. `slots` is the number of players the instance
@@ -149,7 +150,7 @@ platform's hub may ask:
   or `"featured"` (the busiest). A network is one row, however many servers
   it has: `{id, name, category, motd, icon, players, maxPlayers, state}`.
 - `options` is `{player?, query?, page?, category?, online?, ids?, sort?,
-  also?}`. `page` is from 1; `sort` is `"players"` or `"name"`. It returns
+also?}`. `page` is from 1; `sort` is `"players"` or `"name"`. It returns
   one page of **6 rows** and how many there are in all:
   `local rows, total = network.browse('featured', { page = 2 })`.
 - `also = { recent = true, favorites = ids }` brings a board's sidebar in the
@@ -176,15 +177,15 @@ returns nothing and does not yield.
 Every instance — from `instances`, the `on_instance_*` events, or a
 `find`/`start` answer — is the same shape:
 
-| Field | Set by | Meaning |
-| --- | --- | --- |
-| `id` | Minefort | The instance's name. `player:connect` takes it. |
-| `member`, `label` | the pack that started it | Which member, and which label. |
-| `state` | Minefort | `"starting"`, then `"online"`, then `"stopping"`. |
-| `open` | the instance | The number of players it takes now. |
-| `status` | the instance | Its own word, or nil. |
-| `players` | Minefort | The number of players on it. |
-| `meta` | the instance | Its own value, or nil. |
+| Field             | Set by                   | Meaning                                           |
+| ----------------- | ------------------------ | ------------------------------------------------- |
+| `id`              | Minefort                 | The instance's name. `player:connect` takes it.   |
+| `member`, `label` | the pack that started it | Which member, and which label.                    |
+| `state`           | Minefort                 | `"starting"`, then `"online"`, then `"stopping"`. |
+| `open`            | the instance             | The number of players it takes now.               |
+| `status`          | the instance             | Its own word, or nil.                             |
+| `players`         | Minefort                 | The number of players on it.                      |
+| `meta`            | the instance             | Its own value, or nil.                            |
 
 ## Moving players
 
@@ -211,11 +212,11 @@ repair the list.
 `stop` returns `false, reason`. The reason is Minefort's word, or one of
 these:
 
-| Reason | Meaning |
-| --- | --- |
-| `"unavailable"` | There is no network here. Every local run answers this. |
-| `"io"` | The request was not sent. |
-| `"timeout"` | No answer came in 35 seconds. A `start` may have happened. |
+| Reason          | Meaning                                                    |
+| --------------- | ---------------------------------------------------------- |
+| `"unavailable"` | There is no network here. Every local run answers this.    |
+| `"io"`          | The request was not sent.                                  |
+| `"timeout"`     | No answer came in 35 seconds. A `start` may have happened. |
 
 `find` returns `nil` with **no reason** when no instance has room — that is
 not a failure.
@@ -224,16 +225,16 @@ not a failure.
 
 A value out of these is an error, and nothing is sent:
 
-| Value | Limit |
-| --- | --- |
-| `label` | 1 to 32 characters of `a-z`, `0-9` and `-` |
-| `member` | 1 to 40 characters of `a-z`, `0-9` and `-` |
-| `slots` | 1 to 200 |
-| `players` | 1 to 64 |
-| `open` | 0 to 200 |
-| `data` | at most 4096 bytes as JSON |
-| `meta` | at most 512 bytes as JSON |
-| `status` | at most 32 characters |
+| Value     | Limit                                      |
+| --------- | ------------------------------------------ |
+| `label`   | 1 to 32 characters of `a-z`, `0-9` and `-` |
+| `member`  | 1 to 40 characters of `a-z`, `0-9` and `-` |
+| `slots`   | 1 to 200                                   |
+| `players` | 1 to 64                                    |
+| `open`    | 0 to 200                                   |
+| `data`    | at most 4096 bytes as JSON                 |
+| `meta`    | at most 512 bytes as JSON                  |
+| `status`  | at most 32 characters                      |
 
 - An unknown field in a table is an error.
 - A network has at most **20 instances in a region**, and **one `start` a

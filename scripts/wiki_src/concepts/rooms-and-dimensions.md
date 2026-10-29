@@ -5,6 +5,7 @@ order: 6
 description: Two ways to have more than one world — rooms, made at runtime with rooms.create and each with its own world/players/ui/game tables, and dimensions, declared in citadel.yml and reached by routes and player:travel.
 tags: [rooms, dimensions, routes, travel, worlds]
 ---
+
 # Rooms and dimensions
 
 > **In short:** a **room** is a runtime world the script makes with
@@ -88,7 +89,7 @@ inside the pack, so `dungeon` under pack `castle` is `castle:dungeon`:
 dimensions:
   dungeon:
     type: { has_skylight: false, has_ceiling: true, weather: false }
-    world: script            # or "void" to leave chunks empty
+    world: script # or "void" to leave chunks empty
 ```
 
 - `type` says how the world behaves. Every field is optional and starts from

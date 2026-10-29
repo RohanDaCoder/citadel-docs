@@ -5,6 +5,7 @@ order: 1
 description: Code a cottage — plinth, walls, set-back windows, gable roof, garden — as one world.build with named parts, paste it into generated ground, and check it with the citadel CLI.
 tags: [tutorial, building, world.build, chunk paste, render, check]
 ---
+
 # Build a cottage
 
 > **In short:** this tutorial builds a whole cottage in code — footing, walls,
@@ -13,6 +14,7 @@ tags: [tutorial, building, world.build, chunk paste, render, check]
 > building well.
 
 ## What you build
+
 - A cottage of 9 by 7 blocks on a cobblestone plinth, with oak posts and
   white walls.
 - Windows set back into the wall, with a sill under each.

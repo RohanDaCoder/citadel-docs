@@ -5,6 +5,7 @@ order: 2
 description: Moving players — teleport, move_to, travel, push, and the writable speed, scale and reach — riding and seats, body rotation, the four camera modes with camera.path easing, and the input events a pack can read.
 tags: [movement, teleport, cameras, riding, input, push, speed]
 ---
+
 # Movement and cameras
 
 > **In short:** the pack moves a player with `player:teleport`, `player:push`,
@@ -19,11 +20,11 @@ tags: [movement, teleport, cameras, riding, input, push, speed]
 
 Three calls move a player outright, at three scales.
 
-| Call | Effect |
-| --- | --- |
+| Call                                                      | Effect                                                        |
+| --------------------------------------------------------- | ------------------------------------------------------------- |
 | [`player:teleport(pos, rotation?)`](/ref/Player/teleport) | To a position; yaw and pitch left out keep the way they face. |
-| [`player:move_to(room)`](/ref/Player/move_to) | To another room; the client swaps worlds in place. |
-| [`player:travel(dimension, pos?)`](/ref/Player/travel) | To another world of the group, at `pos` or its spawn. |
+| [`player:move_to(room)`](/ref/Player/move_to)             | To another room; the client swaps worlds in place.            |
+| [`player:travel(dimension, pos?)`](/ref/Player/travel)    | To another world of the group, at `pos` or its spawn.         |
 
 ```luau
 player:teleport(vec3(0.5, 65, 0.5))              -- rotation left out: keeps facing
@@ -38,12 +39,12 @@ rooms compare by identity. Rooms and dimensions are covered in
 
 ## Pushing and the body
 
-| Field | Meaning |
-| --- | --- |
-| [`player.speed`](/ref/Player/speed) | Walk speed as a multiple of normal; 0 pins them. |
-| [`player.scale`](/ref/Player/scale) | 1/16 to 16; 1.20.5 and later, older clients stay as they are. |
+| Field                               | Meaning                                                                                                                               |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| [`player.speed`](/ref/Player/speed) | Walk speed as a multiple of normal; 0 pins them.                                                                                      |
+| [`player.scale`](/ref/Player/scale) | 1/16 to 16; 1.20.5 and later, older clients stay as they are.                                                                         |
 | [`player.reach`](/ref/Player/reach) | How far a block can be clicked or dug, 0 to 64 blocks (4.5 by default); 1.20.5 and later. Measured from the camera when there is one. |
-| `player.can_fly` | May fly in a mode that cannot. |
+| `player.can_fly`                    | May fly in a mode that cannot.                                                                                                        |
 
 [`player:push(velocity)`](/ref/Player/push) is a shove in blocks per tick, on
 top of what they are doing.
@@ -70,10 +71,10 @@ off: `world.rules{ anticheat = false }` (see
 
 ## Riding
 
-| Call | Effect |
-| --- | --- |
+| Call                                            | Effect                                                               |
+| ----------------------------------------------- | -------------------------------------------------------------------- |
 | [`player:ride(thing, opts?)`](/ref/Player/ride) | Seats the player; `opts` is `{ seat = number?, locked = boolean? }`. |
-| [`player:dismount()`](/ref/Player/dismount) | Gets the player off; sneaking does the same, as off a horse. |
+| [`player:dismount()`](/ref/Player/dismount)     | Gets the player off; sneaking does the same, as off a horse.         |
 
 - Seat 1 drives a vehicle; `locked` keeps a sneak from getting them off.
 - `ride` returns `false` when somebody sits in that seat; it keeps the current
@@ -111,12 +112,12 @@ A camera is a value you put on a player: `player.camera = cam`, or `nil` or
 `false` for their own eyes. There are four kinds, and
 [`camera.path`](#camera-paths) eases from shot to shot:
 
-| Mode | What the player sees | Needs |
-| --- | --- | --- |
-| `fixed` | A shot from a point (`at`) or of a target (`from`), with optional `look_at`. | works in every mode |
-| `free` | Mouse look from a point — not free flight. | 1.19.4 |
-| `orbit` | The eyes `distance` blocks behind `follow`, `height` over its feet, opposite the look direction. | 1.19.4 |
-| `chase` | The view from behind a car: behind `follow`, `height` over it, heading its way, `pitch` degrees down. | 1.19.4 |
+| Mode    | What the player sees                                                                                  | Needs               |
+| ------- | ----------------------------------------------------------------------------------------------------- | ------------------- |
+| `fixed` | A shot from a point (`at`) or of a target (`from`), with optional `look_at`.                          | works in every mode |
+| `free`  | Mouse look from a point — not free flight.                                                            | 1.19.4              |
+| `orbit` | The eyes `distance` blocks behind `follow`, `height` over its feet, opposite the look direction.      | 1.19.4              |
+| `chase` | The view from behind a car: behind `follow`, `height` over it, heading its way, `pitch` degrees down. | 1.19.4              |
 
 ### fixed
 

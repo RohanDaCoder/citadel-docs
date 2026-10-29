@@ -10,6 +10,7 @@ bytes raise an error instead of being replaced. Use `stores.open():blob_put` for
 binary data. The UTF-8 rule also applies to persistent entity and block data
 and other JSON-backed APIs.
 A value it cannot hold is an error that names it, never a changed copy:
+
 ```luau
 local t = { 1, 2 }; t.total = 3
 storage.set("score", t)
@@ -18,6 +19,7 @@ storage.set("score", t)
 storage.set("tick", function() end)
 -- error: storage cannot save tick: a function is not a JSON value...
 ```
+
 - Records use string keys; lists must be contiguous from index 1. A table cannot mix the two.
 - Numbers must be finite, and cyclic tables raise an error before changing stored data.
 - Persistent data views are accepted directly; reads return detached plain tables.

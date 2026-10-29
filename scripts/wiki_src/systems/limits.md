@@ -5,6 +5,7 @@ order: 9
 description: The tick budget — budget_ms and its 2 ms default, what it covers and what keeps the 100 ms runaway limit instead, what happens when it runs out, citadel.budget() fields, citadel.on_slow, the 4096-event queue, and the asks the engine asks.
 tags: [budget, limits, on_slow, event queue, asks, performance]
 ---
+
 # Limits
 
 > **In short:** a pack's tick and event callbacks share a slice of every
@@ -19,10 +20,10 @@ tags: [budget, limits, on_slow, event queue, asks, performance]
 A pack's tick and event callbacks share part of each tick. Set it with
 `budget_ms` in the pack's `citadel.yml`. The default is **2 ms**.
 
-| Covered by the budget | Not covered |
-| --- | --- |
+| Covered by the budget                                                                   | Not covered                                                                                                               |
+| --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
 | `time.on_tick`, `time.every`, the survival events (`world.on_block_break` and the rest) | `players.on_join`, input events (`on_click`, `on_chat`, commands), task threads — these keep the **100 ms runaway limit** |
-| | Chunk callbacks keep their separate **2 s** limit |
+|                                                                                         | Chunk callbacks keep their separate **2 s** limit                                                                         |
 
 **It counts work, not time spent waiting** — a callback that yields on I/O
 does not spend budget while it waits.
@@ -60,15 +61,15 @@ citadel.on_slow(function(slow)
 end)
 ```
 
-| Field | Meaning |
-| --- | --- |
-| `b.of` | The ms this pack gets per tick — `budget_ms` in citadel.yml; 2 by default. |
-| `b.used` | What the last tick spent. |
-| `b.peak` | The most any tick has spent. |
-| `b.skipped` | Callbacks not run for want of budget, since the script started. |
-| `b.dropped` | Events this pack never saw — overflow of the event queue. |
-| `b.slowest` | `{ hook = "on_tick", ms = 4.1 }`, or nil. |
-| `b.asks` | What the engine's questions cost this pack; see below. |
+| Field       | Meaning                                                                    |
+| ----------- | -------------------------------------------------------------------------- |
+| `b.of`      | The ms this pack gets per tick — `budget_ms` in citadel.yml; 2 by default. |
+| `b.used`    | What the last tick spent.                                                  |
+| `b.peak`    | The most any tick has spent.                                               |
+| `b.skipped` | Callbacks not run for want of budget, since the script started.            |
+| `b.dropped` | Events this pack never saw — overflow of the event queue.                  |
+| `b.slowest` | `{ hook = "on_tick", ms = 4.1 }`, or nil.                                  |
+| `b.asks`    | What the engine's questions cost this pack; see below.                     |
 
 Hook names are short: `"on_tick"`, `"every"`, or the event's name
 (`"block_break"`, `"pickup"`).
@@ -95,10 +96,10 @@ server crash — keep lifecycle callbacks short so their retained backlog drains
 event, such as "may this player break this block". The engine waits a few
 milliseconds for the answer. Three exist:
 
-| Ask | Kind |
-| --- | --- |
-| `players.on_break` | `"break"` |
-| `players.on_place` | `"place"` |
+| Ask                 | Kind       |
+| ------------------- | ---------- |
+| `players.on_break`  | `"break"`  |
+| `players.on_place`  | `"place"`  |
 | `players.on_damage` | `"damage"` |
 
 With no answer in time, the engine **denies the protected action**. With no
@@ -133,15 +134,15 @@ The full ask model — vetoes, deadline behaviour, observe-after-veto — is in
 
 ## Other limits, and where they live
 
-| Limit | Where it is documented |
-| --- | --- |
-| Load: 5 s of work between waits, 30 s in all for the entry script | [Pack anatomy](/wiki/pack-anatomy) |
-| Reload entry: 30 s including `task.wait` and read requests | [Runtime](/wiki/runtime#reload-exactly) |
-| Chunk callbacks: 2 s; the engine waits 60 s for a chunk | [Terrain generation](/wiki/terrain-generation), [HTTP](/wiki/http#a-world-from-fetched-data) |
-| Store limits: keys 256 B, facts 1 MiB, blobs 32 MiB, hosted 512 MiB + 1 MiB a player, 1,000 blobs a player, 100,000 lease tokens, 32 pending requests | [Shared stores](/wiki/shared-stores#limits) |
-| HTTP: 16 MiB an answer, 64 pending and 8 on the wire a pack, 600 requests a minute a server, 8 sockets, 1 MiB a message, 256 messages or 4 MiB a queue | [HTTP](/wiki/http#limits) |
-| Network: label 1–32, member 1–40, slots 1–200, players 1–64, `open` 0–200, `data` 4096 B, `meta` 512 B, `status` 32 chars, 20 instances a region, one `start` a second | [Network](/wiki/network#limits) |
-| Command arguments: ranges and the 100 ms runaway limit | [Commands](/wiki/commands), this page |
+| Limit                                                                                                                                                                  | Where it is documented                                                                       |
+| ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Load: 5 s of work between waits, 30 s in all for the entry script                                                                                                      | [Pack anatomy](/wiki/pack-anatomy)                                                           |
+| Reload entry: 30 s including `task.wait` and read requests                                                                                                             | [Runtime](/wiki/runtime#reload-exactly)                                                      |
+| Chunk callbacks: 2 s; the engine waits 60 s for a chunk                                                                                                                | [Terrain generation](/wiki/terrain-generation), [HTTP](/wiki/http#a-world-from-fetched-data) |
+| Store limits: keys 256 B, facts 1 MiB, blobs 32 MiB, hosted 512 MiB + 1 MiB a player, 1,000 blobs a player, 100,000 lease tokens, 32 pending requests                  | [Shared stores](/wiki/shared-stores#limits)                                                  |
+| HTTP: 16 MiB an answer, 64 pending and 8 on the wire a pack, 600 requests a minute a server, 8 sockets, 1 MiB a message, 256 messages or 4 MiB a queue                 | [HTTP](/wiki/http#limits)                                                                    |
+| Network: label 1–32, member 1–40, slots 1–200, players 1–64, `open` 0–200, `data` 4096 B, `meta` 512 B, `status` 32 chars, 20 instances a region, one `start` a second | [Network](/wiki/network#limits)                                                              |
+| Command arguments: ranges and the 100 ms runaway limit                                                                                                                 | [Commands](/wiki/commands), this page                                                        |
 
 The one-table view of every number in the corpus is
 [the limits table](/appendix/limits-table).

@@ -5,6 +5,7 @@ order: 6
 description: world.display — floating text, items, blocks, frames and 3D models with live fields, tweening and billboards — plus the models.new system of materials, textures, parts, boxes, named animations and vehicles.
 tags: [ui, displays, models, hitbox, billboards, animations, vehicles]
 ---
+
 # Displays and models
 
 > **In short:** a display is a floating item, text or block with no physics,
@@ -54,16 +55,16 @@ world.display{ kind = "block", at = vec3(4.5, 66, 0.5), block = "lapis_block" }
 
 ## Live fields and tweening
 
-| Field | What it is |
-| --- | --- |
-| `d.id` | Entity id, what `players.on_click` reports in `hit.entity_id` |
-| `d.at, d.rotation, d.scale, d.billboard, d.glow` | Live, every kind |
-| `d.item, d.canvas, d.context` | Live, item kind (`canvas` reads back as the map id) |
-| `d.text, d.color, d.background, d.line_width, d.shadow` | Live, text kind; `background = nil` or `false` for none |
-| `d.block` | Live, block kind |
-| `d.duration` | Seconds later changes take to play out (1.19.4+); 0 |
-| `d.glide` | Advanced: movement smoothing seconds (1.20.2+); default 0.1 |
-| `d.lead` | Advanced: `true` enables linear prediction; `false` by default, `nil` restores `false` |
+| Field                                                   | What it is                                                                             |
+| ------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `d.id`                                                  | Entity id, what `players.on_click` reports in `hit.entity_id`                          |
+| `d.at, d.rotation, d.scale, d.billboard, d.glow`        | Live, every kind                                                                       |
+| `d.item, d.canvas, d.context`                           | Live, item kind (`canvas` reads back as the map id)                                    |
+| `d.text, d.color, d.background, d.line_width, d.shadow` | Live, text kind; `background = nil` or `false` for none                                |
+| `d.block`                                               | Live, block kind                                                                       |
+| `d.duration`                                            | Seconds later changes take to play out (1.19.4+); 0                                    |
+| `d.glide`                                               | Advanced: movement smoothing seconds (1.20.2+); default 0.1                            |
+| `d.lead`                                                | Advanced: `true` enables linear prediction; `false` by default, `nil` restores `false` |
 
 ```luau
 d:animate{ at = ..., scale = ..., rotation = { ... }, text = ..., duration = 0.5 }   -- one tweened change
@@ -100,16 +101,16 @@ player cannot walk through it and can stand on it.
 
 ## Choosing a world object and moving it
 
-| Need | API | Why it exists |
-| --- | --- | --- |
-| Reusable appearance and named animations | `models.new` | Defines an asset for visuals or simulated entities. |
-| A visual controlled by the pack | `world.display` | Places text, an item, a block or a model without simulation. |
-| Physics, gameplay hooks or persistence | `game.entities.define` and `world.spawn` | Gives a body behavior independent of its appearance. |
-| A mob appearance moved entirely by the pack | `world.puppet` | Uses a mob body without its AI or gameplay simulation. |
-| A player-shaped character with a skin and equipment | `world.npc` | Adds avatar-specific behavior. |
-| A player or NPC seated on something | `:ride` | Controls attachment and occupancy. |
-| A different viewpoint | `player.camera` | Controls the view; `chase` composes with riding. |
-| Authored changes over time | `tween` or `camera.path` | A tween animates fields; a camera path sequences shots. |
+| Need                                                | API                                      | Why it exists                                                |
+| --------------------------------------------------- | ---------------------------------------- | ------------------------------------------------------------ |
+| Reusable appearance and named animations            | `models.new`                             | Defines an asset for visuals or simulated entities.          |
+| A visual controlled by the pack                     | `world.display`                          | Places text, an item, a block or a model without simulation. |
+| Physics, gameplay hooks or persistence              | `game.entities.define` and `world.spawn` | Gives a body behavior independent of its appearance.         |
+| A mob appearance moved entirely by the pack         | `world.puppet`                           | Uses a mob body without its AI or gameplay simulation.       |
+| A player-shaped character with a skin and equipment | `world.npc`                              | Adds avatar-specific behavior.                               |
+| A player or NPC seated on something                 | `:ride`                                  | Controls attachment and occupancy.                           |
+| A different viewpoint                               | `player.camera`                          | Controls the view; `chase` composes with riding.             |
+| Authored changes over time                          | `tween` or `camera.path`                 | A tween animates fields; a camera path sequences shots.      |
 
 Displays, model displays, NPCs, puppets and entity handles share `id`, `alive`,
 `at`, `rotation` and `:move(at, rotation?)` — a table of degree angles, where
@@ -131,18 +132,18 @@ A vehicle is an entity that looks like a model. Seat 1's keys drive it; the
 engine does the driving, gravity, walls and steps. `game.entities.define` with
 `physics = "vehicle"` makes one:
 
-| Field | What it is |
-| --- | --- |
-| `looks` | A model from `models.new` |
-| `physics` | `"vehicle"` — the engine drives it |
-| `size` | Its body in blocks: width, height |
-| `seats` | In model units; seat 1 drives |
-| `speed` | Blocks a second at full throttle (12 if left out) |
-| `turn` | Degrees a second at speed (90) |
-| `accel` | Seconds from standing to top speed (1) |
-| `step` | Blocks it climbs without a jump (1) |
-| `scale` | The model's size (1) |
-| `fallback` | What a client older than 1.21.4 sees |
+| Field      | What it is                                        |
+| ---------- | ------------------------------------------------- |
+| `looks`    | A model from `models.new`                         |
+| `physics`  | `"vehicle"` — the engine drives it                |
+| `size`     | Its body in blocks: width, height                 |
+| `seats`    | In model units; seat 1 drives                     |
+| `speed`    | Blocks a second at full throttle (12 if left out) |
+| `turn`     | Degrees a second at speed (90)                    |
+| `accel`    | Seconds from standing to top speed (1)            |
+| `step`     | Blocks it climbs without a jump (1)               |
+| `scale`    | The model's size (1)                              |
+| `fallback` | What a client older than 1.21.4 sees              |
 
 ```luau
 local c = world.spawn(car, vec3(0.5, 65, 0.5))    -- a car defined as above
@@ -247,8 +248,7 @@ end)
   up, the front is `-z`. A box reaches `-24 .. 24` on every axis: three blocks.
   For a bigger thing, set the display's `scale`.
 - A box turns on **one** axis only, in steps of 22.5 degrees, up to 45 either
-  way. Anything else is an error. An octagonal wheel is two boxes, one turned
-  45.
+  way. Anything else is an error. An octagonal wheel is two boxes, one turned 45.
 - Box corners go in any order and can be fractional. A box's `pivot` defaults
   to its centre.
 - Every box is in a part; there is no `m:box`. A part turns around its `pivot`

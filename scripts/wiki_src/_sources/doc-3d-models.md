@@ -48,60 +48,62 @@ d:play("drive", { speed = 2 })               -- twice as fast; on the one alread
 d:stop("drive")                              -- the parts stay where they are
 d:destroy()
 ```
+
 The rules:
+
 - Make models while the pack loads. `models.new` in a callback is an error.
 - `rotation.pitch` and `rotation.roll` tip the whole model about its
-origin, with parts, animations and seats.
+  origin, with parts, animations and seats.
 - A rider stays upright. For a car on a wall, hide the driver
-(`invisibility`) and use `camera.fixed`.
+  (`invisibility`) and use `camera.fixed`.
 - **16 units are one block.** The origin is the model’s bottom centre, `+y`
-is up, and the front is `-z`.
+  is up, and the front is `-z`.
 - A box reaches `-24 .. 24` on every axis: three blocks. For a bigger thing,
-set the display’s `scale`.
+  set the display’s `scale`.
 - A model texture is 128 at most a side, and draws with `pixel`, `rect`,
-`fill` and `draw(picture, x, y)`: a `game.texture` over it, its corner
-at `(x, y)`. A bigger picture goes on several boxes: `t:draw(map, -128, 0)`
-takes the second square of 128 from a PNG loaded with `game.texture`.
+  `fill` and `draw(picture, x, y)`: a `game.texture` over it, its corner
+  at `(x, y)`. A bigger picture goes on several boxes: `t:draw(map, -128, 0)`
+  takes the second square of 128 from a PNG loaded with `game.texture`.
 - `m:texture(w, h, { scroll = "up", speed = 2 })` is a texture that moves
-when a block is drawn from the model. See “blocks drawn from a model”.
+  when a block is drawn from the model. See “blocks drawn from a model”.
 - A box turns on **one** axis only, in steps of 22.5 degrees, up to 45
-either way. Anything else is an error. An octagonal wheel is two boxes,
-one turned 45.
+  either way. Anything else is an error. An octagonal wheel is two boxes,
+  one turned 45.
 - Box corners go in any order and can be fractional. A box’s `pivot`
-defaults to its centre.
+  defaults to its centre.
 - Every box is in a part; there is no `m:box`. A part turns around its
-`pivot` (default: the model’s origin). `m:part` makes a child of the root,
-`part:part` a child of that part.
+  `pivot` (default: the model’s origin). `m:part` makes a child of the root,
+  `part:part` a child of that part.
 - `part:mirror("x")` mirrors what the part has so far, pivots, turns and
-hitboxes too. A child’s twin is `<name>_mirrored`. Only `"x"` works in this version.
+  hitboxes too. A child’s twin is `<name>_mirrored`. Only `"x"` works in this version.
 - `part:hitbox(from, to)` is a box a player can hit on a living body that
-wears the model. See “a living body”.
+  wears the model. See “a living body”.
 - Between two keys, a part turns **the short way round**. Keep each step
-under 180 degrees. A wheel is `[0] = 0, [0.1] = -90, [0.2] = -180, ...`:
-one key from 0 to 360 does not turn. A `tween` of `rotation` is not like
-this: it turns as written, so there `roll = 360` is a full turn.
+  under 180 degrees. A wheel is `[0] = 0, [0.1] = -90, [0.2] = -180, ...`:
+  one key from 0 to 360 does not turn. A `tween` of `rotation` is not like
+  this: it turns as written, so there `roll = 360` is a full turn.
 - `speed` is 0.01 to 100; a value outside is taken as the nearest end. A
-speed of 0 does not pause: use `stop`. A new speed applies at once.
+  speed of 0 does not pause: use `stop`. A new speed applies at once.
 - An animation is keys per part: `{ [seconds] = vec3 }` for `rotation`
-(degrees about the pivot) and `position` (an offset in model units).
+  (degrees about the pivot) and `position` (an offset in model units).
   - Keys can be in any order.
   - An unknown part name is an error that lists the model’s parts.
   - Parts cannot share a track. Write a loop.
 - A material is flat unless it has a `grain` (`0..1`: how much darker its
-darkest pixel is). `0.1` is a painted panel, `0.4` a tyre. A grained face
-has four tones, one pixel per unit. `alpha` below 1 is glass.
+  darkest pixel is). `0.1` is a painted panel, `0.4` a tyre. A grained face
+  has four tones, one pixel per unit. `alpha` below 1 is glass.
 - A texture stretches over its face. For fine detail, draw two pixels per
-unit.
+  unit.
 - With `tint = material`, draw in greys. White is the material’s colour;
-darker is a seam or a shadow.
+  darker is a seam or a shadow.
 - A mirrored box shows a side texture from the other end. Draw an
-asymmetric texture once per side, after the `mirror`.
+  asymmetric texture once per side, after the `mirror`.
 - `paint` repaints materials by name, and every texture they tint. An
-unknown material name is an error that lists the model’s materials.
+  unknown material name is an error that lists the model’s materials.
 - Only Java clients from 1.21.4 see a model. Older clients and Bedrock see
-`fallback`. A client that loads the resource pack after it joined gets
-its models again when the pack is in; the pack does nothing for this.
+  `fallback`. A client that loads the resource pack after it joined gets
+  its models again when the pack is in; the pack does nothing for this.
 - A client that turns the resource pack down, or cannot load it, sees
-`fallback` from then on, also for the models it already sees.
+  `fallback` from then on, also for the models it already sees.
 - `citadel model render <pack dir> <name> --out car.png` draws a model.
-Add `--animation drive --at 0.25` for mid-move. No name lists the models.
+  Add `--animation drive --at 0.25` for mid-move. No name lists the models.

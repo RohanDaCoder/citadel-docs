@@ -6,6 +6,7 @@ world.light{
     { at = vec3(0, 70, 0) },
 }
 ```
+
 - Light drops one level per block, like block light. Solid blocks stop it.
 - The light has no colour. For colour, put coloured blocks or a glowing screen under it.
 - The server never sees this light. The world’s real light does not change.

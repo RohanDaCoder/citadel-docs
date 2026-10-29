@@ -5,6 +5,7 @@ order: 2
 description: The EntityHandle API — the live handle world.spawn returns, world.entities lists and every hook receives: position and rotation, velocity and push, nearby queries, e.data, and life checks.
 tags: [entities, entity-handle, world-spawn, queries, data-views]
 ---
+
 # Entity handles
 
 > **In short:** A handle is a live view of **a body the world moves** — a
@@ -30,11 +31,11 @@ get one from, it behaves the same:
 `at` is where its feet are; `rotation` is which way it faces. Both are live —
 set them and the entity is there:
 
-| Read / call | What it is |
-| --- | --- |
-| `entity.at` | where it is, live; writing it is a teleport. `nil` once it is gone. |
-| `entity.rotation` | a table of degree angles. Bodies have no roll: yaw and pitch. Partial writes preserve omitted angles; `nil` after removal. |
-| `entity:move(at, rotation?)` | sets position and optional rotation together. |
+| Read / call                  | What it is                                                                                                                 |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `entity.at`                  | where it is, live; writing it is a teleport. `nil` once it is gone.                                                        |
+| `entity.rotation`            | a table of degree angles. Bodies have no roll: yaw and pitch. Partial writes preserve omitted angles; `nil` after removal. |
+| `entity:move(at, rotation?)` | sets position and optional rotation together.                                                                              |
 
 - 0 yaw faces south (+z), 90 faces west; positive pitch tips down. For a living body, `e.rotation.yaw` is one of the intent fields: it keeps the heading until you change it.
 - `move` changes position and rotation in one operation, and validates both before applying either. Entities keep simulating after a move: changing their position does not clear velocity.
@@ -45,13 +46,13 @@ set them and the entity is there:
 There are two ways to move a body by hand — a shove now, or an intent it keeps
 — and the intent fields are the ones steering uses:
 
-| Field / call | What it is |
-| --- | --- |
-| `entity.velocity` | how it is moving, live; writing it is steering by hand — a push. `nil` once it is gone. |
-| `entity:push(v)` | a shove, in blocks a tick, added to what it is already doing. |
-| `entity.forward`, `entity.strafe` | intent, -1 to 1. `strafe` is 1 left, -1 right. |
-| `entity.jumping` | intent: whether it wants to jump. |
-| `entity.flying` | intent, a living body with `can_fly` only: `true` flies, `false` falls and walks. |
+| Field / call                      | What it is                                                                              |
+| --------------------------------- | --------------------------------------------------------------------------------------- |
+| `entity.velocity`                 | how it is moving, live; writing it is steering by hand — a push. `nil` once it is gone. |
+| `entity:push(v)`                  | a shove, in blocks a tick, added to what it is already doing.                           |
+| `entity.forward`, `entity.strafe` | intent, -1 to 1. `strafe` is 1 left, -1 right.                                          |
+| `entity.jumping`                  | intent: whether it wants to jump.                                                       |
+| `entity.flying`                   | intent, a living body with `can_fly` only: `true` flies, `false` falls and walks.       |
 
 - A body keeps its intent until you change it. Outside a hook, writing `e.forward`, `e.strafe`, `e.jumping` and `e.flying` on a world handle changes the body at once.
 - `e.flying = true` on a body without `can_fly` is an error; `e.flying` reads `false` there.
@@ -76,12 +77,12 @@ end
 local allCows = world.entities { kind = "cow" }
 ```
 
-| Option of `world.entities(query)` | Meaning |
-| --- | --- |
-| — (no argument) | all entities |
-| `near`, `radius` | a sphere, boundary included. They go together. |
-| `kind` | the handle's canonical name, with the pack namespace for a custom kind |
-| `mob` | `true`: the mobs only; `false`: the rest |
+| Option of `world.entities(query)` | Meaning                                                                |
+| --------------------------------- | ---------------------------------------------------------------------- |
+| — (no argument)                   | all entities                                                           |
+| `near`, `radius`                  | a sphere, boundary included. They go together.                         |
+| `kind`                            | the handle's canonical name, with the pack namespace for a custom kind |
+| `mob`                             | `true`: the mobs only; `false`: the rest                               |
 
 - Results are handles in ascending id order. Queued spawns are included; removed entities are not.
 - Invalid options, a negative radius and non-finite numbers raise an error. An unknown kind returns an empty list.
@@ -92,25 +93,25 @@ local allCows = world.entities { kind = "cow" }
 What a handle reads, beyond position and movement above. Most go `nil` once
 the entity is gone:
 
-| Field | What it is |
-| --- | --- |
-| `id` | its entity id, the one `players.on_click` reports in `hit.entity_id` |
-| `name` | the kind's name: `"cow"`, `"rave:rocket"`. `nil` once it is gone. |
-| `alive` | whether it is still in the world. A hook only runs for one that is. |
-| `age` | ticks lived. |
-| `at`, `rotation` | where it is and where it looks; see [position and rotation](#position-and-rotation) |
-| `velocity` | how it is moving; see [velocity, push and intent](#velocity-push-and-intent) |
-| `forward`, `strafe`, `jumping`, `flying` | the intent fields |
-| `on_ground` | whether it stands on something. `nil` once it is gone. |
-| `in_water` | `true` while it is in water |
-| `health` | its health now. `nil` once it is gone. |
-| `max_health` | the most health its kind gives it. Read-only; `nil` for an entity that is not a mob and once it is gone. |
-| `hostile` | whether its kind is hostile. `nil` once it is gone. |
-| `physics` | which order of operations moves it: `"vehicle"`, `"living"`, `"falling"`, `"item"` or `"none"` |
-| `origin` | the block it used to be, for anything that arrived through a transition; `nil` for anything that was never a block |
-| `data` | a pack-defined entity's attached record; see below |
-| `driver` | the player supplying driving input from seat 1; `nil` for an NPC or empty seat |
-| `paint` | material name to colour; write-only |
+| Field                                    | What it is                                                                                                         |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `id`                                     | its entity id, the one `players.on_click` reports in `hit.entity_id`                                               |
+| `name`                                   | the kind's name: `"cow"`, `"rave:rocket"`. `nil` once it is gone.                                                  |
+| `alive`                                  | whether it is still in the world. A hook only runs for one that is.                                                |
+| `age`                                    | ticks lived.                                                                                                       |
+| `at`, `rotation`                         | where it is and where it looks; see [position and rotation](#position-and-rotation)                                |
+| `velocity`                               | how it is moving; see [velocity, push and intent](#velocity-push-and-intent)                                       |
+| `forward`, `strafe`, `jumping`, `flying` | the intent fields                                                                                                  |
+| `on_ground`                              | whether it stands on something. `nil` once it is gone.                                                             |
+| `in_water`                               | `true` while it is in water                                                                                        |
+| `health`                                 | its health now. `nil` once it is gone.                                                                             |
+| `max_health`                             | the most health its kind gives it. Read-only; `nil` for an entity that is not a mob and once it is gone.           |
+| `hostile`                                | whether its kind is hostile. `nil` once it is gone.                                                                |
+| `physics`                                | which order of operations moves it: `"vehicle"`, `"living"`, `"falling"`, `"item"` or `"none"`                     |
+| `origin`                                 | the block it used to be, for anything that arrived through a transition; `nil` for anything that was never a block |
+| `data`                                   | a pack-defined entity's attached record; see below                                                                 |
+| `driver`                                 | the player supplying driving input from seat 1; `nil` for an NPC or empty seat                                     |
+| `paint`                                  | material name to colour; write-only                                                                                |
 
 A model entity (a kind with `looks = models.x`) also has `scale` — `nil`
 without a model — and the animation calls `entity:play(animation, { speed = n })`
