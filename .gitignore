@@ -34,4 +34,11 @@ prompt
 # Skills directory (platform)
 /skills/
 
+# git bundles (portable deliverables, not source)
+*.bundle
+
+# python bytecode
+__pycache__/
+*.pyc
+
 # generated content is committed; manifests under scripts/generated are build inputs
