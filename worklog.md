@@ -326,3 +326,17 @@ Work Log:
 
 Stage Summary:
 - Every commit on this working copy now mirrors to github.com/RohanDaCoder/citadel-docs automatically, including platform auto-snapshots (post-commit is not bypassed by --no-verify).
+
+---
+Task ID: 9 (cont.)
+Agent: main (Z.ai)
+Task: Hook verification + sync with remote-side commit
+
+Work Log:
+- Hook verified live twice: it self-pushed its own install commit (f935a58), and its output confirmed paramiko transport + origin resolution.
+- Detected a remote-side commit (d83158e, author RohanDaCoder, via GitHub web UI): .gitignore now lists tool-results/. Fast-forwarded local main onto it (no divergence).
+- Completed the intent: tool-results/ files were already tracked, so the ignore line alone had no effect; ran git rm -r --cached tool-results/ (files kept on disk, dropped from the index) and committed - this commit auto-pushed via the hook.
+- Operational note: if the repo is edited on GitHub directly again, local needs a fetch + ff (or rebase) before the next push, otherwise the hook's push is rejected non-fast-forward and defers to the next commit.
+
+Stage Summary:
+- main is synced across local and origin; tool-results excluded from version control; auto-push hook active and verified end-to-end.
