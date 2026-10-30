@@ -461,3 +461,35 @@ Work Log:
 
 Stage Summary:
 - git sync no longer depends on .secrets/ surviving: fetch is anonymous HTTPS (public repo), the deploy key auto-regenerates when missing, and push works via token (durable in .git/config) or the auto-generated key once registered. The cron sync's fetch failures are permanently fixed; pushes flow automatically the moment one credential exists.
+
+---
+Task ID: 15
+Agent: main (Z.ai)
+Task: Authenticate the Minefort MCP client headless; fix CLI bugs found on the way
+
+Work Log:
+- The stock OAuth flow can never complete inside this container: it listens for the redirect on 127.0.0.1, but the operator's browser (the only browser there is) resolves 127.0.0.1 to their own machine. Added an out-of-band relay to scripts/minefort_mcp.py: `auth --manual` prints the authorize URL and stashes PKCE verifier+state at .secrets/minefort_mcp_pending.json; the operator signs in, copies the dead 127.0.0.1 callback URL from their address bar, and `auth --complete '<url>'` finishes the exchange (state validated, code swapped with the stashed verifier). Documented in the module docstring.
+- Token durability: the cache is now mirrored into .git/config under sync.minefortmcptoken (same trick as sync.githubtoken — .git/ demonstrably survives container recycles that wipe .secrets/); _load_token_cache() falls back to the mirror automatically. .git/config is repo-local, never committed.
+- do_oauth_flow: when no browser can open (headless), the callback wait drops from 300s to 90s with a pointer to the relay flow.
+- User completed the relay; token cached with refresh_token (scope workloads offline_access), 37 tools listed, and all four workloads are visible/controllable (Onix Minigames Citadel experience, OnixMinigames/RadiantGens/DuplicatorMC Paper servers).
+- Fixed a real CLI bug: `--arg` values were silently dropped by every convenience alias and would have crashed `call` — argparse stores the option as dest "arg" but three handlers read `args.args`. All read `getattr(args, "arg", [])` now; found via list-files failing with "workload: expected string, received undefined".
+- Fixed scripts/git_ssh.py hanging forever on `ssh -T`-style banner checks: GitHub closes the channel without an exit status, so the pump loop never ended and recv_exit_status() blocked. pump() now breaks on channel close/EOF and returns the status only when actually ready.
+
+Stage Summary:
+- The Minefort MCP pipeline is fully operational from this assistant session: OAuth 2.1 + PKCE + DCR with a headless relay, refresh-token renewal, durable storage across container recycles, and a verified 41-subcommand CLI. Server control (power, files, console, publishing) needs no further user action.
+
+---
+Task ID: 16
+Agent: main (Z.ai)
+Task: Convert the legacy OnixMinigames Skript into a proper Citadel pack
+
+Work Log:
+- Evaluated github.com/philschmid/mcp-cli per the user's ask: supports stdio+HTTP MCP transports but has NO OAuth 2.1 support (pre-existing bearer tokens only), while Minefort requires DCR + PKCE + refresh (tokens expire ~hourly). Keeping scripts/minefort_mcp.py as the auth+transport layer; mcp-cli would lose auto-refresh, DCR and durability. Verdict reported to the user.
+- Generated a second deploy keypair for the private RohanDaCoder/OnixMinigames repo (.secrets/onix_repo_ed25519; gen_deploy_key.py now takes a slug). User registered it; cloned the repo — `legacy` branch holds the Skript source (11 .sk files: Core 0_Variables/1_CoreSystem, Commands 1_GameCommands/2_Profile/3_AdminPanel, Games Spleef/TNTRun/HotPotato/Sumo, Utils Spawn/Discord). main branch is an abandoned Kotlin/Paper attempt, not consulted.
+- Studied the official Citadel docs (scripts/official_llms/minefort-llms-full.txt, 55 pages + 5 guides) end to end before writing code, per instruction: Players/Input/Commands/Permissions, Rooms/Rules/Events/Modules, Storage, Titles/HUD/Menus/Hotbar, Sound, Text formatting, Named parts. Key facts applied: menu items take skin for player heads; color(r,g,b) text runs with 1.16+ exact / older nearest-16; on_pick menus replace chest GUIs; volume 1 is full volume.
+- Full gap analysis of the existing (partial) port vs the Skript, then a faithful rewrite on branch `citadel` of a local clone (onixminigames/packs/onixmg/): core.luau (vote cycle with 30/20/10 broadcasts + note_block.bit countdown + anvil deny sounds + pling vote sound; RANDOM winner among survivors on timeout, as mg_end_game had; eliminated players walk back to the lobby point (no spectator); 3/7/3s end cadence; uniform 120s rounds; /settimer override plumbing so manual timer changes actually steer the live countdown), menus.luau (3-page profile with the original slot layout and per-game extras incl. a now-counted hotpotato_touches stat; admin panel with players submenu, view-profile/eliminate cards, 5/10/15/30/60 timer ladder, announcements; map-state picker on the original slots 10/12/14/16/28 with "To be added" barriers), main.luau (/discord +4 aliases, /settimer, /center, /spawn with 3s cooldown + admin target, game on_leave hooks, 2-minute Discord auto-broadcast, respawn-to-arena fix), games (uniform durations, hotpotato holder-left broadcast + touches stat; spleef/tntrun/sumo kept — already faithful).
+- Deployed via file_transfer PUTs (games → core → menus → main so every intermediate hot-reload resolves); learned the dev workload auto-sleeps when idle (503 "server is offline") — wake with power start first. pack_health after upload: loads headless AND loaded on the running server, zero script errors; md5-verified all 9 deployed files byte-identical to the local branch. Pulled the six .schem builds into the repo for completeness.
+- Push of the citadel branch blocked: the onix_repo deploy key was registered read-only ("The key you are authenticating with has been marked as read only"). Commit exists locally; user needs to tick Allow write access on the key (Settings → Deploy keys → onix_repo-sync) for the push.
+
+Stage Summary:
+- The Onix Citadel server now runs a faithful, documented conversion of the legacy Skript (live at onixmg.minefort.com, unpublished changes on the dev workload), with the full source on branch `citadel` of the local OnixMinigames clone incl. a README mapping every Skript construct to its Citadel idiom and listing the deliberate deviations with reasons. Remaining user actions: grant write access to the onix_repo deploy key (then I push), and test a round with two players — the runtime behaviours (vote flow, elimination, hot potato pass) need real clients, which I cannot simulate.
