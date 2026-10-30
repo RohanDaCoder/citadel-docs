@@ -1,0 +1,129 @@
+logo:
+  change-interval: 100
+  texts:
+  - "&#7A8BFA&l&oO&#7385EC&l&oɴ&#6B7FDE&l&oɪ&#6479D0&l&ox &#5C73C2&l&oM&#556DB4&l&oɪ&#4D67A6&l&oɴ&#466198&l&oɪ&#3E5B8A&l&oɢ&#37557C&l&oᴀ&#2F4F6E&l&oᴍ&#284960&l&oᴇ&#204352&l&os"
+  - "&#7385EC&l&oO&#7A8BFA&l&oɴ&#7385EC&l&oɪ&#6B7FDE&l&ox &#6479D0&l&oM&#5C73C2&l&oɪ&#556DB4&l&oɴ&#4D67A6&l&oɪ&#466198&l&oɢ&#3E5B8A&l&oᴀ&#37557C&l&oᴍ&#2F4F6E&l&oᴇ&#284960&l&os"
+  - "&#6B7FDE&l&oO&#7385EC&l&oɴ&#7A8BFA&l&oɪ&#7385EC&l&ox &#6B7FDE&l&oM&#6479D0&l&oɪ&#5C73C2&l&oɴ&#556DB4&l&oɪ&#4D67A6&l&oɢ&#466198&l&oᴀ&#3E5B8A&l&oᴍ&#37557C&l&oᴇ&#2F4F6E&l&os"
+  - "&#6479D0&l&oO&#6B7FDE&l&oɴ&#7385EC&l&oɪ&#7A8BFA&l&ox &#7385EC&l&oM&#6B7FDE&l&oɪ&#6479D0&l&oɴ&#5C73C2&l&oɪ&#556DB4&l&oɢ&#4D67A6&l&oᴀ&#466198&l&oᴍ&#3E5B8A&l&oᴇ&#37557C&l&os"
+  - "&#5C73C2&l&oO&#6479D0&l&oɴ&#6B7FDE&l&oɪ&#7385EC&l&ox &#7A8BFA&l&oM&#7385EC&l&oɪ&#6B7FDE&l&oɴ&#6479D0&l&oɪ&#5C73C2&l&oɢ&#556DB4&l&oᴀ&#4D67A6&l&oᴍ&#466198&l&oᴇ&#3E5B8A&l&os"
+  - "&#556DB4&l&oO&#5C73C2&l&oɴ&#6479D0&l&oɪ&#6B7FDE&l&ox &#7385EC&l&oM&#7A8BFA&l&oɪ&#7385EC&l&oɴ&#6B7FDE&l&oɪ&#6479D0&l&oɢ&#5C73C2&l&oᴀ&#556DB4&l&oᴍ&#4D67A6&l&oᴇ&#466198&l&os"
+  - "&#4D67A6&l&oO&#556DB4&l&oɴ&#5C73C2&l&oɪ&#6479D0&l&ox &#6B7FDE&l&oM&#7385EC&l&oɪ&#7A8BFA&l&oɴ&#7385EC&l&oɪ&#6B7FDE&l&oɢ&#6479D0&l&oᴀ&#5C73C2&l&oᴍ&#556DB4&l&oᴇ&#4D67A6&l&os"
+  - "&#466198&l&oO&#4D67A6&l&oɴ&#556DB4&l&oɪ&#5C73C2&l&ox &#6479D0&l&oM&#6B7FDE&l&oɪ&#7385EC&l&oɴ&#7A8BFA&l&oɪ&#7385EC&l&oɢ&#6B7FDE&l&oᴀ&#6479D0&l&oᴍ&#5C73C2&l&oᴇ&#556DB4&l&os"
+  - "&#3E5B8A&l&oO&#466198&l&oɴ&#4D67A6&l&oɪ&#556DB4&l&ox &#5C73C2&l&oM&#6479D0&l&oɪ&#6B7FDE&l&oɴ&#7385EC&l&oɪ&#7A8BFA&l&oɢ&#7385EC&l&oᴀ&#6B7FDE&l&oᴍ&#6479D0&l&oᴇ&#5C73C2&l&os"
+  - "&#37557C&l&oO&#3E5B8A&l&oɴ&#466198&l&oɪ&#4D67A6&l&ox &#556DB4&l&oM&#5C73C2&l&oɪ&#6479D0&l&oɴ&#6B7FDE&l&oɪ&#7385EC&l&oɢ&#7A8BFA&l&oᴀ&#7385EC&l&oᴍ&#6B7FDE&l&oᴇ&#6479D0&l&os"
+  - "&#2F4F6E&l&oO&#37557C&l&oɴ&#3E5B8A&l&oɪ&#466198&l&ox &#4D67A6&l&oM&#556DB4&l&oɪ&#5C73C2&l&oɴ&#6479D0&l&oɪ&#6B7FDE&l&oɢ&#7385EC&l&oᴀ&#7A8BFA&l&oᴍ&#7385EC&l&oᴇ&#6B7FDE&l&os"
+  - "&#284960&l&oO&#2F4F6E&l&oɴ&#37557C&l&oɪ&#3E5B8A&l&ox &#466198&l&oM&#4D67A6&l&oɪ&#556DB4&l&oɴ&#5C73C2&l&oɪ&#6479D0&l&oɢ&#6B7FDE&l&oᴀ&#7385EC&l&oᴍ&#7A8BFA&l&oᴇ&#7385EC&l&os"
+  - "&#204352&l&oO&#284960&l&oɴ&#2F4F6E&l&oɪ&#37557C&l&ox &#3E5B8A&l&oM&#466198&l&oɪ&#4D67A6&l&oɴ&#556DB4&l&oɪ&#5C73C2&l&oɢ&#6479D0&l&oᴀ&#6B7FDE&l&oᴍ&#7385EC&l&oᴇ&#7A8BFA&l&os"
+  - "&#193D44&l&oO&#204352&l&oɴ&#284960&l&oɪ&#2F4F6E&l&ox &#37557C&l&oM&#3E5B8A&l&oɪ&#466198&l&oɴ&#4D67A6&l&oɪ&#556DB4&l&oɢ&#5C73C2&l&oᴀ&#6479D0&l&oᴍ&#6B7FDE&l&oᴇ&#7385EC&l&os"
+  - "&#193D44&l&oO&#204352&l&oɴ&#284960&l&oɪ&#2F4F6E&l&ox &#37557C&l&oM&#3E5B8A&l&oɪ&#466198&l&oɴ&#4D67A6&l&oɪ&#556DB4&l&oɢ&#5C73C2&l&oᴀ&#6479D0&l&oᴍ&#6B7FDE&l&oᴇ&#7385EC&l&os"
+  - "&#204352&l&oO&#284960&l&oɴ&#2F4F6E&l&oɪ&#37557C&l&ox &#3E5B8A&l&oM&#466198&l&oɪ&#4D67A6&l&oɴ&#556DB4&l&oɪ&#5C73C2&l&oɢ&#6479D0&l&oᴀ&#6B7FDE&l&oᴍ&#7385EC&l&oᴇ&#7A8BFA&l&os"
+  - "&#284960&l&oO&#2F4F6E&l&oɴ&#37557C&l&oɪ&#3E5B8A&l&ox &#466198&l&oM&#4D67A6&l&oɪ&#556DB4&l&oɴ&#5C73C2&l&oɪ&#6479D0&l&oɢ&#6B7FDE&l&oᴀ&#7385EC&l&oᴍ&#7A8BFA&l&oᴇ&#7385EC&l&os"
+  - "&#2F4F6E&l&oO&#37557C&l&oɴ&#3E5B8A&l&oɪ&#466198&l&ox &#4D67A6&l&oM&#556DB4&l&oɪ&#5C73C2&l&oɴ&#6479D0&l&oɪ&#6B7FDE&l&oɢ&#7385EC&l&oᴀ&#7A8BFA&l&oᴍ&#7385EC&l&oᴇ&#6B7FDE&l&os"
+  - "&#37557C&l&oO&#3E5B8A&l&oɴ&#466198&l&oɪ&#4D67A6&l&ox &#556DB4&l&oM&#5C73C2&l&oɪ&#6479D0&l&oɴ&#6B7FDE&l&oɪ&#7385EC&l&oɢ&#7A8BFA&l&oᴀ&#7385EC&l&oᴍ&#6B7FDE&l&oᴇ&#6479D0&l&os"
+  - "&#3E5B8A&l&oO&#466198&l&oɴ&#4D67A6&l&oɪ&#556DB4&l&ox &#5C73C2&l&oM&#6479D0&l&oɪ&#6B7FDE&l&oɴ&#7385EC&l&oɪ&#7A8BFA&l&oɢ&#7385EC&l&oᴀ&#6B7FDE&l&oᴍ&#6479D0&l&oᴇ&#5C73C2&l&os"
+  - "&#466198&l&oO&#4D67A6&l&oɴ&#556DB4&l&oɪ&#5C73C2&l&ox &#6479D0&l&oM&#6B7FDE&l&oɪ&#7385EC&l&oɴ&#7A8BFA&l&oɪ&#7385EC&l&oɢ&#6B7FDE&l&oᴀ&#6479D0&l&oᴍ&#5C73C2&l&oᴇ&#556DB4&l&os"
+  - "&#4D67A6&l&oO&#556DB4&l&oɴ&#5C73C2&l&oɪ&#6479D0&l&ox &#6B7FDE&l&oM&#7385EC&l&oɪ&#7A8BFA&l&oɴ&#7385EC&l&oɪ&#6B7FDE&l&oɢ&#6479D0&l&oᴀ&#5C73C2&l&oᴍ&#556DB4&l&oᴇ&#4D67A6&l&os"
+  - "&#556DB4&l&oO&#5C73C2&l&oɴ&#6479D0&l&oɪ&#6B7FDE&l&ox &#7385EC&l&oM&#7A8BFA&l&oɪ&#7385EC&l&oɴ&#6B7FDE&l&oɪ&#6479D0&l&oɢ&#5C73C2&l&oᴀ&#556DB4&l&oᴍ&#4D67A6&l&oᴇ&#466198&l&os"
+  - "&#5C73C2&l&oO&#6479D0&l&oɴ&#6B7FDE&l&oɪ&#7385EC&l&ox &#7A8BFA&l&oM&#7385EC&l&oɪ&#6B7FDE&l&oɴ&#6479D0&l&oɪ&#5C73C2&l&oɢ&#556DB4&l&oᴀ&#4D67A6&l&oᴍ&#466198&l&oᴇ&#3E5B8A&l&os"
+  - "&#6479D0&l&oO&#6B7FDE&l&oɴ&#7385EC&l&oɪ&#7A8BFA&l&ox &#7385EC&l&oM&#6B7FDE&l&oɪ&#6479D0&l&oɴ&#5C73C2&l&oɪ&#556DB4&l&oɢ&#4D67A6&l&oᴀ&#466198&l&oᴍ&#3E5B8A&l&oᴇ&#37557C&l&os"
+  - "&#6B7FDE&l&oO&#7385EC&l&oɴ&#7A8BFA&l&oɪ&#7385EC&l&ox &#6B7FDE&l&oM&#6479D0&l&oɪ&#5C73C2&l&oɴ&#556DB4&l&oɪ&#4D67A6&l&oɢ&#466198&l&oᴀ&#3E5B8A&l&oᴍ&#37557C&l&oᴇ&#2F4F6E&l&os"
+  - "&#7385EC&l&oO&#7A8BFA&l&oɴ&#7385EC&l&oɪ&#6B7FDE&l&ox &#6479D0&l&oM&#5C73C2&l&oɪ&#556DB4&l&oɴ&#4D67A6&l&oɪ&#466198&l&oɢ&#3E5B8A&l&oᴀ&#37557C&l&oᴍ&#2F4F6E&l&oᴇ&#284960&l&os"
+  - "&#7A8BFA&l&oO&#7385EC&l&oɴ&#6B7FDE&l&oɪ&#6479D0&l&ox &#5C73C2&l&oM&#556DB4&l&oɪ&#4D67A6&l&oɴ&#466198&l&oɪ&#3E5B8A&l&oɢ&#37557C&l&oᴀ&#2F4F6E&l&oᴍ&#284960&l&oᴇ&#204352&l&os"
+time:
+  change-interval: 3000
+  texts:
+    - '&7Time &b%time%'
+    - '&7Date &b%date%'
+barcolors:
+  change-interval: 1000
+  texts:
+    - RED
+    - BLUE
+    - GREEN
+    - YELLOW
+line:
+  change-interval: 50
+  texts:
+  - "<gradient:#FFFF0F:#FFFF92>____________________________________</gradient>"
+  - "<gradient:#FFFF16:#FFFF99>____________________________________</gradient>"
+  - "<gradient:#FFFF1D:#FFFFA0>____________________________________</gradient>"
+  - "<gradient:#FFFF24:#FFFFA8>____________________________________</gradient>"
+  - "<gradient:#FFFF2C:#FFFFAF>____________________________________</gradient>"
+  - "<gradient:#FFFF33:#FFFFB6>____________________________________</gradient>"
+  - "<gradient:#FFFF3A:#FFFFBD>____________________________________</gradient>"
+  - "<gradient:#FFFF42:#FFFFC5>____________________________________</gradient>"
+  - "<gradient:#FFFF49:#FFFFCC>____________________________________</gradient>"
+  - "<gradient:#FFFF50:#FFFFD3>____________________________________</gradient>"
+  - "<gradient:#FFFF57:#FFFFDB>____________________________________</gradient>"
+  - "<gradient:#FFFF5F:#FFFFE2>____________________________________</gradient>"
+  - "<gradient:#FFFF66:#FFFFE9>____________________________________</gradient>"
+  - "<gradient:#FFFF6D:#FFFFF0>____________________________________</gradient>"
+  - "<gradient:#FFFF75:#FFFFF8>____________________________________</gradient>"
+  - "<gradient:#FFFF7C:#FFFFFF>____________________________________</gradient>"
+  - "<gradient:#FFFF83:#FFFF00>____________________________________</gradient>"
+  - "<gradient:#FFFF8A:#FFFF07>____________________________________</gradient>"
+  - "<gradient:#FFFF92:#FFFF0F>____________________________________</gradient>"
+  - "<gradient:#FFFF99:#FFFF16>____________________________________</gradient>"
+  - "<gradient:#FFFFA0:#FFFF1D>____________________________________</gradient>"
+  - "<gradient:#FFFFA8:#FFFF24>____________________________________</gradient>"
+  - "<gradient:#FFFFAF:#FFFF2C>____________________________________</gradient>"
+  - "<gradient:#FFFFB6:#FFFF33>____________________________________</gradient>"
+  - "<gradient:#FFFFBD:#FFFF3A>____________________________________</gradient>"
+  - "<gradient:#FFFFC5:#FFFF42>____________________________________</gradient>"
+  - "<gradient:#FFFFCC:#FFFF49>____________________________________</gradient>"
+  - "<gradient:#FFFFD3:#FFFF50>____________________________________</gradient>"
+  - "<gradient:#FFFFDB:#FFFF57>____________________________________</gradient>"
+  - "<gradient:#FFFFE2:#FFFF5F>____________________________________</gradient>"
+  - "<gradient:#FFFFE9:#FFFF66>____________________________________</gradient>"
+  - "<gradient:#FFFFF0:#FFFF6D>____________________________________</gradient>"
+  - "<gradient:#FFFFF8:#FFFF75>____________________________________</gradient>"
+  - "<gradient:#FFFFFF:#FFFF7C>____________________________________</gradient>"
+  - "<gradient:#FFFF00:#FFFF83>____________________________________</gradient>"
+  - "<gradient:#FFFF07:#FFFF8A>____________________________________</gradient>"
+  - "<gradient:#FFFF0F:#FFFF92>____________________________________</gradient>"
+  - "<gradient:#FFFF16:#FFFF99>____________________________________</gradient>"
+  - "<gradient:#FFFF1D:#FFFFA0>____________________________________</gradient>"
+  - "<gradient:#FFFF24:#FFFFA8>____________________________________</gradient>"
+  - "<gradient:#FFFF2C:#FFFFAF>____________________________________</gradient>"
+  - "<gradient:#FFFF33:#FFFFB6>____________________________________</gradient>"
+  - "<gradient:#FFFF3A:#FFFFBD>____________________________________</gradient>"
+  - "<gradient:#FFFF42:#FFFFC5>____________________________________</gradient>"
+  - "<gradient:#FFFF49:#FFFFCC>____________________________________</gradient>"
+  - "<gradient:#FFFF50:#FFFFD3>____________________________________</gradient>"
+  - "<gradient:#FFFF57:#FFFFDB>____________________________________</gradient>"
+  - "<gradient:#FFFF5F:#FFFFE2>____________________________________</gradient>"
+  - "<gradient:#FFFF66:#FFFFE9>____________________________________</gradient>"
+  - "<gradient:#FFFF6D:#FFFFF0>____________________________________</gradient>"
+  - "<gradient:#FFFF75:#FFFFF8>____________________________________</gradient>"
+  - "<gradient:#FFFF7C:#FFFFFF>____________________________________</gradient>"
+  - "<gradient:#FFFF83:#FFFF00>____________________________________</gradient>"
+  - "<gradient:#FFFF8A:#FFFF07>____________________________________</gradient>"
+  - "<gradient:#FFFF92:#FFFF0F>____________________________________</gradient>"
+  - "<gradient:#FFFF99:#FFFF16>____________________________________</gradient>"
+  - "<gradient:#FFFFA0:#FFFF1D>____________________________________</gradient>"
+  - "<gradient:#FFFFA8:#FFFF24>____________________________________</gradient>"
+  - "<gradient:#FFFFAF:#FFFF2C>____________________________________</gradient>"
+  - "<gradient:#FFFFB6:#FFFF33>____________________________________</gradient>"
+  - "<gradient:#FFFFBD:#FFFF3A>____________________________________</gradient>"
+  - "<gradient:#FFFFC5:#FFFF42>____________________________________</gradient>"
+  - "<gradient:#FFFFCC:#FFFF49>____________________________________</gradient>"
+  - "<gradient:#FFFFD3:#FFFF50>____________________________________</gradient>"
+  - "<gradient:#FFFFDB:#FFFF57>____________________________________</gradient>"
+  - "<gradient:#FFFFE2:#FFFF5F>____________________________________</gradient>"
+  - "<gradient:#FFFFE9:#FFFF66>____________________________________</gradient>"
+  - "<gradient:#FFFFF0:#FFFF6D>____________________________________</gradient>"
+  - "<gradient:#FFFFF8:#FFFF75>____________________________________</gradient>"
+  - "<gradient:#FFFFFF:#FFFF7C>____________________________________</gradient>"
+
+bossbar:
+  change-interval: 10000
+  texts:
+    - "%animation:logo%"
+    - "&6&lRᴇᴀᴅ ᴛʜᴇ ʀᴜʟᴇs! (/ʀᴜʟᴇs)"
+    - "&bonixminigames.minefort.com"
+barcolors:
+  change-interval: 10000
+  texts:
+    - "BLUE"
+    - "YELLOW"
+    - "BLUE"

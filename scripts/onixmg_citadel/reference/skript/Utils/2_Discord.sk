@@ -1,0 +1,13 @@
+options:
+	discordmsg: "<green>Join our discord server! <click:open_url:'https://discord.gg/RyKjZ2pdw2'><hover:show_text:'<yellow>Click ME!'><u><blue>discord.gg/RyKjZ2pdw2</blue></u></hover></click>"
+
+command /discord:
+	description: Join the official discord server
+	aliases: /dc, /dcserver, /discordserver, /onixdiscord
+	trigger:
+		send component mini message from {@discordmsg} to player
+		play sound "entity.experience_orb.pickup" with volume 0.5 and pitch 1 to player
+
+every 2 minutes:
+	send component mini message from {@discordmsg} to all players
+	play sound "block.note_block.bit" with volume 0.3 and pitch 1.5 to all players

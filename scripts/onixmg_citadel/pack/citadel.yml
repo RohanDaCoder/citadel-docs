@@ -1,0 +1,31 @@
+# citadel.yml — Onix Minigames
+# Ported from the live Paper server: server.properties, plugins/Skript and
+# plugins/FastAsyncWorldEdit/schematics (downloaded 2026-10-30).
+name: onixmg
+entry: main.luau
+motd: Onix Minigames
+# The live spawn (-46.5, -18, 38.5) sits inside a sealed light box above
+# the lobby floor; this is the floor tile under it, lifted with the same
+# SHIFT as arena.luau (x +5, y +117, z -35).
+spawn_point: [-41.5, 97.0, 3.5]
+gamemode: 2
+# This registry answers for every block the live 1.21 schematics use —
+# pale oak, froglight, tuff bricks, the concrete floors, blue ice — so
+# the arenas paste block for block (probe-verified 2026-10-30).
+game: "1.12.2"
+mode: lite
+world: script
+view_distance: 8
+budget_ms: 4
+
+permissions:
+  default:
+    nodes: [onix.play, onix.spawn]
+  staff:
+    inherits: [default]
+    nodes:
+      - onix.admin
+      - onix.debug
+      - "minecraft.command.gamemode"
+      - "minecraft.command.tp"
+      - citadel.build

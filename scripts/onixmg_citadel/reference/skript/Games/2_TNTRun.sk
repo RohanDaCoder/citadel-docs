@@ -1,0 +1,11 @@
+# TNT Run 
+on walking on green concrete or yellow concrete or red concrete or gray concrete:
+	if {minigames::system::active} is "TNT Run":
+		wait 5 tick
+		set event-block to air
+		add 1 to {minigames::tntrun::blocksbroken::%uuid of player%}
+
+on player move:
+	if y-coordinate of location of player < -48:
+		{minigames::system::active} is "TNT Run"
+		mg_eliminate(player)

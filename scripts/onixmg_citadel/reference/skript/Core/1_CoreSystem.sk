@@ -1,0 +1,189 @@
+
+function sendDebug(message: text):
+	send "%{prefix::debug}% %{_message}%" to all players where [player input has permission {perm::debug}]
+
+
+function mg_eliminate(p: offlineplayer):
+	{minigames::players::*} contains {_p}
+	remove {_p} from {minigames::players::*}
+	broadcast "%{prefix::main}% &e%{_p}% &cwas eliminated from the game!"
+	send "&7Blocks Broken: &e%{minigames::tntrun::blocksbroken::%uuid of {_p}%}%" to {_p} if {minigames::system::active} is "TNT Run"
+	spawn({_p})
+	wait 1 tick
+	play sound "block.lava.extinguish" with volume 1 with pitch 1 to all players
+	if any:
+		size of {minigames::players::*} is 1
+		size of {minigames::players::*} is 0
+	then:
+		mg_end_game()
+	delete {minigames::tntrun::blocksbroken::%uuid of {_p}%}
+on disconnect:
+	mg_eliminate({_p})
+
+function mg_broadcast_vote():
+	stop if {minigames::system::state} is not "Lobby"
+	send "" to all players
+	send "&6&lVOTE FOR THE NEXT MINIGAME!" to all players
+
+	loop {minigames::list::*}:
+		set {_game} to loop-value
+		set {_v} to {minigames::votes::%{_game}%}
+		if {_v} is not set:
+			set {_v} to 0
+		send component mini message from "<b><green><click:run_command:'/vote %{_game}%'><hover:show_text:'<gray>Click to vote for <yellow>%{_game}%'>[VOTE]</hover></click></green></b> <white>%{_game}%</white> <gray>(%{_v}% votes)" to all players
+	send "&7Use &e/vote &7or click &a&l[VOTE]" to all players
+	send "" to all players
+
+function mg_end_game():
+	{minigames::system::state} is "Ingame"
+	set {minigames::system::timer} to 10
+	set {minigames::system::state} to "Result"
+
+	if {minigames::players::*} is not set:
+		set {_w} to "&8[&7Nobody&8]"
+	else if {_w} is not set:
+		set {_w} to first element of {minigames::players::*}
+	else:
+		set {_w} to a random element of {minigames::players::*}
+
+	send "&a%{_w}% &eis The Winner" to all players
+	send title "&e&lWINNER!" with subtitle "&a%{_w}% &ewon the game!" to all players for 5 seconds 
+	play sound "ui.toast.challenge_complete" with volume 1 with pitch 1 to all players
+	wait 3 seconds
+	
+	send "&7Returning to lobby..." to all players
+	mg_change_state("lobby")
+	wait 7 seconds
+	
+	loop all players:
+		spawn(loop-player)
+		execute console command "/si take spleef_shovel 64 %loop-player% true"
+	if {minigames::system::enabled} is not set:
+		stop
+	broadcast "%{prefix::main}% &c&lThe game has ended!"
+	broadcast ""
+	wait 3 seconds
+	mg_start_cycle()
+
+function mg_start_game(game: text):
+	stop if {minigames::system::state} is not "Lobby"
+	while size of all players is 0:
+		{minigames::system::state} is "Lobby"
+		wait 5 seconds
+		send "No players to start game." to console
+	set {minigames::system::state} to "Ingame"
+	set {minigames::system::active} to {_game}
+	set {minigames::system::timer} to 120
+
+
+	play sound "entity.player.levelup" with volume 1 with pitch 1 to all players
+	send subtitle "&7Loading..." to all players
+	loop all players:
+		add loop-player to {minigames::players::*}
+		spawn(loop-player)
+		set gamemode of loop-value to adventure
+	
+	if {_game} is "Spleef":
+		mg_change_state("spleef")
+		wait 3 seconds
+		broadcast "&e&lSpleef &8- &fDig your way to victory!"
+		loop {minigames::players::*}:
+			execute console command "/si give spleef_shovel 1 %loop-value% true"
+			teleport loop-value to location(1.5, -20, 35.5, world "world", 90, 0)
+	else if {_game} is "TNT Run":
+		mg_change_state("tntrun")
+		wait 3 seconds
+		broadcast "&c&lTNT Run &8- &fDon't look down!"
+		loop {minigames::players::*}:
+			teleport loop-value to location(-23.5, -20, 38.5, world "world", 90, 0)
+	else if {_game} is "Hot Potato":
+		mg_change_state("hotpotato")
+		wait 3 seconds
+		broadcast "&6&lHot Potato &8- &fTag your opponents!"
+		loop {minigames::players::*}:
+			teleport loop-value to location(1.5, -20, 35.5, world "world", 90, 0)
+		mg_hot_potato_cycle()
+	else if {_game} is "Sumo":
+		mg_change_state("sumo")
+		wait 3 seconds
+		broadcast "&4&lSumo &8- &fPunch off opponents out of the arena!"
+		loop {minigames::players::*}:
+			teleport loop-value to location(4.5, -15, 33.5, world "world", 90, 0)
+	else:
+		broadcast "&4Something went wrong.."
+		delete {minigames::*}
+		mg_start_cycle()
+
+
+	while {minigames::system::timer} > 0:
+		{minigames::system::timer} is set
+		stop if {minigames::system::state} is not "Ingame"
+		send action bar "&eActive: &a%{minigames::system::active}% &8| &eRemaining: &f%{minigames::system::timer}%s" to all players
+		remove 1 from {minigames::system::timer}
+		wait 1 second
+
+	mg_end_game()
+
+function mg_finalize_vote():
+	stop if {minigames::system::state} is not "Lobby"
+
+	set {_top} to -1
+	delete {_gameVoteWinner}
+
+	loop {minigames::list::*}:
+		set {_game} to loop-value
+		if {minigames::votes::%{_game}%} > {_top}:
+			set {_top} to {minigames::votes::%{_game}%}
+			set {_gameVoteWinner} to {_game}
+
+	if {_gameVoteWinner} is not set:
+		set {_gameVoteWinner} to random element of {minigames::list::*}
+		broadcast "%{prefix::main}% &eNo votes cast! Randomly picking &a&l%{_gameVoteWinner}%"
+	else:
+		broadcast "%{prefix::main}% &eSelected Game: &a&l%{_gameVoteWinner}%"
+
+	wait 2 seconds
+	mg_start_game({_gameVoteWinner})
+
+function mg_start_cycle():
+	mg_change_state("lobby")
+	set {minigames::system::state} to "Loading"
+	while size of all players is 0:
+		{minigames::system::state} is "Loading"
+		wait 5 seconds
+		send "No players to start cycle." to console
+	sendDebug("Starting new cycle...")
+	wait 10 ticks
+	mg_loadVariables()
+	wait 10 ticks
+
+	set {minigames::system::state} to "Lobby"
+	set {minigames::system::timer} to 30
+
+	while {minigames::system::timer} > 0:
+		stop if {minigames::system::state} is not set
+		if any:
+			{minigames::system::timer} is 30
+			{minigames::system::timer} is 20
+			{minigames::system::timer} is 10
+		then:
+			mg_broadcast_vote()
+
+		loop all players:
+			if {minigames::system::timer} > 5:
+				send action bar "&bVoting Phase &8| &eNext game in: &f%{minigames::system::timer}%s" to loop-player
+			if {minigames::system::timer} <= 5:
+				send action bar "&6&lSTARTING IN &f&l%{minigames::system::timer}%s" to loop-player
+				play sound "block.note_block.bit" with volume 1 with pitch 1 to loop-player
+		remove 1 from {minigames::system::timer}
+		wait 1 second
+	
+	mg_finalize_vote()
+
+# ==========================================
+# 2. INITIALIZATION & EVENTS
+# ==========================================
+
+on load:
+	sendDebug("Initializing Onix Minigames..")
+	mg_start_cycle()

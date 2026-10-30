@@ -1,0 +1,43 @@
+# Hot Potato
+function mg_hot_potato_cycle():
+	{minigames::system::active} is "Hot Potato"
+	set {minigames::system::timer} to 30
+	# Select a random starter
+	set {_p} to random element out of {minigames::players::*}
+	set {minigames::hotpotato::holder} to uuid of {_p}
+
+	execute console command "/si give hotpotato 1 %{_p}% true" 
+	
+	broadcast "&e%name of {_p}% &7has the potato!"
+            
+	# Main Game Loop
+	while {minigames::system::timer} <= 0:
+		{minigames::system::active} is "Hot Potato"
+		broadcast "&c&lBOOM! &e%name of {_p}% &7exploded!"
+		mg_eliminate({_p})
+	
+	play sound "entity.generic.explode" to all players
+	execute console command "/si take hotpotato 1 %{_p}% true"
+	wait 1 second
+	remove 1 from {minigames::system::timer}
+
+on damage:
+	{minigames::system::active} is "Hot Potato"
+	cancel event if {minigames::hotpotato::holder} is uuid of attacker
+
+	# Transfer Potato
+	execute console command "/si give hotpotato 1 %attacker% true" 
+	execute console command "/si take hotpotato 1 %attacker% true" 
+
+	set {minigames::hotpotato::holder} to uuid of victim
+	# Immersive Feedback
+	broadcast "&e%attacker% &apassed the potato to &e%victim%"
+	play sound "entity.ender_dragon.flap" to all players
+
+on quit:
+	{minigames::system::active} is "Hot Potato"
+	{minigames::players::*} contains player
+	if {minigames::hotpotato::holder} is uuid of player:
+		remove player from {minigames::players::*}
+		broadcast "&cThe potato holder left! Giving potato to a random player"
+		

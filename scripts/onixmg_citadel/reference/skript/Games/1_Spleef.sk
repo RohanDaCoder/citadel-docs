@@ -1,0 +1,10 @@
+# SPLEEF
+on player move:
+	if y-coordinate of location of player < -48:
+		{minigames::system::active} is "Spleef"
+		execute console command "/si take spleef_shovel 999 %player% true"
+		mg_eliminate(player)
+
+on command "/spawn":
+	{minigames::system::active} is "Spleef"
+	mg_eliminate(player)

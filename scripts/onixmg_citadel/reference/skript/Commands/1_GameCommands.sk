@@ -1,0 +1,139 @@
+# ==========================================
+# 3. COMMANDS
+# ==========================================
+#command /e:
+	#permission: e
+	#permission message: e
+	#aliases: e
+	#usage: e
+	#executable by: player
+	#cooldown: e seconds
+
+		
+command /vote <text>:
+	executable by: player
+	trigger:
+		if {minigames::system::state} is not "Lobby":
+			send "%{prefix::main}% &cNo voting in progress!" to player
+			play sound "block.anvil.land" with volume 10 with pitch 1 to player
+			stop
+
+		if {minigames::voted::*} contains uuid of player:
+			send "%{prefix::main}% &cYou already voted!" to player
+			play sound "block.anvil.land" with volume 10 with pitch 1 to player
+			stop
+
+		if {minigames::list::*} does not contain arg-1:
+			send "%{prefix::main}% &cInvalid game!" to player
+			play sound "block.anvil.land" with volume 10 with pitch 1 to player
+			stop
+
+		add uuid of player to {minigames::voted::*}
+		add 1 to {minigames::votes::%arg-1%}
+		mg_broadcast_vote()
+		send "%{prefix::main}% &aYou voted for &f%arg-1%&a!" to player
+		sendDebug("&7%player% voted for %arg-1%")
+		play sound "block.note_block.pling" with volume 1 with pitch 2 to player
+
+on tab complete of "/vote":
+	{minigames::system::state} is "Lobby"
+	set tab completions to {minigames::list::*}
+
+command /startgame:
+	permission: {perm::admin}
+	cooldown: 2 seconds
+	trigger:
+		if {minigames::system::state} is "Lobby":
+			play sound "block.note_block.bass" with volume 10 with pitch 1 to all players
+			send "%{prefix::main}% &e%player% &7skipped waiting time." to all players
+			set {minigames::system::timer} to 5
+			send action bar "" to all players
+		else:
+			send "%{prefix::main}% &7Server is in &e%{minigames::system::state}%&7 state." to player
+			play sound "block.anvil.land" with volume 10 with pitch 1 to player
+
+command /stopgame:
+	permission: {perm::admin}
+	cooldown: 2 seconds
+	trigger:
+		if {minigames::system::state} is not set:
+			send "%{prefix::main}% &cSystem is already disabled!" to player
+			stop
+		send action bar "" to all players
+		set {minigames::system::state} to "Disabled"
+		send "%{prefix::main}% &7System shutdown!" to all players
+		play sound "block.note_block.bass" with volume 10 with pitch 1 to all players
+		mg_change_state("lobby")
+		loop all players:
+			spawn(player)
+			execute console command "/si take spleef_shovel 64 %loop-player% true" if {minigames::system::active} is "Spleef"
+		delete {minigames::*}
+
+command /settimer <number>:
+	permission: {perm::admin}
+	executable by: player
+	trigger:
+		set {minigames::system::timer} to arg-1
+		sendDebug("Admin %player% set timer to %arg-1% seconds")
+
+function mg_change_state(state: text):
+    set {_pasteLoc} to location at -47, -20, 38 in world "world"
+    paste schematic "OnixMG_state_%{_state}%.schem" at {_pasteLoc}
+
+command /changemapstate [<text>]:
+	description: Opens the interface to modify the current map state
+	permission: {perm.admin}
+	permission message: <light red>Access denied.
+	trigger:
+		if arg-1 is set:
+			mg_change_state(arg-1)
+			stop
+		set {_gui} to chest inventory with 5 rows named "&e&lSelect Map State"
+		set {_none} to a barrier named "&c&lTo be added.." with lore "&eNew minigames will be added here"
+		set slot (integers between 0 and 44) of {_gui} to {statechangeritem::emptyslot}
+
+		set slot 10 of {_gui} to {statechangeritem::lobby}
+		set slot 12 of {_gui} to {statechangeritem::spleef}
+		set slot 14 of {_gui} to {statechangeritem::tntrun}
+		set slot 16 of {_gui} to {statechangeritem::sumo}
+		set slot 28 of {_gui} to {statechangeritem::hotpotato}
+		set slot 30 of {_gui} to {_none}
+		set slot 32 of {_gui} to {_none}
+		set slot 34 of {_gui} to {_none}
+
+		open {_gui} to player
+		play sound "ui.button.click" with volume 0.5 and pitch 1.2 to player
+
+on inventory click:
+	name of event-inventory is "&e&lSelect Map State"
+	cancel event
+	event-inventory is not player's inventory
+	if clicked slot is 10:
+		mg_change_state("lobby")
+	else if clicked slot is 12:
+		mg_change_state("spleef")
+	else if clicked slot is 14:
+		mg_change_state("tntrun")
+	else if clicked slot is 16:
+		mg_change_state("sumo")
+	else if clicked slot is 28:
+		mg_change_state("hotpotato")
+	wait 1 tick
+	spawn(player)
+
+command /eliminate <player>:
+	permission: {perm::admin}
+	trigger:
+		mg_eliminate(arg-1)
+
+command /testitemsave:
+	permission: op
+	trigger:
+		message "&aHold none"
+		wait 2 seconds
+		set {statechangeritem::emptyslot} to player's tool
+		message "Done"
+command /test:
+	permission: op
+	trigger:
+		skbee spawn falling tnt above target block of player

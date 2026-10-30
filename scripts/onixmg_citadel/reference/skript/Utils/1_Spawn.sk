@@ -1,0 +1,46 @@
+function spawn(p: player):
+	teleport {_p} to location(-46.5, -18.0, 38.5, world "world", -90, 0)
+
+on skbee tab complete for "/center":
+	if player has permission {perm::admin}:
+		set {_yaws::*} to "0", "90", "180" and "-90"
+		set {_pitches::*} to "0", "90" and "-90"
+		if tab arg-2 is not set:
+			add {_yaws::*} to tab completions
+		if tab arg-2 is set:
+			add {_pitches::*} to tab completions
+
+command /center [<number>] [<number>]:
+	permission: onix.admin
+	permission message: &cYou do not have permission to center yourself.
+	trigger:
+		teleport player to location of block at player's location
+		if arg-1 is set:
+			set player's yaw to arg-1
+		if arg-2 is set:
+			set player's pitch to arg-2
+		send "&eYou have been centered!" to player
+		play sound "entity.enderman.teleport" with volume 0.5 and pitch 2 to player
+
+command /spawn [<player>]:
+	permission: onix.spawn
+	permission message: &cYou do not have permission to use the spawn command.
+	cooldown: 3 seconds
+	cooldown message: &cPlease wait %remaining time% before using /spawn again.
+	trigger:
+		if arg-1 is set:
+			if player has permission {perm::admin}:
+				spawn(arg-1)
+				send "&7You have teleported &f%arg-1% &7to spawn." to player
+			if player does not have permission {perm::admin}:
+				send "&cOnly administrators can teleport other players." to player
+
+		spawn(player)
+
+on join:
+	wait 1 tick
+	spawn(player)
+
+on respawn:
+	wait 1 tick
+	spawn(player)

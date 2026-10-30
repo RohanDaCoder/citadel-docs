@@ -1,0 +1,26 @@
+function mg_loadVariables():
+	# Clean up
+	delete {prefix::*}
+	delete {perm::*}
+	delete {minigames::*}
+	
+	# Prefixes
+	set {prefix::main} to "<#7A8BFA><b>Onix<#204352><b>MG <#555555>|<reset>"
+	set {prefix::debug} to "<#aa0000><b>ᴅᴇʙᴜɢ <#555555>|<reset>"
+	
+	# Permissions
+	set {perm::player} to "onix.player"
+	set {perm::admin} to "onix.admin"
+	set {perm::debug} to "onix.debug"
+	
+	# System variables
+	set {minigames::system::enabled} to true
+	set {minigames::system::state} to "Lobby"  # Lobby, Ingame, Result, Ending
+	set {minigames::system::timer} to 0
+	set {minigames::system::active} to ""
+
+	# Game list
+	add "Spleef" and "TNT Run" to {minigames::list::*}
+	#add "Sumo" and "Hot Potato" to {minigames::list::*}
+on load:
+	mg_loadVariables()

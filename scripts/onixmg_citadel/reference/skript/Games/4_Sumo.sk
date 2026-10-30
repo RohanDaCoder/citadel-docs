@@ -1,0 +1,5 @@
+# Sumo
+on player move:
+	if y-coordinate of location of player < -48:
+		{minigames::system::active} is "Sumo"
+		mg_eliminate(player)
