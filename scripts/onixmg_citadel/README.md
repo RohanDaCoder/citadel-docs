@@ -9,25 +9,79 @@ prefix export, the LPC/TAB/Essentials/DiscordSRV configs and
 configs it ran against; `pack/` is the Citadel pack this produced, deployed
 on the Citadel workload `onixmg` (onixmg.minefort.com).
 
+## Architecture
+
+The pack is an OOP design: a `GameState` singleton holds the shared round
+state, a `Game` base class carries the lifecycle every minigame shares,
+and the four games (`Spleef`, `TNTRun`, `Sumo`, `HotPotato`) extend it.
+The cycle, votes, arena, messages, stats, UI and commands are services
+that operate on the state and the registry. `main.luau` is the composition
+root: it requires the modules, registers the games, wires the player
+events and starts the cycle.
+
+```
+pack/
+  main.luau              entry: require + register games + wire events + start cycle
+  citadel.yml            spawn_point, game, permissions
+  builds/*.schem         the six FAWE map schematics
+  state/
+    Constants            colours (Onix/MG prefix, debug red), timings, Discord
+  util/
+    Sound                named sound cues (deny, bass, levelup, toast, lava, bit, pling)
+    Text                 run-list concat
+    Perms                is_admin (onix.admin or development env)
+  core/
+    GameState            shared round-state object (phase, roster, votes, gen, timer, cycle_waiter)
+    Arena                the six maps: SHIFT, spawns, show/send/install
+    Messages             prefix runs, tell/broadcast/deny/debug/discord_broadcast
+    Stats                per-player stat get/bump in Citadel storage
+    GameRegistry         registered games + the votable list
+    VoteBook             vote cast / announce / winning
+    CycleDriver          Loading→Lobby→Ingame→Result loop + start/stop/skipVote/setTimer/eliminate/onJoin
+  games/
+    Game                 base class: fields + default lifecycle (onStart/onStep/onStop/onLeave/onClick/onDamage) + shared helpers
+    Spleef, TNTRun,      extend Game; override the hooks they need (HotPotato also calls CycleDriver:eliminate)
+    Sumo, HotPotato
+  ui/
+    Sidebar              scoreboard (state/game/timer/alive + vote tally)
+    ActionBar            vote-phase / starting-in / active-round bars
+    Titles               loading + winner title cards
+    Tab                  animated logo header + ᴏɴʟɪɴᴇ footer
+    Chat                 LPC chat renderer + owner gradient tag
+    Motd                 Essentials' four gold welcome lines
+    Hotbar               lobby hotbar (Vote/Profile/Discord)
+    Menus                vote menu, profile (3 pages), admin panel, map-state picker
+  commands/
+    Commands             /vote /startgame /stopgame /settimer /changemapstate /eliminate /spawn /center /discord /list /profile /adminpanel
+    Cooldown             per-player command cooldown helper
+```
+
+The dependency graph is acyclic: `state/` and `util/` are leaves; `core/`
+builds on them; `games/` build on `core/` (HotPotato also reaches for
+`CycleDriver:eliminate`); `ui/` builds on `core/`; `commands/` builds on
+`core/` + `ui/`; `main.luau` wires everything. Each service module is a
+singleton (the class plus one instance returned); the games are one
+instance each of their subclass.
+
 ## What maps to what
 
 | Live server | Citadel pack |
 | --- | --- |
-| `Core/0_Variables.sk` (prefixes, perms, game list) | `core.luau` prefix runs, permission nodes, `core.register` |
-| `Core/1_CoreSystem.sk` (cycle, votes, rounds) | `core.luau` `run`/`play`/`finish`/`eliminate` |
-| `Commands/1_GameCommands.sk` | `main.luau` commands, `menus.luau` map picker |
-| `Games/1_Spleef.sk` … `4_Sumo.sk` | `games/*.luau` |
-| `Utils/1_Spawn.sk` (spawn/center/join/respawn) | `main.luau` + `arena.luau` |
-| `Utils/2_Discord.sk` (/discord + 2-min broadcast) | `main.luau` + `core.discord_broadcast` |
-| `/si give spleef_shovel` / `hotpotato` items | hotbar items (`golden_shovel`, `baked_potato`) |
-| `paste schematic "OnixMG_state_*.schem" at (-47,-20,38)` | `arena.show(name)` pasting the same `.schem` at its own `Offset + SHIFT` |
-| LPC chat format `{prefix}{name}: {message}` | `players.on_chat` in `main.luau`, returning false |
-| LuckPerms owner tag `&8[gradient ᴏᴡɴᴇʀ] ` | `owner_tag()` runs, letter-for-letter colours |
-| TAB header/footer (animated logo, ᴏɴʟɪɴᴇ footer) | `set_tab()` + the 3-second frame loop |
-| Essentials `motd.txt` (the four gold welcome lines) | `essentials_motd()` on join |
-| vanilla `/list` | a pack `/list` |
+| `Core/0_Variables.sk` (prefixes, perms, game list) | `state/Constants` (prefix colours, Discord), `core/GameRegistry:register`, `citadel.yml` permissions |
+| `Core/1_CoreSystem.sk` (cycle, votes, rounds) | `core/CycleDriver` (`run`/`play`/`finish`/`eliminate`), `core/VoteBook`, `core/GameState` |
+| `Commands/1_GameCommands.sk` | `commands/Commands`, `ui/Menus.map_states` |
+| `Games/1_Spleef.sk` … `4_Sumo.sk` | `games/Spleef` … `games/Sumo` (extend `games/Game`) |
+| `Utils/1_Spawn.sk` (spawn/center/join/respawn) | `main.luau` events + `core/Arena` + `commands/Commands` (`/spawn`, `/center`) |
+| `Utils/2_Discord.sk` (/discord + 2-min broadcast) | `main.luau` (2-min task) + `core/Messages.discord_broadcast` + `commands/Commands` (`/discord`) |
+| `/si give spleef_shovel` / `hotpotato` items | hotbar items (`games/Spleef`, `games/HotPotato`) |
+| `paste schematic "OnixMG_state_*.schem" at (-47,-20,38)` | `core/Arena:show(name)` pasting the same `.schem` at its own `Offset + SHIFT` |
+| LPC chat format `{prefix}{name}: {message}` | `players.on_chat(Chat.render)` in `main.luau`, returning false |
+| LuckPerms owner tag `&8[gradient ᴏᴡɴᴇʀ] ` | `ui/Chat` `owner_tag()`, letter-for-letter colours |
+| TAB header/footer (animated logo, ᴏɴʟɪɴᴇ footer) | `ui/Tab.set` + `Tab.animate` (the 3-second frame loop) |
+| Essentials `motd.txt` (the four gold welcome lines) | `ui/Motd.welcome` on join |
+| vanilla `/list` | a pack `/list` (`commands/Commands`) |
 | `server.properties` MOTD (`» Onix Minigames «`) | the workload MOTD (update-workload) |
-| map-state chest GUI (slots 10/12/14/16/28 + barriers) | `menus.map_states`, same slots, same items |
+| map-state chest GUI (slots 10/12/14/16/28 + barriers) | `ui/Menus.map_states`, same slots, same items |
 | `ItemTag` red-dye "Shutdown" lobby item | not carried (a physical world item, not Skript) |
 
 ## Message parity
