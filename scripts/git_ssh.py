@@ -71,8 +71,12 @@ def resolve_identity(explicit=None):
     """Pick the SSH key file to use.
 
     Order: explicit -i flag > $GIT_SSH_IDENTITY > first existing entry in
-    KEY_SEARCH_PATHS. Returns None if nothing usable is found, in which
-    case connect() will fail with a clear, self-documenting message.
+    KEY_SEARCH_PATHS. If nothing exists anywhere, a fresh Ed25519 pair is
+    generated at the primary path (auto-recovery for container recycles
+    that wipe .secrets/) — the private half of a registered deploy key is
+    unrecoverable from GitHub, so after a wipe a NEW pair plus one
+    registration is the only path; generating it here means git's failure
+    mode is always the precise "key not registered", never "key missing".
     """
     candidates = []
     if explicit:
@@ -84,9 +88,60 @@ def resolve_identity(explicit=None):
     for path in candidates:
         if path and os.path.exists(path):
             return path
-    # Nothing found — return the primary delete-safe path so the failure
-    # message tells the user exactly where to drop the key.
-    return KEY_SEARCH_PATHS[0]
+    return _generate_keypair(KEY_SEARCH_PATHS[0])
+
+
+def _generate_keypair(path):
+    """Generate a fresh Ed25519 deploy keypair at `path` (+ `.pub`).
+
+    Uses the `cryptography` library (a paramiko dependency, so it is
+    always importable here) with standard OpenSSH serialization — the
+    same logic as scripts/gen_deploy_key.py, but silent and automatic.
+    """
+    from cryptography.hazmat.primitives import serialization
+    from cryptography.hazmat.primitives.asymmetric.ed25519 import (
+        Ed25519PrivateKey,
+    )
+
+    key = Ed25519PrivateKey.generate()
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    try:
+        os.chmod(os.path.dirname(path), 0o700)
+    except OSError:
+        pass
+    priv_pem = key.private_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PrivateFormat.OpenSSH,
+        encryption_algorithm=serialization.NoEncryption(),
+    )
+    with open(path, "wb") as f:
+        f.write(priv_pem)
+    os.chmod(path, 0o600)
+    pub_line = (
+        key.public_key()
+        .public_bytes(
+            encoding=serialization.Encoding.OpenSSH,
+            format=serialization.PublicFormat.OpenSSH,
+        )
+        .decode("ascii")
+        .strip()
+        + " citadel-docs-sync@container"
+    )
+    with open(path + ".pub", "w") as f:
+        f.write(pub_line + "\n")
+    try:
+        os.chmod(path + ".pub", 0o644)
+    except OSError:
+        pass
+    sys.stderr.write(
+        f"git_ssh.py: no deploy key found — generated a fresh pair at {path}\n"
+    )
+    sys.stderr.write(
+        f"git_ssh.py: register {path}.pub on GitHub once (repo Settings -> "
+        f"Deploy keys, allow write access) to enable SSH push — or set a "
+        f"token instead: git config sync.githubtoken <PAT>\n"
+    )
+    return path
 
 
 def parse_args(argv):
@@ -151,18 +206,22 @@ def connect(user, host, port, identity):
             if client:
                 client.close()
     sys.stderr.write(f"git_ssh.py: connection failed: {last_err}\n")
-    # Distinguish the unrecoverable auth case so the cron relay is
-    # self-documenting instead of just echoing "No authentication
-    # methods available". Point at the delete-safe primary location so
-    # the user knows exactly where to drop the key.
+    # Distinguish the unrecoverable-missing case from the merely
+    # unregistered one, so the failure is self-documenting. With
+    # auto-keygen the key file always exists; the usual post-wipe state
+    # is "fresh key generated, GitHub doesn't know it yet".
     if identity is None or not os.path.exists(identity):
         primary = KEY_SEARCH_PATHS[0]
         sys.stderr.write(
-            f"git_ssh.py: no usable SSH key found. Restore the deploy "
-            f"key (the private half registered on the GitHub repo) to:\n"
-            f"    {primary}\n"
-            f"  (mode 600, owner-owned). ~/.ssh/id_ed25519 is also "
-            f"still honored as a fallback. This cannot be auto-recovered.\n"
+            f"git_ssh.py: no usable SSH key found. A fresh one is "
+            f"auto-generated at {primary} on the next run.\n"
+        )
+    else:
+        sys.stderr.write(
+            f"git_ssh.py: the deploy key at {identity} exists but GitHub "
+            f"rejected it — it is not registered (or lacks write access). "
+            f"Register {identity}.pub once, or switch to a token: "
+            f"git config sync.githubtoken <PAT>\n"
         )
     sys.exit(255)
 
