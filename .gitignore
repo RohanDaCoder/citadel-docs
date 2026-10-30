@@ -52,3 +52,4 @@ download/
 
 # SSH deploy keys (delete-safe location: survives home-dir wipes)
 .secrets/
+onixminigames/
