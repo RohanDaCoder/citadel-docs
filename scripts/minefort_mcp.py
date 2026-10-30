@@ -931,7 +931,8 @@ def cmd_call(args) -> int:
     tok = require_token()
     sess = MCPSession(tok["access_token"])
     arguments: dict[str, Any] = {}
-    for k, v in args.args:
+    # NB: argparse derives dest "arg" from the long option "--arg".
+    for k, v in getattr(args, "arg", []) or []:
         arguments[k] = _coerce_value(v)
     if args.json_input:
         # Merge JSON blob from stdin under `arguments` (overrides --arg).
@@ -965,7 +966,7 @@ def _make_convenience_runner(tool_name: str, arg_order: list[str]):
             if i < len(positional):
                 arguments[name] = _coerce_value(positional[i])
         # Merged extras from --arg
-        for k, v in getattr(args, "args", []) or []:
+        for k, v in getattr(args, "arg", []) or []:
             arguments[k] = _coerce_value(v)
         result = sess.call_tool(tool_name, arguments)
         if getattr(args, "raw", False):
@@ -1148,7 +1149,7 @@ def build_parser() -> argparse.ArgumentParser:
                     val = getattr(args, pname, None)
                     if val is not None:
                         arguments[pname] = _coerce_value(val)
-                for k, v in getattr(args, "args", []) or []:
+                for k, v in getattr(args, "arg", []) or []:
                     arguments[k] = _coerce_value(v)
                 result = sess.call_tool(_tool, arguments)
                 if getattr(args, "raw", False):
