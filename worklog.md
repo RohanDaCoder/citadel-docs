@@ -535,3 +535,24 @@ Stage Summary:
 - The spawn point is now the original Paper server's exact coordinates, all five of them: lobby (-41.5, 99, 3.5) yaw -90, spleef (6.5, 97, 0.5) yaw 90, tntrun (-18.5, 97, 3.5) yaw 90, hotpotato (6.5, 97, 0.5) yaw 90, sumo (9.5, 102, -1.5) yaw 90 — players arrive inside the maps' invisible light pillars and drop to the floors exactly as they did on live, fall damage included.
 - The only live-behaviour caveat: Hot Potato's exact spawn drop is lethal (30 blocks, 27 damage), as it was on the live server; respawn now goes to the lobby (Skript-verbatim), so a Hot Potato round that starts will see players die at spawn and land in the lobby — identical to what the Skript did on Paper.
 - First join will print "[onixmg] spawn column @ ..." to the console — that is the runtime confirmation that the world holds light at the exact point.
+
+---
+Task ID: 20
+Agent: main (Z.ai)
+Task: Decompose to single-purpose files: one file per event handler, per command, per menu, per task; DRY the shared plumbing
+
+Work Log:
+- Second architecture pass over the OOP pack (27 -> 67 .luau files), one file per concern, per the user's direction:
+  * core/CycleDriver (11 responsibilities) -> core/Lobby (lobby reset), core/Eliminator (elimination), core/RoundRunner (one round), core/ResultSequence (end-of-round), core/CycleLoop (the while-loop), core/CycleControls (start/stop/skipVote/setTimer).
+  * ui/Menus (9 menus) -> ui/MenuKit (DRY: pad, open sound, back/close/head/icon items) + ui/menus/{Vote,Profile,GameList,GameStat,Admin,Players,PlayerCard,Announce,MapStates}Menu, one menu per file. Back-links require their target lazily inside the pick callback, so no top-level require is circular (verified: 0 top-level cycles, 21 lazy requires).
+  * commands/Commands (12 commands) -> commands/Registrar (DRY: admin gate + cooldown + commands.add options in ONE place; the gate/cooldown pair was copy-pasted across seven commands before) + commands/<Name>Command x12 + commands/Commands as a pure catalog (list + register loop).
+  * main.luau's inline wiring -> events/Events installer + events/handlers/{Chat,Join,Leave,Respawn,Click,Damage}Handler (one file per player event; ui/Chat folded into ChatHandler), tasks/Tasks installer + tasks/{TabAnimate,DiscordBroadcast,VoidSafety,Cycle}Task (Tab.animate moved out of ui/Tab), boot/{BootLog,SpawnProbe}.
+  * DRY: GameState:wake() is now the single resume path for the parked cycle (was duplicated in onJoin and stop); ui/Chat deleted (ChatHandler owns the chat event).
+- main.luau is a pure composition root now: register 4 games, Arena install/show, BootLog, Events.install, Commands.register, Tasks.start, ready log. 30 lines, no behaviour.
+- Verified locally: all 67 files' require targets resolve (script check), no stale references to CycleDriver/ui-Menus/ui-Chat/Tab.animate, no top-level require cycles.
+- Deployed in reload-safe order (phase 1: 46 new/edited leaf modules while the old main stays loadable; phase 2: new command catalog; phase 3: new main + edited Tab; phase 4: delete core/CycleDriver.luau, ui/Menus.luau, ui/Chat.luau). Workload had auto-slept; woke it (one start collided with a stop transition and wedged the state to "error"; power kill recovered it to idle, then start).
+- Remote tree verified file-by-file (67 .luau + citadel.yml + 6 schems). Console after the final reloads: identical boot signature ([onixmg] maps / lobby spawn / ready / "No players to start cycle - waiting for a player to join."), zero script errors. pack_health: loads headless AND loaded on the running server.
+- README.md: Architecture section rewritten for the new tree; the "What maps to what" table re-pointed at the new modules.
+
+Stage Summary:
+- The pack is now 67 single-purpose files: every player event, command, menu and background task has its own file, each cycle stage its own core module, and the shared plumbing (Registrar's admin/cooldown gates, MenuKit's item shapes, GameState:wake, Lobby.send) written exactly once. Deployed and verified on the onixmg dev workload; observable behaviour unchanged; live release untouched.

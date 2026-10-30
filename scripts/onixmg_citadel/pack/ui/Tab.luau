@@ -1,8 +1,9 @@
 --!nonstrict
 -- ui/Tab.luau
--- The tab list: the animated two-frame OnixMinigames logo header, the
+-- One purpose: paint the tab list — the two-frame OnixMinigames logo
+-- header (in the exact per-letter colours the live server cycled), the
 -- yellow gradient line, and the ᴏɴʟɪɴᴇ footer. set(frame) paints one
--- frame; animate() cycles them every 3 seconds, as TAB did.
+-- frame; the cycling is tasks/TabAnimateTask's job.
 
 local Tab = {}
 
@@ -61,17 +62,6 @@ function Tab.set(frame)
             line(),
         },
     }
-end
-
-function Tab.animate()
-    task.spawn(function()
-        local frame = 1
-        while true do
-            task.wait(3)
-            frame = frame == 1 and 2 or 1
-            Tab.set(frame)
-        end
-    end)
 end
 
 return Tab

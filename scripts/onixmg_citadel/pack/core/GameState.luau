@@ -4,7 +4,8 @@
 -- vote tallies, generation counter and the cycle-waiter coroutine, with
 -- pure query/mutator methods. Cross-subsystem behaviour (announcing
 -- votes, eliminating players, driving the loop) lives in VoteBook,
--- CycleDriver and the games; this is just the data they share.
+-- CycleLoop, CycleControls, RoundRunner, ResultSequence, Eliminator and
+-- the games; this is just the data they share.
 --
 -- One instance exists for the whole pack; subsystems require this module
 -- and call its methods on the returned singleton.
@@ -76,6 +77,17 @@ function GameState:take_waiter()
     local w = self.cycle_waiter
     self.cycle_waiter = nil
     return w
+end
+
+-- The single wake-up path for the cycle loop parked in Loading (DRY: both
+-- the join handler and CycleControls.stop resume it exactly this way —
+-- take the waiter, and resume it on the next scheduler tick so the
+-- caller is never blocked).
+function GameState:wake()
+    local w = self:take_waiter()
+    if w and coroutine.status(w) == "suspended" then
+        task.spawn(function() coroutine.resume(w) end)
+    end
 end
 
 local state = setmetatable({

@@ -9,7 +9,7 @@
 -- votable = false (commented out on the live server); void_y = nil.
 
 local Game = require("games/Game")
-local CycleDriver = require("core/CycleDriver")
+local Eliminator = require("core/Eliminator")
 local Hotbar = require("ui/Hotbar")
 
 local HotPotato = setmetatable({}, { __index = Game })
@@ -98,7 +98,7 @@ function HotPotato:onStep(dt)
         { victim.name, color = "yellow" },
         { " exploded!", color = "gray" },
     })
-    CycleDriver:eliminate(victim)
+    Eliminator:eliminate(victim)
     if self:phase() == "Ingame" then self:_assign() end
 end
 

@@ -11,17 +11,19 @@ on the Citadel workload `onixmg` (onixmg.minefort.com).
 
 ## Architecture
 
-The pack is an OOP design: a `GameState` singleton holds the shared round
-state, a `Game` base class carries the lifecycle every minigame shares,
-and the four games (`Spleef`, `TNTRun`, `Sumo`, `HotPotato`) extend it.
-The cycle, votes, arena, messages, stats, UI and commands are services
-that operate on the state and the registry. `main.luau` is the composition
-root: it requires the modules, registers the games, wires the player
-events and starts the cycle.
+Single-purpose files, one file per concern: every player event has its own
+handler file, every command its own file, every menu its own file, every
+background task its own file, and each cycle stage its own core module.
+Shared plumbing lives once in `MenuKit` (menu item shapes), `Registrar`
+(admin gate + cooldown + `commands.add` wiring), `Cooldown`, `GameState:wake()`
+(the parked cycle's one wake-up path) and `Lobby.send` (the lobby reset).
+`main.luau` is the composition root: require, register, install, start —
+no behaviour of its own.
 
 ```
 pack/
-  main.luau              entry: require + register games + wire events + start cycle
+  main.luau              composition root: register games, install arena,
+                         events, commands, tasks; log boot lines
   citadel.yml            spawn_point, game, permissions
   builds/*.schem         the six FAWE map schematics
   state/
@@ -31,57 +33,84 @@ pack/
     Text                 run-list concat
     Perms                is_admin (onix.admin or development env)
   core/
-    GameState            shared round-state object (phase, roster, votes, gen, timer, cycle_waiter)
+    GameState            shared round-state object (phase, roster, votes, gen,
+                         timer, cycle_waiter) + wake() (DRY waiter resume)
     Arena                the six maps: SHIFT, spawns, show/send/install
     Messages             prefix runs, tell/broadcast/deny/debug/discord_broadcast
     Stats                per-player stat get/bump in Citadel storage
     GameRegistry         registered games + the votable list
     VoteBook             vote cast / announce / winning
-    CycleDriver          Loading→Lobby→Ingame→Result loop + start/stop/skipVote/setTimer/eliminate/onJoin
+    Lobby                send a player to the lobby (mode, health, point, hotbar)
+    Eliminator           eliminate from the round (announce, roster, lava sound)
+    RoundRunner          ONE round: roster, paste, hooks, void check, timer
+    ResultSequence       the end-of-round sequence: winner card, return, closing pair
+    CycleLoop            the Loading→Lobby→Ingame→Result while-loop
+    CycleControls        start / stop / skipVote / setTimer
   games/
-    Game                 base class: fields + default lifecycle (onStart/onStep/onStop/onLeave/onClick/onDamage) + shared helpers
-    Spleef, TNTRun,      extend Game; override the hooks they need (HotPotato also calls CycleDriver:eliminate)
+    Game                 base class: fields + default lifecycle
+                         (onStart/onStep/onStop/onLeave/onClick/onDamage) + helpers
+    Spleef, TNTRun,      extend Game; override the hooks they need
     Sumo, HotPotato
   ui/
+    MenuKit              DRY menu kit: pad, open sound, back/close/head/icon items
     Sidebar              scoreboard (state/game/timer/alive + vote tally)
     ActionBar            vote-phase / starting-in / active-round bars
     Titles               loading + winner title cards
-    Tab                  animated logo header + ᴏɴʟɪɴᴇ footer
-    Chat                 LPC chat renderer + owner gradient tag
+    Tab                  paint the tab list (logo frames, line, ᴏɴʟɪɴᴇ footer)
     Motd                 Essentials' four gold welcome lines
     Hotbar               lobby hotbar (Vote/Profile/Discord)
-    Menus                vote menu, profile (3 pages), admin panel, map-state picker
+    menus/               one file per menu: VoteMenu, ProfileMenu, GameListMenu,
+                         GameStatMenu, AdminMenu, PlayersMenu, PlayerCardMenu,
+                         AnnounceMenu, MapStatesMenu
+  events/
+    Events               binds every Citadel player event to its handler
+    handlers/            one file per event: ChatHandler, JoinHandler,
+                         LeaveHandler, RespawnHandler, ClickHandler, DamageHandler
+  tasks/
+    Tasks                starts every background task
+    TabAnimateTask       3-second tab logo frame cycle
+    DiscordBroadcastTask 2-minute Discord broadcast
+    VoidSafetyTask       1-second void safety net (y < 50)
+    CycleTask            launches the CycleLoop
   commands/
-    Commands             /vote /startgame /stopgame /settimer /changemapstate /eliminate /spawn /center /discord /list /profile /adminpanel
+    Registrar            DRY spec registration: admin gate, cooldown, options
+    Commands             the command catalog (list + register loop)
     Cooldown             per-player command cooldown helper
+    <Name>Command        one file per command: Vote, StartGame, StopGame,
+                         SetTimer, ChangeMapState, Eliminate, Spawn, Center,
+                         Discord, List, Profile, AdminPanel
+  boot/
+    BootLog              the boot console lines (maps, lobby spawn)
+    SpawnProbe           one-shot spawn-column probe on first join
 ```
 
 The dependency graph is acyclic: `state/` and `util/` are leaves; `core/`
-builds on them; `games/` build on `core/` (HotPotato also reaches for
-`CycleDriver:eliminate`); `ui/` builds on `core/`; `commands/` builds on
-`core/` + `ui/`; `main.luau` wires everything. Each service module is a
-singleton (the class plus one instance returned); the games are one
-instance each of their subclass.
+builds on them; `games/` build on `core/`; `ui/` builds on `core/`;
+`events/`, `tasks/` and `commands/` build on `core/` + `ui/`; `main.luau`
+wires everything. Menu back-links (Back buttons) require their target
+lazily inside the pick callback, so no top-level require is circular.
+Each service module is a singleton (the class plus one instance
+returned); the games are one instance each of their subclass.
 
 ## What maps to what
 
 | Live server | Citadel pack |
 | --- | --- |
 | `Core/0_Variables.sk` (prefixes, perms, game list) | `state/Constants` (prefix colours, Discord), `core/GameRegistry:register`, `citadel.yml` permissions |
-| `Core/1_CoreSystem.sk` (cycle, votes, rounds) | `core/CycleDriver` (`run`/`play`/`finish`/`eliminate`), `core/VoteBook`, `core/GameState` |
-| `Commands/1_GameCommands.sk` | `commands/Commands`, `ui/Menus.map_states` |
+| `Core/1_CoreSystem.sk` (cycle, votes, rounds) | `core/CycleLoop` + `RoundRunner` + `ResultSequence` + `Eliminator`, `core/VoteBook`, `core/GameState` |
+| `Commands/1_GameCommands.sk` | `commands/*Command` (one file each), `ui/menus/MapStatesMenu` |
 | `Games/1_Spleef.sk` … `4_Sumo.sk` | `games/Spleef` … `games/Sumo` (extend `games/Game`) |
-| `Utils/1_Spawn.sk` (spawn/center/join/respawn) | `main.luau` events + `core/Arena` + `commands/Commands` (`/spawn`, `/center`) |
-| `Utils/2_Discord.sk` (/discord + 2-min broadcast) | `main.luau` (2-min task) + `core/Messages.discord_broadcast` + `commands/Commands` (`/discord`) |
+| `Utils/1_Spawn.sk` (spawn/center/join/respawn) | `events/handlers/JoinHandler` + `RespawnHandler`, `core/Lobby`, `commands/SpawnCommand` + `CenterCommand` |
+| `Utils/2_Discord.sk` (/discord + 2-min broadcast) | `tasks/DiscordBroadcastTask` + `core/Messages.discord_broadcast` + `commands/DiscordCommand` |
 | `/si give spleef_shovel` / `hotpotato` items | hotbar items (`games/Spleef`, `games/HotPotato`) |
 | `paste schematic "OnixMG_state_*.schem" at (-47,-20,38)` | `core/Arena:show(name)` pasting the same `.schem` at its own `Offset + SHIFT` |
-| LPC chat format `{prefix}{name}: {message}` | `players.on_chat(Chat.render)` in `main.luau`, returning false |
-| LuckPerms owner tag `&8[gradient ᴏᴡɴᴇʀ] ` | `ui/Chat` `owner_tag()`, letter-for-letter colours |
-| TAB header/footer (animated logo, ᴏɴʟɪɴᴇ footer) | `ui/Tab.set` + `Tab.animate` (the 3-second frame loop) |
+| LPC chat format `{prefix}{name}: {message}` | `events/handlers/ChatHandler`, returning false |
+| LuckPerms owner tag `&8[gradient ᴏᴡɴᴇʀ] ` | `events/handlers/ChatHandler` `owner_tag()`, letter-for-letter colours |
+| TAB header/footer (animated logo, ᴏɴʟɪɴᴇ footer) | `ui/Tab.set` + `tasks/TabAnimateTask` (the 3-second frame loop) |
 | Essentials `motd.txt` (the four gold welcome lines) | `ui/Motd.welcome` on join |
-| vanilla `/list` | a pack `/list` (`commands/Commands`) |
+| vanilla `/list` | a pack `/list` (`commands/ListCommand`) |
 | `server.properties` MOTD (`» Onix Minigames «`) | the workload MOTD (update-workload) |
-| map-state chest GUI (slots 10/12/14/16/28 + barriers) | `ui/Menus.map_states`, same slots, same items |
+| map-state chest GUI (slots 10/12/14/16/28 + barriers) | `ui/menus/MapStatesMenu`, same slots, same items |
 | `ItemTag` red-dye "Shutdown" lobby item | not carried (a physical world item, not Skript) |
 
 ## Message parity
