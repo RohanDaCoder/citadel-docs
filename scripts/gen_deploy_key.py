@@ -27,9 +27,15 @@ from cryptography.hazmat.primitives.asymmetric.ed25519 import (
 import paramiko  # for round-trip verification
 
 SECRETS_DIR = "/home/z/my-project/.secrets"
-PRIV_PATH = os.path.join(SECRETS_DIR, "id_ed25519")
-PUB_PATH = os.path.join(SECRETS_DIR, "id_ed25519.pub")
-COMMENT = "citadel-docs-sync@container"
+# Optional argv[1] selects the key slug (default "id" -> id_ed25519, the
+# citadel-docs sync key). A second repo needs its own deploy key — GitHub
+# allows a key to be a deploy key of only ONE repo — e.g.:
+#   python3 gen_deploy_key.py onix_repo
+# -> .secrets/onix_repo_ed25519 (+ .pub)
+SLUG = (len(sys.argv) > 1 and sys.argv[1]) or "id"
+PRIV_PATH = os.path.join(SECRETS_DIR, f"{SLUG}_ed25519")
+PUB_PATH = os.path.join(SECRETS_DIR, f"{SLUG}_ed25519.pub")
+COMMENT = f"{SLUG}-sync@container"
 
 
 def main() -> int:
@@ -79,14 +85,28 @@ def main() -> int:
     print(pub_line)
     print("=== END PUBLIC KEY ===")
     print()
+    # Repo-aware setup instructions. The slug names the key; map the two
+    # known slugs to their repos, and keep the citadel-docs default for
+    # bare "id".
+    repos = {
+        "id": ("citadel-docs", "RohanDaCoder/citadel-docs"),
+        "onix_repo": ("OnixMinigames", "RohanDaCoder/OnixMinigames"),
+    }
+    repo_label, repo_path = repos.get(
+        SLUG, (SLUG, f"<owner>/{SLUG}")
+    )
     print("GitHub setup:")
-    print("  1. https://github.com/RohanDaCoder/citadel-docs/settings/keys/new")
-    print("  2. Title: citadel-docs-sync")
+    print(f"  1. https://github.com/{repo_path}/settings/keys/new")
+    print(f"  2. Title: {SLUG}-sync")
     print("  3. Key: paste the single public-key line above")
     print("  4. CHECK 'Allow write access' (required for push)")
     print("  5. Add key")
     print()
-    print("Then: python3 /home/z/my-project/scripts/git_sync.py")
+    print(f"Then clone {repo_label} with:")
+    print(
+        f"  GIT_SSH_COMMAND='python3 {os.path.abspath(__file__).replace('gen_deploy_key.py', 'git_ssh.py')} -i {PRIV_PATH}' \\\n"
+        f"    git clone git@github.com:{repo_path}.git"
+    )
     return 0
 
 
