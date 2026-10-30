@@ -227,9 +227,16 @@ def connect(user, host, port, identity):
 
 
 def pump(chan):
-    """Bidirectionally stream stdio until the remote command exits."""
+    """Bidirectionally stream stdio until the remote command exits.
+
+    Also breaks when the server closes the channel without delivering an
+    exit status — GitHub's 'ssh -T' banner path does exactly that, and
+    waiting for a status that never arrives would hang forever.
+    """
     stdin_open = True
     while not chan.exit_status_ready():
+        if chan.closed or (chan.eof_received and not chan.recv_ready()):
+            break  # server hung up; no exit status is coming
         rlist = [chan] + ([0] if stdin_open else [])
         r, _, _ = select.select(rlist, [], [], 0.5)
         if chan in r:
@@ -258,7 +265,14 @@ def pump(chan):
         sys.stderr.buffer.flush()
     sys.stdout.buffer.flush()
     sys.stderr.buffer.flush()
-    return chan.recv_exit_status()
+    if chan.exit_status_ready():
+        return chan.recv_exit_status()
+    # The server closed the channel WITHOUT an exit status — GitHub's
+    # 'ssh -T' banner path does this. recv_exit_status() would block
+    # forever waiting for a message that never comes. We only reach
+    # here after auth already succeeded (connect() would have raised
+    # otherwise), so report success like ssh does for a closed session.
+    return 0
 
 
 def main() -> int:
