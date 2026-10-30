@@ -30,6 +30,30 @@ Token cache layout (.secrets/minefort_mcp_token.json, mode 600):
       "obtained_at": 1735686000
     }
 
+The cache is ALSO mirrored into .git/config (key sync.minefortmcptoken)
+because .secrets/ can be wiped by container recycles while .git/
+demonstrably survives (same trick git_sync.py uses for the GitHub
+token). _load_token_cache() restores from the mirror automatically.
+
+HEADLESS / REMOTE-BROWSER AUTH (manual relay):
+The default `auth` flow needs a browser AND a localhost listener on the
+same machine — impossible when this script runs in a container but the
+operator's browser is elsewhere. The relay flow splits it in two:
+
+    # step 1 (container): prints the sign-in URL, stashes PKCE verifier
+    python3 scripts/minefort_mcp.py auth --manual
+
+    # step 2 (operator): open the URL, sign in; the browser lands on a
+    # dead http://127.0.0.1:<port>/callback?code=...&state=... page —
+    # copy that WHOLE address-bar URL
+
+    # step 3 (container): finish the exchange with the pasted URL
+    python3 scripts/minefort_mcp.py auth --complete '<pasted URL>'
+
+PKCE (S256) still protects the exchange; state is validated against the
+stashed value, so a stale pasted URL from an older --manual run is
+rejected.
+
 Exit codes:
     0  success
     1  usage error
@@ -46,6 +70,7 @@ import http.server
 import json
 import os
 import secrets as pysecrets
+import subprocess
 import sys
 import threading
 import time
@@ -78,6 +103,13 @@ except ModuleNotFoundError:  # pragma: no cover - bootstrap, like git_ssh.py
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRETS_DIR = os.path.join(PROJECT_ROOT, ".secrets")
 TOKEN_PATH = os.path.join(SECRETS_DIR, "minefort_mcp_token.json")
+# Out-of-band relay state (verifier + state + client_id) between
+# `auth --manual` and `auth --complete`.
+PENDING_PATH = os.path.join(SECRETS_DIR, "minefort_mcp_pending.json")
+# Durable mirror of the token cache. .git/config is never committed to
+# the remote (it is repo-local), and it survives container recycles that
+# have wiped .secrets/ in the past (see git_sync.py's docstring).
+GIT_CONFIG_KEY = "sync.minefortmcptoken"
 
 MCP_ENDPOINT = "https://minefort.com/mcp"
 PROTECTED_RESOURCE = "https://minefort.com/.well-known/oauth-protected-resource/mcp"
@@ -146,20 +178,53 @@ def _atomic_write_json(path: str, obj: Any, mode: int = 0o600) -> None:
     os.replace(tmp, path)
 
 
-def _load_token_cache() -> dict | None:
-    if not os.path.exists(TOKEN_PATH):
+def _git_config_get_token() -> dict | None:
+    """Read the durable token mirror from .git/config, if present."""
+    try:
+        r = subprocess.run(
+            ["git", "-C", PROJECT_ROOT, "config", "--get", GIT_CONFIG_KEY],
+            capture_output=True, text=True, timeout=10,
+        )
+    except (OSError, subprocess.SubprocessError):
+        return None
+    if r.returncode != 0 or not r.stdout.strip():
         return None
     try:
-        with open(TOKEN_PATH) as f:
-            return json.load(f)
-    except (OSError, json.JSONDecodeError) as e:
-        _warn(f"token cache unreadable ({e}); ignoring cached credentials")
+        return json.loads(r.stdout.strip())
+    except json.JSONDecodeError:
+        _warn("git-config token mirror is corrupt; ignoring it")
         return None
+
+
+def _git_config_set_token(tok: dict) -> None:
+    """Mirror the token cache into .git/config (survives .secrets/ wipes)."""
+    compact = json.dumps(tok, sort_keys=True, separators=(",", ":"))
+    try:
+        subprocess.run(
+            ["git", "-C", PROJECT_ROOT, "config", GIT_CONFIG_KEY, compact],
+            capture_output=True, timeout=10, check=True,
+        )
+    except (OSError, subprocess.SubprocessError) as e:
+        _warn(f"could not mirror token into .git/config ({e}) — "
+              f"only {TOKEN_PATH} holds it")
+
+
+def _load_token_cache() -> dict | None:
+    if os.path.exists(TOKEN_PATH):
+        try:
+            with open(TOKEN_PATH) as f:
+                return json.load(f)
+        except (OSError, json.JSONDecodeError) as e:
+            _warn(f"token cache unreadable ({e}); trying git-config mirror")
+    # .secrets/ was wiped (container recycle) or file is corrupt — the
+    # .git/config mirror keeps the refresh_token alive across recycles.
+    return _git_config_get_token()
 
 
 def _save_token_cache(tok: dict) -> None:
     tok["obtained_at"] = int(time.time())
     _atomic_write_json(TOKEN_PATH, tok, mode=0o600)
+    _git_config_set_token(tok)
 
 
 def _register_client(as_meta: dict) -> str:
@@ -234,13 +299,15 @@ class _CallbackHandler(http.server.BaseHTTPRequestHandler):
         self.wfile.write(body.encode("utf-8"))
 
 
-def _wait_for_callback(port: int, expected_state: str) -> str:
+def _wait_for_callback(
+    port: int, expected_state: str, timeout: int = CALLBACK_TIMEOUT
+) -> str:
     """Block until the OAuth redirect lands; return the authorization code."""
     srv = http.server.ThreadingHTTPServer(("127.0.0.1", port), _CallbackHandler)
     srv.received = {}  # type: ignore
     thread = threading.Thread(target=srv.serve_forever, daemon=True)
     thread.start()
-    deadline = time.time() + CALLBACK_TIMEOUT
+    deadline = time.time() + timeout
     try:
         while time.time() < deadline:
             rcv = getattr(srv, "received", {}) or {}
@@ -259,7 +326,7 @@ def _wait_for_callback(port: int, expected_state: str) -> str:
     code = rcv.get("code")
     if not code:
         raise RuntimeError(
-            f"OAuth callback timed out after {CALLBACK_TIMEOUT}s — "
+            f"OAuth callback timed out after {timeout}s — "
             f"did you complete the sign-in in the browser?"
         )
     if rcv.get("state") != expected_state:
@@ -367,8 +434,9 @@ def do_oauth_flow(force: bool = False) -> dict:
     if non_interactive:
         raise RuntimeError(
             "no usable cached token and MINEFORT_MCP_NONINTERACTIVE=1 is set; "
-            "run `python3 scripts/minefort_mcp.py auth` in an interactive "
-            "shell first (it opens a browser to minefort.com)"
+            "bootstrap with `python3 scripts/minefort_mcp.py auth --manual` "
+            "(relay flow for headless hosts) or plain `auth` on a machine "
+            "with a browser"
         )
 
     client_id = (cache or {}).get("client_id")
@@ -398,12 +466,27 @@ def do_oauth_flow(force: bool = False) -> dict:
     print(f"\n[oauth] opening browser to sign in to Minefort...")
     print(f"[oauth] if the browser doesn't open, visit this URL manually:")
     print(f"[oauth]   {full}\n")
+    opened = False
     try:
-        webbrowser.open(full)
+        opened = bool(webbrowser.open(full))
     except Exception:
-        pass  # headless — user copies the URL above
-
-    code = _wait_for_callback(port, state)
+        opened = False
+    if not opened:
+        # Headless host: the redirect will land on the OPERATOR's
+        # localhost, never on ours — the listener below can only fire if
+        # this script and the browser share a machine. Don't make the
+        # operator wait the full CALLBACK_TIMEOUT for nothing; point at
+        # the relay flow, which needs no listener at all.
+        print(
+            "[oauth] no browser on this host — the localhost callback "
+            "will NOT reach us. Waiting only 90s in case a browser is "
+            "shared; if that fails use the relay flow:\n"
+            "[oauth]   python3 scripts/minefort_mcp.py auth --manual\n"
+        )
+    code = _wait_for_callback(
+        port, state,
+        timeout=CALLBACK_TIMEOUT if opened else 90,
+    )
     tok = _exchange_code(as_meta, client_id, code, redirect_uri, verifier)
     tok["client_id"] = client_id
     _save_token_cache(tok)
@@ -417,6 +500,137 @@ def require_token(force: bool = False) -> dict:
         return do_oauth_flow(force=force)
     except RuntimeError as e:
         _die(f"OAuth failed: {e}", code=EXIT_OAUTH_REQUIRED)
+
+
+# ---------------------------------------------------------------------------
+# Out-of-band manual relay (headless hosts, remote browser)
+# ---------------------------------------------------------------------------
+
+def start_manual_auth(as_meta: dict, cache: dict | None) -> None:
+    """Begin the relay flow: print the sign-in URL, stash verifier+state.
+
+    Same DCR + PKCE machinery as the browser flow, but no localhost
+    listener — impossible to reach when the operator's browser runs on a
+    different machine than this script (the container case). The operator
+    completes sign-in, their browser lands on a dead 127.0.0.1 callback
+    page whose address bar contains ?code=...&state=..., and they paste
+    that URL back for `auth --complete` to finish the exchange.
+    """
+    client_id = (cache or {}).get("client_id")
+    if not client_id:
+        client_id = _register_client(as_meta)
+
+    verifier, challenge = _make_pkce()
+    state = pysecrets.token_urlsafe(24)
+    redirect_uri = _local_callback_url_hint()
+
+    _atomic_write_json(PENDING_PATH, {
+        "client_id": client_id,
+        "verifier": verifier,
+        "state": state,
+        "redirect_uri": redirect_uri,
+        "created_at": int(time.time()),
+    }, mode=0o600)
+
+    params = {
+        "response_type": "code",
+        "client_id": client_id,
+        "redirect_uri": redirect_uri,
+        "scope": DEFAULT_SCOPE,
+        "state": state,
+        "code_challenge": challenge,
+        "code_challenge_method": "S256",
+        "resource": RESOURCE_INDICATOR,
+    }
+    full = f"{as_meta['authorization_endpoint']}?{urllib.parse.urlencode(params)}"
+
+    print("[manual] relay flow started — pending state stashed at:")
+    print(f"[manual]   {PENDING_PATH}")
+    print()
+    print("[manual] STEP 1 — open this URL in ANY browser and sign in:")
+    print(f"[manual]   {full}")
+    print()
+    print("[manual] STEP 2 — after sign-in the browser redirects to")
+    print("[manual]   http://127.0.0.1:<port>/callback?code=...&state=...")
+    print("[manual] which will show a connection-refused / dead page. That's")
+    print("[manual] EXPECTED — the auth code is in the address bar. Copy the")
+    print("[manual] ENTIRE URL from the address bar.")
+    print()
+    print("[manual] STEP 3 — finish with the pasted URL:")
+    print("[manual]   python3 scripts/minefort_mcp.py auth --complete '<pasted URL>'")
+    print()
+    print("[manual] codes expire fast (minutes). If the exchange fails, just")
+    print("[manual] re-run auth --manual for a fresh URL.")
+
+
+def complete_manual_auth(pasted: str) -> int:
+    """Finish the relay flow with the pasted callback URL (or bare code)."""
+    pasted = pasted.strip().strip('"').strip("'").strip()
+    code: str | None = None
+    state: str | None = None
+    if pasted.startswith("http"):
+        parsed = urllib.parse.urlparse(pasted)
+        q = urllib.parse.parse_qs(parsed.query)
+        err = (q.get("error") or [None])[0]
+        if err:
+            _die(
+                f"provider returned error in callback: {err} "
+                f"({(q.get('error_description') or [''])[0]})",
+                code=EXIT_OAUTH_REQUIRED,
+            )
+        code = (q.get("code") or [None])[0]
+        state = (q.get("state") or [None])[0]
+    else:
+        code = pasted  # bare code pasted without the wrapper URL
+    if not code:
+        _die("could not find ?code= in the pasted URL", code=EXIT_OAUTH_REQUIRED)
+
+    if not os.path.exists(PENDING_PATH):
+        _die(
+            "no pending relay auth found — the container may have recycled "
+            "between --manual and --complete. Start over with: "
+            "auth --manual",
+            code=EXIT_OAUTH_REQUIRED,
+        )
+    with open(PENDING_PATH) as f:
+        pending = json.load(f)
+    if state is not None and state != pending.get("state"):
+        _die(
+            "state mismatch — this URL belongs to an older auth --manual "
+            "run. Re-run auth --manual and use the newest URL",
+            code=EXIT_OAUTH_REQUIRED,
+        )
+
+    as_meta = requests.get(AS_METADATA_URL, timeout=15).json()
+    try:
+        tok = _exchange_code(
+            as_meta, pending["client_id"], code,
+            pending["redirect_uri"], pending["verifier"],
+        )
+    except RuntimeError as e:
+        _die(
+            f"code exchange failed: {e}\n"
+            f"authorization codes are short-lived and single-use — re-run "
+            f"auth --manual and paste promptly",
+            code=EXIT_OAUTH_REQUIRED,
+        )
+    tok["client_id"] = pending["client_id"]
+    _save_token_cache(tok)
+    try:
+        os.unlink(PENDING_PATH)
+    except OSError:
+        pass
+
+    exp = tok.get("expires_at", 0)
+    when = time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime(exp)) if exp else "?"
+    print("[manual] exchange OK — token cached:")
+    print(f"[manual]   {TOKEN_PATH}")
+    print(f"[manual]   (.git/config mirror under {GIT_CONFIG_KEY})")
+    print(f"[manual] scope: {tok.get('scope', DEFAULT_SCOPE)}")
+    print(f"[manual] expires_at: {when}")
+    print(f"[manual] refresh_token present: {bool(tok.get('refresh_token'))}")
+    print("[manual] try: python3 scripts/minefort_mcp.py list-tools")
+    return EXIT_OK
 
 
 # ---------------------------------------------------------------------------
@@ -661,6 +875,12 @@ def _format_result(result: dict) -> str:
 
 def cmd_auth(args) -> int:
     """Perform (or refresh) the OAuth flow and cache the token."""
+    if getattr(args, "complete", None):
+        return complete_manual_auth(args.complete)
+    if getattr(args, "manual", False):
+        as_meta = requests.get(AS_METADATA_URL, timeout=15).json()
+        start_manual_auth(as_meta, _load_token_cache())
+        return EXIT_OK
     tok = require_token(force=args.force)
     exp = tok.get("expires_at", 0)
     when = time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime(exp)) if exp else "?"
@@ -773,6 +993,12 @@ def build_parser() -> argparse.ArgumentParser:
     pa = sub.add_parser("auth", help="perform or refresh the OAuth flow")
     pa.add_argument("--force", action="store_true",
                     help="discard cached token and re-authenticate")
+    pa.add_argument("--manual", action="store_true",
+                    help="headless relay: print a sign-in URL and stash "
+                         "PKCE state; complete later with --complete")
+    pa.add_argument("--complete", metavar="CALLBACK_URL",
+                    help="finish the --manual relay flow using the pasted "
+                         "callback URL (or a bare authorization code)")
     pa.set_defaults(func=cmd_auth)
 
     # whoami
