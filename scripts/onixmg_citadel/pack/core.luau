@@ -55,6 +55,10 @@ local S = {
     gen = 0,
     running = false,
     skip = false,
+    cycle_waiter = nil,  -- the coroutine parked in Loading when the
+                         -- server is empty; resumed by on_join (a player
+                         -- joined) or by core.stop (gen bumped), so the
+                         -- loop never polls and never strands
 }
 core.S = S
 
@@ -347,6 +351,14 @@ function core.on_join(p)
     -- follows is the live server's Essentials motd, sent by main.luau.
     core.lobby(p)
     core.refresh()
+    -- If the cycle loop is parked in Loading waiting for the first
+    -- player, this join is its sole wake-up. Resume on the next
+    -- scheduler tick so on_join itself stays non-blocking.
+    local waiter = S.cycle_waiter
+    if waiter and coroutine.status(waiter) == "suspended" then
+        S.cycle_waiter = nil
+        task.spawn(function() coroutine.resume(waiter) end)
+    end
 end
 
 -- ---- one round ------------------------------------------------------------
@@ -502,16 +514,23 @@ function core.run()
     S.running = true
 
     while S.gen == gen do
-        -- Loading: the old cycle waited for the first player, logging to
-        -- the console every five seconds while it did.
+        -- Loading: park on the player-join event when the server is
+        -- empty, instead of polling every five seconds. The only way
+        -- players.count() can rise above zero is a join, so on_join is
+        -- the sole wake-up we need; core.stop bumps gen and resumes us
+        -- too, so a shutdown while empty does not strand the loop. A
+        -- task-spawn'd thread suspended via coroutine.yield is not
+        -- scheduler-resumed, so this is a true wait, not a spin.
         S.phase = "Loading"
         S.active = nil
         S.roster = {}
         S.timer = 0
         core.refresh()
-        while players.count() == 0 and S.gen == gen do
-            task.wait(5)
-            citadel.log("No players to start cycle.")
+        if players.count() == 0 and S.gen == gen then
+            citadel.log("No players to start cycle - waiting for a player to join.")
+            S.cycle_waiter = coroutine.running()
+            coroutine.yield()
+            S.cycle_waiter = nil
         end
         if S.gen ~= gen then break end
         core.debug("Starting new cycle...")
@@ -620,6 +639,16 @@ end
 function core.stop()
     if not S.running then return false end
     S.gen = S.gen + 1
+    -- If the run loop is parked in Loading on the join event, bumping
+    -- gen alone cannot wake it (coroutine.yield is not scheduler-resumed);
+    -- resume it so the loop sees the new gen, exits and clears S.running.
+    local waiter = S.cycle_waiter
+    if waiter then
+        S.cycle_waiter = nil
+        task.spawn(function()
+            if coroutine.status(waiter) == "suspended" then coroutine.resume(waiter) end
+        end)
+    end
     S.phase = "Disabled"
     S.active = nil
     S.roster = {}
