@@ -177,10 +177,33 @@ local function essentials_motd(p)
     })
 end
 
+-- One boot question, asked the first time the world around the spawn is
+-- actually loaded (a read before that is nil — Citadel never generates a
+-- chunk to answer one): the live Skript teleports players INSIDE the
+-- maps' invisible light pillars and the falls are original behaviour, so
+-- say what the engine really holds at the exact point and whether its
+-- light block is solid. A registry that remaps light to something solid
+-- would then show up here, in the console, instead of in play.
+local spawn_probed = false
+local function spawn_probe()
+    if spawn_probed then return end
+    local at = arena.spawn("lobby")
+    local x, y, z = math.floor(at.x), math.floor(at.y), math.floor(at.z)
+    local feet = world.get_block(vec3(x, y, z))
+    if not feet then return end   -- chunk not loaded yet; ask again next join
+    spawn_probed = true
+    local light = game.block("light")
+    citadel.log("[onixmg] spawn column @ " .. tostring(at)
+        .. ": feet=" .. tostring(feet)
+        .. " under=" .. tostring(world.get_block(vec3(x, y - 1, z)))
+        .. "; light.material.solid=" .. tostring(light and light.material and light.material.solid))
+end
+
 players.on_join(function(p)
     core.on_join(p)          -- the Skript's spawn(); no welcome of its own
     essentials_motd(p)        -- Essentials sent these next
     set_tab(1)
+    spawn_probe()
 end)
 
 players.on_leave(function(p)
@@ -196,13 +219,12 @@ players.on_leave(function(p)
 end)
 
 players.on_respawn(function(p)
-    -- A player still in the round goes back to the arena; everyone else
-    -- to the lobby point, as the old spawn() did.
-    if core.S.phase == "Ingame" and core.in_roster(p) then
-        arena.send(p, core.games[core.S.active].arena)
-    else
-        core.lobby(p)
-    end
+    -- 1_Spawn.sk, verbatim: "on respawn: wait 1 tick; spawn(player)" — the
+    -- lobby point, always, mid-game or not. (Respawning into an arena's
+    -- exact point would re-drop a player through its light pillar every
+    -- death; the live server never did that, and for Hot Potato it would
+    -- loop: the 30-block spawn fall is lethal.)
+    core.lobby(p)
 end)
 
 -- ---- input ---------------------------------------------------------------

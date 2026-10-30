@@ -63,18 +63,29 @@ The six schematics are the live server's own files, byte for byte,
 downloaded from its FAWE folder. The live paste (Fawesk at
 `(-47, -20, 38)`) reproduces each map at its `Offset`, so the port pastes
 at `Offset + SHIFT` with `SHIFT = (5, 117, -35)`, lifting the old world's
-`y -53..-9` into Citadel's range. Each spawn's floor tile was read out of
-the schematic's own blocks and written into `arena.MAPS` as `floor`, because
-Citadel keeps unloaded chunks invisible to `world.get_block` and at boot
-nothing is loaded:
+`y -53..-9` into Citadel's range.
 
-| map | live feet | floor block under it (local y) | floor in Citadel |
-| --- | --- | --- | --- |
-| lobby | (-46.5, -18, 38.5) | basalt (31) | 97 |
-| spleef | (1.5, -20, 35.5) | snow_block (20) | 86 |
-| tntrun | (-23.5, -20, 38.5) | green_concrete (19) | 85 |
-| hotpotato | (1.5, -20, 35.5) | grass_block (1) | 67 |
-| sumo | (4.5, -15, 33.5) | raw_gold_block (28) | 94 |
+Every spawn point is the live Skript's own coordinate, kept exactly and
+lifted by the same SHIFT. Each point sits *inside* its map's invisible
+light pillar — a column of `light[level=15]` blocks standing over the
+arena floor — so a teleported player falls to the floor and takes the
+game's own fall damage, exactly as on Paper:
+
+| map | live point (1_Spawn.sk / 1_CoreSystem.sk) | in Citadel | fall | damage |
+| --- | --- | --- | --- | --- |
+| lobby | (-46.5, -18, 38.5), yaw -90 | (-41.5, 99, 3.5) | 2 | none |
+| spleef | (1.5, -20, 35.5), yaw 90 | (6.5, 97, 0.5) | 11 | 8 |
+| tntrun | (-23.5, -20, 38.5), yaw 90 | (-18.5, 97, 3.5) | 12 | 9 |
+| hotpotato | (1.5, -20, 35.5), yaw 90 | (6.5, 97, 0.5) | 30 | 27 (lethal) |
+| sumo | (4.5, -15, 33.5), yaw 90 | (9.5, 102, -1.5) | 8 | 5 |
+
+Hot Potato's spawn drop is lethal at full health — it was on Paper too,
+which is presumably why that game was `votable = false` there. Respawn
+follows 1_Spawn.sk verbatim (`on respawn → spawn(player)`): always the
+lobby point, never a re-drop into an arena. `main.luau` logs what the
+world really holds at the exact lobby point (and whether the engine's
+`light` block is solid) the first time a join loads its chunk — a
+registry remap would show in the console, not in play.
 
 The void check is the Skript's `y < -48`, lifted with the same SHIFT
 (`arena.VOID_Y = 69`), for the three games that had one. Hot Potato never
@@ -103,21 +114,18 @@ included, so nothing is remapped.
    live winner is the first roster player left standing, and an empty
    roster prints `&8[&7Nobody&8]` as the winner. Both are kept. The port's
    old random-winner and draw inventions are gone.
-4. **The spawn falls.** Live teleports players a few blocks above the
-   floor inside sealed light boxes (Hot Potato: 31 blocks). The port
-   places players standing on the floor; nobody takes spawn fall damage.
-5. **/startgame near the end of a vote.** Live set the timer to 5 even
+4. **/startgame near the end of a vote.** Live set the timer to 5 even
    from 3, extending the wait; the port only ever cuts time short.
-6. **/stopgame's restart.** Live deleted `{minigames::*}`, leaving the
+5. **/stopgame's restart.** Live deleted `{minigames::*}`, leaving the
    system dead until a script reload. The port's `/startgame` (and the
    panel button) can start it again.
-7. **Mid-game map pastes.** Live let `/changemapstate` paste a map under
+6. **Mid-game map pastes.** Live let `/changemapstate` paste a map under
    a running round, stranding the arena. The port refuses during Ingame.
-8. **Damage.** The old code refused all out-of-game damage and sumo's
+7. **Damage.** The old code refused all out-of-game damage and sumo's
    knockback was a script push; the port answers only Hot Potato's
    holder question and leaves the rest to the engine, as the live server
    did.
-9. **Additions the live Skript never had:** the sidebar, the vote compass
+8. **Additions the live Skript never had:** the sidebar, the vote compass
    and profile hotbar items, the profile and admin panel (those two come
    from the repo's `legacy` branch, `Commands/2_Profile.sk` and
    `3_AdminPanel.sk`, which the live server did not run), per-player stats

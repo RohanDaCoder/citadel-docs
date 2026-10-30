@@ -4,10 +4,12 @@
 name: onixmg
 entry: main.luau
 motd: Onix Minigames
-# The live spawn (-46.5, -18, 38.5) sits inside a sealed light box above
-# the lobby floor; this is the floor tile under it, lifted with the same
-# SHIFT as arena.luau (x +5, y +117, z -35).
-spawn_point: [-41.5, 97.0, 3.5]
+# The live spawn, exactly: Utils/1_Spawn.sk teleported to
+# location(-46.5, -18.0, 38.5, world "world", -90, 0); lifted into
+# Citadel's world with the same SHIFT as arena.luau (x +5, y +117, z -35).
+# The point sits inside the lobby's invisible light pillar — a joiner
+# drops the last two blocks to the floor, as on Paper.
+spawn_point: [-41.5, 99.0, 3.5]
 gamemode: 2
 # This registry answers for every block the live 1.21 schematics use —
 # pale oak, froglight, tuff bricks, the concrete floors, blue ice — so

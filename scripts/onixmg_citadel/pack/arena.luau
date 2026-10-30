@@ -9,12 +9,16 @@
 -- Offset + SHIFT here rebuilds the live arenas block for block, lifted
 -- into Citadel's 0..255 world.
 --
--- The live spawn points sit inside sealed light boxes a few blocks above
--- each arena floor (Hot Potato's is 31 blocks up). `floor` is the exact
--- tile each spawn lands on, read out of the schematic's own blocks: a
--- player arrives standing on the floor instead of falling to it, and no
--- ground scan is done at runtime — Citadel keeps unloaded chunks
--- invisible to world.get_block, and at load time nothing is loaded.
+-- The live Skript teleported players to exact points, and those points
+-- sit INSIDE each map's invisible light pillar: a column of
+-- light[level=15] blocks standing over every arena floor (the lobby's is
+-- short, Hot Potato's hangs 30 blocks above its island). Players arrive
+-- inside a pillar, fall to the floor and take the game's own fall damage
+-- there, exactly as they did on Paper:
+--   lobby 2 (harmless), spleef 11, tntrun 12, sumo 8, hotpotato 30 blocks
+--   (27 damage - lethal, as the live server's own Hot Potato spawn was;
+--   that game was votable = false on the live server too).
+-- No ground scan and no floor snap: the exact coordinates are the point.
 --
 -- The void threshold is the Skript's y < -48, lifted with the same SHIFT
 -- (Spleef, TNT Run and Sumo eliminated at it; Hot Potato never had one,
@@ -30,46 +34,46 @@ local MAPS = {
     lobby = {
         file = "builds/OnixMG_state_lobby.schem",
         offset = vec3(-51, -52, -1),
+        -- 1_Spawn.sk: location(-46.5, -18.0, 38.5, world "world", -90, 0)
         spawn = vec3(-46.5, -18.0, 38.5),
         yaw = -90,
-        floor = 97,   -- on the basalt lobby floor (local 31)
     },
     spleef = {
         file = "builds/OnixMG_state_spleef.schem",
         offset = vec3(-51, -52, -1),
+        -- 1_CoreSystem.sk: location(1.5, -20, 35.5, world "world", 90, 0)
         spawn = vec3(1.5, -20.0, 35.5),
         yaw = 90,
-        floor = 86,   -- on the snow platform (local 20)
     },
     tntrun = {
         file = "builds/OnixMG_state_tntrun.schem",
         offset = vec3(-51, -52, -1),
+        -- 1_CoreSystem.sk: location(-23.5, -20, 38.5, world "world", 90, 0)
         spawn = vec3(-23.5, -20.0, 38.5),
         yaw = 90,
-        floor = 85,   -- on the green concrete step (local 19)
     },
     hotpotato = {
         file = "builds/OnixMG_state_hotpotato.schem",
         offset = vec3(-51, -52, -1),
+        -- 1_CoreSystem.sk: location(1.5, -20, 35.5, world "world", 90, 0)
         spawn = vec3(1.5, -20.0, 35.5),
         yaw = 90,
-        floor = 67,   -- on the grass island (local 1), below the kill line
     },
     sumo = {
         file = "builds/OnixMG_state_sumo.schem",
         offset = vec3(-51, -52, -1),
+        -- 1_CoreSystem.sk: location(4.5, -15, 33.5, world "world", 90, 0)
         spawn = vec3(4.5, -15.0, 33.5),
         yaw = 90,
-        floor = 94,   -- on the gold sumo ring (local 28)
     },
     empty = {
         -- the sixth state the old server kept in its schematics folder,
-        -- reachable through /changemapstate empty but offered by no GUI
+        -- reachable through /changemapstate empty but offered by no GUI;
+        -- it has no arena of its own, so the lobby's exact point serves
         file = "builds/OnixMG_state_empty.schem",
         offset = vec3(-51, -52, -1),
         spawn = vec3(-46.5, -18.0, 38.5),
         yaw = -90,
-        floor = 97,
     },
 }
 
@@ -116,13 +120,14 @@ function arena.install()
     end)
 end
 
---- Where a player's feet go for a map: the old spawn's column, on the
---- floor tile the schematic puts there.
+--- Where a player's feet go for a map: the live Skript's own coordinates,
+--- exactly, lifted by the same SHIFT as the pastes. Every one of the five
+--- points sits inside that map's invisible light pillar; the fall to the
+--- floor below is the original behaviour and is kept.
 function arena.spawn(name)
     local def = MAPS[name]
     if not def then return vec3(0, 100, 0) end
-    local at = def.spawn + arena.SHIFT
-    return vec3(at.x, def.floor, at.z)
+    return def.spawn + arena.SHIFT
 end
 
 function arena.yaw(name)
