@@ -514,3 +514,4 @@ Work Log:
 
 Stage Summary:
 - The Citadel server now runs a verified 1:1 port of the live OnixMinigames server: the live maps, the live messages in the live colours, the live mechanics — with the Skript's bugs documented rather than ported. The citadel branch is one command away once the new deploy key is registered.
+- git_ssh.py now restores the primary sync key from a .git/config mirror (sync.synckey base64 + sync.synckeypub) BEFORE auto-generating: a wipe restores the identical key, so its registration survives recycles. Verified byte-identical restore on a simulated wipe (hide key -> sync -> cmp). Both deploy keys (citadel-docs sync + onix_repo) are mirrored; pushes wait on one GitHub registration each.
