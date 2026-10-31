@@ -1,13 +1,13 @@
 --!nonstrict
--- commands/CenterCommand.luau
--- /center [yaw] [pitch] — admin. Snap to the centre of the current
+-- commands/onix/admin/CenterCommand.luau
+-- /onix admin center [yaw] [pitch] — snap to the centre of the current
 -- block, keep the current angles unless given, with the yellow
 -- confirmation and the teleport chime.
 
 local Messages = require("core/Messages")
 
 return {
-    name = "center [yaw:number] [pitch:number]",
+    usage = "admin center [yaw:number] [pitch:number]",
     help = "Snap to the centre of your block",
     admin = true,
     deny = "You do not have permission to center yourself.",

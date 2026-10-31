@@ -1,15 +1,15 @@
 --!nonstrict
--- commands/StartGameCommand.luau
--- /startgame — admin, 2 s cooldown. A stopped system starts; a running
--- vote is cut to five seconds and the skipper is named; any other state
--- is denied with the state line.
+-- commands/onix/admin/game/StartCommand.luau
+-- /onix admin game start — 2 s cooldown. A stopped system starts; a
+-- running vote is cut to five seconds and the skipper is named; any other
+-- state is denied with the state line.
 
 local state = require("core/GameState")
 local Messages = require("core/Messages")
 local CycleControls = require("core/CycleControls")
 
 return {
-    name = "startgame",
+    usage = "admin game start",
     help = "Skip the vote wait",
     admin = true,
     cooldown = 2,

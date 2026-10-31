@@ -14,7 +14,8 @@
 --   events/   Events installer + handlers/ (one file per player event)
 --   tasks/    Tasks installer + one file per background task
 --   commands/ Registrar (shared plumbing) + Commands catalog +
---             one file per command
+--             standalone/ (one file per player command) + onix/
+--             (the grouped /onix tree, one file per subcommand)
 --   boot/     BootLog, SpawnProbe
 
 local GameRegistry = require("core/GameRegistry")

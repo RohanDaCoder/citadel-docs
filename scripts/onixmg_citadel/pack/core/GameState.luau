@@ -94,8 +94,9 @@ local state = setmetatable({
     phase = "Disabled",   -- Loading | Lobby | Ingame | Result | Disabled
     active = nil,         -- the running game's name
     timer = 0,
-    timer_override = nil, -- /settimer and the panel's clock land here; the
-                          -- countdown loops consume it as the new remaining
+    timer_override = nil, -- /onix admin timer and the panel's clock land
+                          -- here; the countdown loops consume it as the
+                          -- new remaining
     roster = {},
     votes = {},
     voted = {},

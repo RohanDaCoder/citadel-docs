@@ -1,6 +1,6 @@
 --!nonstrict
--- commands/ChangeMapStateCommand.luau
--- /changemapstate [state] — admin. With a state name, paste it directly
+-- commands/onix/map/ChangeMapStateCommand.luau
+-- /onix map changemapstate [state] — with a state name, paste it directly
 -- (no reply, the clicker sent to spawn, exactly as the Skript had it);
 -- without, open the map-state picker. Refused mid-game.
 
@@ -10,7 +10,7 @@ local Sidebar = require("ui/Sidebar")
 local MapStatesMenu = require("ui/menus/MapStatesMenu")
 
 return {
-    name = "changemapstate [state:word]",
+    usage = "map changemapstate [state:word]",
     help = "Open the map state picker, or paste a state directly",
     admin = true,
     suggest = { state = function() return Arena:maps() end },

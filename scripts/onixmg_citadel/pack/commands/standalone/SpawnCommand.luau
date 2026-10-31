@@ -1,5 +1,5 @@
 --!nonstrict
--- commands/SpawnCommand.luau
+-- commands/standalone/SpawnCommand.luau
 -- /spawn [player] (alias /hub) — the 3-second cooldown with its
 -- remaining-time message, admins may send someone else, and the sender
 -- goes to spawn at the end either way — eliminated if mid-round, since

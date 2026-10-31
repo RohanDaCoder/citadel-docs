@@ -1,8 +1,8 @@
 --!nonstrict
 -- commands/Cooldown.luau
 -- Per-player command cooldowns, stored on the player's data table. Used
--- by /spawn (3s) and /startgame + /stopgame (2s each), as the live Skript
--- had them.
+-- by /spawn (3s) and /onix admin game start + stop (2s each), as the live
+-- Skript had them.
 
 local Cooldown = {}
 

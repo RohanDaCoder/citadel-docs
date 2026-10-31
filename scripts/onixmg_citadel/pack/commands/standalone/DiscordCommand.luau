@@ -1,5 +1,5 @@
 --!nonstrict
--- commands/DiscordCommand.luau
+-- commands/standalone/DiscordCommand.luau
 -- /discord (+ dc, dcserver, discordserver, onixdiscord) — the Discord
 -- line and the soft note.
 

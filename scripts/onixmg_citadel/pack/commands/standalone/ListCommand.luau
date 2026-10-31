@@ -1,5 +1,5 @@
 --!nonstrict
--- commands/ListCommand.luau
+-- commands/standalone/ListCommand.luau
 -- /list — vanilla's wording, so the welcome's third line tells the truth.
 
 local Messages = require("core/Messages")

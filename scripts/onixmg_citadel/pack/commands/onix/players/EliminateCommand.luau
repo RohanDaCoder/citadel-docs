@@ -1,11 +1,12 @@
 --!nonstrict
--- commands/EliminateCommand.luau
--- /eliminate <player> — admin. Remove a player from the running round.
+-- commands/onix/players/EliminateCommand.luau
+-- /onix players eliminate <player> — remove a player from the running
+-- round.
 
 local Eliminator = require("core/Eliminator")
 
 return {
-    name = "eliminate <target:player>",
+    usage = "players eliminate <target:player>",
     help = "Remove a player from the round",
     admin = true,
     handler = function(_, args)

@@ -1,7 +1,8 @@
 --!nonstrict
 -- ui/menus/VoteMenu.luau
 -- One purpose: the vote menu — one glinted card per votable game, with
--- the live count, re-opened after every pick.
+-- the live count, re-opened after every pick. The cards center in a
+-- chest the kit sizes to fit; a pick comes back as the game's name.
 
 local state = require("core/GameState")
 local registry = require("core/GameRegistry")
@@ -11,11 +12,12 @@ local kit = require("ui/MenuKit")
 local VoteMenu = {}
 
 function VoteMenu.open(p)
-    local items = {}
+    local cards = {}
     for _, name in registry:votable() do
         local g = registry:get(name)
         local votes = state:vote_count(name)
-        table.insert(items, {
+        table.insert(cards, {
+            key = name,
             item = g.icon or "paper",
             name = { { name, color = g.title_color or "yellow", bold = true } },
             lore = {
@@ -28,16 +30,14 @@ function VoteMenu.open(p)
         })
     end
 
-    kit.open_sound(p)
-    p.ui.menu{
+    kit.menu(p, {
         title = { { "Vote for the next game", color = "yellow", bold = true } },
-        items = kit.pad(items, 3),
-        on_pick = function(who, n)
-            local name = registry:votable()[n]
-            if name then VoteBook.cast(who, name) end
+        content = { { items = cards, spacing = 1 } },
+        on_pick = function(who, key)
+            VoteBook.cast(who, key)
             VoteMenu.open(who)
         end,
-    }
+    })
 end
 
 return VoteMenu

@@ -1,5 +1,5 @@
 --!nonstrict
--- commands/ProfileCommand.luau
+-- commands/standalone/ProfileCommand.luau
 -- /profile [player] — your stats page, or another player's.
 
 local ProfileMenu = require("ui/menus/ProfileMenu")

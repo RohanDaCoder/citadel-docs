@@ -1,13 +1,13 @@
 --!nonstrict
--- commands/StopGameCommand.luau
--- /stopgame — admin, 2 s cooldown. Shuts the cycle down; denying when it
--- is already disabled.
+-- commands/onix/admin/game/StopCommand.luau
+-- /onix admin game stop — 2 s cooldown. Shuts the cycle down; denying
+-- when it is already disabled.
 
 local Messages = require("core/Messages")
 local CycleControls = require("core/CycleControls")
 
 return {
-    name = "stopgame",
+    usage = "admin game stop",
     help = "Shut the cycle down",
     admin = true,
     cooldown = 2,

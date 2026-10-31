@@ -556,3 +556,37 @@ Work Log:
 
 Stage Summary:
 - The pack is now 67 single-purpose files: every player event, command, menu and background task has its own file, each cycle stage its own core module, and the shared plumbing (Registrar's admin/cooldown gates, MenuKit's item shapes, GameState:wake, Lobby.send) written exactly once. Deployed and verified on the onixmg dev workload; observable behaviour unchanged; live release untouched.
+
+---
+Task ID: 21
+Agent: main (Z.ai)
+Task: Group the management commands under /onix <group> [sub-group] <command> [args]; player commands stay standalone
+
+Work Log:
+- commands/Registrar: two doors now — add(spec) for standalone commands (spec.name = usage line) and add_onix(spec) for shapes of the grouped command (spec.usage = the words after "onix"). One shared wrapper writes the admin gate, the deny line and the cooldown once; the cooldown key is derived from the usage ("onix admin game start" -> cmd_onix_admin_game_start), so every subcommand gets its own clock.
+- commands/onix/: the tree, folder path mirroring the command path — admin/game/{Start,Stop}Command, admin/{Timer,Panel,Center}Command, players/EliminateCommand, map/ChangeMapStateCommand. Each leaf is one file, its usage a shape of the single "onix" command (Citadel's fixed-words grammar: "The first shape the line fits runs"), so the engine still does the arg types (player, integer 1..) and the per-arg tab completion.
+- commands/onix/OnixTree: the catalog plus the bare /onix line, registered last so a full line always fits a real shape first; it lists every subcommand with its help (usages pretty-printed, types stripped). Admin-gated like the rest of the tree.
+- commands/standalone/: the five player-facing commands moved out of the flat folder (/vote, /spawn +hub, /discord +4 aliases, /list, /profile) — deliberately NOT in the tree, as they are everyone's one-key verbs.
+- Mapping: /startgame -> /onix admin game start, /stopgame -> /onix admin game stop, /settimer -> /onix admin timer <s>, /adminpanel (+ap; alias dropped, it does not fit the tree) -> /onix admin panel, /center -> /onix admin center [yaw] [pitch], /eliminate -> /onix players eliminate <player>, /changemapstate -> /onix map changemapstate [state]. Handlers byte-identical to before; only the registration changed.
+- Comment touch-ups where old command names were referenced (GameState timer_override, CycleControls, Cooldown, MapStatesMenu); main.luau header documents the new commands/ layout.
+- NOT yet deployed: Minefort went down mid-task (start wedges in "starting"/"downloading", power call 504s, file API 503s); upload order planned (leaves -> OnixTree -> standalone -> Registrar -> main) and delete list (12 old command files) prepared. Verified locally instead: all 68 .luau files parse (luaparse smoke test with generalized iteration rewritten to pairs), every require target resolves, zero top-level require cycles.
+
+Stage Summary:
+- The management commands now live under one grouped /onix command with per-shape grammar, per-usage cooldowns and one shared gate; the five player commands stay standalone. Local verification only — deploy pending Minefort's recovery.
+
+---
+Task ID: 22
+Agent: main (Z.ai)
+Task: Proper chest UI handler: items in, kit positions them (center, spacing) and sizes the chest; MenuKit modified
+
+Work Log:
+- ui/MenuKit: menu(p, opts) is the chest handler. A menu declares WHAT (title, content rows of items with a spacing, an optional Back/Close line, on_pick by key) and the kit works out WHERE: rows centered in the nine-wide chest with `spacing` empty slots between neighbours (a row too long for its spacing wraps onto further centered rows — per_row = floor((9+s)/(s+1))); the content block vertically centered above the nav line (first = ceil((rows - nav - #layout)/2) + 1); the chest auto-sized to the content (1..6 rows) unless rows is fixed; panes fill the rest; {slot=, item=} entries place exact slots for bespoke layouts.
+- Picks come back BY KEY: any item spec may carry key = <any value> (a game's name, "back", even a Player object); the kit builds the slot->key map, strips key from what the chest sees, and on_pick(who, key) fires only for keyed items — panes and decoration never fire. Every menu's slot-number if/elseif and re-derivation walk (GameList re-walking the registry, PlayersMenu reverse-searching its SLOTS) is gone.
+- back = "<lore>" / close = "<lore>" sugar puts the arrow/barrier centered in the last row with keys "back"/"close"; grid(list, cols) chunks flat lists (head grids) into centered content rows. pad/open_sound stay public; back_item/close_item/head/game_icon unchanged.
+- All 9 menus rewritten onto kit.menu — one call each, zero slot arithmetic: AdminMenu (7 buttons centered, was 10-16 left-ish), VoteMenu (cards centered in a 1-row chest, was top-left of a 3-row chest), GameList/GameStat/PlayerCard/Profile/Announce (3-4 cards at 11/13/15(/17)), PlayersMenu (head grid that wraps and auto-grows the chest: 4 heads -> 2 rows, 19 -> 4 rows), MapStatesMenu (exact slots).
+- Off-by-one found and fixed: the Skript chest slots are 0-based (verified in reference/skript/Commands/1_GameCommands.sk: "set slot 10 ... 12 ... 14 ... 16 ... 28 ... 30/32/34" of a 5-row chest), so Citadel's 1-based equivalent is +1. MapStatesMenu now sits at the true slots (11/13/15/17, 29/31/33/35) and every Back/Close sits at the true center (23/32) instead of one left (22/31) — matching the live chest for the one menu the live server actually had.
+- Layout engine mirrored in Python (scripts/verify_menulayout.py) and every menu's configuration rendered: all placements confirmed (centering, spacing, wrap, auto-size, nav center). Syntax: all 68 .luau parse via the luaparse smoke test; require graph clean.
+- NOT yet deployed (Minefort down); upload order and delete list from Task 21 still pending, now plus ui/MenuKit.luau and the 9 menus.
+
+Stage Summary:
+- MenuKit is now a real chest handler: rows of items in, centered/spacing-placed, chest sized to fit, picks dispatched by key — and all nine menus are one kit.menu call each with no slot numbers left. The live server's one original chest (map picker) is slot-exact with its 0-based source corrected. Deploy pending Minefort's recovery.

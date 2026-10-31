@@ -1,5 +1,5 @@
 --!nonstrict
--- commands/VoteCommand.luau
+-- commands/standalone/VoteCommand.luau
 -- /vote <game> — cast a vote for the next minigame; tab-completes the
 -- votable list during the Lobby phase.
 

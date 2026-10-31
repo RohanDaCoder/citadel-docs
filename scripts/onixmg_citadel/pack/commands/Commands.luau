@@ -1,31 +1,32 @@
 --!nonstrict
 -- commands/Commands.luau
--- One purpose: the pack's command catalog — the explicit list of command
--- modules, each registered through the shared Registrar. Adding a
--- command means adding its one file and one line here.
+-- One purpose: the pack's command catalog — the standalone player
+-- commands (one file each in standalone/) plus the /onix command tree
+-- (one file per leaf in onix/), every one registered through the shared
+-- Registrar. Adding a command means adding its one file and one line in
+-- the list it belongs to.
 
 local Registrar = require("commands/Registrar")
+local OnixTree = require("commands/onix/OnixTree")
 
 local Commands = {}
 
+-- Player-facing commands that stay outside the /onix tree, exactly as on
+-- the live server: the vote is the lobby's one-key verb, /spawn is the
+-- way out of a round, /discord /list /profile are everyone's info lines.
+local STANDALONE = {
+    require("commands/standalone/VoteCommand"),
+    require("commands/standalone/SpawnCommand"),
+    require("commands/standalone/DiscordCommand"),
+    require("commands/standalone/ListCommand"),
+    require("commands/standalone/ProfileCommand"),
+}
+
 function Commands.register()
-    local specs = {
-        require("commands/VoteCommand"),
-        require("commands/StartGameCommand"),
-        require("commands/StopGameCommand"),
-        require("commands/SetTimerCommand"),
-        require("commands/ChangeMapStateCommand"),
-        require("commands/EliminateCommand"),
-        require("commands/SpawnCommand"),
-        require("commands/CenterCommand"),
-        require("commands/DiscordCommand"),
-        require("commands/ListCommand"),
-        require("commands/ProfileCommand"),
-        require("commands/AdminPanelCommand"),
-    }
-    for _, spec in specs do
+    for _, spec in STANDALONE do
         Registrar.add(spec)
     end
+    OnixTree.register()
 end
 
 return Commands
